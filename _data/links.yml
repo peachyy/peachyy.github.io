@@ -1,0 +1,23 @@
+- url: /
+  title: Home
+  tip: home
+  key: Home
+
+- url: /pages.html
+  title: 分类入口
+  tip: 快速入口
+  key: pages
+
+- url: /about
+  title: AboutME
+  tip: 关于
+  key: About
+
+- url: /guestbook
+  title: GuestBook
+  tip: 留言本
+  key: guestbook
+
+
+
+

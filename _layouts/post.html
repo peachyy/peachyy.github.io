@@ -1,0 +1,15 @@
+---
+layout: default
+---
+
+<article class="single row gutters">
+  <time class="published" datetime="{{ page.date | date: '%Y-%m-%d' }}">{{ page.date | date_to_long_string }}</time>
+  <h2>{{ page.title }}</h2>
+
+  {{ content }}
+  
+  <strong>采用<a href="http://creativecommons.org/licenses/by-nc-sa/3.0/cn/">by-nc-sa</a>许可 欢迎转载</strong><br/>
+  请注明出处：转载自  {{ site.data.brume.name }}<a href='{{page.url}}'>{{site.production_url}}{{page.url}}</a><br/>
+</article>
+{% include JB/comments %}
+

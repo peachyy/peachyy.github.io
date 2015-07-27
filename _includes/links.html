@@ -1,0 +1,9 @@
+<h5>友情链接：</h5>
+<ul class="list-inline">
+  {% for link in site.data.friLinks %}
+    <li>
+	   <a target="_blank" href="{{ link.url }}" title="{{link.desc}}" >{{ link.title }}</a>
+    </li>
+  {% endfor %}
+  </ul>
+

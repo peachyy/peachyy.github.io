@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    {% include head.html %}
+  </head>
+  <body>
+    <div class="container azul">
+      <header class="top row gutters{% if page.title == "Home" %} fadeInLeft animated{% endif %}">
+        <div class="col span_2 center">
+
+          <a href="{{ site.url }}" id="logo" title="{{ site.data.brume.name }}"
+             style="background-image: url({{site.baseurl}}/public/images/logo.png);"></a>
+        </div>
+        {% include navigation.html %}
+      </header>
+	  <div style="position:fixed;width:220px;right:5px;bottom:50%;">
+			<div style="background:#f8f8f8;height:40px;margin:0;padding:0;vertical-align: baseline;font-size:100%;border: 1px solid #e1e1e1;width:100%;"><h3 style="width:100%;text-align:center;line-height: 12px;margin-left:20px;float: left;color: #666;font-weight: bold;-webkit-margin-before: 1em;-webkit-margin-after: 1em;-webkit-margin-start: 0px;-webkit-margin-end: 0px;">最近访客</h3></div>
+			<div style="background:white;border-bottom: 1px solid #e1e1e1;border-left: 1px solid #e1e1e1;border-right: 1px solid #e1e1e1;padding:5px;"><ul style="margin-left:4px;margin-bottom:5px;" class="ds-recent-visitors" data-num-items="30" data-avatar-size="30"></ul></div>
+	  </div>
+      {{ content }}
+
+      <footer class="footer">
+	  {% include links.html %}
+        <p>
+               &copy;2015 peachyy Copyright.
+        </p>
+        <span>
+            <script type="text/javascript">
+   var _hmt = _hmt || [];(function() {var hm = document.createElement("script");hm.src = "//hm.baidu.com/hm.js?574882e76b8baeaeb61ff1b97526471c";var s = document.getElementsByTagName("script")[0];s.parentNode.insertBefore(hm, s);})();           
+            </script>
+        </span>
+      </footer>
+    </div>
+
+    <!-- scripts -->
+    <script src="{{site.baseurl}}/public/js/jquery.min.js"></script>
+    <script src="{{site.baseurl}}/public/js/jquery.fitvids.js"></script>
+		<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+		<script type="text/javascript">
+		var duoshuoQuery = {short_name:"atpeach"};
+			(function() {
+				var ds = document.createElement('script');
+				ds.type = 'text/javascript';ds.async = true;
+				ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+				ds.charset = 'UTF-8';
+				(document.getElementsByTagName('head')[0]
+				 || document.getElementsByTagName('body')[0]).appendChild(ds);
+			})();
+			</script>
+		<!-- 多说公共JS代码 end -->	
+	{% if page.key == "Home" %}<script type="text/javascript">
+      $(document).ready(function(){
+        $("article").fitVids();var params={short_name:"atpeach"},_key_arr=[];$(".customHandler").each(function(o){var _a=$(this).find("a"),_key=_a.attr("postkey");_key_arr.push(_key);});      
+		params.threads=_key_arr.join(",");$.ajax({url:"http://api.duoshuo.com/threads/counts.jsonp",cache:false,type:'get',data:params,dataType:'jsonp',callback: 'callback',error:function(XMLHttpRequest,textStatus,errorThrown){},
+			success:function(data, textStatus){
+				if(data.code==0){var res=data.response;$(".customHandler").each(function(o){var _a=$(this).find("a"),_key=_a.attr("postkey"),_count=0,tip="";if(res[_key]){_count=res[_key].comments;tip="&nbsp;&nbsp;<span style='vertical-align:super;font-size:0.8em;color:"+(_count<=0?'green':'red')+";' title=\""+_count+"条评论\">"+_count+"</span>";}_a.html(_a.html()+tip);});      
+				}else{}
+			}});
+	});</script>
+	{% else %}
+		<script type="text/javascript"> $(document).ready(function(){$("article").fitVids();});</script>
+	{% endif %}
+  </body>
+</html>
