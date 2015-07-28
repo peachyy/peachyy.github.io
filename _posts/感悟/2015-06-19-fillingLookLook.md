@@ -7,4 +7,4 @@ tag : 坚持
 
 *迷路、想放弃、对生活绝望时看看这个.肯定会好一点的*
 
-![你可以的]({{site.baseurl}}/postRes/jAhwsdy.jpg)
+![你可以的]({{site.staticUrl1}}/images/2015/06/2015-06-19-fillingLookLook-1.jpg)
