@@ -8,8 +8,12 @@ key: About
 
 *努力做一个更优秀的全端工程师*
 
- 喜欢文字、图片、漂亮优雅的页面。瞎折腾是我的个性。
-。
+ 喜欢文字、图片、漂亮优雅的页面、瞎折腾 / 
+ 喜欢玩Python、Java、Android、Go、Groovy、以及前端的一些优秀作品，
+ **如果有什么更好玩的**，请一定要留下您的身影，让我找到你。
+
+ 
+ 对同一种事物 有共同点、相似、好奇、不同点朋友 ，那么就让我们成为彼此心灵的慰藉吧，从此便搭上一艘痛苦并快乐着的船儿！！！
 #### linkin ####
 <a href="http://weibo.com/wbpeach" target="_blank">
     <i class="fa fa-weibo fa-lg" style="color:#16a095;"></i>
@@ -23,11 +27,11 @@ key: About
 <a title="给我写信吧" target="_blank" href="http://mail.qq.com/cgi-bin/qm_share?t=qm_mailme&email=eUBOSUFITEBNSTkICFcaFhQ" style="text-decoration:none;">
 	&nbsp;<i class="fa fa-envelope-o fa-lg" style="color:#16a095;"></i>
 </a>
-#### current location point ####
-1. Location  : Chongqing China
-2. Longitude : 106.54
-3. Latitude  : 29.95
 
+
+
+
+*如果认为我帮助到了你、也可以支助一下偶噢。 当然这完全是一句玩笑、**玩笑懂么**?*
 #### 捐助 ####
 
 <div>
