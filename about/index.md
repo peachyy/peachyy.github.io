@@ -9,11 +9,11 @@ key: About
 *努力做一个更优秀的全端工程师*
 
  喜欢文字、图片、漂亮优雅的页面、瞎折腾 / 
- 喜欢玩Python、Java、Android、Go、Groovy、以及前端的一些优秀作品，
+ 喜欢玩Linux、Python、Java、Android、Go、Groovy、以及前端的一些优秀作品，
  **如果有什么更好玩的**，请一定要留下您的身影，让我找到你。
 
  
- 对同一种事物 有共同点、相似、好奇、不同点朋友 ，那么就让我们成为彼此心灵的慰藉吧，从此便搭上一艘痛苦并快乐着的船儿！！！
+ 对同一种事物 有共同点、相似、好奇、不同点的朋友 ，那么就让我们成为彼此心灵的慰藉吧，从此便搭上一艘痛苦并快乐着的船儿！！！
 #### linkin ####
 <a href="http://weibo.com/wbpeach" target="_blank">
     <i class="fa fa-weibo fa-lg" style="color:#16a095;"></i>
