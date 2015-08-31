@@ -32,7 +32,9 @@
 <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
 {% endif %}
 <!-- feed links -->
-<link rel="alternate" href="{{ site.url }}{{ site.baseurl }}/feed.xml" type="application/rss+xml" title="{{ site.name }}">
+<link rel="alternate" href="{{ site.url }}{{ site.baseurl }}/feed.xml" type="application/rss+xml" title="{{ page.title }}">
+<!--解决由于网址形式不同内容相同而造成的内容重复问题SEO-->
+<link rel='canonical' href='{{ site.baseurl }}/{{page.url}}' />
 <style type="text/css" >
 		.ui-icon{display: inline-block;overflow: hidden;font-style: normalwebkit-text-size-adjust: none;width: 28px;height:24px;}
 		.ui-icon-comments{background-image:url("{{ site.baseurl }}/public/images/toolsnew.png");background-repeat:no-repeat;background-position:1px -24px;vertical-align:super;}
