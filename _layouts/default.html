@@ -35,6 +35,9 @@
     <!-- scripts -->
     <script src="{{site.baseurl}}/public/js/jquery.min.js"></script>
     <script src="{{site.baseurl}}/public/js/jquery.fitvids.js"></script>
+	<script src="http://inorganik.github.io/lazy-line-painter/rAF-polyfil.js"></script>
+	<script type="text/javascript" src="http://inorganik.github.io/lazy-line-painter/jquery.lazylinepainter-1.5.0.js"></script>
+		<script type="text/javascript" src="http://inorganik.github.io/assets/js/circuitree-phases.js"></script>	
 		<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
 		<script type="text/javascript">
 		var duoshuoQuery = {short_name:"atpeach"};
@@ -56,6 +59,18 @@
 				if(data.code==0){var res=data.response;$(".customHandler").each(function(o){var _a=$(this).find("a"),_key=_a.attr("postkey"),_count=0,tip="";if(res[_key]){_count=res[_key].comments;tip="&nbsp;&nbsp;<span style='vertical-align:super;font-size:0.8em;color:"+(_count<=0?'green':'red')+";' title=\""+_count+"条评论\">"+_count+"</span>";}_a.html(_a.html()+tip);});      
 				}else{}
 			}});
+		//kw handler
+		$("#articlekw").keyup(function(){
+			var kw=$(this).val();
+			$(".customHandler").each(function(o){
+				var txt=$(this).find("a").text();
+				if(kw==null || kw=='' ||$.trim(kw)=='' || txt.toLowerCase().indexOf(kw.toLowerCase()) >= 0){
+					$(this).show();
+				}else{
+					$(this).hide();
+				}
+			});
+		});		
 	});</script>
 	{% else %}
 		<script type="text/javascript"> $(document).ready(function(){$("article").fitVids();});</script>

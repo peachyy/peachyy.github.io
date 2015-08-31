@@ -3,13 +3,15 @@ layout: default
 title: Home
 key: Home
 ---
+<div style="margin-bottom:3px;">
+	<input style="" id="articlekw" type="text" class="form-control"  placeholder="关键字"/>
+</div>
 
 <section class="archive">
 {% for post in site.posts %}
 {% unless post.next %}
 
 {% unless forloop.first %}</div></div>{% endunless %}
-
   <div class="bundle row gutters fadeInDown animated">
     <h2 class="post-year col span_2">{{ post.date | date: '%Y' }}</h2>
     <div class="posts-by-year col span_10">
