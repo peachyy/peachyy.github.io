@@ -3,11 +3,12 @@ layout: default
 title: Home
 key: Home
 ---
-<div style="margin:0px auto;"
-	<input style="" id="articlekw" type="text" class="form-control"  placeholder="关键字"/>
+<div >
+	 <h2 class="col span_2">&nbsp;</h2>
+	 <input  id="articlekw" type="text" class="form-control"  placeholder="关键字"/>
 </div>
 
-<section class="archive">
+<section style="clear:both" class="archive">
 {% for post in site.posts %}
 {% unless post.next %}
 
