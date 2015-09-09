@@ -13,10 +13,15 @@
         </div>
         {% include navigation.html %}
       </header>
-	  <div style="position:fixed;width:220px;right:5px;">
-			<div style="background:#f8f8f8;height:40px;margin:0;padding:0;vertical-align: baseline;font-size:100%;border: 1px solid #e1e1e1;width:100%;"><h3 style="width:100%;text-align:center;line-height: 12px;margin-left:20px;float: left;color: #666;font-weight: bold;-webkit-margin-before: 1em;-webkit-margin-after: 1em;-webkit-margin-start: 0px;-webkit-margin-end: 0px;">最近访客</h3></div>
-			<div style="background:white;border-bottom: 1px solid #e1e1e1;border-left: 1px solid #e1e1e1;border-right: 1px solid #e1e1e1;padding:5px;"><ul style="margin-left:4px;margin-bottom:5px;" class="ds-recent-visitors" data-num-items="30" data-avatar-size="30"></ul></div>
-	  </div>
+	  <script type="text/javascript">
+	    var _mobiles=["Android", "iPhone", "SymbianOS", "Windows Phone", "iPad", "iPod"],_mobiles_v = 0,_mobiles_flag=false,_agent=navigator.userAgent;
+		 for (_mobiles_v;_mobiles_v< _mobiles.length;_mobiles_v++) { if(_agent.indexOf(_mobiles[_mobiles_v])>0){_mobiles_flag=true;break;}}
+		 if(_mobiles_flag===false){document.write('<div style="position:fixed;width:220px;right:5px;">');
+			document.write('<div style="background:#f8f8f8;height:40px;margin:0;padding:0;vertical-align: baseline;font-size:100%;border: 1px solid #e1e1e1;width:100%;"><h3 style="width:100%;text-align:center;line-height: 12px;margin-left:20px;float: left;color: #666;font-weight: bold;-webkit-margin-before: 1em;-webkit-margin-after: 1em;-webkit-margin-start: 0px;-webkit-margin-end: 0px;">最近访客</h3></div>');
+			document.write('<div style="background:white;border-bottom: 1px solid #e1e1e1;border-left: 1px solid #e1e1e1;border-right: 1px solid #e1e1e1;padding:5px;"><ul style="margin-left:4px;margin-bottom:5px;" class="ds-recent-visitors" data-num-items="30" data-avatar-size="30"></ul></div>');
+			document.write('</div>');	
+		}</script>
+	  
       {{ content }}
 
       <footer class="footer">
@@ -35,9 +40,6 @@
     <!-- scripts -->
     <script src="{{site.baseurl}}/public/js/jquery.min.js"></script>
     <script src="{{site.baseurl}}/public/js/jquery.fitvids.js"></script>
-	<script src="http://inorganik.github.io/lazy-line-painter/rAF-polyfil.js"></script>
-	<script type="text/javascript" src="http://inorganik.github.io/lazy-line-painter/jquery.lazylinepainter-1.5.0.js"></script>
-		<script type="text/javascript" src="http://inorganik.github.io/assets/js/circuitree-phases.js"></script>	
 		<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
 		<script type="text/javascript">
 		var duoshuoQuery = {short_name:"atpeach"};
