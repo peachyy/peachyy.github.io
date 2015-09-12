@@ -177,7 +177,7 @@ footer {
     padding: 66px 20px 25px;
     margin-right: 10px;
     margin-top: -5px;
-    text-transform: uppercase;
+    text-transform:none;/* uppercase;*/
     border-radius: 0 0 5px 5px;
     border-bottom: 1px solid lighten($contrast-color, 10%);
     transition: all ease-in-out .3s;

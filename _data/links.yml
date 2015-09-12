@@ -9,12 +9,12 @@
   key: pages
 
 - url: /about
-  title: AboutME
+  title: About Me
   tip: 关于
   key: About
 
 - url: /guestbook
-  title: GuestBook
+  title: Guest Book
   tip: 留言本
   key: guestbook
 
