@@ -8,8 +8,18 @@ layout: default
 
   {{ content }}
   
-  <strong>采用<a href="http://creativecommons.org/licenses/by-nc-sa/3.0/cn/">by-nc-sa</a>许可 欢迎转载</strong><br/>
-  请注明出处：转载自  {{ site.data.brume.name }}<a href='{{page.url}}'>{{site.production_url}}{{page.url}}</a><br/>
+	<ul style="list-style: none;margin:0;">
+		<li>上一篇:
+	  {% if (page.next == null ) %} 没有了{% else %} <a href='{{site.production_url}}{{page.next.url}}' title="{{page.next.title}}">{{page.next.title}}</a> {% endif %}
+		</li>
+		<li>下一篇:
+	  {% if (page.previous  == null ) %} 没有了{% else %} <a href='{{site.production_url}}{{page.previous.url}}' title="{{page.previous.title}}">{{page.previous.title}}</a> {% endif %}
+		</li>
+	</ul>
+  <div style="border:1px dashed gray; border-radius: 10px;">
+	  <strong><a href="http://creativecommons.org/licenses/by-nc-sa/3.0/cn/">BY-NC-SA</a>欢迎转载</strong><br/>
+	  需注明出处：转载自  {{ site.data.brume.name }}&nbsp;<a href='{{page.url}}'>{{site.production_url}}{{page.url}}</a><br/>
+	</div>  
 </article>
 {% include JB/comments %}
 
