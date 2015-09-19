@@ -37,20 +37,34 @@ key: About
 
 #### 捐助 ####
 
-<div>
-	<div style="float:left;margin-right:50px;">
-		<form action="https://shenghuo.alipay.com/send/payment/fill.htm" method="POST" target="_blank" accept-charset="GBK">
-			<input name="optEmail" type="hidden" value="peach_mr@sina.com" />
-			<input name="payAmount" type="hidden" value="10" />
-			<input id="title" name="title" type="hidden" value="捐赠" />
-			<input name="memo" type="hidden" value="来自{{site.baseurl}} " />
-			<input name="pay" type="image" value="支付宝转账" src="https://t.alipayobjects.com/images/T1HHFgXXVeXXXXXXXX.png" />
-		</form>
-	</div>
-	<a target="_blank" href="https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=peach_mr@sina.com&no_shipping=1&lc=US&currency_code=USD"><img src="https://www.paypalobjects.com/en_US/i/logo/paypal_logo.gif"></a>
-
+<style type="text/css">
+	.jz-panel{width:100%}
+	.jz-ul{list-style:none;margin:0px;}
+	.jz-ul li{float:left;}
+	.jz-ul li .imgpanel{margin:0;}
+	.jz-ul li .imgpaneltitle{text-align: center;margin:0;}
+</style>
+<div class="jz-panel">
+	<ul class="jz-ul">
+		<li>
+			<div class="imgpanel">
+				<img src="{{site.staticUrl1}}/payres/alipay.png"/>
+			</div>
+			<div class="imgpaneltitle">
+				支付宝
+			</div>
+		<li>
+		<li>
+			<div class="imgpanel">
+				<img src="{{site.staticUrl1}}/payres/weixinpay.png"/>
+			</div>
+			<div class="imgpaneltitle">
+				 微信
+			</div>
+		<li>
+	</ul>
+	 <div style="clear:both;"></div>
 </div>
-
 
 
  **捐赠列表**
