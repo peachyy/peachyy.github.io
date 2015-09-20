@@ -16,9 +16,9 @@ layout: default
 	  {% if (page.previous  == null ) %} 没有了{% else %} <a href='{{site.production_url}}{{page.previous.url}}' title="{{page.previous.title}}">{{page.previous.title}}</a> {% endif %}
 		</li>
 	</ul>
-  <div style="border:1px dashed gray; border-radius: 10px;">
+  <div style="border:1px dashed gray; margin-top:8px;border-radius: 10px;">
 	  <strong><a href="http://creativecommons.org/licenses/by-nc-sa/3.0/cn/">BY-NC-SA</a>欢迎转载</strong><br/>
-	  需注明出处：转载自  {{ site.data.brume.name }}&nbsp;<a href='{{page.url}}'>{{site.production_url}}{{page.url}}</a><br/>
+	  原文地址:{{ site.data.brume.name }}&nbsp;<a href='{{page.url}}'>{{site.production_url}}{{page.url}}</a><br/>
 	</div>  
 </article>
 {% include JB/comments %}
