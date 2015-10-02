@@ -17,6 +17,14 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 <meta name="HandheldFriendly" content="true">
 <meta name="robots" content="all,index,follow">
+<meta property="og:type" content="website">
+<meta property="og:title" content="{{ page.title }}">
+<meta property="og:url" content="{{site.baseurl}}{{page.url}}">
+<meta property="og:site_name" content="{{ site.data.brume.name }}">
+<meta property="og:description" content="{{ page.content | strip_html | strip_newlines | truncate: 100 }}">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="{{ page.title }}">
+<meta name="twitter:description" content="{{ page.title }}">
 <!-- title -->
 <title>{{ page.title }} &middot; {{ site.data.brume.name }}</title>
     <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->

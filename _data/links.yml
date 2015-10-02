@@ -8,16 +8,15 @@
   tip: 快速入口
   key: pages
 
-- url: /about
+- url: /guestbook
   title: About Me
   tip: 关于
-  key: About
+  key: aboutguestbook
 
-- url: /guestbook
-  title: Guest Book
-  tip: 留言本
-  key: guestbook
-
+- url: /opensrclist
+  title: 开源/作品
+  tip: 开源/作品
+  key: opensrclist
 
 
 

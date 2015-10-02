@@ -8,7 +8,7 @@ highlighter: pygments
 permalink: /:year/:month/:day/:title
 staticUrl1: http://static.1.seoui.com
 #关键字
-kw: 个人博客，陶小松
+kw: 个人博客,陶小松,笑松
 url:
 baseurl: http://blog.seoui.com
 production_url: http://blog.seoui.com
