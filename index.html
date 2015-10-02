@@ -31,10 +31,8 @@ key: Home
 {% endunless %}
 
   <article class="customHandler row gutters">
-    <a href="{{ site.baseurl }}{{ post.url }}"   postkey="{{ post.url }}" title="{{ post.title }}" class="col span_8">{{ post.title }}</a>
-    <span class="post-date col span_4">
-      <time datetime="{{ post.date | date: '%Y-%m-%d' }}">{{ post.date | date: "%-d %B" }}</time>
-    </span>
+    <a rel="bookmark" href="{{ site.baseurl }}{{ post.url }}"   postkey="{{ post.url }}" title="{{ post.title }}" class="col span_8">{{ post.title }}</a>
+    <span class="post-date col span_4"><time datetime="{{ post.date | date: '%Y-%m-%d' }}">{{ post.date | date: "%-d %B" }}</time>/span>
   </article>
 
 {% if forloop.last %}</div></div>{% endif %}

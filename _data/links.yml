@@ -2,21 +2,25 @@
   title: Home
   tip: home
   key: Home
+  follow: nofollow
 
 - url: /pages.html
   title: Pages
   tip: 快速入口
   key: pages
+  follow: nofollow
 
 - url: /guestbook
   title: About Me
   tip: 关于
   key: aboutguestbook
+  follow: bookmark  
 
 - url: /opensrclist
   title: 开源/作品
   tip: 开源/作品
   key: opensrclist
+  follow: bookmark    
 
 
 
