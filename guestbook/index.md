@@ -8,7 +8,7 @@ key: aboutguestbook
 
 *一个伪计算机迷 、一个伪全栈工程师 、一个执着者 、一个微不足道的人*
 
- 本人名叫_小松，记得刚玩计算机的时候总是把`小`打为`笑` 后来习惯了，有一种美叫将错就错 所以目前的代号就叫**笑松**。 平时闲逛在GitHub StackOverflow zhihu douban 之间。
+ 本人名叫_小松，记得刚玩计算机的时候总是把`小`打为`笑` 后来习惯了，有一种美叫将错就错 所以目前的代号就叫**笑松** 平时闲逛在GitHub StackOverflow zhihu douban 之间。
 
  平时也喜欢瞎折腾、看一些文字、图片、漂亮优雅的页面、喜欢玩技术 Linux、Python、Java、Android、Go、Groovy、Scala以及前端的一些优秀作品 也热爱开源，
  **如果有什么更好玩的**，请一定要留下您的身影，让我找到你。 
@@ -41,7 +41,6 @@ key: aboutguestbook
 
 表示深深的感谢。
 </div>
-
 
 <!--定义留言填写板-->
 <style type="text/css">.ds-sync{display:none !important;}</style>
