@@ -15,11 +15,12 @@ key: aboutguestbook
  **如果有什么更好玩的**，请一定要留下您的身影，让我找到你。 
 
  对同一种事物 有共同点、相似、好奇、不同点的朋友 ，那么就让我们成为彼此心灵的慰藉吧！！！可以通过
-	<a title="新浪微博" href="http://weibo.com/wbpeach" target="_blank"><i class="fa fa-weibo fa-lg" style="color:#16a095;"></i></a>
-	<a title="github" href="https://github.com/cqweclick" target="_blank"><i class="fa fa-github fa-lg" style="color:#16a095;"></i></a>
-	<a title="豆瓣" href="http://www.douban.com/people/hixs/"><i class="fa fa-twitter fa-lg" style="color:#16a095;"></i></a>
-	<a title="给我写信吧" target="_blank" href="http://mail.qq.com/cgi-bin/qm_share?t=qm_mailme&email=eUBOSUFITEBNSTkICFcaFhQ" style="text-decoration:none;">&nbsp;<i class="fa fa-envelope-o fa-lg" style="color:#16a095;"></i></a>
-联系到我。
+<a title="新浪微博" href="http://weibo.com/wbpeach" target="_blank"><i class="fa fa-weibo fa-lg" style="color:#16a095;"></i></a>
+<a title="github" href="https://github.com/peachyy" target="_blank"><i class="fa fa-github fa-lg" style="color:#16a095;"></i></a>
+<a title="Twitter" href="https://twitter.com/hixstao" target="_blank"><i class="fa fa-twitter fa-lg" style="color:#16a095;"></i></a>
+<a title="FaceBook" href="https://www.facebook.com/hixstao" target="_blank"><i class="fa fa-facebook fa-lg" style="color:#16a095;"></i></a>	
+<a title="给我写信吧" target="_blank" href="http://mail.qq.com/cgi-bin/qm_share?t=qm_mailme&email=eUBOSUFITEBNSTkICFcaFhQ" style="text-decoration:none;">&nbsp;<i class="fa fa-envelope-o fa-lg" style="color:#16a095;"></i></a>
+找到我。
 
 #### 捐助 ####
 
