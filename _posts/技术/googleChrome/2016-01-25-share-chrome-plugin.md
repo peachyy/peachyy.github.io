@@ -66,6 +66,6 @@ Markdown插件
 
 9.Visual Event
 
- 能更直观的看到网页DOM原始上的事件信息以及事件所触发的代码 前端开发神器
+ 能更直观的看到网页DOM元素上的事件信息以及事件所触发的代码 前端开发神器
 
  ![JSONView]({{site.staticUrl1}}/images/2016/01/2016-01-25-share-chrome-plugin-09.png)
