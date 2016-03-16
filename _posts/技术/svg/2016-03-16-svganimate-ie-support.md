@@ -34,7 +34,7 @@ tag : svg
 
    [http://stackoverflow.com/questions/15738752/svg-animation-not-working-ie9-ie10](http://stackoverflow.com/questions/15738752/svg-animation-not-working-ie9-ie10 "http://stackoverflow.com/questions/15738752/svg-animation-not-working-ie9-ie10")
    
-另外mail.check.js托管在github地址为:
+另外smil.check.js托管在github地址为:
 
 [https://github.com/FakeSmile/FakeSmile](https://github.com/FakeSmile/FakeSmile "https://github.com/FakeSmile/FakeSmile")
   
