@@ -8,7 +8,7 @@ key: aboutguestbook
 
 *一个伪计算机迷 、一个执着者 、一个微不足道的人*
 
- 刚玩计算机的时候总是把`小`打为`笑`  so 目前的别名就叫 "笑松" 平时喜欢逛GitHub StackOverflow ...。
+ 昵称：笑松 至于为什么呢?得自己问我咯。喜欢逛GitHub segmentfault StackOverflow  weibo...。
 
   喜欢文字、图片、玩技术Go、Groovy、Scala...以及前端的一些优秀作品 也热爱开源，
  **如果有什么更好玩的**，请一定要留下您的身影，让我找到你。 
