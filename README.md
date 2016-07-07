@@ -1,7 +1,5 @@
-<<<<<<< HEAD
-markdown 
 
-=======
+
 # brume
 
 I am not a designer so I cannot impress you with breathtaking Jekyll themes, but brume is something that just came to my mind and I had to build it. It is a clean and simple theme, which has an index page that lists all your blog posts divided by year and an about page. brume uses redcarpet as the Markdown processor with strikethrough extension enabled by default (so you can use ~~ to strike out words).
@@ -44,4 +42,4 @@ This theme has 4 predefined colors that can be used for links:
 By default it uses *azure*, but if you want to select another one just change the second class of `container` div in *_layouts/default.html* to one of the provided names.
 
 Express your thoughts about brume on Twitter [@aigarsdz](http://twitter.com/aigarsdz), and help me make it better!
->>>>>>> 2ccc6debfff3507e0f82fd0748ec9d55f5876f6d
+
