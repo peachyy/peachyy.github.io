@@ -1,0 +1,1133 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>笑松小站</title>
+  <subtitle>写我喜欢 读我所爱</subtitle>
+  <link href="/atom.xml" rel="self"/>
+  
+  <link href="http://blog.seoui.com/"/>
+  <updated>2016-10-16T06:39:42.212Z</updated>
+  <id>http://blog.seoui.com/</id>
+  
+  <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>supervisor配置和使用</title>
+    <link href="http://blog.seoui.com/2016/07/07/supervisor/"/>
+    <id>http://blog.seoui.com/2016/07/07/supervisor/</id>
+    <published>2016-07-06T16:00:00.000Z</published>
+    <updated>2016-10-16T06:39:42.212Z</updated>
+    
+    <content type="html"><![CDATA[<p> supervisor是一个制作守护进程的工具,用户可以在UNIX系统中监控、管理进程。常用于管理与某个用户或项目相关的进程。</p>
+<h3 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h3><p> 采用源码安装的方式,切换到3.1.3这个版本安装。</p>
+ <figure class="highlight plain"><table><tr><td class="code"><pre><div class="line"></div><div class="line">git clone https://github.com/Supervisor/supervisor.git</div><div class="line">cd supervisor</div><div class="line">   git checkout 3.1.3</div><div class="line">   python setup.py install</div></pre></td></tr></table></figure>
+<a id="more"></a>
+<p> 生成默认的supervisor配置文件</p>
+ <figure class="highlight html"><table><tr><td class="code"><pre><div class="line"></div><div class="line">echo_supervisord_conf &gt; /etc/supervisord.conf</div></pre></td></tr></table></figure>
+<h3 id="修改自定义配置"><a href="#修改自定义配置" class="headerlink" title="修改自定义配置"></a>修改自定义配置</h3><p>   vim /etc/supervisord.conf </p>
+<p>  提供web界面访问需要设置 inet_http_server </p>
+<p>  需要配置一下supervisorctl的serverurl 这个地址必须匹配inet_http_server节点的port</p>
+<p>  另外要去掉include的注释 用include的方式来引入supervisor进程, 而不需要每次都去修改 /etc/supervisord.conf,files指定为/etc/supervisor/*.conf,只要在/etc/supervisor目录下.conf结尾的文件都需要被supervisor加载。</p>
+ <figure class="highlight html"><table><tr><td class="code"><pre><div class="line">   </div><div class="line">  [inet_http_server]         ; inet (TCP) server disabled by default</div><div class="line">port=0.0.0.0:9001        ; (ip_address:port specifier, *:port for all iface)</div><div class="line">;username=user              ; (default is no username (open server))</div><div class="line">;password=123 </div><div class="line"> </div><div class="line">  </div><div class="line">[supervisorctl]</div><div class="line">;serverurl=unix:///tmp/supervisor.sock ; use a unix:// URL  for a unix socket</div><div class="line">serverurl=http://127.0.0.1:9001 ; use an http:// url to specify an inet socket</div><div class="line"></div><div class="line">[include]</div><div class="line">files=/etc/supervisor/*.conf</div></pre></td></tr></table></figure>
+<h3 id="示例"><a href="#示例" class="headerlink" title="示例"></a>示例</h3><p> 1、首先编写一段测试程序,这段代码是从网络上下载的,并非自己编写的。</p>
+<p> vim test_http.py </p>
+ <figure class="highlight python"><table><tr><td class="code"><pre><div class="line">  </div><div class="line"><span class="keyword">import</span> sys</div><div class="line"><span class="keyword">import</span> BaseHTTPServer</div><div class="line"><span class="keyword">from</span> SimpleHTTPServer <span class="keyword">import</span> SimpleHTTPRequestHandler</div><div class="line">HandlerClass = SimpleHTTPRequestHandler</div><div class="line">ServerClass = BaseHTTPServer.HTTPServer</div><div class="line">Protocol = <span class="string">"HTTP/1.0"</span></div><div class="line"></div><div class="line"><span class="keyword">if</span> __name__ == <span class="string">"__main__"</span>:</div><div class="line">    <span class="keyword">if</span> sys.argv[<span class="number">1</span>:]:</div><div class="line">        port = int(sys.argv[<span class="number">1</span>])</div><div class="line">    <span class="keyword">else</span>:</div><div class="line">        port = <span class="number">8000</span></div><div class="line"></div><div class="line">    server_address = (<span class="string">'0.0.0.0'</span>, port)</div><div class="line">    HandlerClass.protocol_version = Protocol</div><div class="line">    httpd = ServerClass(server_address, HandlerClass)</div><div class="line"></div><div class="line">    sa = httpd.socket.getsockname()</div><div class="line">    <span class="keyword">print</span> <span class="string">"Serving HTTP on"</span>, sa[<span class="number">0</span>], <span class="string">"port"</span>, sa[<span class="number">1</span>], <span class="string">"..."</span></div><div class="line">    httpd.serve_forever()</div></pre></td></tr></table></figure>
+<p> 2、编写进程守护.conf文件</p>
+<p>  vim /etc/supervisor/test_http.conf </p>
+<p>  program：后面进程名称</p>
+ <figure class="highlight html"><table><tr><td class="code"><pre><div class="line"></div><div class="line">[program:test_http]</div><div class="line">command=python test_http.py 501  ; 被监控的进程路径</div><div class="line">directory=/root/supervisor    ; 执行前先cd到目录去</div><div class="line">priority=1                    ;数字越高，优先级越高</div><div class="line">numprocs=1                    ; 启动几个进程</div><div class="line">autostart=true                ; 随着supervisord的启动而启动</div><div class="line">autorestart=true              ; 自动重启。。当然要选上了</div><div class="line">startretries=10               ; 启动失败时的最多重试次数</div><div class="line">exitcodes=0                   ; 正常退出代码（是说退出代码是这个时就不再重启了吗？待确定）</div><div class="line">stopsignal=KILL               ; 用来杀死进程的信号</div><div class="line">stopwaitsecs=10               ; 发送SIGKILL前的等待时间</div><div class="line">redirect_stderr=true          ; 重定向stderr到stdout</div><div class="line">stdout_logfile=/tmp/log/supervisor.log  ;日志目录</div></pre></td></tr></table></figure>
+<h3 id="启动并加载配置信息"><a href="#启动并加载配置信息" class="headerlink" title="启动并加载配置信息"></a>启动并加载配置信息</h3><p>  不输出其他异常信息则表示启动并加载配置成功,接下来可以使用 supervisorctl 查看状态信息。看到一个进程名称为test_http。<br>  可以在客户端远程访问这个supervisor网页控制台。curl <a href="http://127.0.0.1:9001" target="_blank" rel="external">http://127.0.0.1:9001</a> 能看到网页信息就证明是OK的。<br>  当然可以在远程浏览器访问<a href="http://xxxxx:9001" target="_blank" rel="external">http://xxxxx:9001</a> 可以启动 停止 甚至是查看日志等功能。</p>
+ <figure class="highlight html"><table><tr><td class="code"><pre><div class="line"></div><div class="line">supervisord -c /etc/supervisord.conf </div><div class="line">supervisorctl status</div><div class="line">test_http                        RUNNING   pid 16013, uptime 0:14:22</div></pre></td></tr></table></figure>
+<p> supervisorctl 常用的命令有 start,restart,stop,stop all,reload等。</p>
+<p> 另外还有一个很重要的概览group<br> <figure class="highlight html"><table><tr><td class="code"><pre><div class="line">[group:test_gourp];定义分分组 test_gourp</div><div class="line">programs=test_http   ；分组中包含程序 test_http 多个需要使用,分隔。</div><div class="line">priority=1</div><div class="line">log_stderr=true</div><div class="line">logfile_maxbytes=1MB</div></pre></td></tr></table></figure></p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt; supervisor是一个制作守护进程的工具,用户可以在UNIX系统中监控、管理进程。常用于管理与某个用户或项目相关的进程。&lt;/p&gt;
+&lt;h3 id=&quot;安装&quot;&gt;&lt;a href=&quot;#安装&quot; class=&quot;headerlink&quot; title=&quot;安装&quot;&gt;&lt;/a&gt;安装&lt;/h3&gt;&lt;p&gt; 采用源码安装的方式,切换到3.1.3这个版本安装。&lt;/p&gt;
+ &lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;git clone https://github.com/Supervisor/supervisor.git&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;cd supervisor&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;   git checkout 3.1.3&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;   python setup.py install&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+    
+    </summary>
+    
+      <category term="技术" scheme="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/"/>
+    
+      <category term="linux" scheme="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/linux/"/>
+    
+    
+      <category term="linux" scheme="http://blog.seoui.com/tags/linux/"/>
+    
+      <category term="supervisor" scheme="http://blog.seoui.com/tags/supervisor/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>gzip 和 zip在linux上的使用</title>
+    <link href="http://blog.seoui.com/2016/07/04/gzip-uzip/"/>
+    <id>http://blog.seoui.com/2016/07/04/gzip-uzip/</id>
+    <published>2016-07-03T16:00:00.000Z</published>
+    <updated>2016-10-16T06:39:42.211Z</updated>
+    
+    <content type="html"><![CDATA[<p> 文件的压缩/解压无论是在哪个操作系统上都比较常用 简答在这里演示一下。</p>
+<p>##zip</p>
+<p> zip会把文件打包为.zip格式的文件包，比如 abc.zip</p>
+ <figure class="highlight powershell"><table><tr><td class="code"><pre><div class="line"></div><div class="line">zip abc.zip testabc.txt</div></pre></td></tr></table></figure>
+<p>  上面的shell会把testabc.txt压缩在当前目录下的abc.zip文件中 当然你也可以指定压缩到你指定的路径如  zip /opt/abc.zip testabc.txt</p>
+ <figure class="highlight powershell"><table><tr><td class="code"><pre><div class="line"></div><div class="line">unzip abc.zip</div></pre></td></tr></table></figure>
+<p>  把abc.zip包解压到当前目录 如需指定解压到其他目录 需要指定-d 参数 如  unzip abc.zip -d /opt/abc</p>
+<p>##gzip</p>
+<p>  从压缩后的压缩包文件格式上与zip命令不同的是gzip压缩后的文件格式为.gz </p>
+ <figure class="highlight powershell"><table><tr><td class="code"><pre><div class="line">   </div><div class="line">//压缩为文件 abc.txt.gz 会删除原有的abc.txt文件</div><div class="line">gzip abc.txt </div><div class="line">   //解压abc.txt.gz 会删除原有的abc.txt.gz文件 </div><div class="line"></div><div class="line">   gunzip abc.txt.gz </div><div class="line">  </div><div class="line">  //如需要保留原来的压缩文件 需要加-c 参数 </div><div class="line">  // gzip -c abc.txt &gt; /root/abc.gz </div><div class="line">  // gunzip -c /abc.gz &gt; ./abc.txt</div></pre></td></tr></table></figure>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt; 文件的压缩/解压无论是在哪个操作系统上都比较常用 简答在这里演示一下。&lt;/p&gt;
+&lt;p&gt;##zip&lt;/p&gt;
+&lt;p&gt; zip会把文件打包为.zip格式的文件包，比如 abc.zip&lt;/p&gt;
+ &lt;figure class=&quot;highlight powershell&quot;&gt;&lt;tabl
+    
+    </summary>
+    
+      <category term="技术" scheme="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/"/>
+    
+      <category term="linux" scheme="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/linux/"/>
+    
+    
+      <category term="linux" scheme="http://blog.seoui.com/tags/linux/"/>
+    
+      <category term="unzip" scheme="http://blog.seoui.com/tags/unzip/"/>
+    
+      <category term="gunzip" scheme="http://blog.seoui.com/tags/gunzip/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Hello Docker</title>
+    <link href="http://blog.seoui.com/2016/06/18/docker.install/"/>
+    <id>http://blog.seoui.com/2016/06/18/docker.install/</id>
+    <published>2016-06-17T16:00:00.000Z</published>
+    <updated>2016-10-16T06:39:42.211Z</updated>
+    
+    <content type="html"><![CDATA[<p>接触docker容器有这么几周的时间了,顺便在这里记录一下这段岁月,无特殊说明<br>操作系统均为 centos7</p>
+<p>1、首先安装docker</p>
+<p> 参考 <a href="https://docs.docker.com/linux/step_one/" title="https://docs.docker.com/linux/step_one/" target="_blank" rel="external">https://docs.docker.com/linux/step_one/</a></p>
+<p> 检查有没有安装curl 如果没有安装可以使用 apt-get install curl  安装curl,已经安装了则忽略。 </p>
+<pre><code>which curl
+</code></pre><p> 安装最新的版本Docker 执行命令 自动根据自身环境安装</p>
+ <figure class="highlight html"><table><tr><td class="code"><pre><div class="line"></div><div class="line">curl -fsSL https://get.docker.com/ | sh</div></pre></td></tr></table></figure>
+<p> 验证安装是否成功</p>
+  <figure class="highlight html"><table><tr><td class="code"><pre><div class="line">   docker version</div><div class="line">  </div><div class="line">Client:</div><div class="line"> Version:      1.11.2</div><div class="line"> API version:  1.23</div><div class="line"> Go version:   go1.5.4</div><div class="line"> Git commit:   b9f10c9</div><div class="line"> Built:        Wed Jun  1 21:47:50 2016</div><div class="line"> OS/Arch:      linux/amd64</div><div class="line"></div><div class="line">Server:</div><div class="line"> Version:      1.11.2</div><div class="line"> API version:  1.23</div><div class="line"> Go version:   go1.5.4</div><div class="line"> Git commit:   b9f10c9</div><div class="line"> Built:        Wed Jun  1 21:47:50 2016</div><div class="line"> OS/Arch:      linux/amd64</div></pre></td></tr></table></figure>
+<p> 输出docker版本号信息 则表示成功</p>
+<p>2、运行第一个Docker容器 busybox</p>
+ <figure class="highlight html"><table><tr><td class="code"><pre><div class="line">  </div><div class="line">docker run -it --rm busybox</div></pre></td></tr></table></figure>
+<p>  busybox是一个很小的linux系统 只有1M的样子吧,执行完这个命令后 docker会首先检查本地镜像有没有叫busybox,如果没有会去中央仓库拉取（pull）,拉取完成后运行(run) 这个容器,参数-it 表示命令行交互 –rm表示运行结束后立即删除这个容器。</p>
+<p> 这里有2个概念 pull拉取出来的叫做镜像(image) run运行的叫做容器(container),一个image可以有多个container,镜像有自己的镜像ID ,容器也有自己的容器ID,这里可以描述得不太好，大概就是意思。</p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;接触docker容器有这么几周的时间了,顺便在这里记录一下这段岁月,无特殊说明&lt;br&gt;操作系统均为 centos7&lt;/p&gt;
+&lt;p&gt;1、首先安装docker&lt;/p&gt;
+&lt;p&gt; 参考 &lt;a href=&quot;https://docs.docker.com/linux/step_one/
+    
+    </summary>
+    
+      <category term="技术" scheme="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/"/>
+    
+      <category term="docker" scheme="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/docker/"/>
+    
+    
+      <category term="docker" scheme="http://blog.seoui.com/tags/docker/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>ubuntu设置网络</title>
+    <link href="http://blog.seoui.com/2016/06/17/ubuntu.networksetting/"/>
+    <id>http://blog.seoui.com/2016/06/17/ubuntu.networksetting/</id>
+    <published>2016-06-16T16:00:00.000Z</published>
+    <updated>2016-10-16T06:39:42.211Z</updated>
+    
+    <content type="html"><![CDATA[<p> 用惯了centos 偶尔装了一次ubuntu版本为14.04来玩一玩发现设置静态网络(static)后不能上外网，在这里记录一下如何设置的。</p>
+<p> 1、首页静态IP参数 编辑文件 vim /etc/network/interfaces</p>
+ <figure class="highlight powershell"><table><tr><td class="code"><pre><div class="line"></div><div class="line">auto eth0</div><div class="line">iface eth0 inet static</div><div class="line">address <span class="number">172.168</span>.<span class="number">101.245</span></div><div class="line">netmask <span class="number">255.255</span>.<span class="number">255.0</span></div><div class="line">gateway <span class="number">172.168</span>.<span class="number">101.254</span></div><div class="line">nameserver <span class="number">61.128</span>.<span class="number">128.68</span></div></pre></td></tr></table></figure>
+<p> 设置好后重启网卡  /etc/init.d/networking restart  然而并不能解析DNS</p>
+<p> 2、配置dns 编辑文件 vim /etc/resolv.conf </p>
+<p>  根据我所在网络环境设置如下DNS </p>
+ <figure class="highlight powershell"><table><tr><td class="code"><pre><div class="line">nameserver <span class="number">114.114</span>.<span class="number">114.114</span></div><div class="line">nameserver <span class="number">61.128</span>.<span class="number">128.68</span></div></pre></td></tr></table></figure>
+<p> 此时 如果有外网 应该是可以ping了</p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt; 用惯了centos 偶尔装了一次ubuntu版本为14.04来玩一玩发现设置静态网络(static)后不能上外网，在这里记录一下如何设置的。&lt;/p&gt;
+&lt;p&gt; 1、首页静态IP参数 编辑文件 vim /etc/network/interfaces&lt;/p&gt;
+ &lt;figure 
+    
+    </summary>
+    
+      <category term="技术" scheme="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/"/>
+    
+      <category term="linux" scheme="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/linux/"/>
+    
+    
+      <category term="linux" scheme="http://blog.seoui.com/tags/linux/"/>
+    
+      <category term="ubuntu" scheme="http://blog.seoui.com/tags/ubuntu/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>form表单默认回车事件的问题</title>
+    <link href="http://blog.seoui.com/2016/05/24/html-form-enterevent/"/>
+    <id>http://blog.seoui.com/2016/05/24/html-form-enterevent/</id>
+    <published>2016-05-23T16:00:00.000Z</published>
+    <updated>2016-10-16T06:39:42.211Z</updated>
+    
+    <content type="html"><![CDATA[<p>经常写form表单以前没有怎么注意 无意中注意到一些元素组成的默认事件。</p>
+<p>在form表单中 目前发现具备以下情况会默认支持回车事件提交表单</p>
+<ol>
+<li>所有的表单元素中只有1个text 无论提交按钮是否为type=submit</li>
+<li><p>表单中的提交按钮type=submit</p>
+<figure class="highlight html"><table><tr><td class="code"><pre><div class="line"></div><div class="line">//此代码默认就具有了回车提交表单的事件  需要格外小心</div><div class="line"> <span class="tag">&lt;<span class="name">form</span>&gt;</span></div><div class="line">       <span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">"text"</span> <span class="attr">value</span>=<span class="string">""</span> <span class="attr">name</span>=<span class="string">"name"</span>&gt;</span></div><div class="line">       <span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">"button"</span> <span class="attr">value</span>=<span class="string">"button"</span>/&gt;</span></div><div class="line">   <span class="tag">&lt;/<span class="name">form</span>&gt;</span></div></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>如果我们的表单中仅有一个text的话怎么阻止默认回车事件呢?</p>
+<p>可以在表单中多加一个隐藏的text</p>
+ <figure class="highlight html"><table><tr><td class="code"><pre><div class="line"></div><div class="line"><span class="tag">&lt;<span class="name">form</span>&gt;</span></div><div class="line">      <span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">"text"</span> <span class="attr">value</span>=<span class="string">""</span> <span class="attr">name</span>=<span class="string">"name"</span>&gt;</span></div><div class="line">      <span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">"text"</span> <span class="attr">style</span>=<span class="string">"display: none;"</span>&gt;</span></div><div class="line">      <span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">"button"</span> <span class="attr">value</span>=<span class="string">"button"</span>/&gt;</span></div><div class="line">  <span class="tag">&lt;/<span class="name">form</span>&gt;</span></div></pre></td></tr></table></figure>
+<p>示例demo 具有默认事件：<a href="http://peachyy.github.io/demos/htmlformenterevent/index.html" title="http://peachyy.github.io/demos/" target="_blank" rel="external">http://peachyy.github.io/demos/htmlformenterevent/index.html</a></p>
+<p>示例demo 不具有默认事件：<a href="http://peachyy.github.io/demos/htmlformenterevent/index2.html" title="http://peachyy.github.io/demos/" target="_blank" rel="external">http://peachyy.github.io/demos/htmlformenterevent/index.html</a></p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;经常写form表单以前没有怎么注意 无意中注意到一些元素组成的默认事件。&lt;/p&gt;
+&lt;p&gt;在form表单中 目前发现具备以下情况会默认支持回车事件提交表单&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;所有的表单元素中只有1个text 无论提交按钮是否为type=submit&lt;/li&gt;
+&lt;li&gt;
+    
+    </summary>
+    
+      <category term="技术" scheme="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/"/>
+    
+    
+      <category term="from" scheme="http://blog.seoui.com/tags/from/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>利用selenium做网页自动测试</title>
+    <link href="http://blog.seoui.com/2016/04/13/selenium-autowebTest/"/>
+    <id>http://blog.seoui.com/2016/04/13/selenium-autowebTest/</id>
+    <published>2016-04-12T16:00:00.000Z</published>
+    <updated>2016-10-16T06:39:42.210Z</updated>
+    
+    <content type="html"><![CDATA[<p> 最近在做一个简单新浪微博抓取功能,遇到了请求被新浪拦截,正因为如此了解到selenium。</p>
+<p> <a href="http://docs.seleniumhq.org/" title="selenium" target="_blank" rel="external">selenium</a> 是一个web的自动化测试工具。运用好它能够完成很多自动化测试功能甚至会让你感到很多出乎意料的事情。</p>
+<p> 接下来做一件简单而大气的事情（这里使用java语言）,模拟一个chrome浏览器访问 <a href="http://www.weibo.com" target="_blank" rel="external">http://www.weibo.com</a> 自动输入微博用户名和密码 自动点击登录,当登录成功后给用户一个反馈。</p>
+<p> 必须需要一个浏览器驱动包 可以到<a href="http://docs.seleniumhq.org/download/下载" target="_blank" rel="external">http://docs.seleniumhq.org/download/下载</a> 需要匹配自己的操作系统 以及浏览器 下载对应的版本。</p>
+<p> 比如 我的驱动放在了本地磁盘 E:\Dev\devPlugins\chromedriver.exe 路径。</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><div class="line"></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">RunApp</span> </span>&#123;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span><span class="keyword">throws</span> Exception</span>&#123;</div><div class="line">        <span class="comment">//创建一个chrome驱动</span></div><div class="line">        ChromeDriverService service = <span class="keyword">new</span> ChromeDriverService.Builder()</div><div class="line">                .usingDriverExecutable(</div><div class="line">                        <span class="keyword">new</span> File(</div><div class="line">                                <span class="string">"E:\\Dev\\devPlugins\\chromedriver.exe"</span>))</div><div class="line">                .usingAnyFreePort().build();</div><div class="line">        service.start();</div><div class="line">        WebDriver driver = <span class="keyword">new</span> RemoteWebDriver(service.getUrl(),</div><div class="line">                DesiredCapabilities.chrome());</div><div class="line"></div><div class="line">        <span class="comment">//访问weibo.com站点</span></div><div class="line">        driver.get(<span class="string">"http://www.weibo.com?t="</span>+System.currentTimeMillis());</div><div class="line"></div><div class="line">        <span class="comment">//等待网站是否刷新完成  如果30秒还没有响应则认为超时了</span></div><div class="line">        (<span class="keyword">new</span> WebDriverWait(driver,<span class="number">30</span>)).until(<span class="keyword">new</span> ExpectedCondition&lt;Boolean&gt;() &#123;</div><div class="line">            <span class="function"><span class="keyword">public</span> Boolean <span class="title">apply</span><span class="params">(WebDriver d)</span> </span>&#123;</div><div class="line">                <span class="comment">//使用域名判断是否跳转到登录页面</span></div><div class="line">                <span class="keyword">return</span> d.getCurrentUrl().toLowerCase().startsWith(<span class="string">"http://weibo.com"</span>);</div><div class="line">            &#125;</div><div class="line">        &#125;);</div><div class="line">        <span class="comment">// 显示搜索结果页面的 title</span></div><div class="line">        System.out.println(<span class="string">"打印一下网页的TITLE: "</span> + driver.getTitle());</div><div class="line">        <span class="comment">//点击用户登录的窗口</span></div><div class="line">        <span class="comment">//这里的path可以开发开发人员工具 复制xpath</span></div><div class="line">        WebElement element = driver.findElement(</div><div class="line">		  By.xpath(<span class="string">"//*[@id=\"pl_login_form\"]/div[2]/div[1]/div/a[2]"</span>));</div><div class="line">        element.click();</div><div class="line">        <span class="comment">//自动输入用户名数据</span></div><div class="line">        WebElement userId=element.findElement(</div><div class="line">		  By.xpath(<span class="string">"//*[@id=\"loginname\"]"</span>));</div><div class="line">        WebElement password=element.findElement(</div><div class="line">          By.xpath(<span class="string">"//*[@id=\"pl_login_form\"]/div[2]/div[3]/div[2]/div/input"</span>));</div><div class="line">        WebElement submit= element.findElement(</div><div class="line">          By.xpath(<span class="string">"//*[@id=\"pl_login_form\"]/div[2]/div[3]/div[6]/a"</span>));</div><div class="line">        <span class="comment">//你的微博账号</span></div><div class="line">        userId.sendKeys(<span class="string">"22222"</span>);</div><div class="line">        <span class="comment">//你的微博密码</span></div><div class="line">        password.sendKeys(<span class="string">"xxxxxxx"</span>);</div><div class="line">        <span class="comment">//触发登录动作</span></div><div class="line">        submit.click();</div><div class="line">        System.out.println(<span class="string">"点击登录了"</span>);</div><div class="line">        <span class="comment">//等待是否登录成功 超时时间600秒</span></div><div class="line">        (<span class="keyword">new</span> WebDriverWait(driver, <span class="number">600</span>)).until(<span class="keyword">new</span> ExpectedCondition&lt;Boolean&gt;() &#123;</div><div class="line">            <span class="function"><span class="keyword">public</span> Boolean <span class="title">apply</span><span class="params">(WebDriver d)</span> </span>&#123;</div><div class="line">                <span class="comment">//根据网页标题来辨别是否登录成功 如果成功后新浪微博标题为 我的首页 ************</span></div><div class="line">                <span class="keyword">return</span> d.getTitle().startsWith(<span class="string">"我的首页"</span>);</div><div class="line">            &#125;</div><div class="line">        &#125;);</div><div class="line">        System.out.println(<span class="string">"登录完成 你可以开始刷微博了   准备获取cookies"</span>);</div><div class="line">        Collection set= driver.manage().getCookies();</div><div class="line"></div><div class="line">        <span class="comment">// 关闭浏览器</span></div><div class="line">       <span class="comment">// driver.quit();</span></div><div class="line">        <span class="comment">// 关闭 ChromeDriver 接口</span></div><div class="line">       <span class="comment">// service.stop();</span></div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>修改自己的微博账号和密码后，直接使用控制台运行这个程序 就可以自动打开浏览器 自动输入账号密码 自动登录。有时候会出现验证码的情况需要自己输入验证码。</p>
+<p> 源代码地址:<a href="https://github.com/peachyy/demos/blob/master/selenium-demo.rar" title="https://github.com/peachyy/demos/blob/master/selenium-demo.rar" target="_blank" rel="external">https://github.com/peachyy/demos/blob/master/selenium-demo.rar</a></p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt; 最近在做一个简单新浪微博抓取功能,遇到了请求被新浪拦截,正因为如此了解到selenium。&lt;/p&gt;
+&lt;p&gt; &lt;a href=&quot;http://docs.seleniumhq.org/&quot; title=&quot;selenium&quot; target=&quot;_blank&quot; rel=&quot;extern
+    
+    </summary>
+    
+      <category term="技术" scheme="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/"/>
+    
+      <category term="selenium" scheme="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/selenium/"/>
+    
+      <category term="测试" scheme="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/selenium/%E6%B5%8B%E8%AF%95/"/>
+    
+    
+      <category term="selenium" scheme="http://blog.seoui.com/tags/selenium/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>让IE浏览器支持SVG动画</title>
+    <link href="http://blog.seoui.com/2016/03/16/svganimate-ie-support/"/>
+    <id>http://blog.seoui.com/2016/03/16/svganimate-ie-support/</id>
+    <published>2016-03-15T16:00:00.000Z</published>
+    <updated>2016-10-16T06:39:42.210Z</updated>
+    
+    <content type="html"><![CDATA[<p>在IE浏览器上 无论是否=IE11 svg动画元素animate都得不到支持 接下来的事情就是让IE浏览器能够支持svg动画元素 包括 animate、animateTransform、animateMotion、animateColor、set 元素</p>
+<p>如果是IE内核的浏览器可以引入以下脚本</p>
+<p>在html文档中使用 引入script</p>
+<figure class="highlight html"><table><tr><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">type</span>=<span class="string">"text/javascript"</span> <span class="attr">src</span>=<span class="string">"smil.check.js"</span>&gt;</span><span class="undefined"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></div></pre></td></tr></table></figure>
+<p>在svg文件中使用</p>
+<figure class="highlight xml"><table><tr><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">svg</span>&gt;</span></div><div class="line"> <span class="tag">&lt;<span class="name">elements..</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">script</span> <span class="attr">type</span>=<span class="string">"text/ecmascript"</span> <span class="attr">xlink:href</span>=<span class="string">"smil.check.js"</span> /&gt;</span><span class="xml"></span></div><div class="line"><span class="tag">&lt;/<span class="name">svg</span>&gt;</span></div></pre></td></tr></table></figure>
+<p>接下来就由奇迹发生了 在IE中svg动画元素居然可以动了。</p>
+<p>经过测试感觉动画的偏移不是特别精确 如果需要特别精确的话 估计这个还是有些问题。</p>
+<p>此文参考</p>
+<p>   <a href="http://stackoverflow.com/questions/15738752/svg-animation-not-working-ie9-ie10" title="http://stackoverflow.com/questions/15738752/svg-animation-not-working-ie9-ie10" target="_blank" rel="external">http://stackoverflow.com/questions/15738752/svg-animation-not-working-ie9-ie10</a></p>
+<p>另外smil.check.js托管在github地址为:</p>
+<p><a href="https://github.com/FakeSmile/FakeSmile" title="https://github.com/FakeSmile/FakeSmile" target="_blank" rel="external">https://github.com/FakeSmile/FakeSmile</a></p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;在IE浏览器上 无论是否=IE11 svg动画元素animate都得不到支持 接下来的事情就是让IE浏览器能够支持svg动画元素 包括 animate、animateTransform、animateMotion、animateColor、set 元素&lt;/p&gt;
+&lt;p&gt;如果是
+    
+    </summary>
+    
+      <category term="技术" scheme="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/"/>
+    
+    
+      <category term="svg" scheme="http://blog.seoui.com/tags/svg/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Centos7 安装mysql</title>
+    <link href="http://blog.seoui.com/2016/03/09/centos7.install.mysql/"/>
+    <id>http://blog.seoui.com/2016/03/09/centos7.install.mysql/</id>
+    <published>2016-03-08T16:00:00.000Z</published>
+    <updated>2016-10-16T06:39:42.210Z</updated>
+    
+    <content type="html"><![CDATA[<p>正常情况下一般都会选择yum安装 原因都知道 简单 快捷，但在安装Mysql时却总是不顺利。</p>
+<p>所以这里记录一下</p>
+<p>首先去拉取rpm文件 </p>
+ <figure class="highlight html"><table><tr><td class="code"><pre><div class="line"></div><div class="line">wget http://dev.mysql.com/get/mysql-community-release-el7-5.noarch.rpm</div></pre></td></tr></table></figure>
+<p>安装rpm并安装mysql-community-server</p>
+ <figure class="highlight html"><table><tr><td class="code"><pre><div class="line"></div><div class="line">rpm -ivh mysql-community-release-el7-5.noarch.rpm</div><div class="line"></div><div class="line">yum install mysql-community-server</div></pre></td></tr></table></figure>
+<p>安装完成后<br>设置密码 注意设置密码之前最好重启一下mysqld</p>
+ <figure class="highlight html"><table><tr><td class="code"><pre><div class="line"> </div><div class="line">service mysqld restart</div><div class="line">mysql -uroot</div><div class="line">set password for ‘root’@‘localhost’ = password('mypasswd');</div></pre></td></tr></table></figure>
+<p>如有需要可以  设置一下允许远程访问</p>
+ <figure class="highlight html"><table><tr><td class="code"><pre><div class="line">update user set host = '%' where user ='root';</div><div class="line">flush privileges;</div></pre></td></tr></table></figure>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;正常情况下一般都会选择yum安装 原因都知道 简单 快捷，但在安装Mysql时却总是不顺利。&lt;/p&gt;
+&lt;p&gt;所以这里记录一下&lt;/p&gt;
+&lt;p&gt;首先去拉取rpm文件 &lt;/p&gt;
+ &lt;figure class=&quot;highlight html&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td clas
+    
+    </summary>
+    
+      <category term="技术" scheme="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/"/>
+    
+      <category term="mysql" scheme="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/mysql/"/>
+    
+    
+      <category term="centos" scheme="http://blog.seoui.com/tags/centos/"/>
+    
+      <category term="mysql" scheme="http://blog.seoui.com/tags/mysql/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>springMvc支持jsonp适配</title>
+    <link href="http://blog.seoui.com/2016/03/02/springmvcsupportjsonp/"/>
+    <id>http://blog.seoui.com/2016/03/02/springmvcsupportjsonp/</id>
+    <published>2016-03-01T16:00:00.000Z</published>
+    <updated>2016-10-16T06:39:42.210Z</updated>
+    
+    <content type="html"><![CDATA[<p>这里测试的是spring mvc4的版本 </p>
+<p>定义一个扩展类 必须要加上@ControllerAdvice增加处理<br><figure class="highlight java"><table><tr><td class="code"><pre><div class="line"><span class="meta">@ControllerAdvice</span></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">JsonpSupportAdvice</span> <span class="keyword">extends</span> <span class="title">AbstractJsonpResponseBodyAdvice</span> </span>&#123;</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="title">JsonpSupportAdvice</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="comment">//参数包含callback的时候 使用jsonp的反馈形式</span></div><div class="line">		<span class="keyword">super</span>(<span class="string">"callback"</span>, <span class="string">"jsonp"</span>);</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>并配置好映射 jsonp –application/javascript<br><figure class="highlight xml"><table><tr><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">bean</span></span></div><div class="line">	<span class="attr">class</span>=<span class="string">"org.springframework.web.servlet.view.ContentNegotiatingViewResolver"</span></div><div class="line">	<span class="attr">p:order</span>=<span class="string">"0"</span> <span class="attr">p:defaultContentType</span>=<span class="string">"text/html"</span> <span class="attr">p:ignoreAcceptHeader</span>=<span class="string">"true"</span></div><div class="line">	<span class="attr">p:favorPathExtension</span>=<span class="string">"true"</span> <span class="attr">p:favorParameter</span>=<span class="string">"true"</span> <span class="attr">p:parameterName</span>=<span class="string">"content"</span>&gt;</div><div class="line">	<span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"mediaTypes"</span>&gt;</span></div><div class="line">		<span class="tag">&lt;<span class="name">map</span>&gt;</span></div><div class="line">			<span class="tag">&lt;<span class="name">entry</span> <span class="attr">key</span>=<span class="string">"html"</span> <span class="attr">value</span>=<span class="string">"text/html"</span> /&gt;</span></div><div class="line">			<span class="tag">&lt;<span class="name">entry</span> <span class="attr">key</span>=<span class="string">"pdf"</span> <span class="attr">value</span>=<span class="string">"application/pdf"</span> /&gt;</span></div><div class="line">			<span class="tag">&lt;<span class="name">entry</span> <span class="attr">key</span>=<span class="string">"xsl"</span> <span class="attr">value</span>=<span class="string">"application/vnd.ms-excel"</span> /&gt;</span></div><div class="line">			<span class="tag">&lt;<span class="name">entry</span> <span class="attr">key</span>=<span class="string">"xml"</span> <span class="attr">value</span>=<span class="string">"application/xml"</span> /&gt;</span></div><div class="line">			<span class="tag">&lt;<span class="name">entry</span> <span class="attr">key</span>=<span class="string">"json"</span> <span class="attr">value</span>=<span class="string">"application/json"</span> /&gt;</span></div><div class="line">			<span class="tag">&lt;<span class="name">entry</span> <span class="attr">key</span>=<span class="string">"jsonp"</span> <span class="attr">value</span>=<span class="string">"application/javascript"</span>/&gt;</span></div><div class="line">		<span class="tag">&lt;/<span class="name">map</span>&gt;</span></div><div class="line">	<span class="tag">&lt;/<span class="name">property</span>&gt;</span></div><div class="line">	.......</div><div class="line">	.....</div></pre></td></tr></table></figure></p>
+<p>OK 到这里配置完成 访问请求的时候只需加上callback参数即为jsonp的数据返回格式。        </p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;这里测试的是spring mvc4的版本 &lt;/p&gt;
+&lt;p&gt;定义一个扩展类 必须要加上@ControllerAdvice增加处理&lt;br&gt;&lt;figure class=&quot;highlight java&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div c
+    
+    </summary>
+    
+      <category term="技术" scheme="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/"/>
+    
+      <category term="springmvc" scheme="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/springmvc/"/>
+    
+    
+      <category term="java" scheme="http://blog.seoui.com/tags/java/"/>
+    
+      <category term="springmvc" scheme="http://blog.seoui.com/tags/springmvc/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>分享几个常用的Google Chrome插件</title>
+    <link href="http://blog.seoui.com/2016/01/25/share-chrome-plugin/"/>
+    <id>http://blog.seoui.com/2016/01/25/share-chrome-plugin/</id>
+    <published>2016-01-24T16:00:00.000Z</published>
+    <updated>2016-10-16T06:39:42.209Z</updated>
+    
+    <content type="html"><![CDATA[<p>在这里分享几个 个人常用的Google Chrome浏览器插件 保证实用。</p>
+<p>由于个人目前的工作会写一些代码 所以优先介绍几个GitHub插件</p>
+<p>1.OctoTree</p>
+<p> 扩展Chrome浏览器在浏览GitHub代码的时候能像本地文件系统一样列出一棵树，可以用于GitHub、GitLab</p>
+<p> <img src="!--￼0--&gt;/images/2016/01/2016-01-25-share-chrome-plugin-01.png" alt="Octotree"></p>
+<p>2.Isometric Contributions</p>
+<p> 支持在GitHub个人主页的图表统计转换柱状的图表统计 更能直观的看出提交代码的频率 就像盖房子一样。</p>
+<p> <img src="!--￼1--&gt;/images/2016/01/2016-01-25-share-chrome-plugin-02.png" alt="Isometric Contributions"></p>
+<p>3.Avatars for Github</p>
+<p>  在Github首页上有我关注的人已经关注的项目动态 使用此插件支持在关注的人前面加上头像 这样能更直观看到谁更新了动态信息。</p>
+<p> <img src="!--￼2--&gt;/images/2016/01/2016-01-25-share-chrome-plugin-03.png" alt="Avatars for Github"></p>
+<p>4.ZenHub</p>
+<p> 增强你的工作流，特别是启动，快速移动工程团队和开源社区等特性构建，支持实时拖拽 Issue Task Boards；通过一个 +1 按钮来进行反馈；支持直接上传任意的文件类型到 GitHub 接口。ZenHub 能把很多进程集中化到 GitHub，让你的团队更精炼更敏捷</p>
+<p> <img src="!--￼3--&gt;/images/2016/01/2016-01-25-share-chrome-plugin-04.png" alt="ZenHub"></p>
+<p>5.Github Linker</p>
+<p> GitHub Linker 支持连接到(相当于IDE里面的代码引用的感觉)NPM，bower，Composer &amp; Duo 到它们的 Github 库页面。它也解决了在 .js, .jsx, .coffee 或 .md 文件的 require() 声明     </p>
+<p> <img src="!--￼4--&gt;/images/2016/01/2016-01-25-share-chrome-plugin-05.png" alt="Github Linker"></p>
+<p>API调用插件</p>
+<p>6.JSONView</p>
+<p>   JSONView是一个将JSON字符串转换为 可读性的格式查看 JSON 的插件。调用API时非常有用     </p>
+<p> <img src="!--￼5--&gt;/images/2016/01/2016-01-25-share-chrome-plugin-06.png" alt="JSONView"></p>
+<p>Markdown插件</p>
+<p>7.Markdown Editor</p>
+<p>  支持在Chrome浏览器上所见即所得的编辑MarkDown文本，本人使用较少 但也比较实用 默认的风格为GitHub </p>
+<p> <img src="!--￼6--&gt;/images/2016/01/2016-01-25-share-chrome-plugin-07.png" alt="JSONView"></p>
+<p>其他常用插件</p>
+<p>8.Proxy SwitchySharp</p>
+<p>  设置网络代理 翻墙必备</p>
+<p> <img src="!--￼7--&gt;/images/2016/01/2016-01-25-share-chrome-plugin-08.png" alt="JSONView"></p>
+<p>9.Visual Event</p>
+<p> 能更直观的看到网页DOM元素上的事件信息以及事件所触发的代码 前端开发神器</p>
+<p> <img src="!--￼8--&gt;/images/2016/01/2016-01-25-share-chrome-plugin-09.png" alt="JSONView"></p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;在这里分享几个 个人常用的Google Chrome浏览器插件 保证实用。&lt;/p&gt;
+&lt;p&gt;由于个人目前的工作会写一些代码 所以优先介绍几个GitHub插件&lt;/p&gt;
+&lt;p&gt;1.OctoTree&lt;/p&gt;
+&lt;p&gt; 扩展Chrome浏览器在浏览GitHub代码的时候能像本地文件系统
+    
+    </summary>
+    
+      <category term="google chrome" scheme="http://blog.seoui.com/categories/google-chrome/"/>
+    
+    
+      <category term="googleChrome" scheme="http://blog.seoui.com/tags/googleChrome/"/>
+    
+      <category term="chrome" scheme="http://blog.seoui.com/tags/chrome/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Hbase Shell在secureCRT中退格键问题解决方法</title>
+    <link href="http://blog.seoui.com/2016/01/04/crtbackspacebug/"/>
+    <id>http://blog.seoui.com/2016/01/04/crtbackspacebug/</id>
+    <published>2016-01-03T16:00:00.000Z</published>
+    <updated>2016-10-16T06:39:42.209Z</updated>
+    
+    <content type="html"><![CDATA[<p> 使用secureCRT操作Hbase Shell的时候 难免会按错字符,当输入出错后 一般会使用BackSpace(退格)键删除字符。很不巧的是BackSpace键不会当做delete命令,这时需要设置一下CRT 。</p>
+<p> 首先在选项-&gt;会话选项-&gt;终端-&gt;仿真 终端设置为Linux；</p>
+<p> 然后勾选下面2个checkbox </p>
+<p>  在选项-&gt;会话选项-&gt;终端-&gt;仿真-&gt;映射键-&gt;其他设置 </p>
+<ul>
+<li>Backspace发送delete(B)</li>
+<li>Delete发送backspace(S) </li>
+</ul>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt; 使用secureCRT操作Hbase Shell的时候 难免会按错字符,当输入出错后 一般会使用BackSpace(退格)键删除字符。很不巧的是BackSpace键不会当做delete命令,这时需要设置一下CRT 。&lt;/p&gt;
+&lt;p&gt; 首先在选项-&amp;gt;会话选项-&amp;gt;
+    
+    </summary>
+    
+      <category term="技术" scheme="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/"/>
+    
+      <category term="hbase" scheme="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/hbase/"/>
+    
+    
+      <category term="hbase" scheme="http://blog.seoui.com/tags/hbase/"/>
+    
+      <category term="secureCRT" scheme="http://blog.seoui.com/tags/secureCRT/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>apache + tomcat实现集群session同步</title>
+    <link href="http://blog.seoui.com/2015/10/27/apachetomcatClustering/"/>
+    <id>http://blog.seoui.com/2015/10/27/apachetomcatClustering/</id>
+    <published>2015-10-26T16:00:00.000Z</published>
+    <updated>2016-10-16T06:39:42.209Z</updated>
+    
+    <content type="html"><![CDATA[<p> 这次试验是用1台Apache2.2 、 2台tomcat服务器 、并使用Tomcat Connectors–mod_jk.so作为传送介质实现负载均衡。</p>
+<p>项目之前在单机上跑 切换到集群环境中 发现一堆的问题出现了,当然还有未知没有发现的。</p>
+<p>遗留的问题</p>
+<ol>
+<li>如果集群节点多了，发布项目的时候用什么方式发布会比较方便</li>
+<li>文件存储的问题怎么解决</li>
+<li>系统日志怎么才能实现统一</li>
+<li>缓存服务怎么实现同步</li>
+<li>数据库并发问题 </li>
+</ol>
+<p>针对这些问题将在后面的博文中提供解决方案！！！</p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt; 这次试验是用1台Apache2.2 、 2台tomcat服务器 、并使用Tomcat Connectors–mod_jk.so作为传送介质实现负载均衡。&lt;/p&gt;
+&lt;p&gt;项目之前在单机上跑 切换到集群环境中 发现一堆的问题出现了,当然还有未知没有发现的。&lt;/p&gt;
+&lt;p&gt;遗留
+    
+    </summary>
+    
+      <category term="技术" scheme="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/"/>
+    
+      <category term="java" scheme="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/java/"/>
+    
+    
+      <category term="apache" scheme="http://blog.seoui.com/tags/apache/"/>
+    
+      <category term="集群" scheme="http://blog.seoui.com/tags/%E9%9B%86%E7%BE%A4/"/>
+    
+      <category term="session同步" scheme="http://blog.seoui.com/tags/session%E5%90%8C%E6%AD%A5/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>本命年你在哪 干什么 还爱着谁？</title>
+    <link href="http://blog.seoui.com/2015/10/12/ThisAnimalYear/"/>
+    <id>http://blog.seoui.com/2015/10/12/ThisAnimalYear/</id>
+    <published>2015-10-11T16:00:00.000Z</published>
+    <updated>2016-10-16T06:39:42.209Z</updated>
+    
+    <content type="html"><![CDATA[<p> 时间总是在不经意间流走,看着窗外静静的夜晚,偶尔会听到小汽车按喇叭的声音,这时候会特别的觉得甜美,就好像是家的呼唤,总会给予满满的期待与希望。对于我而言那是未来和目标,想想明年就是本命年了,所以这篇文字就在这个夜晚(2015-10-13 00:10:00)诞生了。</p>
+<blockquote>
+<p>###你在哪 多大 干什么<br>在一个美丽的山城——重庆,23岁 目前就职于一个不知名的软件公司做一份软件开发的工作(BS软件),因为自己比较喜欢玩电脑所以这份工作自己还算喜欢,也不算很喜欢啦。经常游走在互联网之间,一般都是默默的打开网页,悄悄的关闭网页。</p>
+<p>###爱着谁<br>  从小时候到现在说爱吧 应该是自己的家人、父亲、母亲、妹妹,很幸运在这个璀璨的年华遇到了她,没能好好珍惜 最后还是离我而去。不怨任何人,只怪自己。从校园到社会遇到了很多兄弟朋友这是一生中无价的财富,所以也是爱他们的。</p>
+<p>###想做什么<br>  工作上想来一转身 期望专注于前端,因为我更想和用户近距离的接触,更认真的去了解他们。<br>  都说北京是一个实现的梦想的地方 当然这么卑微的我也多少会受到一些影响,可惜没有足够的勇气。<br>  来一次说走就走旅行,去哪里都行。能遇到一生最重要的人。</p>
+</blockquote>
+<p>偶尔也会想想下一个本命年我还会在这个世界上吗？ 会是什么样的人呢？ 那时的我36岁,应该已经结婚有孩子了吧。</p>
+<p>本命年你在哪呢 多大 干什么呢? 爱的人还是她吗? 还有梦想吗? 下一个本命年呢? 非常期待听听你们的人生。</p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt; 时间总是在不经意间流走,看着窗外静静的夜晚,偶尔会听到小汽车按喇叭的声音,这时候会特别的觉得甜美,就好像是家的呼唤,总会给予满满的期待与希望。对于我而言那是未来和目标,想想明年就是本命年了,所以这篇文字就在这个夜晚(2015-10-13 00:10:00)诞生了。&lt;/p&gt;
+    
+    </summary>
+    
+      <category term="随笔" scheme="http://blog.seoui.com/categories/%E9%9A%8F%E7%AC%94/"/>
+    
+    
+      <category term="本命年感慨" scheme="http://blog.seoui.com/tags/%E6%9C%AC%E5%91%BD%E5%B9%B4%E6%84%9F%E6%85%A8/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Linux 简单的进程管理</title>
+    <link href="http://blog.seoui.com/2015/09/12/linux.processmgr/"/>
+    <id>http://blog.seoui.com/2015/09/12/linux.processmgr/</id>
+    <published>2015-09-11T16:00:00.000Z</published>
+    <updated>2016-10-16T06:39:42.207Z</updated>
+    
+    <content type="html"><![CDATA[<p>进程管理的内容有点多,这里简单介绍一下,以后将详细说明系统调度、进程管理等内容。</p>
+<p>需要明白父子进程的概念</p>
+<ul>
+<li>子进程是由另一个进程所产生的，产生这个子进程的进程称为父进程</li>
+<li>父进程终止后 子进程会自动终止。但是子进程终止后 有可能会又会自动创建子进程。</li>
+</ul>
+<p>w  查看当前系统活动的信息 可以带参数user 如 w user </p>
+<p>ps 查看进程用的比较多的命令。</p>
+<p>kill 杀死(终止)进程</p>
+<p>killall -u apache 终止指定用户apache的进程。</p>
+<p>sleep 10000 让当前进程睡眠10000</p>
+<p>jobs 查看后台进程</p>
+<p>bg # 让后台的第#个进程运行。如 bg 1</p>
+<p>在前台运行的进程时按下Ctrl+z 可以让当前执行的进程在后台运行。</p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;进程管理的内容有点多,这里简单介绍一下,以后将详细说明系统调度、进程管理等内容。&lt;/p&gt;
+&lt;p&gt;需要明白父子进程的概念&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;子进程是由另一个进程所产生的，产生这个子进程的进程称为父进程&lt;/li&gt;
+&lt;li&gt;父进程终止后 子进程会自动终止。但是子进程终止后
+    
+    </summary>
+    
+      <category term="技术" scheme="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/"/>
+    
+      <category term="linux" scheme="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/linux/"/>
+    
+    
+      <category term="linux" scheme="http://blog.seoui.com/tags/linux/"/>
+    
+      <category term="linux进程" scheme="http://blog.seoui.com/tags/linux%E8%BF%9B%E7%A8%8B/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Linux 软件的常用安装方法</title>
+    <link href="http://blog.seoui.com/2015/09/12/linux.softInstall/"/>
+    <id>http://blog.seoui.com/2015/09/12/linux.softInstall/</id>
+    <published>2015-09-11T16:00:00.000Z</published>
+    <updated>2016-10-16T06:39:42.208Z</updated>
+    
+    <content type="html"><![CDATA[<p>对于操作系统而言,如果没有软件和一些任务算法 那么这个系统意义是不大的。而我们使用操作系统目的是为了让一些软件和任务能够运行在系统上,从而帮助我们提高工作的效率。</p>
+<p>在Linux系统中常用的软件安装方式有<code>yum</code> <code>rpm</code> <code>gcc（编译源码安装）</code> 这3种方式，以下内容将对着3种安装方式做详细的介绍。</p>
+<p><img src="!--￼10--&gt;/images/2015/09/2015-09-12-linux.softInstall-1.gif" alt=""></p>
+<p><strong>yum 方式</strong></p>
+<p><code>yum</code>这种安装方式是最简单高效(会自动帮你分析软件的依赖关系)的,但是它会依赖网络 </p>
+<p> 语法:yum [options] [command] [package …]</p>
+<p> 升级您的操作系统 因为没有指定具体的软件包,会默认升级当然的操作系统。</p>
+ <figure class="highlight html"><table><tr><td class="code"><pre><div class="line">yum update</div></pre></td></tr></table></figure>
+<p> 在互联网中查找httpd 软件包 如果找到了 会把相关的软件名称全部显示在下面 如以下搜索httpd返回了 httpd.x86_64、httpd-devel.i686、httpd-devel.x86_64 等</p>
+ <figure class="highlight html"><table><tr><td class="code"><pre><div class="line">yum search  httpd</div><div class="line">......</div><div class="line">============================== N/S Matched: httpd ==============================</div><div class="line">libmicrohttpd-devel.i686 : Development files for libmicrohttpd</div><div class="line">libmicrohttpd-devel.x86_64 : Development files for libmicrohttpd</div><div class="line">libmicrohttpd-doc.noarch : Documentation for libmicrohttpd</div><div class="line">httpd.x86_64 : Apache HTTP Server</div><div class="line">httpd-devel.i686 : Development interfaces for the Apache HTTP server</div><div class="line">httpd-devel.x86_64 : Development interfaces for the Apache HTTP server</div><div class="line">httpd-manual.noarch : Documentation for the Apache HTTP server</div><div class="line">httpd-tools.x86_64 : Tools for use with the Apache HTTP Server</div><div class="line">libmicrohttpd.i686 : Lightweight library for embedding a webserver in</div><div class="line">......</div></pre></td></tr></table></figure>
+<p> 因为我的系统是64位的 所在我选择 <code>httpd.x86_64</code> 这个版本进行安装</p>
+ <figure class="highlight html"><table><tr><td class="code"><pre><div class="line">yum install  httpd.x86_64</div></pre></td></tr></table></figure>
+<p> 升级软件包</p>
+ <figure class="highlight html"><table><tr><td class="code"><pre><div class="line">yum update  httpd.x86_64</div></pre></td></tr></table></figure>
+<p> 列出本机已安装的软件包 后面可以带追加指定的软件包 如 yum list httpd 查看httpd软件的信息。</p>
+ <figure class="highlight html"><table><tr><td class="code"><pre><div class="line">yum list </div><div class="line">....</div><div class="line">yum list httpd</div></pre></td></tr></table></figure>
+<p> 卸载软件httpd</p>
+ <figure class="highlight html"><table><tr><td class="code"><pre><div class="line">yum remove httpd</div></pre></td></tr></table></figure>
+<p>由于yum 安装方式是非常依赖网络的,这个网络仓库默认为系统提供方的镜像地址,很显然centos的默认仓库是在国外的,在国内访问比较慢。下面将它的镜像切换为国内镜像,目前在国内有<code>阿里云</code>、<code>163</code> 这些都资源都比较全,以阿里云的镜像为例 使用浏览器打开<code>http://mirrors.aliyun.com</code> 找到对应的操作系统及对应的版本号</p>
+<p>1、在切换新的镜像之前 需要先将当然的镜像备份一下,以免后再次使用。</p>
+ <figure class="highlight html"><table><tr><td class="code"><pre><div class="line">mv /etc/yum.repos.d/CentOS-Base.repo /etc/yum.repos.d/CentOS-Base.repo.backup</div></pre></td></tr></table></figure>
+<p>2、下载新的镜像文件 使用 wget 下载对应的版本的系统</p>
+ <figure class="highlight html"><table><tr><td class="code"><pre><div class="line">wget -O /etc/yum.repos.d/CentOS-Base.repo http://mirrors.aliyun.com/repo/Centos-6.repo</div></pre></td></tr></table></figure>
+<p>3、运行yum makecache 生成缓存</p>
+ <figure class="highlight html"><table><tr><td class="code"><pre><div class="line">yum makecache</div><div class="line">...</div></pre></td></tr></table></figure>
+<p><strong>rpm 方式安装</strong></p>
+<p><code>rpm</code>不会自动分析依赖关系,并且需要准备一个.rpm软件包,所以你在使用rpm安装软件的时候经常会先安装依赖的软件,这么才能安装成功。其实依赖的软件也可以使用<code>yum</code>来安装,rpm对软件的查询提供了很好的支持,当然查询是指已安装的软件,列举几个常用的查询软件的方式。</p>
+<table>
+<thead>
+<tr>
+<th>名称</th>
+<th style="text-align:center">说明</th>
+<th style="text-align:right">示例</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>rpm -qa</td>
+<td style="text-align:center">查询系统中所有的软件包</td>
+<td style="text-align:right"></td>
+</tr>
+<tr>
+<td>rpm -q httpd</td>
+<td style="text-align:center">查找指定软件包有木有安装</td>
+<td style="text-align:right"></td>
+</tr>
+<tr>
+<td>rpm -qi</td>
+<td style="text-align:center">查询软件包的详细信息</td>
+<td style="text-align:right"></td>
+</tr>
+<tr>
+<td>rpm -ql httpd</td>
+<td style="text-align:center">查看httpd的安装的所有文件</td>
+<td style="text-align:right"></td>
+</tr>
+<tr>
+<td>rpm -qf</td>
+<td style="text-align:center">查找指定文件所属在软件包</td>
+<td style="text-align:right"></td>
+</tr>
+<tr>
+<td>rpm -qpi</td>
+<td style="text-align:center">查询指定RPM文件的详细信息</td>
+<td style="text-align:right"></td>
+</tr>
+<tr>
+<td>rpm -qpl</td>
+<td style="text-align:center">查询指定RPM包的详细文件信息</td>
+</tr>
+</tbody>
+</table>
+<p>安装软件包</p>
+<p><code>rpm -i</code>  安装软件包</p>
+<p><code>rpm -ivh</code> 安装软件包的时候会显示更多的日志信息 一般使用这个,因为日志足够详细。</p>
+<p>更新软件包</p>
+<p><code>rpm -U</code>更新软件</p>
+<p>卸载软件包</p>
+<p><code>rpm -e</code> 卸载软件包</p>
+<p><strong>gcc源码安装方式</strong></p>
+<p>使用gcc安装方式必须要保证系统有<code>gcc</code>运行环境。</p>
+<p>使用gcc -v来检测机器是否安装gcc环境。输出如下信息则已经安装了gcc 。如果没有安装可以使用 yum 方式安装gcc.</p>
+ <figure class="highlight html"><table><tr><td class="code"><pre><div class="line">[root@localhost ~]# gcc -v</div><div class="line">Using built-in specs.</div><div class="line">Target: x86_64-redhat-linux</div><div class="line">Configured with: ../configure --prefix=/usr --mandir=/usr/share/man --infodir=/usr/share/info --with-</div><div class="line">...</div><div class="line">gcc version 4.4.7 20120313 (Red Hat 4.4.7-4) (GCC)</div></pre></td></tr></table></figure>
+<p>使用源码的安装方式有如下流程</p>
+<ol>
+<li>获取源代码 (可以使用wget直接下载 也可以从FTP等方式得到源码)</li>
+<li>解压源码</li>
+<li>验证configre   <code>./configre</code>会提示找不到依赖库 。如果提示找不到 就使用yum安装就是。</li>
+<li>编译源码 make </li>
+<li>安装软件 make install</li>
+</ol>
+<p>网上有很多源码安装示例都是使用nginx为例,所以这里也以nginx为例。</p>
+<p>假如这里已经得到了nginx的源码，并解压到/usr/local/nginx1.6</p>
+<p>进入/usr/local/nginx1.6 执行./configre 这过程中会有提示找不到依赖库 依次使用yum安装。</p>
+<p>编译编码 make</p>
+<p>安装 make install</p>
+<p>如果顺利应该是安装成功了。</p>
+<p>这里介绍了3种方式安装应用软件,其中最常用的是yum 因为它最方便、以后如果在允许的情况的都应用使用yum方式来安装,因为会为我们节约很多时间。</p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;对于操作系统而言,如果没有软件和一些任务算法 那么这个系统意义是不大的。而我们使用操作系统目的是为了让一些软件和任务能够运行在系统上,从而帮助我们提高工作的效率。&lt;/p&gt;
+&lt;p&gt;在Linux系统中常用的软件安装方式有&lt;code&gt;yum&lt;/code&gt; &lt;code&gt;rpm&lt;/c
+    
+    </summary>
+    
+      <category term="技术" scheme="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/"/>
+    
+      <category term="linux" scheme="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/linux/"/>
+    
+    
+      <category term="linux" scheme="http://blog.seoui.com/tags/linux/"/>
+    
+      <category term="linux软件安装" scheme="http://blog.seoui.com/tags/linux%E8%BD%AF%E4%BB%B6%E5%AE%89%E8%A3%85/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Linux vi编辑工具</title>
+    <link href="http://blog.seoui.com/2015/09/11/linux.VIEditor/"/>
+    <id>http://blog.seoui.com/2015/09/11/linux.VIEditor/</id>
+    <published>2015-09-10T16:00:00.000Z</published>
+    <updated>2016-10-16T06:39:42.207Z</updated>
+    
+    <content type="html"><![CDATA[<p><code>vi</code>编辑器在linux系统中应该算是人气很高的一个工具了,在这里简单介绍一下伟大的<code>vi</code> <code>vim</code>一些功能与使用。</p>
+<p><img src="!--￼3--&gt;/images/2015/09/2015-09-11-linux.VIEditor-1.jpg" alt=""></p>
+<p><strong>基本使用</strong></p>
+<p>用vi创建一个文件</p>
+ <figure class="highlight html"><table><tr><td class="code"><pre><div class="line">[root@localhost ~]# vi mytxt                                                                           </div><div class="line">~                                                                               </div><div class="line">~                                                                               </div><div class="line">~                                                                               </div><div class="line">~                                                                               </div><div class="line">~                                                                               </div><div class="line">~                                                                               </div><div class="line">~                                                                               </div><div class="line">~                                                                               </div><div class="line">~                                                                               </div><div class="line">~                                                                               </div><div class="line">~                                                                               </div><div class="line">~                                                                               </div><div class="line">"mytxt" [New File]</div></pre></td></tr></table></figure>
+<p>如果是新创建的文件会在最后的命令行左下角标识 <code>&quot;文件名&quot; [New File]</code> 的字样。</p>
+<p>vi的工作模式分为 命令模式  输入模式  转义模式</p>
+<p>1、转义模式 该模式一般通过:号触发输入一些命令后按下<code>Enter</code>键执行。</p>
+<p>通过<code>Esc</code>键退出焦点(进入命令模式),输入<code>:</code>号 进入vi编辑器工具命令行 输入<code>wq</code>命令 保存并退出编辑,<code>q!</code>命令退出不保存,下面列举几个常用的转义模式命令。</p>
+<table>
+<thead>
+<tr>
+<th>名称</th>
+<th style="text-align:center">说明</th>
+<th style="text-align:right">示例</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>:q!</td>
+<td style="text-align:center">退出VI 放弃保存</td>
+<td style="text-align:right">q!</td>
+</tr>
+<tr>
+<td>:w</td>
+<td style="text-align:center">在编辑模式下执行保存操作</td>
+<td style="text-align:right"></td>
+</tr>
+<tr>
+<td>:w!</td>
+<td style="text-align:center">在编辑模式下执行强制保存操作</td>
+<td style="text-align:right"></td>
+</tr>
+<tr>
+<td>:wq</td>
+<td style="text-align:center">保存并退出VI</td>
+<td style="text-align:right">wq</td>
+</tr>
+<tr>
+<td>:f</td>
+<td style="text-align:center">显示当前的文件名、光标所在行的行号以及显示比例</td>
+<td style="text-align:right"></td>
+</tr>
+<tr>
+<td>:set nu</td>
+<td style="text-align:center">显示行号</td>
+<td style="text-align:right">:set nu</td>
+</tr>
+<tr>
+<td>:set nonu</td>
+<td style="text-align:center">取消行号显示</td>
+<td style="text-align:right"></td>
+</tr>
+<tr>
+<td>:1[数字]</td>
+<td style="text-align:center">让光标定位到第[？]行</td>
+<td style="text-align:right">:5 光标定位到第5行</td>
+</tr>
+<tr>
+<td>:$</td>
+<td style="text-align:center">光标定位到最后一行</td>
+</tr>
+</tbody>
+</table>
+<p>2、命令方式  进入vi后默认是命令模式 当输入正确vi内置的命令后会响应操作，否则发出警告 提示这不是一个vi命令。</p>
+<table>
+<thead>
+<tr>
+<th>名称</th>
+<th style="text-align:center">说明</th>
+<th style="text-align:right">示例</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>^</td>
+<td style="text-align:center">把光标定位到本行的首字符</td>
+<td style="text-align:right"></td>
+</tr>
+<tr>
+<td>$</td>
+<td style="text-align:center">把光标定位到本行的尾字符</td>
+<td style="text-align:right"></td>
+</tr>
+<tr>
+<td>i</td>
+<td style="text-align:center">命令模式切换为编辑模式</td>
+<td style="text-align:right"></td>
+</tr>
+<tr>
+<td>a</td>
+<td style="text-align:center">切换到编辑模式 当前光标的字符后面</td>
+<td style="text-align:right"></td>
+</tr>
+<tr>
+<td>A</td>
+<td style="text-align:center">切换到编辑模式下 定位光标到当前行的最后一个字符</td>
+<td style="text-align:right"></td>
+</tr>
+<tr>
+<td>o</td>
+<td style="text-align:center">将光标定位到新插入的下一行</td>
+<td style="text-align:right"></td>
+</tr>
+<tr>
+<td>cw</td>
+<td style="text-align:center">删除光标之后一个单词</td>
+<td style="text-align:right"></td>
+</tr>
+<tr>
+<td>c$</td>
+<td style="text-align:center">删除光标之后的字符</td>
+<td style="text-align:right"></td>
+</tr>
+<tr>
+<td>c^</td>
+<td style="text-align:center">删除光标之前的字符</td>
+<td style="text-align:right"></td>
+</tr>
+<tr>
+<td>w</td>
+<td style="text-align:center">将光标往下移动一行</td>
+<td style="text-align:right"></td>
+</tr>
+<tr>
+<td>b</td>
+<td style="text-align:center">将光标往上移动一行</td>
+<td style="text-align:right"></td>
+</tr>
+<tr>
+<td>e</td>
+<td style="text-align:center">将光标定位到下一行的最后一个字符</td>
+<td style="text-align:right"></td>
+</tr>
+<tr>
+<td>G</td>
+<td style="text-align:center">将光标定位到最后一行</td>
+<td style="text-align:right"></td>
+</tr>
+<tr>
+<td>#G</td>
+<td style="text-align:center">将光标定位到指定行</td>
+<td style="text-align:right">2G将光标定位到第2行</td>
+</tr>
+</tbody>
+</table>
+<p><strong>复制 粘贴 撤销</strong></p>
+<table>
+<thead>
+<tr>
+<th>名称</th>
+<th style="text-align:center">说明</th>
+<th style="text-align:right">示例</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>yy</td>
+<td style="text-align:center">复制整行</td>
+<td style="text-align:right"></td>
+</tr>
+<tr>
+<td>yw</td>
+<td style="text-align:center">复制当前光标之后所在单词字符</td>
+<td style="text-align:right"></td>
+</tr>
+<tr>
+<td>y$</td>
+<td style="text-align:center">复制当前光标到行尾字符</td>
+<td style="text-align:right"></td>
+</tr>
+<tr>
+<td>y^</td>
+<td style="text-align:center">复制当前光标到行首支持</td>
+<td style="text-align:right"></td>
+</tr>
+<tr>
+<td>p/P</td>
+<td style="text-align:center">粘贴</td>
+<td style="text-align:right"></td>
+</tr>
+<tr>
+<td>u</td>
+<td style="text-align:center">取消最近一次操作的</td>
+<td style="text-align:right"></td>
+</tr>
+<tr>
+<td>U</td>
+<td style="text-align:center">取消当前行进行的所有操作</td>
+<td style="text-align:right"></td>
+</tr>
+<tr>
+<td>Ctrl+r</td>
+<td style="text-align:center">对使用u命令撤销的操作进行恢复</td>
+</tr>
+</tbody>
+</table>
+<p><strong>字符串查找</strong></p>
+<p>vi中查找字符串使用<code>/</code>, <code>?</code>字符触发 <em>需要注意的是/向光标以下查找,?向光标位置以上查找</em> 如查找光标以后文档中的 name</p>
+ <figure class="highlight html"><table><tr><td class="code"><pre><div class="line">~                                                                               </div><div class="line">~                                                                               </div><div class="line">~                                                                               </div><div class="line">~                                                                               </div><div class="line">/name</div></pre></td></tr></table></figure>
+<p>被查到的字符会被高亮显示,如果文档中存在多个相同的字符串需要使用<code>n</code>下一个 | <code>N</code>上一个 查找。</p>
+<p><strong>字符串替换</strong></p>
+<p>当然一个方便好用的字符串编辑工具必须具备替换文字操作,这样才能增加写作的效率。</p>
+<p>使用命令<code>:s/</code>替换字符串。 基本语法</p>
+<ul>
+<li><code>:s/A/B</code>                 替换一行的一处 A 为B</li>
+<li><code>:s/A/B/g</code>               替换一行的多处 A 为B</li>
+<li><code>:s/A/B/c</code>               替换的时候有确认提示</li>
+<li><code>1,20s/A/B/g</code>            1-20行 将A替换为B</li>
+</ul>
+<p>如替换一处name为 xingming</p>
+ <figure class="highlight html"><table><tr><td class="code"><pre><div class="line">~                                                                               </div><div class="line">~                                                                               </div><div class="line">~                                                                               </div><div class="line">~                                                                               </div><div class="line">:s/name/xingming</div></pre></td></tr></table></figure>
+<p><strong>同时编辑多个文件</strong></p>
+<p>使用VI 后面加多个文件名称即可 用的不是很多 如需要同时打开a.txt b.txt c.txt 只需 vi a.txt b.txt c.txt 默认打开第一个。</p>
+<p>:arts 显示多文件信息</p>
+<p>:next 向后切换文件</p>
+<p>:prev向前切换文件</p>
+<p>:first 定位首个文件</p>
+<p>:last 定位最后一个文件</p>
+<p>Ctrl+^快速定位到编辑器中切换前的文件</p>
+<p>常用的命令没有这么多 大部分命令都是经过自己在<code>centos6.5</code>上测试过。难免有错误 欢迎拍砖。</p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;&lt;code&gt;vi&lt;/code&gt;编辑器在linux系统中应该算是人气很高的一个工具了,在这里简单介绍一下伟大的&lt;code&gt;vi&lt;/code&gt; &lt;code&gt;vim&lt;/code&gt;一些功能与使用。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;!--￼3--&amp;gt;/images/2015/0
+    
+    </summary>
+    
+      <category term="技术" scheme="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/"/>
+    
+      <category term="linux" scheme="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/linux/"/>
+    
+    
+      <category term="linux" scheme="http://blog.seoui.com/tags/linux/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>念大学有什么用处呢</title>
+    <link href="http://blog.seoui.com/2015/09/09/ToUniversity/"/>
+    <id>http://blog.seoui.com/2015/09/09/ToUniversity/</id>
+    <published>2015-09-08T16:00:00.000Z</published>
+    <updated>2016-10-16T06:39:42.207Z</updated>
+    
+    <content type="html"><![CDATA[<p>为什么必须上大学呢?</p>
+<p><img src="http://static.1.seoui.com/images/2015/09/2015-09-09-ToUniversity-1.jpg" alt=""><br><strong>一、同学</strong></p>
+<p>你的大学同学及朋友，将是你人生当中的宝贵财富。可以说，你的同学对你的重要性，仅次于你的亲人。无论何时何地，你都有可能获得来自同学的友情、帮助与安慰。很多大公司的崛起，都是一帮同学共同努力的结果。很多人的一生的成功，都是因为一个志趣相同的优秀同学。</p>
+<p>甚至你可能还会收获爱情，收获你的另一半，而爱情，是人生中与事业同等的两件大事之一，其重要性不言而谕。</p>
+<p>即使你大学时没收获爱情，你的大学也很重要。哪个青年人找对象会不考虑对方的学历呢？</p>
+<p><strong>二、你自己</strong></p>
+<p>大学四年，和一帮与你差不多优秀的、比你更优秀的或是不如你优秀的人在一起，使你加深了对自己的真正了解。</p>
+<p>你了解到，你其实并不是那么牛逼，因为有人比你更牛逼，虽然你曾经认为自己很牛逼。当然你也可能了解到你并不是那么无能，因为有人比你更无能。</p>
+<p>由于大学环境的宽松，你可以做自己喜欢做的事情，而不是象中学生那样只知道学习。你了解了自己究竟喜欢什么，讨厌什么。你了解了自己擅长做什么，不擅长做什么。你了解了自己的优点和缺点。</p>
+<p>你对自己的了解逐渐接近真实。你不再狂妄自大，也不再妄自菲薄。</p>
+<p>这就是成熟。</p>
+<p><strong>三、修养</strong></p>
+<p>你见过暴发户吗？</p>
+<p>很多暴发户虽然挣了很多钱，可以他们身上却散发着庸俗、铜臭与粗鲁。这正是因为他们没上过大学，即使一身名牌、百般妆扮，也不能掩盖本身人文素养的缺失。大学四年，你一直和有知识、有文化的人在一起，看音乐会，看画展，参加社团，读各种书籍，你的文化修养、艺术修养、人文素养、道德修养都在不断地加深。在人文素养方面，你要大大超过那些没上过大学的人。</p>
+<p>如果你有了钱，你可能会选择艺术享受比如听音乐会、看话剧甚至是艺术收藏，这是高层次的精神享受。而缺乏人文修养的人可能会去大吃大喝、购买奢侈品，甚至是黄、赌、毒，这是低层次的感官享受。</p>
+<p>你可能不如暴发户有钱，但你的人生质量是另一个层次。</p>
+<p>我并没有看不起有钱人的意思，实际上，很多暴发户后悔没有好好读过书，很多富翁都对知识分子非常尊重，甚至是羡慕。他们经常通过附庸风雅来显示自己是有品味的，甚至要想尽办法给自己搞个大学文凭。</p>
+<p>你在艳羡暴发户们腰缠万贯的同时，殊不知他们也在艳羡你的知识与品味。</p>
+<p><strong>四、独立思考能力</strong></p>
+<p>大学环境比较宽松，有大量的时间可以自由安排，这锻炼了你的独立性。这种锻炼是必要的，因为你早晚要独立生活。当然一开始你可能不适应，你会无所事事、浪费光阴，但这是提高独立能力的必经之路和代价，你由此认识到了光阴的可贵。</p>
+<p>你有了思考自己、思考社会的时间，你可以对各种社会问题给出自己的见解。如果不懂，你会上网、会去图书馆去了解相关知识。</p>
+<p>你不再人云亦云，你拥有独立思考能力，你会自己去判断对与错。</p>
+<p>你不再迷信权威，你知道了很多专家、教授不过是徒有其名，他们的言论其实不比你高明，甚至是胡说八道、无耻谰言、屁话连篇。你知道了很多官员的话是假大虚空，他们道貌岸然的后面，是对财色与权势的追逐。</p>
+<p>你明白了社会与人性的复杂性、多面性，你更加理性了。</p>
+<p>你一般不会去违法犯罪，大部分暴力罪犯都是低学历的、没上过大学的人，这些人犯罪都缺乏技术含量。</p>
+<p>你即使犯罪，那也应该是高智商犯罪。</p>
+<p><strong>五、知识</strong></p>
+<p>虽然你可能经常逃课，虽然你可能多次挂科，虽然你经常在课堂上睡觉，但是实际上，你仍然获得了很多的知识。你对你的专业，总会比那些没上过大学的人，了解的要多。如果你很认真，那么你收获颇丰，虽然你可能没有感觉到。理工科的学生，更是学到了不少实实在在的东西。</p>
+<p>你曾经羡慕很多没上过大学的人成了小老板，但他们也只能做个小老板，而你可能会成为大老板，但你需要耐心。</p>
+<p>现在，挣大钱越来越需要知识。</p>
+<p>中国第一代富人发迹于八十年代初，代表是农民企业家，靠机遇和胆子，别人不敢离开集体单干，不敢做生意，他敢，于是他成功了。但是由于他们的文化水平普遍较低，不懂管理，到现在，很多公司已经面临困境甚至已消失。</p>
+<p>第二代企业家，靠政策，靠关系。而新的第三代企业家，靠知识，靠脑子，很多人都是高学历并有丰富的海外工作和留学经验。</p>
+<p>没有知识，可以做小生意，做不成大生意。经济社会的高端产业是金融与投资业，没有知识的人，是做不来的。没有知识的人，只能在低端产业徘徊。</p>
+<p><strong>六、学历、文凭</strong></p>
+<p>我当然相信，学历的高低不等于成就的高低。但在初次就业的时候，你的学历决定了你大致能从事哪个范围内和层次内的工作。</p>
+<p>学历不同，初次就业的工作层次、工资层次是不同的，当然层次之间有交叉。每年的工资调查也都说明，学历高的人，平均工资高于学历低的人。</p>
+<p>大学起码给了你一张文凭，有了这张文凭，你才有资格到那些大公司和政府机关应聘。如果没上过大学，农村的孩子多数要回家种地或成为民工;城里的孩子会让父母为你的未来伤透脑筋。</p>
+<p>关于做生意、当老板，不要因为没有上过学的人做老板而眼红。因为你即使上了大学，照样可以选择做生意、当老板。</p>
+<p><strong>七、人际交往能力</strong></p>
+<p>在大学里，所有的人际关系都要你自己来处理。学校虽然比社会单纯，但已经是相当复杂。同学关系、室友关系、师生关系、男女关系、贫富关系，做干部还有上下级关系、干群关系等，处理好这些关系，是需要动脑筋的，也是需要能力的。</p>
+<p>你在学校处理关系的经验与教训会对你走上社会带来帮助。</p>
+<p><strong>八、见识</strong></p>
+<p>通过上大学，你增长了很多见识，认识了来自五湖四海的、南腔北调的同学。</p>
+<p>农村来的学生，见识了大城市的现代化，见识了花花世界的丰富多样。城里学生通过农村的孩子，也了解了全国各地的风土人情。</p>
+<p>你认识了很多优秀的同学和一些优秀的老师，你从他们身上会学到很多。</p>
+<p>这使你的眼界开阔了，视野开阔了，心胸开阔了，未来之路也开阔了。</p>
+<p><strong>九、孩子</strong></p>
+<p>孩子看起来离你很远，其实不远，你毕业后也许不用四年，你的孩子就出世了。你上不上大学，会影响你的子孙后代。</p>
+<p>你的文化水平将影响你的教育水平，同时对你的孩子的一生产生重大的影响。</p>
+<p>我们不能说没有文化的父母就培养不出好孩子，但是有文化的父母能给孩子带来更多的和更大的帮助。起码在孩子中小学作业题不会做的时候，你可以帮得上忙。</p>
+<p>总体来看，有文化的父母的孩子比没有文化的父母的孩子生活得更好，当然不排除个例。</p>
+<p><strong>十、美好的回忆</strong></p>
+<p>相信我，离开学校不久，你就会无比地怀念你的大学时光，还有那些哥们儿、姐们儿。你会发现，曾经无聊的大学生活回忆起来是那样的美好!你会后悔，你没有好好地利用你的大学年代。</p>
+<p>最后要提醒你的是：你只有上了大学，才有资格思考“上大学有什么用”。</p>
+<p>确实是你上了大学，而不是大学上了你。</p>
+<p>我知道当前的大学存在很多的问题，存在很多的弊病和黑暗面。但上大学仍然很有用。如果上帝让你回到四年前，再让你选择一次上不上大学，我相信你会不加思索地说：“那还用说嘛！（来源）</p>
+<p><em>文章摘自励志网。</em></p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;为什么必须上大学呢?&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;http://static.1.seoui.com/images/2015/09/2015-09-09-ToUniversity-1.jpg&quot; alt=&quot;&quot;&gt;&lt;br&gt;&lt;strong&gt;一、同学&lt;/strong&gt;&lt;/p&gt;
+
+    
+    </summary>
+    
+      <category term="随笔" scheme="http://blog.seoui.com/categories/%E9%9A%8F%E7%AC%94/"/>
+    
+    
+      <category term="大学" scheme="http://blog.seoui.com/tags/%E5%A4%A7%E5%AD%A6/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>javascript中with的用法</title>
+    <link href="http://blog.seoui.com/2015/09/09/js.with/"/>
+    <id>http://blog.seoui.com/2015/09/09/js.with/</id>
+    <published>2015-09-08T16:00:00.000Z</published>
+    <updated>2016-10-16T06:39:42.207Z</updated>
+    
+    <content type="html"><![CDATA[<p>在面向对象的JS和一些其他的很多场景会遇到同时针对同一个对象的N个属性取值或设置N个属性的值,你会发现出现了很多的重复的代码,简直就是丧心病狂.. 如下</p>
+ <figure class="highlight javascript"><table><tr><td class="code"><pre><div class="line"><span class="comment">//声明 了一个user对象</span></div><div class="line"><span class="keyword">var</span> user=&#123;</div><div class="line">	<span class="attr">name</span>:<span class="string">'user1'</span>,</div><div class="line">	<span class="attr">age</span>:<span class="number">20</span>,</div><div class="line">	<span class="attr">sex</span>:<span class="number">1</span></div><div class="line">	<span class="comment">//.....可能还有n字段</span></div><div class="line">&#125;;</div><div class="line"></div><div class="line"><span class="built_in">console</span>.info(user.name);<span class="comment">//打印name</span></div><div class="line"><span class="built_in">console</span>.info(user.age);<span class="comment">//打印age</span></div><div class="line"><span class="built_in">console</span>.info(user.sex);<span class="comment">//打印sex</span></div><div class="line"><span class="comment">//console.info(user....);//可能会打印更多的信息</span></div></pre></td></tr></table></figure>
+<p><img src="!--￼2--&gt;/images/2015/09/2015-09-09-js.with-1.jpg" alt=""></p>
+<p>虽然简单易读 但不要我们追求的风格，那么接下来使用<code>with</code>看看有什么样的变化呢</p>
+ <figure class="highlight javascript"><table><tr><td class="code"><pre><div class="line"><span class="keyword">var</span> user=&#123;</div><div class="line">	<span class="attr">name</span>:<span class="string">'user1'</span>,</div><div class="line">	<span class="attr">age</span>:<span class="number">20</span>,</div><div class="line">	<span class="attr">sex</span>:<span class="number">1</span></div><div class="line">	<span class="comment">//.....可能还有n字段</span></div><div class="line">&#125;;</div><div class="line"><span class="comment">//这样就不用没有显式的调用属性了。</span></div><div class="line">   <span class="keyword">with</span> (user)&#123;</div><div class="line">      <span class="built_in">console</span>.info(name);</div><div class="line">      <span class="built_in">console</span>.info(age);</div><div class="line">      <span class="built_in">console</span>.info(sex);</div><div class="line">   <span class="built_in">console</span>.info(<span class="keyword">this</span>);<span class="comment">//打印一下作用域是谁呢?</span></div><div class="line">  </div><div class="line">     <span class="comment">//.......................</span></div><div class="line">   &#125;</div></pre></td></tr></table></figure>
+<p>完美 又离简单明了的JS代码又近了一步。这算是进步吗?</p>
+<p>示例地址:<a href="https://cqweclick.github.io/jswithdemo.html" target="_blank">jswithdemo.html</a></p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;在面向对象的JS和一些其他的很多场景会遇到同时针对同一个对象的N个属性取值或设置N个属性的值,你会发现出现了很多的重复的代码,简直就是丧心病狂.. 如下&lt;/p&gt;
+ &lt;figure class=&quot;highlight javascript&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td cla
+    
+    </summary>
+    
+      <category term="技术" scheme="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/"/>
+    
+    
+      <category term="javascript" scheme="http://blog.seoui.com/tags/javascript/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Linux用户切换</title>
+    <link href="http://blog.seoui.com/2015/09/05/linux.switchUser/"/>
+    <id>http://blog.seoui.com/2015/09/05/linux.switchUser/</id>
+    <published>2015-09-04T16:00:00.000Z</published>
+    <updated>2016-10-16T06:39:42.206Z</updated>
+    
+    <content type="html"><![CDATA[<p>有时候用一个普通权限的用户登录系统 而需要管理员的权限的时候可以使用<code>su</code> 或者<code>sudo</code>命令完成。</p>
+<p>如 在abc用户下 切换到root用户 从而实现一些root权限的操作</p>
+ <figure class="highlight html"><table><tr><td class="code"><pre><div class="line">[abc@localhost ~]$ su root</div><div class="line">Password: </div><div class="line">[root@localhost abcabc]#</div></pre></td></tr></table></figure>
+<p>还有一种需求是 我不希望切换到root用户环境下,但是我想暂时拥有root权限 可以使用<code>sudo</code></p>
+<p>如下在abc用户下想查看/etc/shadow这个文件内容 而这个文件是权限只是对root可读，使用以下命令 输入密码后可顺利执行。</p>
+ <figure class="highlight html"><table><tr><td class="code"><pre><div class="line">[abc@localhost ~]$ sudo cat /etc/shadow</div></pre></td></tr></table></figure>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;有时候用一个普通权限的用户登录系统 而需要管理员的权限的时候可以使用&lt;code&gt;su&lt;/code&gt; 或者&lt;code&gt;sudo&lt;/code&gt;命令完成。&lt;/p&gt;
+&lt;p&gt;如 在abc用户下 切换到root用户 从而实现一些root权限的操作&lt;/p&gt;
+ &lt;figure class=
+    
+    </summary>
+    
+      <category term="技术" scheme="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/"/>
+    
+      <category term="linux" scheme="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/linux/"/>
+    
+    
+      <category term="linux" scheme="http://blog.seoui.com/tags/linux/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Linux用户与用户组管理</title>
+    <link href="http://blog.seoui.com/2015/09/05/linux.usergroupmanager/"/>
+    <id>http://blog.seoui.com/2015/09/05/linux.usergroupmanager/</id>
+    <published>2015-09-04T16:00:00.000Z</published>
+    <updated>2016-10-16T06:39:42.206Z</updated>
+    
+    <content type="html"><![CDATA[<p>Linux 为系统默认配置了N多的用户 它们都保存在/etc/passwd文件中。如下图</p>
+<p><img src="!--￼5--&gt;/images/2015/09/2015-09-05-linux.usergroupmanager-1.png" alt=""></p>
+<p>每一个用户由 <strong>用户名：密码：用户标识：组标识:描述:所属目录:shell</strong> 7个字段组合而成,其中密码是加密的 使用X字符替代。这些用户都是系统内置的 shell字段为/sbin/nologin时 这个用户是不可登陆的。只是为了完成一些独有的功能而存在。</p>
+<p>由于密码是加密的那么/etc/shadow文件专门用来保存用户的密码信息。</p>
+<p>另外介绍一个用户组文件信息是保存在/etc/group 文件中的。</p>
+<p>##用户管理##<br><code>useradd</code> <strong>添加用户</strong>  </p>
+ <figure class="highlight html"><table><tr><td class="code"><pre><div class="line">[root@localhost ~]# useradd --help</div><div class="line">Usage: useradd [options] LOGIN</div><div class="line"></div><div class="line">Options:</div><div class="line">  -b, --base-dir BASE_DIR       base directory for the home directory of the</div><div class="line">                                new account</div><div class="line">  -c, --comment COMMENT         GECOS field of the new account</div><div class="line">  -d, --home-dir HOME_DIR       home directory of the new account</div><div class="line">  -D, --defaults                print or change default useradd configuration</div><div class="line">  -e, --expiredate EXPIRE_DATE  expiration date of the new account</div><div class="line">  -f, --inactive INACTIVE       password inactivity period of the new account</div><div class="line">  -g, --gid GROUP               name or ID of the primary group of the new</div><div class="line">                                account</div><div class="line">  -G, --groups GROUPS           list of supplementary groups of the new</div><div class="line">                                account</div><div class="line">  -h, --help                    display this help message and exit</div><div class="line">  -k, --skel SKEL_DIR           use this alternative skeleton directory</div><div class="line">  -K, --key KEY=VALUE           override /etc/login.defs defaults</div><div class="line">  -l, --no-log-init             do not add the user to the lastlog and</div><div class="line">                                faillog databases</div><div class="line">  -m, --create-home             create the user's home directory</div><div class="line">  -M, --no-create-home          do not create the user's home directory</div><div class="line">  -N, --no-user-group           do not create a group with the same name as</div><div class="line">                                the user</div><div class="line">  -o, --non-unique              allow to create users with duplicate</div><div class="line">                                (non-unique) UID</div><div class="line">  -p, --password PASSWORD       encrypted password of the new account</div><div class="line">  -r, --system                  create a system account</div><div class="line">  -s, --shell SHELL             login shell of the new account</div><div class="line">  -u, --uid UID                 user ID of the new account</div><div class="line">  -U, --user-group              create a group with the same name as the user</div><div class="line">  -Z, --selinux-user SEUSER     use a specific SEUSER for the SELinux user mapping</div></pre></td></tr></table></figure>
+<p> 例如：</p>
+<p> <code>useradd -c &#39;this a comment&#39;  abcabc</code> 添加一个用户abcabc </p>
+<p> <code>cat /etc/passwd</code>查看用户信息文件</p>
+<p> <code>abcabc:x:503:504:this a comment:/home/abcabc:/bin/bash</code> abcabc添加成功。</p>
+<p>为abcabc用户设置密码passwd abcabc 注意<em>如果passwd命令后不输入用户名 则默认修改当前登陆用户的密码</em></p>
+ <figure class="highlight html"><table><tr><td class="code"><pre><div class="line">passwd abcabc</div></pre></td></tr></table></figure>
+<p>添加用户同时指定一个普通用户组 如系统中已存在用户组shareGroup</p>
+ <figure class="highlight html"><table><tr><td class="code"><pre><div class="line">useradd -c 'this a comment'  abcabc -G shareGroup</div></pre></td></tr></table></figure>
+<p><code>usermod</code> <strong>修改用户</strong></p>
+ <figure class="highlight html"><table><tr><td class="code"><pre><div class="line">usermod -l abc abcabc      修改用户名abcabc为abc</div><div class="line">usermod -G share2          添加一个用户组share2</div><div class="line">usermod -L abc             锁定abc用户</div><div class="line">usermod -U abc             为abc用户解除锁定状态</div></pre></td></tr></table></figure>
+<p><code>userdel</code> <strong>删除用户</strong></p>
+ <figure class="highlight html"><table><tr><td class="code"><pre><div class="line">userdel abc 删除用户abc 不会删除用户的所属文件目录</div><div class="line">   userdel -r abc 删除用户abc 同时会删除用户所属的文件目录</div></pre></td></tr></table></figure>
+<p>##用户组管理##</p>
+<p><code>groupadd</code> <strong>添加组</strong></p>
+<p> groupadd  ugroup1    添加用户组ugroup1</p>
+<p> <code>groupmod</code>    <strong>修改用户组</strong></p>
+<p> <code>groupdel</code> <strong>删除组</strong></p>
+<p>  groupdel ugroup1   删除用户组ugroup1</p>
+<p>用户组与用户管理的操作差不多是一样的。不在一一说明。</p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;Linux 为系统默认配置了N多的用户 它们都保存在/etc/passwd文件中。如下图&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;!--￼5--&amp;gt;/images/2015/09/2015-09-05-linux.usergroupmanager-1.png&quot; alt=&quot;&quot;&gt;
+    
+    </summary>
+    
+      <category term="技术" scheme="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/"/>
+    
+      <category term="linux" scheme="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/linux/"/>
+    
+    
+      <category term="linux" scheme="http://blog.seoui.com/tags/linux/"/>
+    
+  </entry>
+  
+</feed>
