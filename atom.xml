@@ -5,10 +5,65 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://blog.seoui.com/"/>
-  <updated>2016-10-16T06:39:42.212Z</updated>
+  <updated>2016-10-16T14:05:29.617Z</updated>
   <id>http://blog.seoui.com/</id>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>emmet编写Html</title>
+    <link href="http://blog.seoui.com/2016/10/16/html-emmet/"/>
+    <id>http://blog.seoui.com/2016/10/16/html-emmet/</id>
+    <published>2016-10-15T16:00:00.000Z</published>
+    <updated>2016-10-16T14:05:29.617Z</updated>
+    
+    <content type="html"><![CDATA[<p> Emmet是一个Web开发人员的工具包，可以大大提高你的HTML和CSS的工作流,这是在<a href="http://docs.emmet.io/" title="Emmet" target="_blank" rel="external">emmet官方文档</a>中看到的第一句话,当然这句话也简单的概括了它拥有的魅力。</p>
+<p> 下面是在WebStorm中作一些应用。<br><a id="more"></a></p>
+<h2 id="构建一张html网页"><a href="#构建一张html网页" class="headerlink" title="构建一张html网页"></a>构建一张html网页</h2><p>  一张基本的网页结构一般是具有<code>&lt;html&gt;</code> <code>&lt;head&gt;</code> <code>&lt;body&gt;</code> ,使用emmet只需要按一个tab键的时间就可以实现，输入<code>!</code>,然后按Tab键就能实现如下效果,</p>
+ <figure class="highlight html"><table><tr><td class="code"><pre><div class="line"><span class="meta">&lt;!doctype html&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">html</span> <span class="attr">lang</span>=<span class="string">"en"</span>&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">"UTF-8"</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">name</span>=<span class="string">"viewport"</span></span></div><div class="line">          <span class="attr">content</span>=<span class="string">"width=device-width, user-scalable=no, initial-scale=1.0, maxeimum-scale=1.0, minimum-scale=1.0"</span>&gt;</div><div class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">http-equiv</span>=<span class="string">"X-UA-Compatible"</span> <span class="attr">content</span>=<span class="string">"ie=edge"</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">title</span>&gt;</span>Document<span class="tag">&lt;/<span class="name">title</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></div><div class="line"></div><div class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></div></pre></td></tr></table></figure>
+<p> 上面的效果使用<code>html:5</code> 然后按Tab键同样也能实现,如果是html4可以用<code>html:4s</code> ,xhtml用<code>html:xt</code> 然后按Tab键。</p>
+<h2 id="添加元素及属性"><a href="#添加元素及属性" class="headerlink" title="添加元素及属性"></a>添加元素及属性</h2><p>为元素添加class或者id 如输入<code>span.clsspan#myspan</code> 按Tab 会生成如下代码</p>
+ <figure class="highlight html"><table><tr><td class="code"><pre><div class="line"></div><div class="line"><span class="tag">&lt;<span class="name">span</span> <span class="attr">class</span>=<span class="string">"clsspan"</span> <span class="attr">id</span>=<span class="string">"myspan"</span>&gt;</span><span class="tag">&lt;/<span class="name">span</span>&gt;</span></div></pre></td></tr></table></figure>
+<p>为元素添加属性值 如输入<code>span{this is my span !!!}+a[href=http://blog.seoui.com]</code></p>
+ <figure class="highlight html"><table><tr><td class="code"><pre><div class="line"></div><div class="line"><span class="tag">&lt;<span class="name">span</span>&gt;</span>this is my span !!!<span class="tag">&lt;/<span class="name">span</span>&gt;</span><span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"http://blog.seoui.com"</span>&gt;</span><span class="tag">&lt;/<span class="name">a</span>&gt;</span></div></pre></td></tr></table></figure>
+<h2 id="标签结构嵌套"><a href="#标签结构嵌套" class="headerlink" title="标签结构嵌套"></a>标签结构嵌套</h2><p> <code>&gt;</code> 子元素标记</p>
+<p> <code>+</code> 同级元素追加标记</p>
+<p> <code>^</code> 向当前父级元素追加标记</p>
+<p>添加子元素实例 如 <code>span&gt;p.item</code> </p>
+ <figure class="highlight html"><table><tr><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">span</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">p</span> <span class="attr">class</span>=<span class="string">"item"</span>&gt;</span><span class="tag">&lt;/<span class="name">p</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">span</span>&gt;</span></div></pre></td></tr></table></figure>
+<p>添加同级元素实例 如 <code>span+p.item</code> </p>
+<figure class="highlight html"><table><tr><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">span</span>&gt;</span><span class="tag">&lt;/<span class="name">span</span>&gt;</span><span class="tag">&lt;<span class="name">p</span> <span class="attr">class</span>=<span class="string">"item"</span>&gt;</span><span class="tag">&lt;/<span class="name">p</span>&gt;</span></div></pre></td></tr></table></figure>
+<p>添加父级元素实例 如 <code>span&gt;div^p</code> </p>
+<figure class="highlight html"><table><tr><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">span</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">div</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">span</span>&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">p</span>&gt;</span><span class="tag">&lt;/<span class="name">p</span>&gt;</span></div></pre></td></tr></table></figure>
+<h2 id="分组"><a href="#分组" class="headerlink" title="分组"></a>分组</h2><p>以上虽然能轻松实现一些html的元素构建,但是如果遇到批量或者很多的类似的元素怎么办呢?</p>
+<p>分组其实就是用<code>()</code>把标记分开,让他们成为一个独立的块。</p>
+<p>如 <code>(div.item&gt;p)+(div.deatil&gt;span)</code> 然后按tab会生成以下代码</p>
+<figure class="highlight html"><table><tr><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"item"</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">p</span>&gt;</span><span class="tag">&lt;/<span class="name">p</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"deatil"</span>&gt;</span><span class="tag">&lt;<span class="name">span</span>&gt;</span><span class="tag">&lt;/<span class="name">span</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></div></pre></td></tr></table></figure>
+<p>如果我想重复生成2次上面的结构,使用<code>((div.item&gt;p)+(div.deatil&gt;span))*2</code>就能实现</p>
+<figure class="highlight html"><table><tr><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"item"</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">p</span>&gt;</span><span class="tag">&lt;/<span class="name">p</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"deatil"</span>&gt;</span><span class="tag">&lt;<span class="name">span</span>&gt;</span><span class="tag">&lt;/<span class="name">span</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"item"</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">p</span>&gt;</span><span class="tag">&lt;/<span class="name">p</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"deatil"</span>&gt;</span><span class="tag">&lt;<span class="name">span</span>&gt;</span><span class="tag">&lt;/<span class="name">span</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></div></pre></td></tr></table></figure>
+<p>生成多个带属性的元素 如 <code>ul&gt;li.item$*2</code></p>
+<figure class="highlight html"><table><tr><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">ul</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">li</span> <span class="attr">class</span>=<span class="string">"item1"</span>&gt;</span><span class="tag">&lt;/<span class="name">li</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">li</span> <span class="attr">class</span>=<span class="string">"item2"</span>&gt;</span><span class="tag">&lt;/<span class="name">li</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">ul</span>&gt;</span></div></pre></td></tr></table></figure>
+<h2 id="隐式标签"><a href="#隐式标签" class="headerlink" title="隐式标签"></a>隐式标签</h2><p>所谓隐式标签就是可以不用声明标签名称可以直接操作 如<code>.item</code>会生成</p>
+<figure class="highlight html"><table><tr><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"item"</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></div></pre></td></tr></table></figure>
+<p>当然不会很死板的一直生成div 隐式标签会根据父元素来生成适当的标签 如在ul内部使用隐式标签则会生成li。</p>
+<p>li 、tr 、 td 、 option 都是隐式标签</p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt; Emmet是一个Web开发人员的工具包，可以大大提高你的HTML和CSS的工作流,这是在&lt;a href=&quot;http://docs.emmet.io/&quot; title=&quot;Emmet&quot;&gt;emmet官方文档&lt;/a&gt;中看到的第一句话,当然这句话也简单的概括了它拥有的魅力。&lt;/p&gt;
+&lt;p&gt; 下面是在WebStorm中作一些应用。&lt;br&gt;
+    
+    </summary>
+    
+      <category term="技术" scheme="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/"/>
+    
+      <category term="emmet" scheme="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/emmet/"/>
+    
+    
+      <category term="emmet" scheme="http://blog.seoui.com/tags/emmet/"/>
+    
+  </entry>
   
   <entry>
     <title>supervisor配置和使用</title>
@@ -522,50 +577,6 @@
   </entry>
   
   <entry>
-    <title>Linux 简单的进程管理</title>
-    <link href="http://blog.seoui.com/2015/09/12/linux.processmgr/"/>
-    <id>http://blog.seoui.com/2015/09/12/linux.processmgr/</id>
-    <published>2015-09-11T16:00:00.000Z</published>
-    <updated>2016-10-16T06:39:42.207Z</updated>
-    
-    <content type="html"><![CDATA[<p>进程管理的内容有点多,这里简单介绍一下,以后将详细说明系统调度、进程管理等内容。</p>
-<p>需要明白父子进程的概念</p>
-<ul>
-<li>子进程是由另一个进程所产生的，产生这个子进程的进程称为父进程</li>
-<li>父进程终止后 子进程会自动终止。但是子进程终止后 有可能会又会自动创建子进程。</li>
-</ul>
-<p>w  查看当前系统活动的信息 可以带参数user 如 w user </p>
-<p>ps 查看进程用的比较多的命令。</p>
-<p>kill 杀死(终止)进程</p>
-<p>killall -u apache 终止指定用户apache的进程。</p>
-<p>sleep 10000 让当前进程睡眠10000</p>
-<p>jobs 查看后台进程</p>
-<p>bg # 让后台的第#个进程运行。如 bg 1</p>
-<p>在前台运行的进程时按下Ctrl+z 可以让当前执行的进程在后台运行。</p>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;p&gt;进程管理的内容有点多,这里简单介绍一下,以后将详细说明系统调度、进程管理等内容。&lt;/p&gt;
-&lt;p&gt;需要明白父子进程的概念&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;子进程是由另一个进程所产生的，产生这个子进程的进程称为父进程&lt;/li&gt;
-&lt;li&gt;父进程终止后 子进程会自动终止。但是子进程终止后
-    
-    </summary>
-    
-      <category term="技术" scheme="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/"/>
-    
-      <category term="linux" scheme="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/linux/"/>
-    
-    
-      <category term="linux" scheme="http://blog.seoui.com/tags/linux/"/>
-    
-      <category term="linux进程" scheme="http://blog.seoui.com/tags/linux%E8%BF%9B%E7%A8%8B/"/>
-    
-  </entry>
-  
-  <entry>
     <title>Linux 软件的常用安装方法</title>
     <link href="http://blog.seoui.com/2015/09/12/linux.softInstall/"/>
     <id>http://blog.seoui.com/2015/09/12/linux.softInstall/</id>
@@ -687,6 +698,50 @@
       <category term="linux" scheme="http://blog.seoui.com/tags/linux/"/>
     
       <category term="linux软件安装" scheme="http://blog.seoui.com/tags/linux%E8%BD%AF%E4%BB%B6%E5%AE%89%E8%A3%85/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Linux 简单的进程管理</title>
+    <link href="http://blog.seoui.com/2015/09/12/linux.processmgr/"/>
+    <id>http://blog.seoui.com/2015/09/12/linux.processmgr/</id>
+    <published>2015-09-11T16:00:00.000Z</published>
+    <updated>2016-10-16T06:39:42.207Z</updated>
+    
+    <content type="html"><![CDATA[<p>进程管理的内容有点多,这里简单介绍一下,以后将详细说明系统调度、进程管理等内容。</p>
+<p>需要明白父子进程的概念</p>
+<ul>
+<li>子进程是由另一个进程所产生的，产生这个子进程的进程称为父进程</li>
+<li>父进程终止后 子进程会自动终止。但是子进程终止后 有可能会又会自动创建子进程。</li>
+</ul>
+<p>w  查看当前系统活动的信息 可以带参数user 如 w user </p>
+<p>ps 查看进程用的比较多的命令。</p>
+<p>kill 杀死(终止)进程</p>
+<p>killall -u apache 终止指定用户apache的进程。</p>
+<p>sleep 10000 让当前进程睡眠10000</p>
+<p>jobs 查看后台进程</p>
+<p>bg # 让后台的第#个进程运行。如 bg 1</p>
+<p>在前台运行的进程时按下Ctrl+z 可以让当前执行的进程在后台运行。</p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;进程管理的内容有点多,这里简单介绍一下,以后将详细说明系统调度、进程管理等内容。&lt;/p&gt;
+&lt;p&gt;需要明白父子进程的概念&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;子进程是由另一个进程所产生的，产生这个子进程的进程称为父进程&lt;/li&gt;
+&lt;li&gt;父进程终止后 子进程会自动终止。但是子进程终止后
+    
+    </summary>
+    
+      <category term="技术" scheme="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/"/>
+    
+      <category term="linux" scheme="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/linux/"/>
+    
+    
+      <category term="linux" scheme="http://blog.seoui.com/tags/linux/"/>
+    
+      <category term="linux进程" scheme="http://blog.seoui.com/tags/linux%E8%BF%9B%E7%A8%8B/"/>
     
   </entry>
   
@@ -1067,57 +1122,6 @@
       &lt;p&gt;有时候用一个普通权限的用户登录系统 而需要管理员的权限的时候可以使用&lt;code&gt;su&lt;/code&gt; 或者&lt;code&gt;sudo&lt;/code&gt;命令完成。&lt;/p&gt;
 &lt;p&gt;如 在abc用户下 切换到root用户 从而实现一些root权限的操作&lt;/p&gt;
  &lt;figure class=
-    
-    </summary>
-    
-      <category term="技术" scheme="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/"/>
-    
-      <category term="linux" scheme="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/linux/"/>
-    
-    
-      <category term="linux" scheme="http://blog.seoui.com/tags/linux/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Linux用户与用户组管理</title>
-    <link href="http://blog.seoui.com/2015/09/05/linux.usergroupmanager/"/>
-    <id>http://blog.seoui.com/2015/09/05/linux.usergroupmanager/</id>
-    <published>2015-09-04T16:00:00.000Z</published>
-    <updated>2016-10-16T06:39:42.206Z</updated>
-    
-    <content type="html"><![CDATA[<p>Linux 为系统默认配置了N多的用户 它们都保存在/etc/passwd文件中。如下图</p>
-<p><img src="!--￼5--&gt;/images/2015/09/2015-09-05-linux.usergroupmanager-1.png" alt=""></p>
-<p>每一个用户由 <strong>用户名：密码：用户标识：组标识:描述:所属目录:shell</strong> 7个字段组合而成,其中密码是加密的 使用X字符替代。这些用户都是系统内置的 shell字段为/sbin/nologin时 这个用户是不可登陆的。只是为了完成一些独有的功能而存在。</p>
-<p>由于密码是加密的那么/etc/shadow文件专门用来保存用户的密码信息。</p>
-<p>另外介绍一个用户组文件信息是保存在/etc/group 文件中的。</p>
-<p>##用户管理##<br><code>useradd</code> <strong>添加用户</strong>  </p>
- <figure class="highlight html"><table><tr><td class="code"><pre><div class="line">[root@localhost ~]# useradd --help</div><div class="line">Usage: useradd [options] LOGIN</div><div class="line"></div><div class="line">Options:</div><div class="line">  -b, --base-dir BASE_DIR       base directory for the home directory of the</div><div class="line">                                new account</div><div class="line">  -c, --comment COMMENT         GECOS field of the new account</div><div class="line">  -d, --home-dir HOME_DIR       home directory of the new account</div><div class="line">  -D, --defaults                print or change default useradd configuration</div><div class="line">  -e, --expiredate EXPIRE_DATE  expiration date of the new account</div><div class="line">  -f, --inactive INACTIVE       password inactivity period of the new account</div><div class="line">  -g, --gid GROUP               name or ID of the primary group of the new</div><div class="line">                                account</div><div class="line">  -G, --groups GROUPS           list of supplementary groups of the new</div><div class="line">                                account</div><div class="line">  -h, --help                    display this help message and exit</div><div class="line">  -k, --skel SKEL_DIR           use this alternative skeleton directory</div><div class="line">  -K, --key KEY=VALUE           override /etc/login.defs defaults</div><div class="line">  -l, --no-log-init             do not add the user to the lastlog and</div><div class="line">                                faillog databases</div><div class="line">  -m, --create-home             create the user's home directory</div><div class="line">  -M, --no-create-home          do not create the user's home directory</div><div class="line">  -N, --no-user-group           do not create a group with the same name as</div><div class="line">                                the user</div><div class="line">  -o, --non-unique              allow to create users with duplicate</div><div class="line">                                (non-unique) UID</div><div class="line">  -p, --password PASSWORD       encrypted password of the new account</div><div class="line">  -r, --system                  create a system account</div><div class="line">  -s, --shell SHELL             login shell of the new account</div><div class="line">  -u, --uid UID                 user ID of the new account</div><div class="line">  -U, --user-group              create a group with the same name as the user</div><div class="line">  -Z, --selinux-user SEUSER     use a specific SEUSER for the SELinux user mapping</div></pre></td></tr></table></figure>
-<p> 例如：</p>
-<p> <code>useradd -c &#39;this a comment&#39;  abcabc</code> 添加一个用户abcabc </p>
-<p> <code>cat /etc/passwd</code>查看用户信息文件</p>
-<p> <code>abcabc:x:503:504:this a comment:/home/abcabc:/bin/bash</code> abcabc添加成功。</p>
-<p>为abcabc用户设置密码passwd abcabc 注意<em>如果passwd命令后不输入用户名 则默认修改当前登陆用户的密码</em></p>
- <figure class="highlight html"><table><tr><td class="code"><pre><div class="line">passwd abcabc</div></pre></td></tr></table></figure>
-<p>添加用户同时指定一个普通用户组 如系统中已存在用户组shareGroup</p>
- <figure class="highlight html"><table><tr><td class="code"><pre><div class="line">useradd -c 'this a comment'  abcabc -G shareGroup</div></pre></td></tr></table></figure>
-<p><code>usermod</code> <strong>修改用户</strong></p>
- <figure class="highlight html"><table><tr><td class="code"><pre><div class="line">usermod -l abc abcabc      修改用户名abcabc为abc</div><div class="line">usermod -G share2          添加一个用户组share2</div><div class="line">usermod -L abc             锁定abc用户</div><div class="line">usermod -U abc             为abc用户解除锁定状态</div></pre></td></tr></table></figure>
-<p><code>userdel</code> <strong>删除用户</strong></p>
- <figure class="highlight html"><table><tr><td class="code"><pre><div class="line">userdel abc 删除用户abc 不会删除用户的所属文件目录</div><div class="line">   userdel -r abc 删除用户abc 同时会删除用户所属的文件目录</div></pre></td></tr></table></figure>
-<p>##用户组管理##</p>
-<p><code>groupadd</code> <strong>添加组</strong></p>
-<p> groupadd  ugroup1    添加用户组ugroup1</p>
-<p> <code>groupmod</code>    <strong>修改用户组</strong></p>
-<p> <code>groupdel</code> <strong>删除组</strong></p>
-<p>  groupdel ugroup1   删除用户组ugroup1</p>
-<p>用户组与用户管理的操作差不多是一样的。不在一一说明。</p>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;p&gt;Linux 为系统默认配置了N多的用户 它们都保存在/etc/passwd文件中。如下图&lt;/p&gt;
-&lt;p&gt;&lt;img src=&quot;!--￼5--&amp;gt;/images/2015/09/2015-09-05-linux.usergroupmanager-1.png&quot; alt=&quot;&quot;&gt;
     
     </summary>
     
