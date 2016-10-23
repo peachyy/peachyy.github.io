@@ -416,40 +416,40 @@
     <link href="http://blog.seoui.com/2016/01/25/share-chrome-plugin/"/>
     <id>http://blog.seoui.com/2016/01/25/share-chrome-plugin/</id>
     <published>2016-01-24T16:00:00.000Z</published>
-    <updated>2016-10-16T06:39:42.209Z</updated>
+    <updated>2016-10-23T08:42:59.498Z</updated>
     
     <content type="html"><![CDATA[<p>在这里分享几个 个人常用的Google Chrome浏览器插件 保证实用。</p>
 <p>由于个人目前的工作会写一些代码 所以优先介绍几个GitHub插件</p>
 <p>1.OctoTree</p>
 <p> 扩展Chrome浏览器在浏览GitHub代码的时候能像本地文件系统一样列出一棵树，可以用于GitHub、GitLab</p>
-<p> <img src="!--￼0--&gt;/images/2016/01/2016-01-25-share-chrome-plugin-01.png" alt="Octotree"></p>
+<p> <img src="http://static.1.seoui.com/images/2016/01/2016-01-25-share-chrome-plugin-01.png" alt="Octotree"></p>
 <p>2.Isometric Contributions</p>
 <p> 支持在GitHub个人主页的图表统计转换柱状的图表统计 更能直观的看出提交代码的频率 就像盖房子一样。</p>
-<p> <img src="!--￼1--&gt;/images/2016/01/2016-01-25-share-chrome-plugin-02.png" alt="Isometric Contributions"></p>
+<p> <img src="http://static.1.seoui.com/images/2016/01/2016-01-25-share-chrome-plugin-02.png" alt="Isometric Contributions"></p>
 <p>3.Avatars for Github</p>
 <p>  在Github首页上有我关注的人已经关注的项目动态 使用此插件支持在关注的人前面加上头像 这样能更直观看到谁更新了动态信息。</p>
-<p> <img src="!--￼2--&gt;/images/2016/01/2016-01-25-share-chrome-plugin-03.png" alt="Avatars for Github"></p>
+<p> <img src="http://static.1.seoui.com/images/2016/01/2016-01-25-share-chrome-plugin-03.png" alt="Avatars for Github"></p>
 <p>4.ZenHub</p>
 <p> 增强你的工作流，特别是启动，快速移动工程团队和开源社区等特性构建，支持实时拖拽 Issue Task Boards；通过一个 +1 按钮来进行反馈；支持直接上传任意的文件类型到 GitHub 接口。ZenHub 能把很多进程集中化到 GitHub，让你的团队更精炼更敏捷</p>
-<p> <img src="!--￼3--&gt;/images/2016/01/2016-01-25-share-chrome-plugin-04.png" alt="ZenHub"></p>
+<p> <img src="http://static.1.seoui.com/images/2016/01/2016-01-25-share-chrome-plugin-04.png" alt="ZenHub"></p>
 <p>5.Github Linker</p>
 <p> GitHub Linker 支持连接到(相当于IDE里面的代码引用的感觉)NPM，bower，Composer &amp; Duo 到它们的 Github 库页面。它也解决了在 .js, .jsx, .coffee 或 .md 文件的 require() 声明     </p>
-<p> <img src="!--￼4--&gt;/images/2016/01/2016-01-25-share-chrome-plugin-05.png" alt="Github Linker"></p>
+<p> <img src="http://static.1.seoui.com/images/2016/01/2016-01-25-share-chrome-plugin-05.png" alt="Github Linker"></p>
 <p>API调用插件</p>
 <p>6.JSONView</p>
 <p>   JSONView是一个将JSON字符串转换为 可读性的格式查看 JSON 的插件。调用API时非常有用     </p>
-<p> <img src="!--￼5--&gt;/images/2016/01/2016-01-25-share-chrome-plugin-06.png" alt="JSONView"></p>
+<p> <img src="http://static.1.seoui.com/images/2016/01/2016-01-25-share-chrome-plugin-06.png" alt="JSONView"></p>
 <p>Markdown插件</p>
 <p>7.Markdown Editor</p>
 <p>  支持在Chrome浏览器上所见即所得的编辑MarkDown文本，本人使用较少 但也比较实用 默认的风格为GitHub </p>
-<p> <img src="!--￼6--&gt;/images/2016/01/2016-01-25-share-chrome-plugin-07.png" alt="JSONView"></p>
+<p> <img src="http://static.1.seoui.com/images/2016/01/2016-01-25-share-chrome-plugin-07.png" alt="JSONView"></p>
 <p>其他常用插件</p>
 <p>8.Proxy SwitchySharp</p>
 <p>  设置网络代理 翻墙必备</p>
-<p> <img src="!--￼7--&gt;/images/2016/01/2016-01-25-share-chrome-plugin-08.png" alt="JSONView"></p>
+<p> <img src="http://static.1.seoui.com/images/2016/01/2016-01-25-share-chrome-plugin-08.png" alt="JSONView"></p>
 <p>9.Visual Event</p>
 <p> 能更直观的看到网页DOM元素上的事件信息以及事件所触发的代码 前端开发神器</p>
-<p> <img src="!--￼8--&gt;/images/2016/01/2016-01-25-share-chrome-plugin-09.png" alt="JSONView"></p>
+<p> <img src="http://static.1.seoui.com/images/2016/01/2016-01-25-share-chrome-plugin-09.png" alt="JSONView"></p>
 ]]></content>
     
     <summary type="html">

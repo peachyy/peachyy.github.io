@@ -2,6 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://blog.seoui.com/2016/01/25/share-chrome-plugin/</loc>
+    
+    <lastmod>2016-10-23T08:42:59.498Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://blog.seoui.com/2016/10/16/html-emmet/</loc>
     
     <lastmod>2016-10-16T14:05:29.617Z</lastmod>
@@ -37,14 +44,7 @@
   </url>
   
   <url>
-    <loc>http://blog.seoui.com/2016/07/04/gzip-uzip/</loc>
-    
-    <lastmod>2016-10-16T06:39:42.211Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://blog.seoui.com/2016/06/18/docker.install/</loc>
+    <loc>http://blog.seoui.com/2016/06/17/ubuntu.networksetting/</loc>
     
     <lastmod>2016-10-16T06:39:42.211Z</lastmod>
     
@@ -58,16 +58,16 @@
   </url>
   
   <url>
-    <loc>http://blog.seoui.com/2016/06/17/ubuntu.networksetting/</loc>
+    <loc>http://blog.seoui.com/2016/07/04/gzip-uzip/</loc>
     
     <lastmod>2016-10-16T06:39:42.211Z</lastmod>
     
   </url>
   
   <url>
-    <loc>http://blog.seoui.com/2016/04/13/selenium-autowebTest/</loc>
+    <loc>http://blog.seoui.com/2016/06/18/docker.install/</loc>
     
-    <lastmod>2016-10-16T06:39:42.210Z</lastmod>
+    <lastmod>2016-10-16T06:39:42.211Z</lastmod>
     
   </url>
   
@@ -93,9 +93,9 @@
   </url>
   
   <url>
-    <loc>http://blog.seoui.com/2016/01/25/share-chrome-plugin/</loc>
+    <loc>http://blog.seoui.com/2016/04/13/selenium-autowebTest/</loc>
     
-    <lastmod>2016-10-16T06:39:42.209Z</lastmod>
+    <lastmod>2016-10-16T06:39:42.210Z</lastmod>
     
   </url>
   

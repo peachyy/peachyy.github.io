@@ -4,6 +4,28 @@
 
     
   <url>
+    <loc>http://blog.seoui.com/2016/01/25/share-chrome-plugin/</loc>
+    <lastmod>2016-10-23T08:42:59.498Z</lastmod>
+    <data>
+        <display>
+        <title>分享几个常用的Google Chrome插件</title>
+        <pubTime>2016-01-24T16:00:00.000Z</pubTime>
+        
+        <tag>googleChrome</tag>
+         
+        <tag>chrome</tag>
+         
+         
+           
+             
+              <breadCrumb title="google chrome" url="http://blog.seoui.com/categories/google-chrome/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://blog.seoui.com/2016/10/16/html-emmet/</loc>
     <lastmod>2016-10-16T14:05:29.617Z</lastmod>
     <data>
@@ -55,6 +77,51 @@
 
     
   <url>
+    <loc>http://blog.seoui.com/2016/06/17/ubuntu.networksetting/</loc>
+    <lastmod>2016-10-16T06:39:42.211Z</lastmod>
+    <data>
+        <display>
+        <title>ubuntu设置网络</title>
+        <pubTime>2016-06-16T16:00:00.000Z</pubTime>
+        
+        <tag>linux</tag>
+         
+        <tag>ubuntu</tag>
+         
+         
+           
+             
+              <breadCrumb title="技术" url="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/"/>
+          
+             
+              <breadCrumb title="linux" url="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/linux/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://blog.seoui.com/2016/05/24/html-form-enterevent/</loc>
+    <lastmod>2016-10-16T06:39:42.211Z</lastmod>
+    <data>
+        <display>
+        <title>form表单默认回车事件的问题</title>
+        <pubTime>2016-05-23T16:00:00.000Z</pubTime>
+        
+        <tag>from</tag>
+         
+         
+           
+             
+              <breadCrumb title="技术" url="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://blog.seoui.com/2016/07/04/gzip-uzip/</loc>
     <lastmod>2016-10-16T06:39:42.211Z</lastmod>
     <data>
@@ -98,77 +165,6 @@
           
              
               <breadCrumb title="docker" url="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/docker/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://blog.seoui.com/2016/05/24/html-form-enterevent/</loc>
-    <lastmod>2016-10-16T06:39:42.211Z</lastmod>
-    <data>
-        <display>
-        <title>form表单默认回车事件的问题</title>
-        <pubTime>2016-05-23T16:00:00.000Z</pubTime>
-        
-        <tag>from</tag>
-         
-         
-           
-             
-              <breadCrumb title="技术" url="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://blog.seoui.com/2016/06/17/ubuntu.networksetting/</loc>
-    <lastmod>2016-10-16T06:39:42.211Z</lastmod>
-    <data>
-        <display>
-        <title>ubuntu设置网络</title>
-        <pubTime>2016-06-16T16:00:00.000Z</pubTime>
-        
-        <tag>linux</tag>
-         
-        <tag>ubuntu</tag>
-         
-         
-           
-             
-              <breadCrumb title="技术" url="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/"/>
-          
-             
-              <breadCrumb title="linux" url="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/linux/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://blog.seoui.com/2016/04/13/selenium-autowebTest/</loc>
-    <lastmod>2016-10-16T06:39:42.210Z</lastmod>
-    <data>
-        <display>
-        <title>利用selenium做网页自动测试</title>
-        <pubTime>2016-04-12T16:00:00.000Z</pubTime>
-        
-        <tag>selenium</tag>
-         
-         
-           
-             
-              <breadCrumb title="技术" url="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/"/>
-          
-             
-              <breadCrumb title="selenium" url="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/selenium/"/>
-          
-             
-              <breadCrumb title="测试" url="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/selenium/%E6%B5%8B%E8%AF%95/"/>
           
         </display>
     </data>
@@ -246,21 +242,25 @@
 
     
   <url>
-    <loc>http://blog.seoui.com/2016/01/25/share-chrome-plugin/</loc>
-    <lastmod>2016-10-16T06:39:42.209Z</lastmod>
+    <loc>http://blog.seoui.com/2016/04/13/selenium-autowebTest/</loc>
+    <lastmod>2016-10-16T06:39:42.210Z</lastmod>
     <data>
         <display>
-        <title>分享几个常用的Google Chrome插件</title>
-        <pubTime>2016-01-24T16:00:00.000Z</pubTime>
+        <title>利用selenium做网页自动测试</title>
+        <pubTime>2016-04-12T16:00:00.000Z</pubTime>
         
-        <tag>googleChrome</tag>
-         
-        <tag>chrome</tag>
+        <tag>selenium</tag>
          
          
            
              
-              <breadCrumb title="google chrome" url="http://blog.seoui.com/categories/google-chrome/"/>
+              <breadCrumb title="技术" url="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/"/>
+          
+             
+              <breadCrumb title="selenium" url="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/selenium/"/>
+          
+             
+              <breadCrumb title="测试" url="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/selenium/%E6%B5%8B%E8%AF%95/"/>
           
         </display>
     </data>
