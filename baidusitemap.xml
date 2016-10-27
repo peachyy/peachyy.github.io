@@ -3,6 +3,7 @@
 
 
     
+    
   <url>
     <loc>http://blog.seoui.com/2016/01/25/share-chrome-plugin/</loc>
     <lastmod>2016-10-23T08:42:59.498Z</lastmod>
@@ -50,7 +51,6 @@
     
     
     
-    
   <url>
     <loc>http://blog.seoui.com/2016/07/07/supervisor/</loc>
     <lastmod>2016-10-16T06:39:42.212Z</lastmod>
@@ -70,51 +70,6 @@
           
              
               <breadCrumb title="linux" url="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/linux/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://blog.seoui.com/2016/06/17/ubuntu.networksetting/</loc>
-    <lastmod>2016-10-16T06:39:42.211Z</lastmod>
-    <data>
-        <display>
-        <title>ubuntu设置网络</title>
-        <pubTime>2016-06-16T16:00:00.000Z</pubTime>
-        
-        <tag>linux</tag>
-         
-        <tag>ubuntu</tag>
-         
-         
-           
-             
-              <breadCrumb title="技术" url="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/"/>
-          
-             
-              <breadCrumb title="linux" url="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/linux/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://blog.seoui.com/2016/05/24/html-form-enterevent/</loc>
-    <lastmod>2016-10-16T06:39:42.211Z</lastmod>
-    <data>
-        <display>
-        <title>form表单默认回车事件的问题</title>
-        <pubTime>2016-05-23T16:00:00.000Z</pubTime>
-        
-        <tag>from</tag>
-         
-         
-           
-             
-              <breadCrumb title="技术" url="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/"/>
           
         </display>
     </data>
@@ -165,6 +120,77 @@
           
              
               <breadCrumb title="docker" url="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/docker/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://blog.seoui.com/2016/05/24/html-form-enterevent/</loc>
+    <lastmod>2016-10-16T06:39:42.211Z</lastmod>
+    <data>
+        <display>
+        <title>form表单默认回车事件的问题</title>
+        <pubTime>2016-05-23T16:00:00.000Z</pubTime>
+        
+        <tag>from</tag>
+         
+         
+           
+             
+              <breadCrumb title="技术" url="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://blog.seoui.com/2016/06/17/ubuntu.networksetting/</loc>
+    <lastmod>2016-10-16T06:39:42.211Z</lastmod>
+    <data>
+        <display>
+        <title>ubuntu设置网络</title>
+        <pubTime>2016-06-16T16:00:00.000Z</pubTime>
+        
+        <tag>linux</tag>
+         
+        <tag>ubuntu</tag>
+         
+         
+           
+             
+              <breadCrumb title="技术" url="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/"/>
+          
+             
+              <breadCrumb title="linux" url="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/linux/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://blog.seoui.com/2016/04/13/selenium-autowebTest/</loc>
+    <lastmod>2016-10-16T06:39:42.210Z</lastmod>
+    <data>
+        <display>
+        <title>利用selenium做网页自动测试</title>
+        <pubTime>2016-04-12T16:00:00.000Z</pubTime>
+        
+        <tag>selenium</tag>
+         
+         
+           
+             
+              <breadCrumb title="技术" url="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/"/>
+          
+             
+              <breadCrumb title="selenium" url="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/selenium/"/>
+          
+             
+              <breadCrumb title="测试" url="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/selenium/%E6%B5%8B%E8%AF%95/"/>
           
         </display>
     </data>
@@ -242,32 +268,6 @@
 
     
   <url>
-    <loc>http://blog.seoui.com/2016/04/13/selenium-autowebTest/</loc>
-    <lastmod>2016-10-16T06:39:42.210Z</lastmod>
-    <data>
-        <display>
-        <title>利用selenium做网页自动测试</title>
-        <pubTime>2016-04-12T16:00:00.000Z</pubTime>
-        
-        <tag>selenium</tag>
-         
-         
-           
-             
-              <breadCrumb title="技术" url="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/"/>
-          
-             
-              <breadCrumb title="selenium" url="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/selenium/"/>
-          
-             
-              <breadCrumb title="测试" url="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/selenium/%E6%B5%8B%E8%AF%95/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
     <loc>http://blog.seoui.com/2016/01/04/crtbackspacebug/</loc>
     <lastmod>2016-10-16T06:39:42.209Z</lastmod>
     <data>
@@ -286,26 +286,6 @@
           
              
               <breadCrumb title="hbase" url="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/hbase/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://blog.seoui.com/2015/10/12/ThisAnimalYear/</loc>
-    <lastmod>2016-10-16T06:39:42.209Z</lastmod>
-    <data>
-        <display>
-        <title>本命年你在哪 干什么 还爱着谁？</title>
-        <pubTime>2015-10-11T16:00:00.000Z</pubTime>
-        
-        <tag>本命年感慨</tag>
-         
-         
-           
-             
-              <breadCrumb title="随笔" url="http://blog.seoui.com/categories/%E9%9A%8F%E7%AC%94/"/>
           
         </display>
     </data>
@@ -333,6 +313,26 @@
           
              
               <breadCrumb title="java" url="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/java/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://blog.seoui.com/2015/10/12/ThisAnimalYear/</loc>
+    <lastmod>2016-10-16T06:39:42.209Z</lastmod>
+    <data>
+        <display>
+        <title>本命年你在哪 干什么 还爱着谁？</title>
+        <pubTime>2015-10-11T16:00:00.000Z</pubTime>
+        
+        <tag>本命年感慨</tag>
+         
+         
+           
+             
+              <breadCrumb title="随笔" url="http://blog.seoui.com/categories/%E9%9A%8F%E7%AC%94/"/>
           
         </display>
     </data>
@@ -542,14 +542,18 @@
 
     
   <url>
-    <loc>http://blog.seoui.com/2015/08/19/httpinfolist/</loc>
+    <loc>http://blog.seoui.com/2015/08/10/java8newcharacteristics/</loc>
     <lastmod>2016-10-16T06:39:42.205Z</lastmod>
     <data>
         <display>
-        <title>HTTP Header详细文档</title>
-        <pubTime>2015-08-18T16:00:00.000Z</pubTime>
+        <title>java8中的一些新特性</title>
+        <pubTime>2015-08-09T16:00:00.000Z</pubTime>
         
-        <tag>HTTP</tag>
+        <tag>java</tag>
+         
+        <tag>java8</tag>
+         
+        <tag>新特性</tag>
          
          
            
@@ -557,7 +561,7 @@
               <breadCrumb title="技术" url="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/"/>
           
              
-              <breadCrumb title="HTTP" url="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/HTTP/"/>
+              <breadCrumb title="java" url="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/java/"/>
           
         </display>
     </data>
@@ -588,33 +592,6 @@
 
     
   <url>
-    <loc>http://blog.seoui.com/2015/08/10/java8newcharacteristics/</loc>
-    <lastmod>2016-10-16T06:39:42.205Z</lastmod>
-    <data>
-        <display>
-        <title>java8中的一些新特性</title>
-        <pubTime>2015-08-09T16:00:00.000Z</pubTime>
-        
-        <tag>java</tag>
-         
-        <tag>java8</tag>
-         
-        <tag>新特性</tag>
-         
-         
-           
-             
-              <breadCrumb title="技术" url="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/"/>
-          
-             
-              <breadCrumb title="java" url="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/java/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
     <loc>http://blog.seoui.com/2015/08/29/linux.general.command/</loc>
     <lastmod>2016-10-16T06:39:42.205Z</lastmod>
     <data>
@@ -631,6 +608,29 @@
           
              
               <breadCrumb title="linux" url="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/linux/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://blog.seoui.com/2015/08/19/httpinfolist/</loc>
+    <lastmod>2016-10-16T06:39:42.205Z</lastmod>
+    <data>
+        <display>
+        <title>HTTP Header详细文档</title>
+        <pubTime>2015-08-18T16:00:00.000Z</pubTime>
+        
+        <tag>HTTP</tag>
+         
+         
+           
+             
+              <breadCrumb title="技术" url="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/"/>
+          
+             
+              <breadCrumb title="HTTP" url="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/HTTP/"/>
           
         </display>
     </data>
@@ -658,19 +658,19 @@
 
     
   <url>
-    <loc>http://blog.seoui.com/2015/07/21/browerNotification/</loc>
+    <loc>http://blog.seoui.com/2015/07/21/lovewhat/</loc>
     <lastmod>2016-10-16T06:39:42.203Z</lastmod>
     <data>
         <display>
-        <title>浏览器对Notification通知的支持</title>
+        <title>爱是什么</title>
         <pubTime>2015-07-20T16:00:00.000Z</pubTime>
         
-        <tag>javascript</tag>
+        <tag>爱是什么</tag>
          
          
            
              
-              <breadCrumb title="技术" url="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/"/>
+              <breadCrumb title="随笔" url="http://blog.seoui.com/categories/%E9%9A%8F%E7%AC%94/"/>
           
         </display>
     </data>
@@ -730,39 +730,19 @@
 
     
   <url>
-    <loc>http://blog.seoui.com/2015/07/21/lovewhat/</loc>
+    <loc>http://blog.seoui.com/2015/07/21/browerNotification/</loc>
     <lastmod>2016-10-16T06:39:42.203Z</lastmod>
     <data>
         <display>
-        <title>爱是什么</title>
+        <title>浏览器对Notification通知的支持</title>
         <pubTime>2015-07-20T16:00:00.000Z</pubTime>
         
-        <tag>爱是什么</tag>
+        <tag>javascript</tag>
          
          
            
              
-              <breadCrumb title="随笔" url="http://blog.seoui.com/categories/%E9%9A%8F%E7%AC%94/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://blog.seoui.com/2015/06/19/fillingLookLook/</loc>
-    <lastmod>2016-10-16T06:39:42.202Z</lastmod>
-    <data>
-        <display>
-        <title>当你想放弃的时候就看看这个吧</title>
-        <pubTime>2015-06-18T16:00:00.000Z</pubTime>
-        
-        <tag>坚持</tag>
-         
-         
-           
-             
-              <breadCrumb title="感悟" url="http://blog.seoui.com/categories/%E6%84%9F%E6%82%9F/"/>
+              <breadCrumb title="技术" url="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/"/>
           
         </display>
     </data>
@@ -789,6 +769,26 @@
           
              
               <breadCrumb title="NoSql" url="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/Redis/NoSql/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://blog.seoui.com/2015/06/19/fillingLookLook/</loc>
+    <lastmod>2016-10-16T06:39:42.202Z</lastmod>
+    <data>
+        <display>
+        <title>当你想放弃的时候就看看这个吧</title>
+        <pubTime>2015-06-18T16:00:00.000Z</pubTime>
+        
+        <tag>坚持</tag>
+         
+         
+           
+             
+              <breadCrumb title="感悟" url="http://blog.seoui.com/categories/%E6%84%9F%E6%82%9F/"/>
           
         </display>
     </data>
@@ -923,26 +923,6 @@
 
     
   <url>
-    <loc>http://blog.seoui.com/2015/05/18/evalMoreUse/</loc>
-    <lastmod>2016-10-16T06:39:42.200Z</lastmod>
-    <data>
-        <display>
-        <title>eval的一些特殊用法</title>
-        <pubTime>2015-05-17T16:00:00.000Z</pubTime>
-        
-        <tag>javascript</tag>
-         
-         
-           
-             
-              <breadCrumb title="技术" url="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
     <loc>http://blog.seoui.com/2015/05/30/RedisStudy1/</loc>
     <lastmod>2016-10-16T06:39:42.200Z</lastmod>
     <data>
@@ -992,6 +972,26 @@
 
     
   <url>
+    <loc>http://blog.seoui.com/2015/05/18/evalMoreUse/</loc>
+    <lastmod>2016-10-16T06:39:42.200Z</lastmod>
+    <data>
+        <display>
+        <title>eval的一些特殊用法</title>
+        <pubTime>2015-05-17T16:00:00.000Z</pubTime>
+        
+        <tag>javascript</tag>
+         
+         
+           
+             
+              <breadCrumb title="技术" url="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://blog.seoui.com/2015/05/02/seeMood/</loc>
     <lastmod>2016-10-16T06:39:42.199Z</lastmod>
     <data>
@@ -1012,30 +1012,6 @@
 
     
   <url>
-    <loc>http://blog.seoui.com/2015/04/14/githubpageinstalldoc/</loc>
-    <lastmod>2016-10-16T06:39:42.199Z</lastmod>
-    <data>
-        <display>
-        <title>github pages + jekyll +markdown 搭建博客教程</title>
-        <pubTime>2015-04-13T16:00:00.000Z</pubTime>
-        
-        <tag>GitHub</tag>
-         
-        <tag>jekyll</tag>
-         
-        <tag>markdown</tag>
-         
-         
-           
-             
-              <breadCrumb title="技术" url="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
     <loc>http://blog.seoui.com/2015/04/09/my97Extend1/</loc>
     <lastmod>2016-10-16T06:39:42.199Z</lastmod>
     <data>
@@ -1046,6 +1022,32 @@
         <tag>javascript</tag>
          
         <tag>my97</tag>
+         
+         
+           
+             
+              <breadCrumb title="技术" url="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/"/>
+          
+             
+              <breadCrumb title="js" url="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/js/"/>
+          
+             
+              <breadCrumb title="javascript" url="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/js/javascript/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://blog.seoui.com/2015/03/26/parseInt-Browser-Compatible/</loc>
+    <lastmod>2016-10-16T06:39:42.199Z</lastmod>
+    <data>
+        <display>
+        <title>js中parseInt()函数浏览器兼容的问题</title>
+        <pubTime>2015-03-25T16:00:00.000Z</pubTime>
+        
+        <tag>兼容性</tag>
          
          
            
@@ -1090,14 +1092,42 @@
 
     
   <url>
-    <loc>http://blog.seoui.com/2015/03/26/parseInt-Browser-Compatible/</loc>
+    <loc>http://blog.seoui.com/2015/04/14/githubpageinstalldoc/</loc>
     <lastmod>2016-10-16T06:39:42.199Z</lastmod>
     <data>
         <display>
-        <title>js中parseInt()函数浏览器兼容的问题</title>
-        <pubTime>2015-03-25T16:00:00.000Z</pubTime>
+        <title>github pages + jekyll +markdown 搭建博客教程</title>
+        <pubTime>2015-04-13T16:00:00.000Z</pubTime>
         
-        <tag>兼容性</tag>
+        <tag>GitHub</tag>
+         
+        <tag>jekyll</tag>
+         
+        <tag>markdown</tag>
+         
+         
+           
+             
+              <breadCrumb title="技术" url="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://blog.seoui.com/2015/03/24/js-in-Operation/</loc>
+    <lastmod>2016-10-16T06:39:42.198Z</lastmod>
+    <data>
+        <display>
+        <title>js中 `in` 运算符</title>
+        <pubTime>2015-03-23T16:00:00.000Z</pubTime>
+        
+        <tag>javascript</tag>
+         
+        <tag>in运算符</tag>
+         
+        <tag>运算符</tag>
          
          
            
@@ -1193,36 +1223,6 @@
 
     
   <url>
-    <loc>http://blog.seoui.com/2015/03/24/js-in-Operation/</loc>
-    <lastmod>2016-10-16T06:39:42.198Z</lastmod>
-    <data>
-        <display>
-        <title>js中 `in` 运算符</title>
-        <pubTime>2015-03-23T16:00:00.000Z</pubTime>
-        
-        <tag>javascript</tag>
-         
-        <tag>in运算符</tag>
-         
-        <tag>运算符</tag>
-         
-         
-           
-             
-              <breadCrumb title="技术" url="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/"/>
-          
-             
-              <breadCrumb title="js" url="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/js/"/>
-          
-             
-              <breadCrumb title="javascript" url="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/js/javascript/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
     <loc>http://blog.seoui.com/2015/03/17/quit-job-idea/</loc>
     <lastmod>2016-10-16T06:39:42.197Z</lastmod>
     <data>
@@ -1266,14 +1266,14 @@
 
     
   <url>
-    <loc>http://blog.seoui.com/2015/03/13/test/</loc>
+    <loc>http://blog.seoui.com/2015/03/13/hight/</loc>
     <lastmod>2016-10-16T06:39:42.196Z</lastmod>
     <data>
         <display>
-        <title>测试一下</title>
+        <title>代码高亮测试</title>
         <pubTime>2015-03-12T16:00:00.000Z</pubTime>
         
-        <tag>测试</tag>
+        <tag>代码测试</tag>
          
          
            
@@ -1286,14 +1286,14 @@
 
     
   <url>
-    <loc>http://blog.seoui.com/2015/03/13/hight/</loc>
+    <loc>http://blog.seoui.com/2015/03/13/test/</loc>
     <lastmod>2016-10-16T06:39:42.196Z</lastmod>
     <data>
         <display>
-        <title>代码高亮测试</title>
+        <title>测试一下</title>
         <pubTime>2015-03-12T16:00:00.000Z</pubTime>
         
-        <tag>代码测试</tag>
+        <tag>测试</tag>
          
          
            

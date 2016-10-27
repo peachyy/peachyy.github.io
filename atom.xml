@@ -992,6 +992,36 @@
   </entry>
   
   <entry>
+    <title>javascript中with的用法</title>
+    <link href="http://blog.seoui.com/2015/09/09/js.with/"/>
+    <id>http://blog.seoui.com/2015/09/09/js.with/</id>
+    <published>2015-09-08T16:00:00.000Z</published>
+    <updated>2016-10-16T06:39:42.207Z</updated>
+    
+    <content type="html"><![CDATA[<p>在面向对象的JS和一些其他的很多场景会遇到同时针对同一个对象的N个属性取值或设置N个属性的值,你会发现出现了很多的重复的代码,简直就是丧心病狂.. 如下</p>
+ <figure class="highlight javascript"><table><tr><td class="code"><pre><div class="line"><span class="comment">//声明 了一个user对象</span></div><div class="line"><span class="keyword">var</span> user=&#123;</div><div class="line">	<span class="attr">name</span>:<span class="string">'user1'</span>,</div><div class="line">	<span class="attr">age</span>:<span class="number">20</span>,</div><div class="line">	<span class="attr">sex</span>:<span class="number">1</span></div><div class="line">	<span class="comment">//.....可能还有n字段</span></div><div class="line">&#125;;</div><div class="line"></div><div class="line"><span class="built_in">console</span>.info(user.name);<span class="comment">//打印name</span></div><div class="line"><span class="built_in">console</span>.info(user.age);<span class="comment">//打印age</span></div><div class="line"><span class="built_in">console</span>.info(user.sex);<span class="comment">//打印sex</span></div><div class="line"><span class="comment">//console.info(user....);//可能会打印更多的信息</span></div></pre></td></tr></table></figure>
+<p><img src="!--￼2--&gt;/images/2015/09/2015-09-09-js.with-1.jpg" alt=""></p>
+<p>虽然简单易读 但不要我们追求的风格，那么接下来使用<code>with</code>看看有什么样的变化呢</p>
+ <figure class="highlight javascript"><table><tr><td class="code"><pre><div class="line"><span class="keyword">var</span> user=&#123;</div><div class="line">	<span class="attr">name</span>:<span class="string">'user1'</span>,</div><div class="line">	<span class="attr">age</span>:<span class="number">20</span>,</div><div class="line">	<span class="attr">sex</span>:<span class="number">1</span></div><div class="line">	<span class="comment">//.....可能还有n字段</span></div><div class="line">&#125;;</div><div class="line"><span class="comment">//这样就不用没有显式的调用属性了。</span></div><div class="line">   <span class="keyword">with</span> (user)&#123;</div><div class="line">      <span class="built_in">console</span>.info(name);</div><div class="line">      <span class="built_in">console</span>.info(age);</div><div class="line">      <span class="built_in">console</span>.info(sex);</div><div class="line">   <span class="built_in">console</span>.info(<span class="keyword">this</span>);<span class="comment">//打印一下作用域是谁呢?</span></div><div class="line">  </div><div class="line">     <span class="comment">//.......................</span></div><div class="line">   &#125;</div></pre></td></tr></table></figure>
+<p>完美 又离简单明了的JS代码又近了一步。这算是进步吗?</p>
+<p>示例地址:<a href="https://cqweclick.github.io/jswithdemo.html" target="_blank">jswithdemo.html</a></p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;在面向对象的JS和一些其他的很多场景会遇到同时针对同一个对象的N个属性取值或设置N个属性的值,你会发现出现了很多的重复的代码,简直就是丧心病狂.. 如下&lt;/p&gt;
+ &lt;figure class=&quot;highlight javascript&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td cla
+    
+    </summary>
+    
+      <category term="技术" scheme="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/"/>
+    
+    
+      <category term="javascript" scheme="http://blog.seoui.com/tags/javascript/"/>
+    
+  </entry>
+  
+  <entry>
     <title>念大学有什么用处呢</title>
     <link href="http://blog.seoui.com/2015/09/09/ToUniversity/"/>
     <id>http://blog.seoui.com/2015/09/09/ToUniversity/</id>
@@ -1073,55 +1103,44 @@
   </entry>
   
   <entry>
-    <title>javascript中with的用法</title>
-    <link href="http://blog.seoui.com/2015/09/09/js.with/"/>
-    <id>http://blog.seoui.com/2015/09/09/js.with/</id>
-    <published>2015-09-08T16:00:00.000Z</published>
-    <updated>2016-10-16T06:39:42.207Z</updated>
-    
-    <content type="html"><![CDATA[<p>在面向对象的JS和一些其他的很多场景会遇到同时针对同一个对象的N个属性取值或设置N个属性的值,你会发现出现了很多的重复的代码,简直就是丧心病狂.. 如下</p>
- <figure class="highlight javascript"><table><tr><td class="code"><pre><div class="line"><span class="comment">//声明 了一个user对象</span></div><div class="line"><span class="keyword">var</span> user=&#123;</div><div class="line">	<span class="attr">name</span>:<span class="string">'user1'</span>,</div><div class="line">	<span class="attr">age</span>:<span class="number">20</span>,</div><div class="line">	<span class="attr">sex</span>:<span class="number">1</span></div><div class="line">	<span class="comment">//.....可能还有n字段</span></div><div class="line">&#125;;</div><div class="line"></div><div class="line"><span class="built_in">console</span>.info(user.name);<span class="comment">//打印name</span></div><div class="line"><span class="built_in">console</span>.info(user.age);<span class="comment">//打印age</span></div><div class="line"><span class="built_in">console</span>.info(user.sex);<span class="comment">//打印sex</span></div><div class="line"><span class="comment">//console.info(user....);//可能会打印更多的信息</span></div></pre></td></tr></table></figure>
-<p><img src="!--￼2--&gt;/images/2015/09/2015-09-09-js.with-1.jpg" alt=""></p>
-<p>虽然简单易读 但不要我们追求的风格，那么接下来使用<code>with</code>看看有什么样的变化呢</p>
- <figure class="highlight javascript"><table><tr><td class="code"><pre><div class="line"><span class="keyword">var</span> user=&#123;</div><div class="line">	<span class="attr">name</span>:<span class="string">'user1'</span>,</div><div class="line">	<span class="attr">age</span>:<span class="number">20</span>,</div><div class="line">	<span class="attr">sex</span>:<span class="number">1</span></div><div class="line">	<span class="comment">//.....可能还有n字段</span></div><div class="line">&#125;;</div><div class="line"><span class="comment">//这样就不用没有显式的调用属性了。</span></div><div class="line">   <span class="keyword">with</span> (user)&#123;</div><div class="line">      <span class="built_in">console</span>.info(name);</div><div class="line">      <span class="built_in">console</span>.info(age);</div><div class="line">      <span class="built_in">console</span>.info(sex);</div><div class="line">   <span class="built_in">console</span>.info(<span class="keyword">this</span>);<span class="comment">//打印一下作用域是谁呢?</span></div><div class="line">  </div><div class="line">     <span class="comment">//.......................</span></div><div class="line">   &#125;</div></pre></td></tr></table></figure>
-<p>完美 又离简单明了的JS代码又近了一步。这算是进步吗?</p>
-<p>示例地址:<a href="https://cqweclick.github.io/jswithdemo.html" target="_blank">jswithdemo.html</a></p>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;p&gt;在面向对象的JS和一些其他的很多场景会遇到同时针对同一个对象的N个属性取值或设置N个属性的值,你会发现出现了很多的重复的代码,简直就是丧心病狂.. 如下&lt;/p&gt;
- &lt;figure class=&quot;highlight javascript&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td cla
-    
-    </summary>
-    
-      <category term="技术" scheme="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/"/>
-    
-    
-      <category term="javascript" scheme="http://blog.seoui.com/tags/javascript/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Linux用户切换</title>
-    <link href="http://blog.seoui.com/2015/09/05/linux.switchUser/"/>
-    <id>http://blog.seoui.com/2015/09/05/linux.switchUser/</id>
+    <title>Linux用户与用户组管理</title>
+    <link href="http://blog.seoui.com/2015/09/05/linux.usergroupmanager/"/>
+    <id>http://blog.seoui.com/2015/09/05/linux.usergroupmanager/</id>
     <published>2015-09-04T16:00:00.000Z</published>
     <updated>2016-10-16T06:39:42.206Z</updated>
     
-    <content type="html"><![CDATA[<p>有时候用一个普通权限的用户登录系统 而需要管理员的权限的时候可以使用<code>su</code> 或者<code>sudo</code>命令完成。</p>
-<p>如 在abc用户下 切换到root用户 从而实现一些root权限的操作</p>
- <figure class="highlight html"><table><tr><td class="code"><pre><div class="line">[abc@localhost ~]$ su root</div><div class="line">Password: </div><div class="line">[root@localhost abcabc]#</div></pre></td></tr></table></figure>
-<p>还有一种需求是 我不希望切换到root用户环境下,但是我想暂时拥有root权限 可以使用<code>sudo</code></p>
-<p>如下在abc用户下想查看/etc/shadow这个文件内容 而这个文件是权限只是对root可读，使用以下命令 输入密码后可顺利执行。</p>
- <figure class="highlight html"><table><tr><td class="code"><pre><div class="line">[abc@localhost ~]$ sudo cat /etc/shadow</div></pre></td></tr></table></figure>
+    <content type="html"><![CDATA[<p>Linux 为系统默认配置了N多的用户 它们都保存在/etc/passwd文件中。如下图</p>
+<p><img src="!--￼5--&gt;/images/2015/09/2015-09-05-linux.usergroupmanager-1.png" alt=""></p>
+<p>每一个用户由 <strong>用户名：密码：用户标识：组标识:描述:所属目录:shell</strong> 7个字段组合而成,其中密码是加密的 使用X字符替代。这些用户都是系统内置的 shell字段为/sbin/nologin时 这个用户是不可登陆的。只是为了完成一些独有的功能而存在。</p>
+<p>由于密码是加密的那么/etc/shadow文件专门用来保存用户的密码信息。</p>
+<p>另外介绍一个用户组文件信息是保存在/etc/group 文件中的。</p>
+<p>##用户管理##<br><code>useradd</code> <strong>添加用户</strong>  </p>
+ <figure class="highlight html"><table><tr><td class="code"><pre><div class="line">[root@localhost ~]# useradd --help</div><div class="line">Usage: useradd [options] LOGIN</div><div class="line"></div><div class="line">Options:</div><div class="line">  -b, --base-dir BASE_DIR       base directory for the home directory of the</div><div class="line">                                new account</div><div class="line">  -c, --comment COMMENT         GECOS field of the new account</div><div class="line">  -d, --home-dir HOME_DIR       home directory of the new account</div><div class="line">  -D, --defaults                print or change default useradd configuration</div><div class="line">  -e, --expiredate EXPIRE_DATE  expiration date of the new account</div><div class="line">  -f, --inactive INACTIVE       password inactivity period of the new account</div><div class="line">  -g, --gid GROUP               name or ID of the primary group of the new</div><div class="line">                                account</div><div class="line">  -G, --groups GROUPS           list of supplementary groups of the new</div><div class="line">                                account</div><div class="line">  -h, --help                    display this help message and exit</div><div class="line">  -k, --skel SKEL_DIR           use this alternative skeleton directory</div><div class="line">  -K, --key KEY=VALUE           override /etc/login.defs defaults</div><div class="line">  -l, --no-log-init             do not add the user to the lastlog and</div><div class="line">                                faillog databases</div><div class="line">  -m, --create-home             create the user's home directory</div><div class="line">  -M, --no-create-home          do not create the user's home directory</div><div class="line">  -N, --no-user-group           do not create a group with the same name as</div><div class="line">                                the user</div><div class="line">  -o, --non-unique              allow to create users with duplicate</div><div class="line">                                (non-unique) UID</div><div class="line">  -p, --password PASSWORD       encrypted password of the new account</div><div class="line">  -r, --system                  create a system account</div><div class="line">  -s, --shell SHELL             login shell of the new account</div><div class="line">  -u, --uid UID                 user ID of the new account</div><div class="line">  -U, --user-group              create a group with the same name as the user</div><div class="line">  -Z, --selinux-user SEUSER     use a specific SEUSER for the SELinux user mapping</div></pre></td></tr></table></figure>
+<p> 例如：</p>
+<p> <code>useradd -c &#39;this a comment&#39;  abcabc</code> 添加一个用户abcabc </p>
+<p> <code>cat /etc/passwd</code>查看用户信息文件</p>
+<p> <code>abcabc:x:503:504:this a comment:/home/abcabc:/bin/bash</code> abcabc添加成功。</p>
+<p>为abcabc用户设置密码passwd abcabc 注意<em>如果passwd命令后不输入用户名 则默认修改当前登陆用户的密码</em></p>
+ <figure class="highlight html"><table><tr><td class="code"><pre><div class="line">passwd abcabc</div></pre></td></tr></table></figure>
+<p>添加用户同时指定一个普通用户组 如系统中已存在用户组shareGroup</p>
+ <figure class="highlight html"><table><tr><td class="code"><pre><div class="line">useradd -c 'this a comment'  abcabc -G shareGroup</div></pre></td></tr></table></figure>
+<p><code>usermod</code> <strong>修改用户</strong></p>
+ <figure class="highlight html"><table><tr><td class="code"><pre><div class="line">usermod -l abc abcabc      修改用户名abcabc为abc</div><div class="line">usermod -G share2          添加一个用户组share2</div><div class="line">usermod -L abc             锁定abc用户</div><div class="line">usermod -U abc             为abc用户解除锁定状态</div></pre></td></tr></table></figure>
+<p><code>userdel</code> <strong>删除用户</strong></p>
+ <figure class="highlight html"><table><tr><td class="code"><pre><div class="line">userdel abc 删除用户abc 不会删除用户的所属文件目录</div><div class="line">   userdel -r abc 删除用户abc 同时会删除用户所属的文件目录</div></pre></td></tr></table></figure>
+<p>##用户组管理##</p>
+<p><code>groupadd</code> <strong>添加组</strong></p>
+<p> groupadd  ugroup1    添加用户组ugroup1</p>
+<p> <code>groupmod</code>    <strong>修改用户组</strong></p>
+<p> <code>groupdel</code> <strong>删除组</strong></p>
+<p>  groupdel ugroup1   删除用户组ugroup1</p>
+<p>用户组与用户管理的操作差不多是一样的。不在一一说明。</p>
 ]]></content>
     
     <summary type="html">
     
-      &lt;p&gt;有时候用一个普通权限的用户登录系统 而需要管理员的权限的时候可以使用&lt;code&gt;su&lt;/code&gt; 或者&lt;code&gt;sudo&lt;/code&gt;命令完成。&lt;/p&gt;
-&lt;p&gt;如 在abc用户下 切换到root用户 从而实现一些root权限的操作&lt;/p&gt;
- &lt;figure class=
+      &lt;p&gt;Linux 为系统默认配置了N多的用户 它们都保存在/etc/passwd文件中。如下图&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;!--￼5--&amp;gt;/images/2015/09/2015-09-05-linux.usergroupmanager-1.png&quot; alt=&quot;&quot;&gt;
     
     </summary>
     
