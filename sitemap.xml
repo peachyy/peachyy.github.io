@@ -2,6 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://blog.seoui.com/2016/10/29/rabbitmqInstall/</loc>
+    
+    <lastmod>2016-10-29T05:02:36.169Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://blog.seoui.com/guestbook/index.html</loc>
     
     <lastmod>2016-10-27T12:36:33.530Z</lastmod>
@@ -44,7 +51,7 @@
   </url>
   
   <url>
-    <loc>http://blog.seoui.com/2016/07/04/gzip-uzip/</loc>
+    <loc>http://blog.seoui.com/2016/06/17/ubuntu.networksetting/</loc>
     
     <lastmod>2016-10-16T06:39:42.211Z</lastmod>
     
@@ -65,16 +72,9 @@
   </url>
   
   <url>
-    <loc>http://blog.seoui.com/2016/06/17/ubuntu.networksetting/</loc>
+    <loc>http://blog.seoui.com/2016/07/04/gzip-uzip/</loc>
     
     <lastmod>2016-10-16T06:39:42.211Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://blog.seoui.com/2016/04/13/selenium-autowebTest/</loc>
-    
-    <lastmod>2016-10-16T06:39:42.210Z</lastmod>
     
   </url>
   
@@ -100,6 +100,13 @@
   </url>
   
   <url>
+    <loc>http://blog.seoui.com/2016/04/13/selenium-autowebTest/</loc>
+    
+    <lastmod>2016-10-16T06:39:42.210Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://blog.seoui.com/2016/01/04/crtbackspacebug/</loc>
     
     <lastmod>2016-10-16T06:39:42.209Z</lastmod>
@@ -107,14 +114,14 @@
   </url>
   
   <url>
-    <loc>http://blog.seoui.com/2015/10/27/apachetomcatClustering/</loc>
+    <loc>http://blog.seoui.com/2015/10/12/ThisAnimalYear/</loc>
     
     <lastmod>2016-10-16T06:39:42.209Z</lastmod>
     
   </url>
   
   <url>
-    <loc>http://blog.seoui.com/2015/10/12/ThisAnimalYear/</loc>
+    <loc>http://blog.seoui.com/2015/10/27/apachetomcatClustering/</loc>
     
     <lastmod>2016-10-16T06:39:42.209Z</lastmod>
     
@@ -184,7 +191,7 @@
   </url>
   
   <url>
-    <loc>http://blog.seoui.com/2015/08/10/java8newcharacteristics/</loc>
+    <loc>http://blog.seoui.com/2015/08/19/httpinfolist/</loc>
     
     <lastmod>2016-10-16T06:39:42.205Z</lastmod>
     
@@ -198,14 +205,14 @@
   </url>
   
   <url>
-    <loc>http://blog.seoui.com/2015/08/29/linux.general.command/</loc>
+    <loc>http://blog.seoui.com/2015/08/10/java8newcharacteristics/</loc>
     
     <lastmod>2016-10-16T06:39:42.205Z</lastmod>
     
   </url>
   
   <url>
-    <loc>http://blog.seoui.com/2015/08/19/httpinfolist/</loc>
+    <loc>http://blog.seoui.com/2015/08/29/linux.general.command/</loc>
     
     <lastmod>2016-10-16T06:39:42.205Z</lastmod>
     

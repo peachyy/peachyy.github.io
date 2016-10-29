@@ -5,10 +5,79 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://blog.seoui.com/"/>
-  <updated>2016-10-16T14:05:29.617Z</updated>
+  <updated>2016-10-29T05:02:36.169Z</updated>
   <id>http://blog.seoui.com/</id>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>rabbitmq安装</title>
+    <link href="http://blog.seoui.com/2016/10/29/rabbitmqInstall/"/>
+    <id>http://blog.seoui.com/2016/10/29/rabbitmqInstall/</id>
+    <published>2016-10-28T16:00:00.000Z</published>
+    <updated>2016-10-29T05:02:36.169Z</updated>
+    
+    <content type="html"><![CDATA[<h3 id="安装erlang环境"><a href="#安装erlang环境" class="headerlink" title="安装erlang环境"></a>安装erlang环境</h3><p> 假设erlang环境已经安装好了。</p>
+<h3 id="安装rabbitmq"><a href="#安装rabbitmq" class="headerlink" title="安装rabbitmq"></a>安装rabbitmq</h3><p>采用源码安装方式,首先去官网拉取源代码并解压。</p>
+<pre><code class="shell">wget http://www.rabbitmq.com/releases/rabbitmq-server/v3.4.0/rabbitmq-server-3.4.0.tar.gz
+
+tar -zxf rabbitmq-server-3.4.0.tar.gz
+</code></pre>
+<a id="more"></a>
+<p>编译并安装   这里把安装的目录设置为/opt/reabbitmq</p>
+<pre><code class="shell">cd rabbitmq-server-3.4.0
+
+make
+
+make install TARGET_DIR=/opt/rabbitmq SBIN_DIR=/opt/rabbitmq/sbin MAN_DIR=/opt/rabbitmq/man DOC_INSTALL_DIR=/opt/rabbitmq/doc
+</code></pre>
+<h3 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h3><p>设置环境变量 也可以包装为一个服务的方式存在 这里设置一下环境变量就好了。</p>
+<pre><code class="shell">
+export RABBITMQ_HOME=/opt/rabbitmq
+export PATH=$RABBITMQ_HOME/sbin:$PATH
+#设置好之后 需要source一下才能生效
+</code></pre>
+<p>启动web管理插件 mq服务</p>
+<pre><code class="shell">
+rabbitmq-plugins enable rabbitmq_management
+#启动mq
+rabbitmq-server start
+</code></pre>
+<p>到这里基本的安装已经完成此时可以 可以在本机使用<code>localhost:15672</code>访问了,rabbitmq内置了一个用户<code>guest/guest</code>不过只能用localhost访问。</p>
+<p>如果想让其他机器也能访问管理web页面 需要关闭防火墙并创建另外的用户。</p>
+<h3 id="简单常用命令"><a href="#简单常用命令" class="headerlink" title="简单常用命令"></a>简单常用命令</h3><p>添加用户</p>
+<pre><code class="shell">
+rabbitmqctl add_user  admin  admin
+</code></pre>
+<p>为用户赋予角色 </p>
+<p>在rabbitmq中角色有<code>administrator</code>、<code>monitoring</code> 、<code>management</code>、<code>policymaker</code>、<code>none</code>。</p>
+<pre><code class="shell">#为admin 赋予administrator角色
+rabbitmqctl set_user_tags   admin  administrator
+</code></pre>
+<p>查看用户列表</p>
+<pre><code class="shell">rabbitmqctl list_users
+</code></pre>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;h3 id=&quot;安装erlang环境&quot;&gt;&lt;a href=&quot;#安装erlang环境&quot; class=&quot;headerlink&quot; title=&quot;安装erlang环境&quot;&gt;&lt;/a&gt;安装erlang环境&lt;/h3&gt;&lt;p&gt; 假设erlang环境已经安装好了。&lt;/p&gt;
+&lt;h3 id=&quot;安装rabbitmq&quot;&gt;&lt;a href=&quot;#安装rabbitmq&quot; class=&quot;headerlink&quot; title=&quot;安装rabbitmq&quot;&gt;&lt;/a&gt;安装rabbitmq&lt;/h3&gt;&lt;p&gt;采用源码安装方式,首先去官网拉取源代码并解压。&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;shell&quot;&gt;wget http://www.rabbitmq.com/releases/rabbitmq-server/v3.4.0/rabbitmq-server-3.4.0.tar.gz
+
+tar -zxf rabbitmq-server-3.4.0.tar.gz
+&lt;/code&gt;&lt;/pre&gt;
+    
+    </summary>
+    
+      <category term="技术" scheme="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/"/>
+    
+      <category term="rabbitmq" scheme="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/rabbitmq/"/>
+    
+    
+      <category term="rabbitmq" scheme="http://blog.seoui.com/tags/rabbitmq/"/>
+    
+  </entry>
   
   <entry>
     <title>emmet编写Html</title>
@@ -1099,57 +1168,6 @@
     
     
       <category term="大学" scheme="http://blog.seoui.com/tags/%E5%A4%A7%E5%AD%A6/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Linux用户与用户组管理</title>
-    <link href="http://blog.seoui.com/2015/09/05/linux.usergroupmanager/"/>
-    <id>http://blog.seoui.com/2015/09/05/linux.usergroupmanager/</id>
-    <published>2015-09-04T16:00:00.000Z</published>
-    <updated>2016-10-16T06:39:42.206Z</updated>
-    
-    <content type="html"><![CDATA[<p>Linux 为系统默认配置了N多的用户 它们都保存在/etc/passwd文件中。如下图</p>
-<p><img src="!--￼5--&gt;/images/2015/09/2015-09-05-linux.usergroupmanager-1.png" alt=""></p>
-<p>每一个用户由 <strong>用户名：密码：用户标识：组标识:描述:所属目录:shell</strong> 7个字段组合而成,其中密码是加密的 使用X字符替代。这些用户都是系统内置的 shell字段为/sbin/nologin时 这个用户是不可登陆的。只是为了完成一些独有的功能而存在。</p>
-<p>由于密码是加密的那么/etc/shadow文件专门用来保存用户的密码信息。</p>
-<p>另外介绍一个用户组文件信息是保存在/etc/group 文件中的。</p>
-<p>##用户管理##<br><code>useradd</code> <strong>添加用户</strong>  </p>
- <figure class="highlight html"><table><tr><td class="code"><pre><div class="line">[root@localhost ~]# useradd --help</div><div class="line">Usage: useradd [options] LOGIN</div><div class="line"></div><div class="line">Options:</div><div class="line">  -b, --base-dir BASE_DIR       base directory for the home directory of the</div><div class="line">                                new account</div><div class="line">  -c, --comment COMMENT         GECOS field of the new account</div><div class="line">  -d, --home-dir HOME_DIR       home directory of the new account</div><div class="line">  -D, --defaults                print or change default useradd configuration</div><div class="line">  -e, --expiredate EXPIRE_DATE  expiration date of the new account</div><div class="line">  -f, --inactive INACTIVE       password inactivity period of the new account</div><div class="line">  -g, --gid GROUP               name or ID of the primary group of the new</div><div class="line">                                account</div><div class="line">  -G, --groups GROUPS           list of supplementary groups of the new</div><div class="line">                                account</div><div class="line">  -h, --help                    display this help message and exit</div><div class="line">  -k, --skel SKEL_DIR           use this alternative skeleton directory</div><div class="line">  -K, --key KEY=VALUE           override /etc/login.defs defaults</div><div class="line">  -l, --no-log-init             do not add the user to the lastlog and</div><div class="line">                                faillog databases</div><div class="line">  -m, --create-home             create the user's home directory</div><div class="line">  -M, --no-create-home          do not create the user's home directory</div><div class="line">  -N, --no-user-group           do not create a group with the same name as</div><div class="line">                                the user</div><div class="line">  -o, --non-unique              allow to create users with duplicate</div><div class="line">                                (non-unique) UID</div><div class="line">  -p, --password PASSWORD       encrypted password of the new account</div><div class="line">  -r, --system                  create a system account</div><div class="line">  -s, --shell SHELL             login shell of the new account</div><div class="line">  -u, --uid UID                 user ID of the new account</div><div class="line">  -U, --user-group              create a group with the same name as the user</div><div class="line">  -Z, --selinux-user SEUSER     use a specific SEUSER for the SELinux user mapping</div></pre></td></tr></table></figure>
-<p> 例如：</p>
-<p> <code>useradd -c &#39;this a comment&#39;  abcabc</code> 添加一个用户abcabc </p>
-<p> <code>cat /etc/passwd</code>查看用户信息文件</p>
-<p> <code>abcabc:x:503:504:this a comment:/home/abcabc:/bin/bash</code> abcabc添加成功。</p>
-<p>为abcabc用户设置密码passwd abcabc 注意<em>如果passwd命令后不输入用户名 则默认修改当前登陆用户的密码</em></p>
- <figure class="highlight html"><table><tr><td class="code"><pre><div class="line">passwd abcabc</div></pre></td></tr></table></figure>
-<p>添加用户同时指定一个普通用户组 如系统中已存在用户组shareGroup</p>
- <figure class="highlight html"><table><tr><td class="code"><pre><div class="line">useradd -c 'this a comment'  abcabc -G shareGroup</div></pre></td></tr></table></figure>
-<p><code>usermod</code> <strong>修改用户</strong></p>
- <figure class="highlight html"><table><tr><td class="code"><pre><div class="line">usermod -l abc abcabc      修改用户名abcabc为abc</div><div class="line">usermod -G share2          添加一个用户组share2</div><div class="line">usermod -L abc             锁定abc用户</div><div class="line">usermod -U abc             为abc用户解除锁定状态</div></pre></td></tr></table></figure>
-<p><code>userdel</code> <strong>删除用户</strong></p>
- <figure class="highlight html"><table><tr><td class="code"><pre><div class="line">userdel abc 删除用户abc 不会删除用户的所属文件目录</div><div class="line">   userdel -r abc 删除用户abc 同时会删除用户所属的文件目录</div></pre></td></tr></table></figure>
-<p>##用户组管理##</p>
-<p><code>groupadd</code> <strong>添加组</strong></p>
-<p> groupadd  ugroup1    添加用户组ugroup1</p>
-<p> <code>groupmod</code>    <strong>修改用户组</strong></p>
-<p> <code>groupdel</code> <strong>删除组</strong></p>
-<p>  groupdel ugroup1   删除用户组ugroup1</p>
-<p>用户组与用户管理的操作差不多是一样的。不在一一说明。</p>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;p&gt;Linux 为系统默认配置了N多的用户 它们都保存在/etc/passwd文件中。如下图&lt;/p&gt;
-&lt;p&gt;&lt;img src=&quot;!--￼5--&amp;gt;/images/2015/09/2015-09-05-linux.usergroupmanager-1.png&quot; alt=&quot;&quot;&gt;
-    
-    </summary>
-    
-      <category term="技术" scheme="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/"/>
-    
-      <category term="linux" scheme="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/linux/"/>
-    
-    
-      <category term="linux" scheme="http://blog.seoui.com/tags/linux/"/>
     
   </entry>
   

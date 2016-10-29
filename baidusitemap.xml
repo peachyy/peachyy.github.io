@@ -3,6 +3,29 @@
 
 
     
+  <url>
+    <loc>http://blog.seoui.com/2016/10/29/rabbitmqInstall/</loc>
+    <lastmod>2016-10-29T05:02:36.169Z</lastmod>
+    <data>
+        <display>
+        <title>rabbitmq安装</title>
+        <pubTime>2016-10-28T16:00:00.000Z</pubTime>
+        
+        <tag>rabbitmq</tag>
+         
+         
+           
+             
+              <breadCrumb title="技术" url="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/"/>
+          
+             
+              <breadCrumb title="rabbitmq" url="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/rabbitmq/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
     
   <url>
     <loc>http://blog.seoui.com/2016/01/25/share-chrome-plugin/</loc>
@@ -77,18 +100,16 @@
 
     
   <url>
-    <loc>http://blog.seoui.com/2016/07/04/gzip-uzip/</loc>
+    <loc>http://blog.seoui.com/2016/06/17/ubuntu.networksetting/</loc>
     <lastmod>2016-10-16T06:39:42.211Z</lastmod>
     <data>
         <display>
-        <title>gzip 和 zip在linux上的使用</title>
-        <pubTime>2016-07-03T16:00:00.000Z</pubTime>
+        <title>ubuntu设置网络</title>
+        <pubTime>2016-06-16T16:00:00.000Z</pubTime>
         
         <tag>linux</tag>
          
-        <tag>unzip</tag>
-         
-        <tag>gunzip</tag>
+        <tag>ubuntu</tag>
          
          
            
@@ -147,16 +168,18 @@
 
     
   <url>
-    <loc>http://blog.seoui.com/2016/06/17/ubuntu.networksetting/</loc>
+    <loc>http://blog.seoui.com/2016/07/04/gzip-uzip/</loc>
     <lastmod>2016-10-16T06:39:42.211Z</lastmod>
     <data>
         <display>
-        <title>ubuntu设置网络</title>
-        <pubTime>2016-06-16T16:00:00.000Z</pubTime>
+        <title>gzip 和 zip在linux上的使用</title>
+        <pubTime>2016-07-03T16:00:00.000Z</pubTime>
         
         <tag>linux</tag>
          
-        <tag>ubuntu</tag>
+        <tag>unzip</tag>
+         
+        <tag>gunzip</tag>
          
          
            
@@ -165,32 +188,6 @@
           
              
               <breadCrumb title="linux" url="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/linux/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://blog.seoui.com/2016/04/13/selenium-autowebTest/</loc>
-    <lastmod>2016-10-16T06:39:42.210Z</lastmod>
-    <data>
-        <display>
-        <title>利用selenium做网页自动测试</title>
-        <pubTime>2016-04-12T16:00:00.000Z</pubTime>
-        
-        <tag>selenium</tag>
-         
-         
-           
-             
-              <breadCrumb title="技术" url="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/"/>
-          
-             
-              <breadCrumb title="selenium" url="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/selenium/"/>
-          
-             
-              <breadCrumb title="测试" url="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/selenium/%E6%B5%8B%E8%AF%95/"/>
           
         </display>
     </data>
@@ -268,6 +265,32 @@
 
     
   <url>
+    <loc>http://blog.seoui.com/2016/04/13/selenium-autowebTest/</loc>
+    <lastmod>2016-10-16T06:39:42.210Z</lastmod>
+    <data>
+        <display>
+        <title>利用selenium做网页自动测试</title>
+        <pubTime>2016-04-12T16:00:00.000Z</pubTime>
+        
+        <tag>selenium</tag>
+         
+         
+           
+             
+              <breadCrumb title="技术" url="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/"/>
+          
+             
+              <breadCrumb title="selenium" url="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/selenium/"/>
+          
+             
+              <breadCrumb title="测试" url="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/selenium/%E6%B5%8B%E8%AF%95/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://blog.seoui.com/2016/01/04/crtbackspacebug/</loc>
     <lastmod>2016-10-16T06:39:42.209Z</lastmod>
     <data>
@@ -286,6 +309,26 @@
           
              
               <breadCrumb title="hbase" url="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/hbase/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://blog.seoui.com/2015/10/12/ThisAnimalYear/</loc>
+    <lastmod>2016-10-16T06:39:42.209Z</lastmod>
+    <data>
+        <display>
+        <title>本命年你在哪 干什么 还爱着谁？</title>
+        <pubTime>2015-10-11T16:00:00.000Z</pubTime>
+        
+        <tag>本命年感慨</tag>
+         
+         
+           
+             
+              <breadCrumb title="随笔" url="http://blog.seoui.com/categories/%E9%9A%8F%E7%AC%94/"/>
           
         </display>
     </data>
@@ -313,26 +356,6 @@
           
              
               <breadCrumb title="java" url="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/java/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://blog.seoui.com/2015/10/12/ThisAnimalYear/</loc>
-    <lastmod>2016-10-16T06:39:42.209Z</lastmod>
-    <data>
-        <display>
-        <title>本命年你在哪 干什么 还爱着谁？</title>
-        <pubTime>2015-10-11T16:00:00.000Z</pubTime>
-        
-        <tag>本命年感慨</tag>
-         
-         
-           
-             
-              <breadCrumb title="随笔" url="http://blog.seoui.com/categories/%E9%9A%8F%E7%AC%94/"/>
           
         </display>
     </data>
@@ -542,18 +565,14 @@
 
     
   <url>
-    <loc>http://blog.seoui.com/2015/08/10/java8newcharacteristics/</loc>
+    <loc>http://blog.seoui.com/2015/08/19/httpinfolist/</loc>
     <lastmod>2016-10-16T06:39:42.205Z</lastmod>
     <data>
         <display>
-        <title>java8中的一些新特性</title>
-        <pubTime>2015-08-09T16:00:00.000Z</pubTime>
+        <title>HTTP Header详细文档</title>
+        <pubTime>2015-08-18T16:00:00.000Z</pubTime>
         
-        <tag>java</tag>
-         
-        <tag>java8</tag>
-         
-        <tag>新特性</tag>
+        <tag>HTTP</tag>
          
          
            
@@ -561,7 +580,7 @@
               <breadCrumb title="技术" url="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/"/>
           
              
-              <breadCrumb title="java" url="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/java/"/>
+              <breadCrumb title="HTTP" url="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/HTTP/"/>
           
         </display>
     </data>
@@ -592,6 +611,33 @@
 
     
   <url>
+    <loc>http://blog.seoui.com/2015/08/10/java8newcharacteristics/</loc>
+    <lastmod>2016-10-16T06:39:42.205Z</lastmod>
+    <data>
+        <display>
+        <title>java8中的一些新特性</title>
+        <pubTime>2015-08-09T16:00:00.000Z</pubTime>
+        
+        <tag>java</tag>
+         
+        <tag>java8</tag>
+         
+        <tag>新特性</tag>
+         
+         
+           
+             
+              <breadCrumb title="技术" url="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/"/>
+          
+             
+              <breadCrumb title="java" url="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/java/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://blog.seoui.com/2015/08/29/linux.general.command/</loc>
     <lastmod>2016-10-16T06:39:42.205Z</lastmod>
     <data>
@@ -608,29 +654,6 @@
           
              
               <breadCrumb title="linux" url="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/linux/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://blog.seoui.com/2015/08/19/httpinfolist/</loc>
-    <lastmod>2016-10-16T06:39:42.205Z</lastmod>
-    <data>
-        <display>
-        <title>HTTP Header详细文档</title>
-        <pubTime>2015-08-18T16:00:00.000Z</pubTime>
-        
-        <tag>HTTP</tag>
-         
-         
-           
-             
-              <breadCrumb title="技术" url="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/"/>
-          
-             
-              <breadCrumb title="HTTP" url="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/HTTP/"/>
           
         </display>
     </data>
