@@ -644,50 +644,6 @@ tar -zxf rabbitmq-server-3.4.0.tar.gz
   </entry>
   
   <entry>
-    <title>Linux 简单的进程管理</title>
-    <link href="http://blog.seoui.com/2015/09/12/linux.processmgr/"/>
-    <id>http://blog.seoui.com/2015/09/12/linux.processmgr/</id>
-    <published>2015-09-11T16:00:00.000Z</published>
-    <updated>2016-10-16T06:39:42.207Z</updated>
-    
-    <content type="html"><![CDATA[<p>进程管理的内容有点多,这里简单介绍一下,以后将详细说明系统调度、进程管理等内容。</p>
-<p>需要明白父子进程的概念</p>
-<ul>
-<li>子进程是由另一个进程所产生的，产生这个子进程的进程称为父进程</li>
-<li>父进程终止后 子进程会自动终止。但是子进程终止后 有可能会又会自动创建子进程。</li>
-</ul>
-<p>w  查看当前系统活动的信息 可以带参数user 如 w user </p>
-<p>ps 查看进程用的比较多的命令。</p>
-<p>kill 杀死(终止)进程</p>
-<p>killall -u apache 终止指定用户apache的进程。</p>
-<p>sleep 10000 让当前进程睡眠10000</p>
-<p>jobs 查看后台进程</p>
-<p>bg # 让后台的第#个进程运行。如 bg 1</p>
-<p>在前台运行的进程时按下Ctrl+z 可以让当前执行的进程在后台运行。</p>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;p&gt;进程管理的内容有点多,这里简单介绍一下,以后将详细说明系统调度、进程管理等内容。&lt;/p&gt;
-&lt;p&gt;需要明白父子进程的概念&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;子进程是由另一个进程所产生的，产生这个子进程的进程称为父进程&lt;/li&gt;
-&lt;li&gt;父进程终止后 子进程会自动终止。但是子进程终止后
-    
-    </summary>
-    
-      <category term="技术" scheme="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/"/>
-    
-      <category term="linux" scheme="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/linux/"/>
-    
-    
-      <category term="linux" scheme="http://blog.seoui.com/tags/linux/"/>
-    
-      <category term="linux进程" scheme="http://blog.seoui.com/tags/linux%E8%BF%9B%E7%A8%8B/"/>
-    
-  </entry>
-  
-  <entry>
     <title>Linux 软件的常用安装方法</title>
     <link href="http://blog.seoui.com/2015/09/12/linux.softInstall/"/>
     <id>http://blog.seoui.com/2015/09/12/linux.softInstall/</id>
@@ -809,6 +765,50 @@ tar -zxf rabbitmq-server-3.4.0.tar.gz
       <category term="linux" scheme="http://blog.seoui.com/tags/linux/"/>
     
       <category term="linux软件安装" scheme="http://blog.seoui.com/tags/linux%E8%BD%AF%E4%BB%B6%E5%AE%89%E8%A3%85/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Linux 简单的进程管理</title>
+    <link href="http://blog.seoui.com/2015/09/12/linux.processmgr/"/>
+    <id>http://blog.seoui.com/2015/09/12/linux.processmgr/</id>
+    <published>2015-09-11T16:00:00.000Z</published>
+    <updated>2016-10-16T06:39:42.207Z</updated>
+    
+    <content type="html"><![CDATA[<p>进程管理的内容有点多,这里简单介绍一下,以后将详细说明系统调度、进程管理等内容。</p>
+<p>需要明白父子进程的概念</p>
+<ul>
+<li>子进程是由另一个进程所产生的，产生这个子进程的进程称为父进程</li>
+<li>父进程终止后 子进程会自动终止。但是子进程终止后 有可能会又会自动创建子进程。</li>
+</ul>
+<p>w  查看当前系统活动的信息 可以带参数user 如 w user </p>
+<p>ps 查看进程用的比较多的命令。</p>
+<p>kill 杀死(终止)进程</p>
+<p>killall -u apache 终止指定用户apache的进程。</p>
+<p>sleep 10000 让当前进程睡眠10000</p>
+<p>jobs 查看后台进程</p>
+<p>bg # 让后台的第#个进程运行。如 bg 1</p>
+<p>在前台运行的进程时按下Ctrl+z 可以让当前执行的进程在后台运行。</p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;进程管理的内容有点多,这里简单介绍一下,以后将详细说明系统调度、进程管理等内容。&lt;/p&gt;
+&lt;p&gt;需要明白父子进程的概念&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;子进程是由另一个进程所产生的，产生这个子进程的进程称为父进程&lt;/li&gt;
+&lt;li&gt;父进程终止后 子进程会自动终止。但是子进程终止后
+    
+    </summary>
+    
+      <category term="技术" scheme="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/"/>
+    
+      <category term="linux" scheme="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/linux/"/>
+    
+    
+      <category term="linux" scheme="http://blog.seoui.com/tags/linux/"/>
+    
+      <category term="linux进程" scheme="http://blog.seoui.com/tags/linux%E8%BF%9B%E7%A8%8B/"/>
     
   </entry>
   
@@ -1059,36 +1059,6 @@ tar -zxf rabbitmq-server-3.4.0.tar.gz
   </entry>
   
   <entry>
-    <title>javascript中with的用法</title>
-    <link href="http://blog.seoui.com/2015/09/09/js.with/"/>
-    <id>http://blog.seoui.com/2015/09/09/js.with/</id>
-    <published>2015-09-08T16:00:00.000Z</published>
-    <updated>2016-10-16T06:39:42.207Z</updated>
-    
-    <content type="html"><![CDATA[<p>在面向对象的JS和一些其他的很多场景会遇到同时针对同一个对象的N个属性取值或设置N个属性的值,你会发现出现了很多的重复的代码,简直就是丧心病狂.. 如下</p>
- <figure class="highlight javascript"><table><tr><td class="code"><pre><div class="line"><span class="comment">//声明 了一个user对象</span></div><div class="line"><span class="keyword">var</span> user=&#123;</div><div class="line">	<span class="attr">name</span>:<span class="string">'user1'</span>,</div><div class="line">	<span class="attr">age</span>:<span class="number">20</span>,</div><div class="line">	<span class="attr">sex</span>:<span class="number">1</span></div><div class="line">	<span class="comment">//.....可能还有n字段</span></div><div class="line">&#125;;</div><div class="line"></div><div class="line"><span class="built_in">console</span>.info(user.name);<span class="comment">//打印name</span></div><div class="line"><span class="built_in">console</span>.info(user.age);<span class="comment">//打印age</span></div><div class="line"><span class="built_in">console</span>.info(user.sex);<span class="comment">//打印sex</span></div><div class="line"><span class="comment">//console.info(user....);//可能会打印更多的信息</span></div></pre></td></tr></table></figure>
-<p><img src="!--￼2--&gt;/images/2015/09/2015-09-09-js.with-1.jpg" alt=""></p>
-<p>虽然简单易读 但不要我们追求的风格，那么接下来使用<code>with</code>看看有什么样的变化呢</p>
- <figure class="highlight javascript"><table><tr><td class="code"><pre><div class="line"><span class="keyword">var</span> user=&#123;</div><div class="line">	<span class="attr">name</span>:<span class="string">'user1'</span>,</div><div class="line">	<span class="attr">age</span>:<span class="number">20</span>,</div><div class="line">	<span class="attr">sex</span>:<span class="number">1</span></div><div class="line">	<span class="comment">//.....可能还有n字段</span></div><div class="line">&#125;;</div><div class="line"><span class="comment">//这样就不用没有显式的调用属性了。</span></div><div class="line">   <span class="keyword">with</span> (user)&#123;</div><div class="line">      <span class="built_in">console</span>.info(name);</div><div class="line">      <span class="built_in">console</span>.info(age);</div><div class="line">      <span class="built_in">console</span>.info(sex);</div><div class="line">   <span class="built_in">console</span>.info(<span class="keyword">this</span>);<span class="comment">//打印一下作用域是谁呢?</span></div><div class="line">  </div><div class="line">     <span class="comment">//.......................</span></div><div class="line">   &#125;</div></pre></td></tr></table></figure>
-<p>完美 又离简单明了的JS代码又近了一步。这算是进步吗?</p>
-<p>示例地址:<a href="https://cqweclick.github.io/jswithdemo.html" target="_blank">jswithdemo.html</a></p>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;p&gt;在面向对象的JS和一些其他的很多场景会遇到同时针对同一个对象的N个属性取值或设置N个属性的值,你会发现出现了很多的重复的代码,简直就是丧心病狂.. 如下&lt;/p&gt;
- &lt;figure class=&quot;highlight javascript&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td cla
-    
-    </summary>
-    
-      <category term="技术" scheme="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/"/>
-    
-    
-      <category term="javascript" scheme="http://blog.seoui.com/tags/javascript/"/>
-    
-  </entry>
-  
-  <entry>
     <title>念大学有什么用处呢</title>
     <link href="http://blog.seoui.com/2015/09/09/ToUniversity/"/>
     <id>http://blog.seoui.com/2015/09/09/ToUniversity/</id>
@@ -1166,6 +1136,36 @@ tar -zxf rabbitmq-server-3.4.0.tar.gz
     
     
       <category term="大学" scheme="http://blog.seoui.com/tags/%E5%A4%A7%E5%AD%A6/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>javascript中with的用法</title>
+    <link href="http://blog.seoui.com/2015/09/09/js.with/"/>
+    <id>http://blog.seoui.com/2015/09/09/js.with/</id>
+    <published>2015-09-08T16:00:00.000Z</published>
+    <updated>2016-10-16T06:39:42.207Z</updated>
+    
+    <content type="html"><![CDATA[<p>在面向对象的JS和一些其他的很多场景会遇到同时针对同一个对象的N个属性取值或设置N个属性的值,你会发现出现了很多的重复的代码,简直就是丧心病狂.. 如下</p>
+ <figure class="highlight javascript"><table><tr><td class="code"><pre><div class="line"><span class="comment">//声明 了一个user对象</span></div><div class="line"><span class="keyword">var</span> user=&#123;</div><div class="line">	<span class="attr">name</span>:<span class="string">'user1'</span>,</div><div class="line">	<span class="attr">age</span>:<span class="number">20</span>,</div><div class="line">	<span class="attr">sex</span>:<span class="number">1</span></div><div class="line">	<span class="comment">//.....可能还有n字段</span></div><div class="line">&#125;;</div><div class="line"></div><div class="line"><span class="built_in">console</span>.info(user.name);<span class="comment">//打印name</span></div><div class="line"><span class="built_in">console</span>.info(user.age);<span class="comment">//打印age</span></div><div class="line"><span class="built_in">console</span>.info(user.sex);<span class="comment">//打印sex</span></div><div class="line"><span class="comment">//console.info(user....);//可能会打印更多的信息</span></div></pre></td></tr></table></figure>
+<p><img src="!--￼2--&gt;/images/2015/09/2015-09-09-js.with-1.jpg" alt=""></p>
+<p>虽然简单易读 但不要我们追求的风格，那么接下来使用<code>with</code>看看有什么样的变化呢</p>
+ <figure class="highlight javascript"><table><tr><td class="code"><pre><div class="line"><span class="keyword">var</span> user=&#123;</div><div class="line">	<span class="attr">name</span>:<span class="string">'user1'</span>,</div><div class="line">	<span class="attr">age</span>:<span class="number">20</span>,</div><div class="line">	<span class="attr">sex</span>:<span class="number">1</span></div><div class="line">	<span class="comment">//.....可能还有n字段</span></div><div class="line">&#125;;</div><div class="line"><span class="comment">//这样就不用没有显式的调用属性了。</span></div><div class="line">   <span class="keyword">with</span> (user)&#123;</div><div class="line">      <span class="built_in">console</span>.info(name);</div><div class="line">      <span class="built_in">console</span>.info(age);</div><div class="line">      <span class="built_in">console</span>.info(sex);</div><div class="line">   <span class="built_in">console</span>.info(<span class="keyword">this</span>);<span class="comment">//打印一下作用域是谁呢?</span></div><div class="line">  </div><div class="line">     <span class="comment">//.......................</span></div><div class="line">   &#125;</div></pre></td></tr></table></figure>
+<p>完美 又离简单明了的JS代码又近了一步。这算是进步吗?</p>
+<p>示例地址:<a href="https://cqweclick.github.io/jswithdemo.html" target="_blank">jswithdemo.html</a></p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;在面向对象的JS和一些其他的很多场景会遇到同时针对同一个对象的N个属性取值或设置N个属性的值,你会发现出现了很多的重复的代码,简直就是丧心病狂.. 如下&lt;/p&gt;
+ &lt;figure class=&quot;highlight javascript&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td cla
+    
+    </summary>
+    
+      <category term="技术" scheme="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/"/>
+    
+    
+      <category term="javascript" scheme="http://blog.seoui.com/tags/javascript/"/>
     
   </entry>
   
