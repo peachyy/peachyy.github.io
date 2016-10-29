@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://blog.seoui.com/"/>
-  <updated>2016-10-29T05:02:36.169Z</updated>
+  <updated>2016-10-29T05:07:15.239Z</updated>
   <id>http://blog.seoui.com/</id>
   
   <generator uri="http://hexo.io/">Hexo</generator>
@@ -15,10 +15,9 @@
     <link href="http://blog.seoui.com/2016/10/29/rabbitmqInstall/"/>
     <id>http://blog.seoui.com/2016/10/29/rabbitmqInstall/</id>
     <published>2016-10-28T16:00:00.000Z</published>
-    <updated>2016-10-29T05:02:36.169Z</updated>
+    <updated>2016-10-29T05:07:15.239Z</updated>
     
-    <content type="html"><![CDATA[<h3 id="安装erlang环境"><a href="#安装erlang环境" class="headerlink" title="安装erlang环境"></a>安装erlang环境</h3><p> 假设erlang环境已经安装好了。</p>
-<h3 id="安装rabbitmq"><a href="#安装rabbitmq" class="headerlink" title="安装rabbitmq"></a>安装rabbitmq</h3><p>采用源码安装方式,首先去官网拉取源代码并解压。</p>
+    <content type="html"><![CDATA[<h3 id="安装rabbitmq"><a href="#安装rabbitmq" class="headerlink" title="安装rabbitmq"></a>安装rabbitmq</h3><p>采用源码安装方式,首先去官网拉取源代码并解压,由于rabbitmq是采用erlang编写的 所以得先按照erlang环境,这里假设erlang环境已经安装好了。</p>
 <pre><code class="shell">wget http://www.rabbitmq.com/releases/rabbitmq-server/v3.4.0/rabbitmq-server-3.4.0.tar.gz
 
 tar -zxf rabbitmq-server-3.4.0.tar.gz
@@ -61,8 +60,7 @@ rabbitmqctl set_user_tags   admin  administrator
     
     <summary type="html">
     
-      &lt;h3 id=&quot;安装erlang环境&quot;&gt;&lt;a href=&quot;#安装erlang环境&quot; class=&quot;headerlink&quot; title=&quot;安装erlang环境&quot;&gt;&lt;/a&gt;安装erlang环境&lt;/h3&gt;&lt;p&gt; 假设erlang环境已经安装好了。&lt;/p&gt;
-&lt;h3 id=&quot;安装rabbitmq&quot;&gt;&lt;a href=&quot;#安装rabbitmq&quot; class=&quot;headerlink&quot; title=&quot;安装rabbitmq&quot;&gt;&lt;/a&gt;安装rabbitmq&lt;/h3&gt;&lt;p&gt;采用源码安装方式,首先去官网拉取源代码并解压。&lt;/p&gt;
+      &lt;h3 id=&quot;安装rabbitmq&quot;&gt;&lt;a href=&quot;#安装rabbitmq&quot; class=&quot;headerlink&quot; title=&quot;安装rabbitmq&quot;&gt;&lt;/a&gt;安装rabbitmq&lt;/h3&gt;&lt;p&gt;采用源码安装方式,首先去官网拉取源代码并解压,由于rabbitmq是采用erlang编写的 所以得先按照erlang环境,这里假设erlang环境已经安装好了。&lt;/p&gt;
 &lt;pre&gt;&lt;code class=&quot;shell&quot;&gt;wget http://www.rabbitmq.com/releases/rabbitmq-server/v3.4.0/rabbitmq-server-3.4.0.tar.gz
 
 tar -zxf rabbitmq-server-3.4.0.tar.gz
