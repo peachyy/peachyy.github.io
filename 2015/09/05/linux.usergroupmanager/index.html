@@ -1,13 +1,434 @@
-<!DOCTYPE html><html><head><meta charset="utf-8"><title>Linux用户与用户组管理 | 笑松小站 | 写我喜欢 读我所爱</title><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1"><meta name="keywords" content="linux"><meta name="description" content="Linux 为系统默认配置了N多的用户 它们都保存在/etc/passwd文件中。如下图
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>Linux用户与用户组管理 | 笑松小站 | 写我喜欢 读我所爱</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+  <meta name="keywords" content="linux">
+  <meta name="description" content="Linux 为系统默认配置了N多的用户 它们都保存在/etc/passwd文件中。如下图
 
 每一个用户由 用户名：密码：用户标识：组标识:描述:所属目录:shell 7个字段组合而成,其中密码是加密的 使用X字符替代。这些用户都是系统内置的 shell字段为/sbin/nologin时 这个用户是不可登陆的。只是为了完成一些独有的功能而存在。
-由于密码是加密的那么/etc/shadow文件专门用来"><meta property="og:type" content="article"><meta property="og:title" content="Linux用户与用户组管理"><meta property="og:url" content="http://blog.seoui.com/2015/09/05/linux.usergroupmanager/index.html"><meta property="og:site_name" content="笑松小站"><meta property="og:description" content="Linux 为系统默认配置了N多的用户 它们都保存在/etc/passwd文件中。如下图
+由于密码是加密的那么/etc/shadow文件专门用来">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Linux用户与用户组管理">
+<meta property="og:url" content="http://blog.seoui.com/2015/09/05/linux.usergroupmanager/index.html">
+<meta property="og:site_name" content="笑松小站">
+<meta property="og:description" content="Linux 为系统默认配置了N多的用户 它们都保存在/etc/passwd文件中。如下图
 
 每一个用户由 用户名：密码：用户标识：组标识:描述:所属目录:shell 7个字段组合而成,其中密码是加密的 使用X字符替代。这些用户都是系统内置的 shell字段为/sbin/nologin时 这个用户是不可登陆的。只是为了完成一些独有的功能而存在。
-由于密码是加密的那么/etc/shadow文件专门用来"><meta property="og:image" content="http://blog.seoui.com/!--￼5-->/images/2015/09/2015-09-05-linux.usergroupmanager-1.png"><meta property="og:updated_time" content="2016-10-16T06:39:42.206Z"><meta name="twitter:card" content="summary"><meta name="twitter:title" content="Linux用户与用户组管理"><meta name="twitter:description" content="Linux 为系统默认配置了N多的用户 它们都保存在/etc/passwd文件中。如下图
+由于密码是加密的那么/etc/shadow文件专门用来">
+<meta property="og:image" content="http://blog.seoui.com/!--￼5-->/images/2015/09/2015-09-05-linux.usergroupmanager-1.png">
+<meta property="og:updated_time" content="2016-10-16T06:39:42.206Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Linux用户与用户组管理">
+<meta name="twitter:description" content="Linux 为系统默认配置了N多的用户 它们都保存在/etc/passwd文件中。如下图
 
 每一个用户由 用户名：密码：用户标识：组标识:描述:所属目录:shell 7个字段组合而成,其中密码是加密的 使用X字符替代。这些用户都是系统内置的 shell字段为/sbin/nologin时 这个用户是不可登陆的。只是为了完成一些独有的功能而存在。
-由于密码是加密的那么/etc/shadow文件专门用来"><meta name="twitter:image" content="http://blog.seoui.com/!--￼5-->/images/2015/09/2015-09-05-linux.usergroupmanager-1.png"><link rel="alternative" href="/atom.xml" title="笑松小站" type="application/atom+xml"><link rel="alternative" href="/sitemap.xml" title="笑松小站" type="application/atom+xml"><meta name="summary" content="个人博客,陶小松,笑松,笑松小站,笑松的小站,笑松博客,笑松的博客"><meta http-equiv="pragma" content="no-cache"><link rel="shortcut icon" href="/assets/images/favicon.ico"><link rel="stylesheet" href="/assets/styles/style.css"></head><body><div id="loading" class="active"></div><nav id="menu" class="hide"><div class="inner flex-row-vertical"><a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off"><i class="icon icon-lg icon-close"></i></a><div class="brand-wrap"><div class="brand"> <a href="/" class="avatar"><img src="/assets/images/logo.png"></a><hgroup class="introduce"><h5 class="nickname"></h5><div class="email">写我喜欢 读我所爱</div></hgroup></div></div><ul class="nav flex-col"><li class="waves-block waves-effect"><a href="/"><i class="icon icon-lg icon-home"></i> Home</a></li><li class="waves-block waves-effect"><a href="/archives"><i class="icon icon-lg icon-archives"></i> Archives</a></li><li class="waves-block waves-effect"><a href="/tags"><i class="icon icon-lg icon-tags"></i> Tags</a></li><li class="waves-block waves-effect"><a href="/guestbook"><i class="icon icon-lg icon-book"></i> About</a></li><li class="waves-block waves-effect"><a href="/links"><i class="icon icon-lg icon-links"></i> Links</a></li></ul><footer class="footer"><p> <a rel="license" target="_blank" href="http://creativecommons.org/licenses/by-nc-nd/4.0/"><img alt="Creative Commons License" style="border-width:0;vertical-align:middle" src="/assets/images/cc-by-nc-nd.svg"></a></p><p>笑松小站 &copy; 2014~2016.</p><p>All Rights Reserved.</p><p><a href="/atom.xml" target="_blank" class="rss" style="position:inherit" title="rss"><i class="icon icon-2x icon-rss-square"></i></a><a href="/sitemap.xml" target="_blank" class="sitemap" style="color:#E64A19" title="sitemap"><i class="icon icon-2x icon-sitemap"></i></a></p></footer></div></nav><main id="main"><header class="header" id="header"><div class="flex-row"><a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle"><i class="icon icon-lg icon-navicon"></i></a><div class="flex-col header-title ellipsis">Linux用户与用户组管理</div><div class="search-wrap" id="search-wrap"><a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back"><i class="icon icon-lg icon-chevron-left"></i></a> <input type="text" id="key" class="search-input" autocomplete="off" placeholder="输入感兴趣的关键字"><a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search"><i class="icon icon-lg icon-search"></i></a></div><a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-share"><i class="icon icon-lg icon-share-alt"></i></a></div></header><header class="content-header"><div class="container"><h1 class="author">Linux用户与用户组管理</h1><h5 class="subtitle">2015-09-05</h5></div></header><div class="container body-wrap"><article id="post-linux.usergroupmanager" class="article article-type-post" itemprop="blogPost"><div class="post-meat flex-row"><div class="flex-col"><ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/">linux</a></li></ul></div></div><div class="post-body"><aside class="post-widget" id="post-widget"><div class="post-share" id="post-share"><div class="tit">分享到：</div><ul class="reset share-icons"><li><a class="weibo share-sns" href="javascript:;" data-title="微博" data-service="tsina"><i class="icon icon-weibo"></i></a></li><li><a class="weixin share-sns" href="javascript:;" data-title="微信" data-service="weixin"><i class="icon icon-weixin"></i></a></li><li><a class="qq share-sns" href="javascript:;" data-title=" QQ" data-service="cqq"><i class="icon icon-qq"></i></a></li><li><a class="facebook share-sns" href="javascript:;" data-title=" facebook" data-service="fb"><i class="icon icon-facebook"></i></a></li><li><a class="twitter share-sns" href="javascript:;" data-title=" Twitter" data-service="twitter"><i class="icon icon-twitter"></i></a></li><li> <a class="douban share-sns" href="javascript:;" data-title="豆瓣" data-service="douban">豆</a></li></ul></div><nav class="post-toc-wrap" id="post-toc"></nav></aside><div class="post-main"><div class="post-content" id="post-content" itemprop="postContent"><br><p>Linux 为系统默认配置了N多的用户 它们都保存在/etc/passwd文件中。如下图</p><p><img src="!--￼5--&gt;/images/2015/09/2015-09-05-linux.usergroupmanager-1.png" alt=""></p><p>每一个用户由 <strong>用户名：密码：用户标识：组标识:描述:所属目录:shell</strong> 7个字段组合而成,其中密码是加密的 使用X字符替代。这些用户都是系统内置的 shell字段为/sbin/nologin时 这个用户是不可登陆的。只是为了完成一些独有的功能而存在。</p><p>由于密码是加密的那么/etc/shadow文件专门用来保存用户的密码信息。</p><p>另外介绍一个用户组文件信息是保存在/etc/group 文件中的。</p><p>##用户管理##<br><code>useradd</code> <strong>添加用户</strong></p><figure class="highlight html"><table><tr><td class="code"><pre><div class="line">[root@localhost ~]# useradd --help</div><div class="line">Usage: useradd [options] LOGIN</div><div class="line"></div><div class="line">Options:</div><div class="line">  -b, --base-dir BASE_DIR       base directory for the home directory of the</div><div class="line">                                new account</div><div class="line">  -c, --comment COMMENT         GECOS field of the new account</div><div class="line">  -d, --home-dir HOME_DIR       home directory of the new account</div><div class="line">  -D, --defaults                print or change default useradd configuration</div><div class="line">  -e, --expiredate EXPIRE_DATE  expiration date of the new account</div><div class="line">  -f, --inactive INACTIVE       password inactivity period of the new account</div><div class="line">  -g, --gid GROUP               name or ID of the primary group of the new</div><div class="line">                                account</div><div class="line">  -G, --groups GROUPS           list of supplementary groups of the new</div><div class="line">                                account</div><div class="line">  -h, --help                    display this help message and exit</div><div class="line">  -k, --skel SKEL_DIR           use this alternative skeleton directory</div><div class="line">  -K, --key KEY=VALUE           override /etc/login.defs defaults</div><div class="line">  -l, --no-log-init             do not add the user to the lastlog and</div><div class="line">                                faillog databases</div><div class="line">  -m, --create-home             create the user's home directory</div><div class="line">  -M, --no-create-home          do not create the user's home directory</div><div class="line">  -N, --no-user-group           do not create a group with the same name as</div><div class="line">                                the user</div><div class="line">  -o, --non-unique              allow to create users with duplicate</div><div class="line">                                (non-unique) UID</div><div class="line">  -p, --password PASSWORD       encrypted password of the new account</div><div class="line">  -r, --system                  create a system account</div><div class="line">  -s, --shell SHELL             login shell of the new account</div><div class="line">  -u, --uid UID                 user ID of the new account</div><div class="line">  -U, --user-group              create a group with the same name as the user</div><div class="line">  -Z, --selinux-user SEUSER     use a specific SEUSER for the SELinux user mapping</div></pre></td></tr></table></figure><p> 例如：</p><p> <code>useradd -c &#39;this a comment&#39; abcabc</code> 添加一个用户abcabc</p><p> <code>cat /etc/passwd</code>查看用户信息文件</p><p> <code>abcabc:x:503:504:this a comment:/home/abcabc:/bin/bash</code> abcabc添加成功。</p><p>为abcabc用户设置密码passwd abcabc 注意<em>如果passwd命令后不输入用户名 则默认修改当前登陆用户的密码</em></p><figure class="highlight html"><table><tr><td class="code"><pre><div class="line">passwd abcabc</div></pre></td></tr></table></figure><p>添加用户同时指定一个普通用户组 如系统中已存在用户组shareGroup</p><figure class="highlight html"><table><tr><td class="code"><pre><div class="line">useradd -c 'this a comment'  abcabc -G shareGroup</div></pre></td></tr></table></figure><p><code>usermod</code> <strong>修改用户</strong></p><figure class="highlight html"><table><tr><td class="code"><pre><div class="line">usermod -l abc abcabc      修改用户名abcabc为abc</div><div class="line">usermod -G share2          添加一个用户组share2</div><div class="line">usermod -L abc             锁定abc用户</div><div class="line">usermod -U abc             为abc用户解除锁定状态</div></pre></td></tr></table></figure><p><code>userdel</code> <strong>删除用户</strong></p><figure class="highlight html"><table><tr><td class="code"><pre><div class="line">userdel abc 删除用户abc 不会删除用户的所属文件目录</div><div class="line">   userdel -r abc 删除用户abc 同时会删除用户所属的文件目录</div></pre></td></tr></table></figure><p>##用户组管理##</p><p><code>groupadd</code> <strong>添加组</strong></p><p> groupadd ugroup1 添加用户组ugroup1</p><p> <code>groupmod</code> <strong>修改用户组</strong></p><p> <code>groupdel</code> <strong>删除组</strong></p><p> groupdel ugroup1 删除用户组ugroup1</p><p>用户组与用户管理的操作差不多是一样的。不在一一说明。</p><blockquote><p>版权声明：本文采用国际知识共享“<b>署名</b>-<b>非商业使用</b>-<b>禁止演绎</b>”协议4.0进行授权许可。未经本人同意禁止转载本文内容，转载请注明作者姓名和文章出处。</p></blockquote></div><style type="text/css">.reward{background:#fff;text-align:center}.reward .inner{display:inline-block;margin-bottom:40px}.reward .reward-shap{border-radius:100%}.reward a{display:block;width:60px;height:60px;border:1px solid #eee;border-radius:100%;line-height:58px;text-align:center;color:#fff;font-size:24px;background:#F44336;position:relative}.reward a:hover .code{display:block}.reward div{color:#666;margin-top:4px}.reward .code{position:absolute;padding:20px;border:1px solid #e6e6e6;background-color:#fff;line-height:14px;width:160px;height:170px;top:-180px;left:50%;-webkit-transform:translate3d(-50%,0,0);transform:translate3d(-50%,0,0);display:none}.reward .code:after,.reward .code:before{position:absolute;content:"";border:10px solid transparent}.reward .code:before{border-top-color:#e6e6e6;left:50%;margin-left:-10px;bottom:-20px}.reward .code:after{border-top-color:#fff;left:50%;margin-left:-10px;bottom:-19px}.reward .code img{width:120px;height:120px}.reward .code b{color:#333;font-size:12px;font-weight:400}</style><section class="reward"><div class="inner"><div class="reward-shap"> <a>赏 <span class="code"><img alt="使用微信扫描二维码打赏" src="/assets/images/weixin.png"></span></a></div></div></section><nav class="post-nav flex-row"><div class="flex-col waves-block waves-effect prev"><a href="/2015/09/09/ToUniversity/" title="念大学有什么用处呢" id="post-prev" class="post-nav-link"><i class="icon icon-chevron-left"></i> <span class="article-nav-title">上一篇</span></a></div><div class="flex-col waves-block waves-effect next"> <a href="/2015/09/05/linux.switchUser/" title="Linux用户切换" id="post-next" class="post-nav-link"><span class="article-nav-title">下一篇</span><i class="icon icon-chevron-right"></i></a></div></nav><div class="duoshuo"><div class="ds-thread" data-thread-key="/2015/09/05/linux.usergroupmanager" data-title="Linux用户与用户组管理" data-url="http://blog.seoui.com/2015/09/05/linux.usergroupmanager/index.html"></div><script type="text/javascript">var duoshuoQuery={short_name:"atpeach"};!function(){var t=document.createElement("script");t.type="text/javascript",t.async=!0,t.src=("https:"==document.location.protocol?"https:":"http:")+"//static.duoshuo.com/embed.js",t.charset="UTF-8",(document.getElementsByTagName("head")[0]||document.getElementsByTagName("body")[0]).appendChild(t)}()</script></div></div></div></article></div></main><div class="mask" id="mask"></div><a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a><script>var BLOG_SHARE={title:"Linux用户与用户组管理",pic:"/assets/images/logo.png",summary:document.getElementsByName("summary")[0].content,url:"http://blog.seoui.com/2015/09/05/linux.usergroupmanager/index.html"}</script><div class="global-share" id="global-share"><div class="tit">分享到：</div><ul class="reset share-icons"><li><a class="weibo share-sns" href="javascript:;" data-title="微博" data-service="tsina"><i class="icon icon-weibo"></i></a></li><li><a class="weixin share-sns" href="javascript:;" data-title="微信" data-service="weixin"><i class="icon icon-weixin"></i></a></li><li><a class="qq share-sns" href="javascript:;" data-title=" QQ" data-service="cqq"><i class="icon icon-qq"></i></a></li><li><a class="facebook share-sns" href="javascript:;" data-title=" facebook" data-service="fb"><i class="icon icon-facebook"></i></a></li><li><a class="twitter share-sns" href="javascript:;" data-title=" Twitter" data-service="twitter"><i class="icon icon-twitter"></i></a></li><li> <a class="douban share-sns" href="javascript:;" data-title="豆瓣" data-service="douban">豆</a></li></ul></div><script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script><script src="/assets/scripts/main.js"></script><div class="search-panel" id="search-panel"><ul class="search-result" id="search-result"></ul></div><script type="text/template" id="search-tpl">
+由于密码是加密的那么/etc/shadow文件专门用来">
+<meta name="twitter:image" content="http://blog.seoui.com/!--￼5-->/images/2015/09/2015-09-05-linux.usergroupmanager-1.png">
+  
+    <link rel="alternative" href="/atom.xml" title="笑松小站" type="application/atom+xml">
+  
+    
+    <link rel="alternative" href="/sitemap.xml" title="笑松小站" type="application/atom+xml">
+  
+  <meta name="summary" content="个人博客,陶小松,笑松,笑松小站,笑松的小站,笑松博客,笑松的博客">
+  <meta http-equiv="pragma" content="no-cache" />
+  <link rel="shortcut icon" href="/assets/images/favicon.ico">
+  <link rel="stylesheet" href="/assets/styles/style.css">
+</head>
+
+<body>
+  <div id="loading" class="active"></div>
+
+  <nav id="menu" class="hide" >
+   <div class="inner flex-row-vertical">
+  <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+    <i class="icon icon-lg icon-close"></i>
+  </a>
+  <div class="brand-wrap">
+    <div class="brand">
+      <a href="/" class="avatar"><img src="/assets/images/logo.png"></a>
+      <hgroup class="introduce">
+      <h5 class="nickname"></h5>
+      <div class="email">写我喜欢 读我所爱</div>
+      </hgroup>
+    </div>
+  </div>
+  <ul class="nav flex-col">
+    
+    <li class="waves-block waves-effect">
+      <a href="/"  >
+        <i class="icon icon-lg icon-home"></i>
+        Home
+      </a>
+    </li>
+    
+    <li class="waves-block waves-effect">
+      <a href="/archives"  >
+        <i class="icon icon-lg icon-archives"></i>
+        Archives
+      </a>
+    </li>
+    
+    <li class="waves-block waves-effect">
+      <a href="/tags"  >
+        <i class="icon icon-lg icon-tags"></i>
+        Tags
+      </a>
+    </li>
+    
+    <li class="waves-block waves-effect">
+      <a href="/guestbook"  >
+        <i class="icon icon-lg icon-book"></i>
+        About
+      </a>
+    </li>
+    
+    <li class="waves-block waves-effect">
+      <a href="/links"  >
+        <i class="icon icon-lg icon-links"></i>
+        Links
+      </a>
+    </li>
+    
+  </ul>
+  <footer class="footer">
+	<p><a rel="license" target="_blank" href="http://creativecommons.org/licenses/by-nc-nd/4.0/">
+	<img alt="Creative Commons License" style="border-width:0;vertical-align:middle;" src="/assets/images/cc-by-nc-nd.svg" /></a></p>
+	<p>笑松小站 &copy; 2014~2016.</p>
+	<p>All Rights Reserved.</p>
+	<p>
+		<a href="/atom.xml" target="_blank" class="rss" style="position: inherit;" title="rss"><i class="icon icon-2x icon-rss-square"></i></a>
+		<a href="/sitemap.xml" target="_blank" class="sitemap" style="color:#E64A19" title="sitemap"><i class="icon icon-2x icon-sitemap"></i></a>
+	</p>
+
+</footer>
+</div>
+  </nav>
+  <main id="main">
+    <header class="header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+            <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">Linux用户与用户组管理</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input " autocomplete="off" placeholder="输入感兴趣的关键字">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-share">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header">
+    <div class="container">
+        <h1 class="author">Linux用户与用户组管理</h1>
+        <h5 class="subtitle">2015-09-05</h5>
+    </div>
+</header>
+    <div class="container body-wrap">
+      
+<article id="post-linux.usergroupmanager" class="article article-type-post" itemprop="blogPost">
+  
+  <div class="post-meat flex-row">
+    <div class="flex-col">
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/">linux</a></li></ul>
+</div>
+  </div>
+  <div class="post-body">
+    <aside class="post-widget" id="post-widget">
+      
+      <div class="post-share" id="post-share">
+    <div class="tit">分享到：</div>
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" href="javascript:;" data-title="微博" data-service="tsina">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns" href="javascript:;" data-title="微信" data-service="weixin">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" href="javascript:;" data-title=" QQ" data-service="cqq">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" href="javascript:;" data-title=" facebook" data-service="fb">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" href="javascript:;" data-title=" Twitter" data-service="twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="douban share-sns" href="javascript:;" data-title="豆瓣" data-service="douban">
+          豆
+        </a>
+      </li>
+    </ul>
+ </div>
+
+      
+      
+      <nav class="post-toc-wrap" id="post-toc">
+        
+      </nav>
+      
+    </aside>
+    <div class="post-main">
+      <div class="post-content" id="post-content" itemprop="postContent">
+	  <br/>
+        <p>Linux 为系统默认配置了N多的用户 它们都保存在/etc/passwd文件中。如下图</p>
+<p><img src="!--￼5--&gt;/images/2015/09/2015-09-05-linux.usergroupmanager-1.png" alt=""></p>
+<p>每一个用户由 <strong>用户名：密码：用户标识：组标识:描述:所属目录:shell</strong> 7个字段组合而成,其中密码是加密的 使用X字符替代。这些用户都是系统内置的 shell字段为/sbin/nologin时 这个用户是不可登陆的。只是为了完成一些独有的功能而存在。</p>
+<p>由于密码是加密的那么/etc/shadow文件专门用来保存用户的密码信息。</p>
+<p>另外介绍一个用户组文件信息是保存在/etc/group 文件中的。</p>
+<p>##用户管理##<br><code>useradd</code> <strong>添加用户</strong>  </p>
+ <figure class="highlight html"><table><tr><td class="code"><pre><div class="line">[root@localhost ~]# useradd --help</div><div class="line">Usage: useradd [options] LOGIN</div><div class="line"></div><div class="line">Options:</div><div class="line">  -b, --base-dir BASE_DIR       base directory for the home directory of the</div><div class="line">                                new account</div><div class="line">  -c, --comment COMMENT         GECOS field of the new account</div><div class="line">  -d, --home-dir HOME_DIR       home directory of the new account</div><div class="line">  -D, --defaults                print or change default useradd configuration</div><div class="line">  -e, --expiredate EXPIRE_DATE  expiration date of the new account</div><div class="line">  -f, --inactive INACTIVE       password inactivity period of the new account</div><div class="line">  -g, --gid GROUP               name or ID of the primary group of the new</div><div class="line">                                account</div><div class="line">  -G, --groups GROUPS           list of supplementary groups of the new</div><div class="line">                                account</div><div class="line">  -h, --help                    display this help message and exit</div><div class="line">  -k, --skel SKEL_DIR           use this alternative skeleton directory</div><div class="line">  -K, --key KEY=VALUE           override /etc/login.defs defaults</div><div class="line">  -l, --no-log-init             do not add the user to the lastlog and</div><div class="line">                                faillog databases</div><div class="line">  -m, --create-home             create the user's home directory</div><div class="line">  -M, --no-create-home          do not create the user's home directory</div><div class="line">  -N, --no-user-group           do not create a group with the same name as</div><div class="line">                                the user</div><div class="line">  -o, --non-unique              allow to create users with duplicate</div><div class="line">                                (non-unique) UID</div><div class="line">  -p, --password PASSWORD       encrypted password of the new account</div><div class="line">  -r, --system                  create a system account</div><div class="line">  -s, --shell SHELL             login shell of the new account</div><div class="line">  -u, --uid UID                 user ID of the new account</div><div class="line">  -U, --user-group              create a group with the same name as the user</div><div class="line">  -Z, --selinux-user SEUSER     use a specific SEUSER for the SELinux user mapping</div></pre></td></tr></table></figure>
+<p> 例如：</p>
+<p> <code>useradd -c &#39;this a comment&#39;  abcabc</code> 添加一个用户abcabc </p>
+<p> <code>cat /etc/passwd</code>查看用户信息文件</p>
+<p> <code>abcabc:x:503:504:this a comment:/home/abcabc:/bin/bash</code> abcabc添加成功。</p>
+<p>为abcabc用户设置密码passwd abcabc 注意<em>如果passwd命令后不输入用户名 则默认修改当前登陆用户的密码</em></p>
+ <figure class="highlight html"><table><tr><td class="code"><pre><div class="line">passwd abcabc</div></pre></td></tr></table></figure>
+<p>添加用户同时指定一个普通用户组 如系统中已存在用户组shareGroup</p>
+ <figure class="highlight html"><table><tr><td class="code"><pre><div class="line">useradd -c 'this a comment'  abcabc -G shareGroup</div></pre></td></tr></table></figure>
+<p><code>usermod</code> <strong>修改用户</strong></p>
+ <figure class="highlight html"><table><tr><td class="code"><pre><div class="line">usermod -l abc abcabc      修改用户名abcabc为abc</div><div class="line">usermod -G share2          添加一个用户组share2</div><div class="line">usermod -L abc             锁定abc用户</div><div class="line">usermod -U abc             为abc用户解除锁定状态</div></pre></td></tr></table></figure>
+<p><code>userdel</code> <strong>删除用户</strong></p>
+ <figure class="highlight html"><table><tr><td class="code"><pre><div class="line">userdel abc 删除用户abc 不会删除用户的所属文件目录</div><div class="line">   userdel -r abc 删除用户abc 同时会删除用户所属的文件目录</div></pre></td></tr></table></figure>
+<p>##用户组管理##</p>
+<p><code>groupadd</code> <strong>添加组</strong></p>
+<p> groupadd  ugroup1    添加用户组ugroup1</p>
+<p> <code>groupmod</code>    <strong>修改用户组</strong></p>
+<p> <code>groupdel</code> <strong>删除组</strong></p>
+<p>  groupdel ugroup1   删除用户组ugroup1</p>
+<p>用户组与用户管理的操作差不多是一样的。不在一一说明。</p>
+
+        
+  <blockquote>
+    <p>版权声明：本文采用国际知识共享“<b>署名</b>-<b>非商业使用</b>-<b>禁止演绎</b>”协议4.0进行授权许可。未经本人同意禁止转载本文内容，转载请注明作者姓名和文章出处。</p>
+  </blockquote>
+  
+
+
+      </div>
+      
+	<style type="text/css">
+		.reward {
+			background:#fff;
+			text-align:center
+		}
+		.reward .inner {
+			display:inline-block;
+			margin-bottom:40px;
+		}
+		.reward .reward-shap {
+			border-radius:100%
+		}
+		.reward a {
+			display:block;
+			width:60px;
+			height:60px;
+			border:1px solid #eee;
+			border-radius:100%;
+			line-height:58px;
+			text-align:center;
+			color:#fff;
+			font-size:24px;
+			background:#F44336;
+			position:relative
+		}
+		.reward a:hover .code {
+			display:block
+		}
+		.reward div {
+			color:#666;
+			margin-top:4px
+		}
+		.reward .code {
+			position:absolute;
+			padding:20px;
+			border:1px solid #e6e6e6;
+			background-color:#fff;
+			line-height:14px;
+			width:160px;
+			height:170px;
+			top:-180px;
+			left:50%;
+			-webkit-transform:translate3d(-50%, 0, 0);
+			transform:translate3d(-50%, 0, 0);
+			display:none
+		}
+		.reward .code:before,.reward .code:after {
+			position:absolute;
+			content:"";
+			border:10px solid transparent
+		}
+		.reward .code:before {
+			border-top-color:#e6e6e6;
+			left:50%;
+			margin-left:-10px;
+			bottom:-20px
+		}
+		.reward .code:after {
+			border-top-color:#fff;
+			left:50%;
+			margin-left:-10px;
+			bottom:-19px
+		}
+		.reward .code img {
+			width:120px;
+			height:120px
+		}
+		.reward .code b {
+			color:#333;
+			font-size:12px;
+			font-weight:normal
+		}
+	</style>
+	<section class="reward">
+		<div class="inner">
+			<div class="reward-shap">
+				<a>赏
+					<span class="code">
+						<img alt="使用微信扫描二维码打赏" src="/assets/images/weixin.png">
+					</span>
+				</a>
+			</div>
+		</div>
+	</section>
+  
+      
+<nav class="post-nav flex-row">
+  <div class="flex-col waves-block waves-effect prev">
+    
+      <a href="/2015/09/09/ToUniversity/" title="念大学有什么用处呢" id="post-prev" class="post-nav-link">
+        <i class="icon icon-chevron-left"></i>
+        <span class="article-nav-title">上一篇</span>
+      </a>
+    
+  </div>
+  <div class="flex-col waves-block waves-effect next">
+    
+      <a href="/2015/09/05/linux.find/" title="Linux查找" id="post-next" class="post-nav-link">
+        <span class="article-nav-title">下一篇</span>
+        <i class="icon icon-chevron-right"></i>
+      </a>
+    
+  </div>
+
+</nav>
+
+
+      
+<div class="duoshuo">
+	<!-- 多说评论框 start -->
+	<div class="ds-thread" data-thread-key="/2015/09/05/linux.usergroupmanager" data-title="Linux用户与用户组管理" data-url="http://blog.seoui.com/2015/09/05/linux.usergroupmanager/index.html"></div>
+	<!-- 多说评论框 end -->
+	<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+	<script type="text/javascript">
+	var duoshuoQuery = {short_name:"atpeach"};
+	(function() {
+		var ds = document.createElement('script');
+		ds.type = 'text/javascript';ds.async = true;
+		ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+		ds.charset = 'UTF-8';
+		(document.getElementsByTagName('head')[0] 
+		 || document.getElementsByTagName('body')[0]).appendChild(ds);
+	})();
+	</script>
+	<!-- 多说公共JS代码 end -->
+</div>
+
+
+
+
+
+    </div>
+  </div>
+  
+</article>
+
+    </div>
+  </main>
+<div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+<script>
+var BLOG_SHARE = {
+title: "Linux用户与用户组管理",
+pic: "/assets/images/logo.png",
+summary: document.getElementsByName('summary')[0].content,
+url: "http://blog.seoui.com/2015/09/05/linux.usergroupmanager/index.html"
+};
+</script>
+<div class="global-share" id="global-share">
+    <div class="tit">分享到：</div>
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" href="javascript:;" data-title="微博" data-service="tsina">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns" href="javascript:;" data-title="微信" data-service="weixin">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" href="javascript:;" data-title=" QQ" data-service="cqq">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" href="javascript:;" data-title=" facebook" data-service="fb">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" href="javascript:;" data-title=" Twitter" data-service="twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="douban share-sns" href="javascript:;" data-title="豆瓣" data-service="douban">
+          豆
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+
+
+<script src="/assets/scripts/main.js"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<script type="text/template" id="search-tpl">
 <li class="item">
     <a href="/{path}" class="waves-block waves-effect">
         <div class="title ellipsis" title="{title}">{title}</div>
@@ -19,4 +440,30 @@
         </div>
     </a>
 </li>
-</script><script src="/assets/scripts/search.js"></script><script src="/assets/fancybox/jquery.fancybox.pack.js"></script><script type="text/javascript">var imgArr=$("#post-content img");if(null!=imgArr&&imgArr.length>0){for(var i=0,len=imgArr.length;i<len;i++){var src=imgArr.eq(i).attr("src"),title=imgArr.eq(i).attr("alt");imgArr.eq(i).replaceWith("<a href='"+src+"' title='"+title+"' rel='fancy-group' class='fancy-ctn fancybox'><img src='"+src+"' title='"+title+"'></a>")}$("#post-content .fancy-ctn").fancybox()}</script></body></html>
+</script>
+
+<script src="/assets/scripts/search.js"></script>
+
+
+
+
+
+<script src="/assets/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+		var imgArr = $("#post-content img");
+	if(imgArr!=null && imgArr.length>0){
+			for(var i=0,len=imgArr.length;i<len;i++){
+		var src = imgArr.eq(i).attr("src");
+		var title = imgArr.eq(i).attr("alt");
+		imgArr.eq(i).replaceWith("<a href='"+src+"' title='"+title+"' rel='fancy-group' class='fancy-ctn fancybox'><img src='"+src+"' title='"+title+"'></a>");
+			}
+		$("#post-content .fancy-ctn").fancybox();
+	}
+</script>
+
+
+
+
+
+</body>
+</html>

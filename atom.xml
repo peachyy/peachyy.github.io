@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://blog.seoui.com/"/>
-  <updated>2016-10-29T05:07:15.239Z</updated>
+  <updated>2016-10-29T05:09:49.338Z</updated>
   <id>http://blog.seoui.com/</id>
   
   <generator uri="http://hexo.io/">Hexo</generator>
@@ -15,9 +15,9 @@
     <link href="http://blog.seoui.com/2016/10/29/rabbitmqInstall/"/>
     <id>http://blog.seoui.com/2016/10/29/rabbitmqInstall/</id>
     <published>2016-10-28T16:00:00.000Z</published>
-    <updated>2016-10-29T05:07:15.239Z</updated>
+    <updated>2016-10-29T05:09:49.338Z</updated>
     
-    <content type="html"><![CDATA[<h3 id="安装rabbitmq"><a href="#安装rabbitmq" class="headerlink" title="安装rabbitmq"></a>安装rabbitmq</h3><p>采用源码安装方式,首先去官网拉取源代码并解压,由于rabbitmq是采用erlang编写的 所以得先按照erlang环境,这里假设erlang环境已经安装好了。</p>
+    <content type="html"><![CDATA[<h3 id="安装rabbitmq"><a href="#安装rabbitmq" class="headerlink" title="安装rabbitmq"></a>安装rabbitmq</h3><p>采用源码安装方式,首先去官网拉取源代码并解压,由于rabbitmq是采用erlang编写的 所以得先安装erlang环境,这里假设erlang环境已经安装好了。</p>
 <pre><code class="shell">wget http://www.rabbitmq.com/releases/rabbitmq-server/v3.4.0/rabbitmq-server-3.4.0.tar.gz
 
 tar -zxf rabbitmq-server-3.4.0.tar.gz
@@ -60,7 +60,7 @@ rabbitmqctl set_user_tags   admin  administrator
     
     <summary type="html">
     
-      &lt;h3 id=&quot;安装rabbitmq&quot;&gt;&lt;a href=&quot;#安装rabbitmq&quot; class=&quot;headerlink&quot; title=&quot;安装rabbitmq&quot;&gt;&lt;/a&gt;安装rabbitmq&lt;/h3&gt;&lt;p&gt;采用源码安装方式,首先去官网拉取源代码并解压,由于rabbitmq是采用erlang编写的 所以得先按照erlang环境,这里假设erlang环境已经安装好了。&lt;/p&gt;
+      &lt;h3 id=&quot;安装rabbitmq&quot;&gt;&lt;a href=&quot;#安装rabbitmq&quot; class=&quot;headerlink&quot; title=&quot;安装rabbitmq&quot;&gt;&lt;/a&gt;安装rabbitmq&lt;/h3&gt;&lt;p&gt;采用源码安装方式,首先去官网拉取源代码并解压,由于rabbitmq是采用erlang编写的 所以得先安装erlang环境,这里假设erlang环境已经安装好了。&lt;/p&gt;
 &lt;pre&gt;&lt;code class=&quot;shell&quot;&gt;wget http://www.rabbitmq.com/releases/rabbitmq-server/v3.4.0/rabbitmq-server-3.4.0.tar.gz
 
 tar -zxf rabbitmq-server-3.4.0.tar.gz
@@ -644,6 +644,50 @@ tar -zxf rabbitmq-server-3.4.0.tar.gz
   </entry>
   
   <entry>
+    <title>Linux 简单的进程管理</title>
+    <link href="http://blog.seoui.com/2015/09/12/linux.processmgr/"/>
+    <id>http://blog.seoui.com/2015/09/12/linux.processmgr/</id>
+    <published>2015-09-11T16:00:00.000Z</published>
+    <updated>2016-10-16T06:39:42.207Z</updated>
+    
+    <content type="html"><![CDATA[<p>进程管理的内容有点多,这里简单介绍一下,以后将详细说明系统调度、进程管理等内容。</p>
+<p>需要明白父子进程的概念</p>
+<ul>
+<li>子进程是由另一个进程所产生的，产生这个子进程的进程称为父进程</li>
+<li>父进程终止后 子进程会自动终止。但是子进程终止后 有可能会又会自动创建子进程。</li>
+</ul>
+<p>w  查看当前系统活动的信息 可以带参数user 如 w user </p>
+<p>ps 查看进程用的比较多的命令。</p>
+<p>kill 杀死(终止)进程</p>
+<p>killall -u apache 终止指定用户apache的进程。</p>
+<p>sleep 10000 让当前进程睡眠10000</p>
+<p>jobs 查看后台进程</p>
+<p>bg # 让后台的第#个进程运行。如 bg 1</p>
+<p>在前台运行的进程时按下Ctrl+z 可以让当前执行的进程在后台运行。</p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;进程管理的内容有点多,这里简单介绍一下,以后将详细说明系统调度、进程管理等内容。&lt;/p&gt;
+&lt;p&gt;需要明白父子进程的概念&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;子进程是由另一个进程所产生的，产生这个子进程的进程称为父进程&lt;/li&gt;
+&lt;li&gt;父进程终止后 子进程会自动终止。但是子进程终止后
+    
+    </summary>
+    
+      <category term="技术" scheme="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/"/>
+    
+      <category term="linux" scheme="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/linux/"/>
+    
+    
+      <category term="linux" scheme="http://blog.seoui.com/tags/linux/"/>
+    
+      <category term="linux进程" scheme="http://blog.seoui.com/tags/linux%E8%BF%9B%E7%A8%8B/"/>
+    
+  </entry>
+  
+  <entry>
     <title>Linux 软件的常用安装方法</title>
     <link href="http://blog.seoui.com/2015/09/12/linux.softInstall/"/>
     <id>http://blog.seoui.com/2015/09/12/linux.softInstall/</id>
@@ -765,50 +809,6 @@ tar -zxf rabbitmq-server-3.4.0.tar.gz
       <category term="linux" scheme="http://blog.seoui.com/tags/linux/"/>
     
       <category term="linux软件安装" scheme="http://blog.seoui.com/tags/linux%E8%BD%AF%E4%BB%B6%E5%AE%89%E8%A3%85/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Linux 简单的进程管理</title>
-    <link href="http://blog.seoui.com/2015/09/12/linux.processmgr/"/>
-    <id>http://blog.seoui.com/2015/09/12/linux.processmgr/</id>
-    <published>2015-09-11T16:00:00.000Z</published>
-    <updated>2016-10-16T06:39:42.207Z</updated>
-    
-    <content type="html"><![CDATA[<p>进程管理的内容有点多,这里简单介绍一下,以后将详细说明系统调度、进程管理等内容。</p>
-<p>需要明白父子进程的概念</p>
-<ul>
-<li>子进程是由另一个进程所产生的，产生这个子进程的进程称为父进程</li>
-<li>父进程终止后 子进程会自动终止。但是子进程终止后 有可能会又会自动创建子进程。</li>
-</ul>
-<p>w  查看当前系统活动的信息 可以带参数user 如 w user </p>
-<p>ps 查看进程用的比较多的命令。</p>
-<p>kill 杀死(终止)进程</p>
-<p>killall -u apache 终止指定用户apache的进程。</p>
-<p>sleep 10000 让当前进程睡眠10000</p>
-<p>jobs 查看后台进程</p>
-<p>bg # 让后台的第#个进程运行。如 bg 1</p>
-<p>在前台运行的进程时按下Ctrl+z 可以让当前执行的进程在后台运行。</p>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;p&gt;进程管理的内容有点多,这里简单介绍一下,以后将详细说明系统调度、进程管理等内容。&lt;/p&gt;
-&lt;p&gt;需要明白父子进程的概念&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;子进程是由另一个进程所产生的，产生这个子进程的进程称为父进程&lt;/li&gt;
-&lt;li&gt;父进程终止后 子进程会自动终止。但是子进程终止后
-    
-    </summary>
-    
-      <category term="技术" scheme="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/"/>
-    
-      <category term="linux" scheme="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/linux/"/>
-    
-    
-      <category term="linux" scheme="http://blog.seoui.com/tags/linux/"/>
-    
-      <category term="linux进程" scheme="http://blog.seoui.com/tags/linux%E8%BF%9B%E7%A8%8B/"/>
     
   </entry>
   
