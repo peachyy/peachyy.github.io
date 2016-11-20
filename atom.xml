@@ -1059,36 +1059,6 @@ tar -zxf rabbitmq-server-3.4.0.tar.gz
   </entry>
   
   <entry>
-    <title>javascript中with的用法</title>
-    <link href="http://blog.seoui.com/2015/09/09/js.with/"/>
-    <id>http://blog.seoui.com/2015/09/09/js.with/</id>
-    <published>2015-09-08T16:00:00.000Z</published>
-    <updated>2016-10-16T06:39:42.207Z</updated>
-    
-    <content type="html"><![CDATA[<p>在面向对象的JS和一些其他的很多场景会遇到同时针对同一个对象的N个属性取值或设置N个属性的值,你会发现出现了很多的重复的代码,简直就是丧心病狂.. 如下</p>
- <figure class="highlight javascript"><table><tr><td class="code"><pre><div class="line"><span class="comment">//声明 了一个user对象</span></div><div class="line"><span class="keyword">var</span> user=&#123;</div><div class="line">	<span class="attr">name</span>:<span class="string">'user1'</span>,</div><div class="line">	<span class="attr">age</span>:<span class="number">20</span>,</div><div class="line">	<span class="attr">sex</span>:<span class="number">1</span></div><div class="line">	<span class="comment">//.....可能还有n字段</span></div><div class="line">&#125;;</div><div class="line"></div><div class="line"><span class="built_in">console</span>.info(user.name);<span class="comment">//打印name</span></div><div class="line"><span class="built_in">console</span>.info(user.age);<span class="comment">//打印age</span></div><div class="line"><span class="built_in">console</span>.info(user.sex);<span class="comment">//打印sex</span></div><div class="line"><span class="comment">//console.info(user....);//可能会打印更多的信息</span></div></pre></td></tr></table></figure>
-<p><img src="!--￼2--&gt;/images/2015/09/2015-09-09-js.with-1.jpg" alt=""></p>
-<p>虽然简单易读 但不要我们追求的风格，那么接下来使用<code>with</code>看看有什么样的变化呢</p>
- <figure class="highlight javascript"><table><tr><td class="code"><pre><div class="line"><span class="keyword">var</span> user=&#123;</div><div class="line">	<span class="attr">name</span>:<span class="string">'user1'</span>,</div><div class="line">	<span class="attr">age</span>:<span class="number">20</span>,</div><div class="line">	<span class="attr">sex</span>:<span class="number">1</span></div><div class="line">	<span class="comment">//.....可能还有n字段</span></div><div class="line">&#125;;</div><div class="line"><span class="comment">//这样就不用没有显式的调用属性了。</span></div><div class="line">   <span class="keyword">with</span> (user)&#123;</div><div class="line">      <span class="built_in">console</span>.info(name);</div><div class="line">      <span class="built_in">console</span>.info(age);</div><div class="line">      <span class="built_in">console</span>.info(sex);</div><div class="line">   <span class="built_in">console</span>.info(<span class="keyword">this</span>);<span class="comment">//打印一下作用域是谁呢?</span></div><div class="line">  </div><div class="line">     <span class="comment">//.......................</span></div><div class="line">   &#125;</div></pre></td></tr></table></figure>
-<p>完美 又离简单明了的JS代码又近了一步。这算是进步吗?</p>
-<p>示例地址:<a href="https://cqweclick.github.io/jswithdemo.html" target="_blank">jswithdemo.html</a></p>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;p&gt;在面向对象的JS和一些其他的很多场景会遇到同时针对同一个对象的N个属性取值或设置N个属性的值,你会发现出现了很多的重复的代码,简直就是丧心病狂.. 如下&lt;/p&gt;
- &lt;figure class=&quot;highlight javascript&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td cla
-    
-    </summary>
-    
-      <category term="技术" scheme="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/"/>
-    
-    
-      <category term="javascript" scheme="http://blog.seoui.com/tags/javascript/"/>
-    
-  </entry>
-  
-  <entry>
     <title>念大学有什么用处呢</title>
     <link href="http://blog.seoui.com/2015/09/09/ToUniversity/"/>
     <id>http://blog.seoui.com/2015/09/09/ToUniversity/</id>
@@ -1166,6 +1136,36 @@ tar -zxf rabbitmq-server-3.4.0.tar.gz
     
     
       <category term="大学" scheme="http://blog.seoui.com/tags/%E5%A4%A7%E5%AD%A6/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>javascript中with的用法</title>
+    <link href="http://blog.seoui.com/2015/09/09/js.with/"/>
+    <id>http://blog.seoui.com/2015/09/09/js.with/</id>
+    <published>2015-09-08T16:00:00.000Z</published>
+    <updated>2016-10-16T06:39:42.207Z</updated>
+    
+    <content type="html"><![CDATA[<p>在面向对象的JS和一些其他的很多场景会遇到同时针对同一个对象的N个属性取值或设置N个属性的值,你会发现出现了很多的重复的代码,简直就是丧心病狂.. 如下</p>
+ <figure class="highlight javascript"><table><tr><td class="code"><pre><div class="line"><span class="comment">//声明 了一个user对象</span></div><div class="line"><span class="keyword">var</span> user=&#123;</div><div class="line">	<span class="attr">name</span>:<span class="string">'user1'</span>,</div><div class="line">	<span class="attr">age</span>:<span class="number">20</span>,</div><div class="line">	<span class="attr">sex</span>:<span class="number">1</span></div><div class="line">	<span class="comment">//.....可能还有n字段</span></div><div class="line">&#125;;</div><div class="line"></div><div class="line"><span class="built_in">console</span>.info(user.name);<span class="comment">//打印name</span></div><div class="line"><span class="built_in">console</span>.info(user.age);<span class="comment">//打印age</span></div><div class="line"><span class="built_in">console</span>.info(user.sex);<span class="comment">//打印sex</span></div><div class="line"><span class="comment">//console.info(user....);//可能会打印更多的信息</span></div></pre></td></tr></table></figure>
+<p><img src="!--￼2--&gt;/images/2015/09/2015-09-09-js.with-1.jpg" alt=""></p>
+<p>虽然简单易读 但不要我们追求的风格，那么接下来使用<code>with</code>看看有什么样的变化呢</p>
+ <figure class="highlight javascript"><table><tr><td class="code"><pre><div class="line"><span class="keyword">var</span> user=&#123;</div><div class="line">	<span class="attr">name</span>:<span class="string">'user1'</span>,</div><div class="line">	<span class="attr">age</span>:<span class="number">20</span>,</div><div class="line">	<span class="attr">sex</span>:<span class="number">1</span></div><div class="line">	<span class="comment">//.....可能还有n字段</span></div><div class="line">&#125;;</div><div class="line"><span class="comment">//这样就不用没有显式的调用属性了。</span></div><div class="line">   <span class="keyword">with</span> (user)&#123;</div><div class="line">      <span class="built_in">console</span>.info(name);</div><div class="line">      <span class="built_in">console</span>.info(age);</div><div class="line">      <span class="built_in">console</span>.info(sex);</div><div class="line">   <span class="built_in">console</span>.info(<span class="keyword">this</span>);<span class="comment">//打印一下作用域是谁呢?</span></div><div class="line">  </div><div class="line">     <span class="comment">//.......................</span></div><div class="line">   &#125;</div></pre></td></tr></table></figure>
+<p>完美 又离简单明了的JS代码又近了一步。这算是进步吗?</p>
+<p>示例地址:<a href="https://cqweclick.github.io/jswithdemo.html" target="_blank">jswithdemo.html</a></p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;在面向对象的JS和一些其他的很多场景会遇到同时针对同一个对象的N个属性取值或设置N个属性的值,你会发现出现了很多的重复的代码,简直就是丧心病狂.. 如下&lt;/p&gt;
+ &lt;figure class=&quot;highlight javascript&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td cla
+    
+    </summary>
+    
+      <category term="技术" scheme="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/"/>
+    
+    
+      <category term="javascript" scheme="http://blog.seoui.com/tags/javascript/"/>
     
   </entry>
   
