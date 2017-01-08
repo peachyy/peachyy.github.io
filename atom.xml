@@ -5,17 +5,122 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://blog.seoui.com/"/>
-  <updated>2016-11-24T07:51:32.095Z</updated>
+  <updated>2017-01-08T06:57:09.924Z</updated>
   <id>http://blog.seoui.com/</id>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>MongoDB常用操作</title>
+    <link href="http://blog.seoui.com/2017/01/08/mongodbCommonoper/"/>
+    <id>http://blog.seoui.com/2017/01/08/mongodbCommonoper/</id>
+    <published>2017-01-07T16:00:00.000Z</published>
+    <updated>2017-01-08T06:57:09.924Z</updated>
+    
+    <content type="html"><![CDATA[<p> 以下是在3.4.1版本中 其他版本可能略有区别,mongo默认登录时在test数据中。</p>
+<h3 id="数据库相关操作"><a href="#数据库相关操作" class="headerlink" title="数据库相关操作"></a>数据库相关操作</h3><p>登录到数据库</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><div class="line">bin/mongo --port 27017</div></pre></td></tr></table></figure>
+<p>查看数据库列表</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><div class="line">show dbs</div></pre></td></tr></table></figure>
+<p>选择使用哪个数据库 类似mysql中的use,使用use后 创建的table默认会在当前使用的数据中</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><div class="line">use taoxs</div></pre></td></tr></table></figure>
+<p>查看当前使用的数据库使用db或者db.getName()一样的。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><div class="line">db </div><div class="line"></div><div class="line">db.getName()</div></pre></td></tr></table></figure>
+<a id="more"></a>
+<p>显示当前数据库下的所有table(集合)<br><figure class="highlight plain"><table><tr><td class="code"><pre><div class="line">show tables</div></pre></td></tr></table></figure></p>
+<h3 id="增删改查"><a href="#增删改查" class="headerlink" title="增删改查"></a>增删改查</h3><p>向taoxs_c1集合插入一行数据<br><figure class="highlight plain"><table><tr><td class="code"><pre><div class="line">&gt;db.taoxs_c1.insert(&#123;name:&apos;abc&apos;,sex:&apos;1&apos;&#125;)</div><div class="line"> WriteResult(&#123; &quot;nInserted&quot; : 1 &#125;)</div></pre></td></tr></table></figure></p>
+<p>查询all<br><figure class="highlight plain"><table><tr><td class="code"><pre><div class="line">&gt; db.taoxs_c1.find()</div><div class="line">&#123; &quot;_id&quot; : ObjectId(&quot;5871d9173c7ab1b751cfda4f&quot;), &quot;name&quot; : &quot;abc&quot;, &quot;sex&quot; : &quot;1&quot; &#125;</div></pre></td></tr></table></figure></p>
+<p>查询指定列<br><figure class="highlight plain"><table><tr><td class="code"><pre><div class="line">&gt; db.taoxs_c1.find(&#123;&#125;，&#123;name:true&#125;)</div><div class="line">&#123; &quot;_id&quot; : ObjectId(&quot;5871d9173c7ab1b751cfda4f&quot;), &quot;name&quot; : &quot;abc&quot; &#125;</div></pre></td></tr></table></figure></p>
+<p>查询count<br><figure class="highlight plain"><table><tr><td class="code"><pre><div class="line">&gt; db.taoxs_c1.find().count()</div><div class="line">1</div></pre></td></tr></table></figure></p>
+<p>查询限制行数limit<br><figure class="highlight plain"><table><tr><td class="code"><pre><div class="line">&gt; db.taoxs_c1.find().limit(5)</div></pre></td></tr></table></figure></p>
+<p>查询时忽略数据行数 可以用skip和limit配置实现分页的效果<br><figure class="highlight plain"><table><tr><td class="code"><pre><div class="line">&gt; db.taoxs_c1.find().skip(5)</div></pre></td></tr></table></figure></p>
+<p>结果排序 1：升序，-1：降序<br><figure class="highlight plain"><table><tr><td class="code"><pre><div class="line">&gt; db.taoxs_c1.find().sort(&#123;name:1&#125;)</div></pre></td></tr></table></figure></p>
+<p>修改name 的值为dfg<br><code>默认情况下 只会只会修改第一行 ，会覆盖掉其他字段 也就是说在修改name的时候sex字段也会被覆盖掉</code><br>update方法签名：function (query, obj, upsert, multi)</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><div class="line">&gt; db.taoxs_c1.update(&#123;name:&apos;abc&apos;&#125;,&#123;$set:&#123;name:&apos;dfg&apos;&#125;&#125;)</div></pre></td></tr></table></figure>
+<p>如果需要多行删除需要指定multi参数为true 如果需要upsert 需要指定upsert参数为true</p>
+<p>删除操作<br><figure class="highlight plain"><table><tr><td class="code"><pre><div class="line">&gt; db.taoxs_c1.remove(&#123;name:&apos;dfg&apos;&#125;)</div></pre></td></tr></table></figure></p>
+<p>mongodb中常用的条件查询类似sql中的where中条件符</p>
+<table>
+<thead>
+<tr>
+<th>字符</th>
+<th style="text-align:center">含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>$lt</td>
+<td style="text-align:center">&lt;</td>
+</tr>
+<tr>
+<td>$gt</td>
+<td style="text-align:center">&gt;</td>
+</tr>
+<tr>
+<td>$lte</td>
+<td style="text-align:center">&lt;=</td>
+</tr>
+<tr>
+<td>$gte</td>
+<td style="text-align:center">&gt;=</td>
+</tr>
+<tr>
+<td>$ne</td>
+<td style="text-align:center">!=</td>
+</tr>
+<tr>
+<td>$in</td>
+<td style="text-align:center">包含</td>
+</tr>
+<tr>
+<td>$nin</td>
+<td style="text-align:center">不包含</td>
+</tr>
+<tr>
+<td>$all</td>
+<td style="text-align:center">匹配所有</td>
+</tr>
+<tr>
+<td>$exists</td>
+<td style="text-align:center">属性是否存在</td>
+</tr>
+<tr>
+<td>$size</td>
+<td style="text-align:center">属性值size判断</td>
+</tr>
+</tbody>
+</table>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt; 以下是在3.4.1版本中 其他版本可能略有区别,mongo默认登录时在test数据中。&lt;/p&gt;
+&lt;h3 id=&quot;数据库相关操作&quot;&gt;&lt;a href=&quot;#数据库相关操作&quot; class=&quot;headerlink&quot; title=&quot;数据库相关操作&quot;&gt;&lt;/a&gt;数据库相关操作&lt;/h3&gt;&lt;p&gt;登录到数据库&lt;/p&gt;
+&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;bin/mongo --port 27017&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;p&gt;查看数据库列表&lt;/p&gt;
+&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;show dbs&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;p&gt;选择使用哪个数据库 类似mysql中的use,使用use后 创建的table默认会在当前使用的数据中&lt;/p&gt;
+&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;use taoxs&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;p&gt;查看当前使用的数据库使用db或者db.getName()一样的。&lt;/p&gt;
+&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;db &lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;db.getName()&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+    
+    </summary>
+    
+      <category term="技术" scheme="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/"/>
+    
+      <category term="mongo" scheme="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/mongo/"/>
+    
+    
+      <category term="mongo" scheme="http://blog.seoui.com/tags/mongo/"/>
+    
+  </entry>
   
   <entry>
     <title>nginx编译安装</title>
     <link href="http://blog.seoui.com/2016/11/24/nginxMakeInstall/"/>
     <id>http://blog.seoui.com/2016/11/24/nginxMakeInstall/</id>
     <published>2016-11-23T16:00:00.000Z</published>
-    <updated>2016-11-24T07:51:32.095Z</updated>
+    <updated>2017-01-08T05:52:22.575Z</updated>
     
     <content type="html"><![CDATA[<p>nginx是比较常用的高性能HTTP服务器和反向代理服务器，许多用户更是把做反向代理使用，<br>常言道：好记性不如烂笔头 时间久了总是有些遗忘，本文记录一下源码编码安装以及常用模块的使用介绍。<br><a id="more"></a></p>
 <h3 id="编译安装"><a href="#编译安装" class="headerlink" title="编译安装"></a>编译安装</h3><pre><code class="shell">tar -zxf nginx-1.7.3.tar.gz
@@ -79,7 +184,7 @@ mkdir -pv /var/tmp/nginx/{proxy,client,fcgi,uwsgi,scgi}
     <link href="http://blog.seoui.com/2016/10/29/rabbitmqInstall/"/>
     <id>http://blog.seoui.com/2016/10/29/rabbitmqInstall/</id>
     <published>2016-10-28T16:00:00.000Z</published>
-    <updated>2016-11-11T02:11:09.828Z</updated>
+    <updated>2016-10-29T05:09:49.338Z</updated>
     
     <content type="html"><![CDATA[<h3 id="安装rabbitmq"><a href="#安装rabbitmq" class="headerlink" title="安装rabbitmq"></a>安装rabbitmq</h3><p>采用源码安装方式,首先去官网拉取源代码并解压,由于rabbitmq是采用erlang编写的 所以得先安装erlang环境,这里假设erlang环境已经安装好了。</p>
 <pre><code class="shell">wget http://www.rabbitmq.com/releases/rabbitmq-server/v3.4.0/rabbitmq-server-3.4.0.tar.gz
@@ -146,7 +251,7 @@ tar -zxf rabbitmq-server-3.4.0.tar.gz
     <link href="http://blog.seoui.com/2016/10/16/html-emmet/"/>
     <id>http://blog.seoui.com/2016/10/16/html-emmet/</id>
     <published>2016-10-15T16:00:00.000Z</published>
-    <updated>2016-11-11T02:11:09.828Z</updated>
+    <updated>2016-10-16T14:05:29.617Z</updated>
     
     <content type="html"><![CDATA[<p> Emmet是一个Web开发人员的工具包，可以大大提高你的HTML和CSS的工作流,这是在<a href="http://docs.emmet.io/" title="Emmet" target="_blank" rel="external">emmet官方文档</a>中看到的第一句话,当然这句话也简单的概括了它拥有的魅力。</p>
 <p> 下面是在WebStorm中作一些应用。<br><a id="more"></a></p>
@@ -201,7 +306,7 @@ tar -zxf rabbitmq-server-3.4.0.tar.gz
     <link href="http://blog.seoui.com/2016/07/07/supervisor/"/>
     <id>http://blog.seoui.com/2016/07/07/supervisor/</id>
     <published>2016-07-06T16:00:00.000Z</published>
-    <updated>2016-11-11T02:11:09.828Z</updated>
+    <updated>2016-10-16T06:39:42.212Z</updated>
     
     <content type="html"><![CDATA[<p> supervisor是一个制作守护进程的工具,用户可以在UNIX系统中监控、管理进程。常用于管理与某个用户或项目相关的进程。</p>
 <h3 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h3><p> 采用源码安装的方式,切换到3.1.3这个版本安装。</p>
@@ -251,7 +356,7 @@ tar -zxf rabbitmq-server-3.4.0.tar.gz
     <link href="http://blog.seoui.com/2016/07/04/gzip-uzip/"/>
     <id>http://blog.seoui.com/2016/07/04/gzip-uzip/</id>
     <published>2016-07-03T16:00:00.000Z</published>
-    <updated>2016-11-11T02:11:09.828Z</updated>
+    <updated>2016-10-16T06:39:42.211Z</updated>
     
     <content type="html"><![CDATA[<p> 文件的压缩/解压无论是在哪个操作系统上都比较常用 简答在这里演示一下。</p>
 <p>##zip</p>
@@ -292,7 +397,7 @@ tar -zxf rabbitmq-server-3.4.0.tar.gz
     <link href="http://blog.seoui.com/2016/06/18/docker.install/"/>
     <id>http://blog.seoui.com/2016/06/18/docker.install/</id>
     <published>2016-06-17T16:00:00.000Z</published>
-    <updated>2016-11-11T02:11:09.827Z</updated>
+    <updated>2016-10-16T06:39:42.211Z</updated>
     
     <content type="html"><![CDATA[<p>接触docker容器有这么几周的时间了,顺便在这里记录一下这段岁月,无特殊说明<br>操作系统均为 centos7</p>
 <p>1、首先安装docker</p>
@@ -332,7 +437,7 @@ tar -zxf rabbitmq-server-3.4.0.tar.gz
     <link href="http://blog.seoui.com/2016/06/17/ubuntu.networksetting/"/>
     <id>http://blog.seoui.com/2016/06/17/ubuntu.networksetting/</id>
     <published>2016-06-16T16:00:00.000Z</published>
-    <updated>2016-11-11T02:11:09.827Z</updated>
+    <updated>2016-10-16T06:39:42.211Z</updated>
     
     <content type="html"><![CDATA[<p> 用惯了centos 偶尔装了一次ubuntu版本为14.04来玩一玩发现设置静态网络(static)后不能上外网，在这里记录一下如何设置的。</p>
 <p> 1、首页静态IP参数 编辑文件 vim /etc/network/interfaces</p>
@@ -368,7 +473,7 @@ tar -zxf rabbitmq-server-3.4.0.tar.gz
     <link href="http://blog.seoui.com/2016/05/24/html-form-enterevent/"/>
     <id>http://blog.seoui.com/2016/05/24/html-form-enterevent/</id>
     <published>2016-05-23T16:00:00.000Z</published>
-    <updated>2016-11-11T02:11:09.827Z</updated>
+    <updated>2016-10-16T06:39:42.211Z</updated>
     
     <content type="html"><![CDATA[<p>经常写form表单以前没有怎么注意 无意中注意到一些元素组成的默认事件。</p>
 <p>在form表单中 目前发现具备以下情况会默认支持回车事件提交表单</p>
@@ -407,7 +512,7 @@ tar -zxf rabbitmq-server-3.4.0.tar.gz
     <link href="http://blog.seoui.com/2016/04/13/selenium-autowebTest/"/>
     <id>http://blog.seoui.com/2016/04/13/selenium-autowebTest/</id>
     <published>2016-04-12T16:00:00.000Z</published>
-    <updated>2016-11-11T02:11:09.827Z</updated>
+    <updated>2016-10-16T06:39:42.210Z</updated>
     
     <content type="html"><![CDATA[<p> 最近在做一个简单新浪微博抓取功能,遇到了请求被新浪拦截,正因为如此了解到selenium。</p>
 <p> <a href="http://docs.seleniumhq.org/" title="selenium" target="_blank" rel="external">selenium</a> 是一个web的自动化测试工具。运用好它能够完成很多自动化测试功能甚至会让你感到很多出乎意料的事情。</p>
@@ -442,7 +547,7 @@ tar -zxf rabbitmq-server-3.4.0.tar.gz
     <link href="http://blog.seoui.com/2016/03/16/svganimate-ie-support/"/>
     <id>http://blog.seoui.com/2016/03/16/svganimate-ie-support/</id>
     <published>2016-03-15T16:00:00.000Z</published>
-    <updated>2016-11-11T02:11:09.826Z</updated>
+    <updated>2016-10-16T06:39:42.210Z</updated>
     
     <content type="html"><![CDATA[<p>在IE浏览器上 无论是否=IE11 svg动画元素animate都得不到支持 接下来的事情就是让IE浏览器能够支持svg动画元素 包括 animate、animateTransform、animateMotion、animateColor、set 元素</p>
 <p>如果是IE内核的浏览器可以引入以下脚本</p>
@@ -477,7 +582,7 @@ tar -zxf rabbitmq-server-3.4.0.tar.gz
     <link href="http://blog.seoui.com/2016/03/09/centos7.install.mysql/"/>
     <id>http://blog.seoui.com/2016/03/09/centos7.install.mysql/</id>
     <published>2016-03-08T16:00:00.000Z</published>
-    <updated>2016-11-11T02:11:09.826Z</updated>
+    <updated>2016-10-16T06:39:42.210Z</updated>
     
     <content type="html"><![CDATA[<p>正常情况下一般都会选择yum安装 原因都知道 简单 快捷，但在安装Mysql时却总是不顺利。</p>
 <p>所以这里记录一下</p>
@@ -516,7 +621,7 @@ tar -zxf rabbitmq-server-3.4.0.tar.gz
     <link href="http://blog.seoui.com/2016/03/02/springmvcsupportjsonp/"/>
     <id>http://blog.seoui.com/2016/03/02/springmvcsupportjsonp/</id>
     <published>2016-03-01T16:00:00.000Z</published>
-    <updated>2016-11-11T02:11:09.826Z</updated>
+    <updated>2016-10-16T06:39:42.210Z</updated>
     
     <content type="html"><![CDATA[<p>这里测试的是spring mvc4的版本 </p>
 <p>定义一个扩展类 必须要加上@ControllerAdvice增加处理<br><figure class="highlight java"><table><tr><td class="code"><pre><div class="line"><span class="meta">@ControllerAdvice</span></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">JsonpSupportAdvice</span> <span class="keyword">extends</span> <span class="title">AbstractJsonpResponseBodyAdvice</span> </span>&#123;</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="title">JsonpSupportAdvice</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="comment">//参数包含callback的时候 使用jsonp的反馈形式</span></div><div class="line">		<span class="keyword">super</span>(<span class="string">"callback"</span>, <span class="string">"jsonp"</span>);</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
@@ -547,7 +652,7 @@ tar -zxf rabbitmq-server-3.4.0.tar.gz
     <link href="http://blog.seoui.com/2016/01/25/share-chrome-plugin/"/>
     <id>http://blog.seoui.com/2016/01/25/share-chrome-plugin/</id>
     <published>2016-01-24T16:00:00.000Z</published>
-    <updated>2016-11-11T02:11:09.826Z</updated>
+    <updated>2016-10-23T08:42:59.498Z</updated>
     
     <content type="html"><![CDATA[<p>在这里分享几个 个人常用的Google Chrome浏览器插件 保证实用。</p>
 <p>由于个人目前的工作会写一些代码 所以优先介绍几个GitHub插件</p>
@@ -606,7 +711,7 @@ tar -zxf rabbitmq-server-3.4.0.tar.gz
     <link href="http://blog.seoui.com/2016/01/04/crtbackspacebug/"/>
     <id>http://blog.seoui.com/2016/01/04/crtbackspacebug/</id>
     <published>2016-01-03T16:00:00.000Z</published>
-    <updated>2016-11-11T02:11:09.826Z</updated>
+    <updated>2016-10-16T06:39:42.209Z</updated>
     
     <content type="html"><![CDATA[<p> 使用secureCRT操作Hbase Shell的时候 难免会按错字符,当输入出错后 一般会使用BackSpace(退格)键删除字符。很不巧的是BackSpace键不会当做delete命令,这时需要设置一下CRT 。</p>
 <p> 首先在选项-&gt;会话选项-&gt;终端-&gt;仿真 终端设置为Linux；</p>
@@ -641,7 +746,7 @@ tar -zxf rabbitmq-server-3.4.0.tar.gz
     <link href="http://blog.seoui.com/2015/10/27/apachetomcatClustering/"/>
     <id>http://blog.seoui.com/2015/10/27/apachetomcatClustering/</id>
     <published>2015-10-26T16:00:00.000Z</published>
-    <updated>2016-11-11T02:11:09.825Z</updated>
+    <updated>2016-10-16T06:39:42.209Z</updated>
     
     <content type="html"><![CDATA[<p> 这次试验是用1台Apache2.2 、 2台tomcat服务器 、并使用Tomcat Connectors–mod_jk.so作为传送介质实现负载均衡。</p>
 <p>项目之前在单机上跑 切换到集群环境中 发现一堆的问题出现了,当然还有未知没有发现的。</p>
@@ -682,7 +787,7 @@ tar -zxf rabbitmq-server-3.4.0.tar.gz
     <link href="http://blog.seoui.com/2015/10/12/ThisAnimalYear/"/>
     <id>http://blog.seoui.com/2015/10/12/ThisAnimalYear/</id>
     <published>2015-10-11T16:00:00.000Z</published>
-    <updated>2016-11-11T02:11:09.825Z</updated>
+    <updated>2016-10-16T06:39:42.209Z</updated>
     
     <content type="html"><![CDATA[<p> 时间总是在不经意间流走,看着窗外静静的夜晚,偶尔会听到小汽车按喇叭的声音,这时候会特别的觉得甜美,就好像是家的呼唤,总会给予满满的期待与希望。对于我而言那是未来和目标,想想明年就是本命年了,所以这篇文字就在这个夜晚(2015-10-13 00:10:00)诞生了。</p>
 <blockquote>
@@ -708,55 +813,11 @@ tar -zxf rabbitmq-server-3.4.0.tar.gz
   </entry>
   
   <entry>
-    <title>Linux 简单的进程管理</title>
-    <link href="http://blog.seoui.com/2015/09/12/linux.processmgr/"/>
-    <id>http://blog.seoui.com/2015/09/12/linux.processmgr/</id>
-    <published>2015-09-11T16:00:00.000Z</published>
-    <updated>2016-11-11T02:11:09.824Z</updated>
-    
-    <content type="html"><![CDATA[<p>进程管理的内容有点多,这里简单介绍一下,以后将详细说明系统调度、进程管理等内容。</p>
-<p>需要明白父子进程的概念</p>
-<ul>
-<li>子进程是由另一个进程所产生的，产生这个子进程的进程称为父进程</li>
-<li>父进程终止后 子进程会自动终止。但是子进程终止后 有可能会又会自动创建子进程。</li>
-</ul>
-<p>w  查看当前系统活动的信息 可以带参数user 如 w user </p>
-<p>ps 查看进程用的比较多的命令。</p>
-<p>kill 杀死(终止)进程</p>
-<p>killall -u apache 终止指定用户apache的进程。</p>
-<p>sleep 10000 让当前进程睡眠10000</p>
-<p>jobs 查看后台进程</p>
-<p>bg # 让后台的第#个进程运行。如 bg 1</p>
-<p>在前台运行的进程时按下Ctrl+z 可以让当前执行的进程在后台运行。</p>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;p&gt;进程管理的内容有点多,这里简单介绍一下,以后将详细说明系统调度、进程管理等内容。&lt;/p&gt;
-&lt;p&gt;需要明白父子进程的概念&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;子进程是由另一个进程所产生的，产生这个子进程的进程称为父进程&lt;/li&gt;
-&lt;li&gt;父进程终止后 子进程会自动终止。但是子进程终止后
-    
-    </summary>
-    
-      <category term="技术" scheme="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/"/>
-    
-      <category term="linux" scheme="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/linux/"/>
-    
-    
-      <category term="linux" scheme="http://blog.seoui.com/tags/linux/"/>
-    
-      <category term="linux进程" scheme="http://blog.seoui.com/tags/linux%E8%BF%9B%E7%A8%8B/"/>
-    
-  </entry>
-  
-  <entry>
     <title>Linux 软件的常用安装方法</title>
     <link href="http://blog.seoui.com/2015/09/12/linux.softInstall/"/>
     <id>http://blog.seoui.com/2015/09/12/linux.softInstall/</id>
     <published>2015-09-11T16:00:00.000Z</published>
-    <updated>2016-11-11T02:11:09.825Z</updated>
+    <updated>2016-10-16T06:39:42.208Z</updated>
     
     <content type="html"><![CDATA[<p>对于操作系统而言,如果没有软件和一些任务算法 那么这个系统意义是不大的。而我们使用操作系统目的是为了让一些软件和任务能够运行在系统上,从而帮助我们提高工作的效率。</p>
 <p>在Linux系统中常用的软件安装方式有<code>yum</code> <code>rpm</code> <code>gcc（编译源码安装）</code> 这3种方式，以下内容将对着3种安装方式做详细的介绍。</p>
@@ -877,11 +938,55 @@ tar -zxf rabbitmq-server-3.4.0.tar.gz
   </entry>
   
   <entry>
+    <title>Linux 简单的进程管理</title>
+    <link href="http://blog.seoui.com/2015/09/12/linux.processmgr/"/>
+    <id>http://blog.seoui.com/2015/09/12/linux.processmgr/</id>
+    <published>2015-09-11T16:00:00.000Z</published>
+    <updated>2016-10-16T06:39:42.207Z</updated>
+    
+    <content type="html"><![CDATA[<p>进程管理的内容有点多,这里简单介绍一下,以后将详细说明系统调度、进程管理等内容。</p>
+<p>需要明白父子进程的概念</p>
+<ul>
+<li>子进程是由另一个进程所产生的，产生这个子进程的进程称为父进程</li>
+<li>父进程终止后 子进程会自动终止。但是子进程终止后 有可能会又会自动创建子进程。</li>
+</ul>
+<p>w  查看当前系统活动的信息 可以带参数user 如 w user </p>
+<p>ps 查看进程用的比较多的命令。</p>
+<p>kill 杀死(终止)进程</p>
+<p>killall -u apache 终止指定用户apache的进程。</p>
+<p>sleep 10000 让当前进程睡眠10000</p>
+<p>jobs 查看后台进程</p>
+<p>bg # 让后台的第#个进程运行。如 bg 1</p>
+<p>在前台运行的进程时按下Ctrl+z 可以让当前执行的进程在后台运行。</p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;进程管理的内容有点多,这里简单介绍一下,以后将详细说明系统调度、进程管理等内容。&lt;/p&gt;
+&lt;p&gt;需要明白父子进程的概念&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;子进程是由另一个进程所产生的，产生这个子进程的进程称为父进程&lt;/li&gt;
+&lt;li&gt;父进程终止后 子进程会自动终止。但是子进程终止后
+    
+    </summary>
+    
+      <category term="技术" scheme="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/"/>
+    
+      <category term="linux" scheme="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/linux/"/>
+    
+    
+      <category term="linux" scheme="http://blog.seoui.com/tags/linux/"/>
+    
+      <category term="linux进程" scheme="http://blog.seoui.com/tags/linux%E8%BF%9B%E7%A8%8B/"/>
+    
+  </entry>
+  
+  <entry>
     <title>Linux vi编辑工具</title>
     <link href="http://blog.seoui.com/2015/09/11/linux.VIEditor/"/>
     <id>http://blog.seoui.com/2015/09/11/linux.VIEditor/</id>
     <published>2015-09-10T16:00:00.000Z</published>
-    <updated>2016-11-11T02:11:09.824Z</updated>
+    <updated>2016-10-16T06:39:42.207Z</updated>
     
     <content type="html"><![CDATA[<p><code>vi</code>编辑器在linux系统中应该算是人气很高的一个工具了,在这里简单介绍一下伟大的<code>vi</code> <code>vim</code>一些功能与使用。</p>
 <p><img src="!--￼3--&gt;/images/2015/09/2015-09-11-linux.VIEditor-1.jpg" alt=""></p>
@@ -1119,36 +1224,6 @@ tar -zxf rabbitmq-server-3.4.0.tar.gz
     
     
       <category term="linux" scheme="http://blog.seoui.com/tags/linux/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>javascript中with的用法</title>
-    <link href="http://blog.seoui.com/2015/09/09/js.with/"/>
-    <id>http://blog.seoui.com/2015/09/09/js.with/</id>
-    <published>2015-09-08T16:00:00.000Z</published>
-    <updated>2016-11-11T02:11:09.824Z</updated>
-    
-    <content type="html"><![CDATA[<p>在面向对象的JS和一些其他的很多场景会遇到同时针对同一个对象的N个属性取值或设置N个属性的值,你会发现出现了很多的重复的代码,简直就是丧心病狂.. 如下</p>
- <figure class="highlight javascript"><table><tr><td class="code"><pre><div class="line"><span class="comment">//声明 了一个user对象</span></div><div class="line"><span class="keyword">var</span> user=&#123;</div><div class="line">	<span class="attr">name</span>:<span class="string">'user1'</span>,</div><div class="line">	<span class="attr">age</span>:<span class="number">20</span>,</div><div class="line">	<span class="attr">sex</span>:<span class="number">1</span></div><div class="line">	<span class="comment">//.....可能还有n字段</span></div><div class="line">&#125;;</div><div class="line"></div><div class="line"><span class="built_in">console</span>.info(user.name);<span class="comment">//打印name</span></div><div class="line"><span class="built_in">console</span>.info(user.age);<span class="comment">//打印age</span></div><div class="line"><span class="built_in">console</span>.info(user.sex);<span class="comment">//打印sex</span></div><div class="line"><span class="comment">//console.info(user....);//可能会打印更多的信息</span></div></pre></td></tr></table></figure>
-<p><img src="!--￼2--&gt;/images/2015/09/2015-09-09-js.with-1.jpg" alt=""></p>
-<p>虽然简单易读 但不要我们追求的风格，那么接下来使用<code>with</code>看看有什么样的变化呢</p>
- <figure class="highlight javascript"><table><tr><td class="code"><pre><div class="line"><span class="keyword">var</span> user=&#123;</div><div class="line">	<span class="attr">name</span>:<span class="string">'user1'</span>,</div><div class="line">	<span class="attr">age</span>:<span class="number">20</span>,</div><div class="line">	<span class="attr">sex</span>:<span class="number">1</span></div><div class="line">	<span class="comment">//.....可能还有n字段</span></div><div class="line">&#125;;</div><div class="line"><span class="comment">//这样就不用没有显式的调用属性了。</span></div><div class="line">   <span class="keyword">with</span> (user)&#123;</div><div class="line">      <span class="built_in">console</span>.info(name);</div><div class="line">      <span class="built_in">console</span>.info(age);</div><div class="line">      <span class="built_in">console</span>.info(sex);</div><div class="line">   <span class="built_in">console</span>.info(<span class="keyword">this</span>);<span class="comment">//打印一下作用域是谁呢?</span></div><div class="line">  </div><div class="line">     <span class="comment">//.......................</span></div><div class="line">   &#125;</div></pre></td></tr></table></figure>
-<p>完美 又离简单明了的JS代码又近了一步。这算是进步吗?</p>
-<p>示例地址:<a href="https://cqweclick.github.io/jswithdemo.html" target="_blank">jswithdemo.html</a></p>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;p&gt;在面向对象的JS和一些其他的很多场景会遇到同时针对同一个对象的N个属性取值或设置N个属性的值,你会发现出现了很多的重复的代码,简直就是丧心病狂.. 如下&lt;/p&gt;
- &lt;figure class=&quot;highlight javascript&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td cla
-    
-    </summary>
-    
-      <category term="技术" scheme="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/"/>
-    
-    
-      <category term="javascript" scheme="http://blog.seoui.com/tags/javascript/"/>
     
   </entry>
   
