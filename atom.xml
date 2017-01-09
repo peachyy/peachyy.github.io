@@ -5,17 +5,65 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://blog.seoui.com/"/>
-  <updated>2017-01-08T06:57:09.924Z</updated>
+  <updated>2017-01-09T06:08:07.704Z</updated>
   <id>http://blog.seoui.com/</id>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>jdk1.7 Fork/Join并行框架学习</title>
+    <link href="http://blog.seoui.com/2017/01/09/jdk7-forkjoin/"/>
+    <id>http://blog.seoui.com/2017/01/09/jdk7-forkjoin/</id>
+    <published>2017-01-08T16:00:00.000Z</published>
+    <updated>2017-01-09T06:08:07.704Z</updated>
+    
+    <content type="html"><![CDATA[<p> 首先看一下ForkJoin相关的几个API </p>
+<ul>
+<li>ForkJoinPool<br> <code>实现了forkjoin的线程池</code></li>
+<li>ForkJoinWorkerThread<br> <code>forkjoin的线程</code></li>
+<li>ForkJoinTask<br>  <code>forkjoin任务的父类 这是一个抽象类</code></li>
+<li>RecursiveAction<br>  <code>无返回结果的任务接口</code></li>
+<li>RecursiveTask<br>  <code>有返回结果的任务接口</code><a id="more"></a>
+</li>
+</ul>
+<p>ForkJoinPool继承自AbstractExecutorService类 说明了 ForkJoinPool和ThreadPoolExecutor<br>差不多是同父的兄弟类 ，因为ThreadPoolExecutor也继承自AbstractExecutorService类。</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><div class="line"><span class="meta">@sun</span>.misc.Contended</div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ForkJoinPool</span> <span class="keyword">extends</span> <span class="title">AbstractExecutorService</span></span></div></pre></td></tr></table></figure>
+<p> 下面以一个简单的例子来说明一下使用方法</p>
+<p> 定义一个task实现类</p>
+ <figure class="highlight java"><table><tr><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Calculator</span> <span class="keyword">extends</span> <span class="title">RecursiveTask</span>&lt;<span class="title">Integer</span>&gt; </span>&#123;</div><div class="line"> </div><div class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> THRESHOLD = <span class="number">10</span>;</div><div class="line">    <span class="keyword">private</span> <span class="keyword">int</span> start;</div><div class="line">    <span class="keyword">private</span> <span class="keyword">int</span> end;</div><div class="line"> </div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Calculator</span><span class="params">(<span class="keyword">int</span> start, <span class="keyword">int</span> end)</span> </span>&#123;</div><div class="line">        <span class="keyword">this</span>.start = start;</div><div class="line">        <span class="keyword">this</span>.end = end;</div><div class="line">    &#125;</div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">protected</span> Integer <span class="title">compute</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">int</span> sum = <span class="number">0</span>;</div><div class="line">        <span class="keyword">if</span>((end - start) &lt; THRESHOLD)&#123;</div><div class="line">            sum=calSingle();</div><div class="line">        &#125;<span class="keyword">else</span>&#123;</div><div class="line">            <span class="keyword">int</span> middle = (start + end) /<span class="number">2</span>;</div><div class="line">            Calculator task1 = <span class="keyword">new</span> Calculator(start, middle);</div><div class="line">            Calculator task2 = <span class="keyword">new</span> Calculator(middle + <span class="number">1</span>, end);</div><div class="line">            <span class="comment">//首先拆分任务</span></div><div class="line">            task2.fork();</div><div class="line">            <span class="keyword">int</span> i=task2.join();</div><div class="line">            <span class="keyword">int</span> i2=task1.invoke();</div><div class="line"> <span class="comment">//           invokeAll(task1,task2);</span></div><div class="line"><span class="comment">//            int i=task1.getRawResult();</span></div><div class="line"><span class="comment">//            int i2=task2.getRawResult();</span></div><div class="line">            <span class="comment">//聚合</span></div><div class="line">            sum=i+i2;</div><div class="line">        &#125;</div><div class="line">        <span class="keyword">return</span> sum;</div><div class="line">    &#125;</div><div class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">int</span> <span class="title">calSingle</span><span class="params">()</span></span>&#123;</div><div class="line">        <span class="keyword">int</span> sum=<span class="number">0</span>;</div><div class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = start; i&lt;= end;i++)&#123;</div><div class="line">            sum += i;</div><div class="line">        &#125;</div><div class="line">        <span class="keyword">return</span> sum;</div><div class="line">    &#125;</div><div class="line"> </div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>测试main函数类</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TestMain</span> </span>&#123;</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> ExecutionException, InterruptedException </span>&#123;</div><div class="line"></div><div class="line">        Calculator calculator=<span class="keyword">new</span> Calculator(<span class="number">0</span>,<span class="number">500</span>);</div><div class="line"></div><div class="line">        ForkJoinPool pool = <span class="keyword">new</span> ForkJoinPool();</div><div class="line">        ForkJoinTask&lt;Integer&gt; f=pool.submit(calculator);</div><div class="line"></div><div class="line">        <span class="keyword">long</span> start=System.currentTimeMillis();</div><div class="line"></div><div class="line">        System.out.println(System.currentTimeMillis()-start+<span class="string">"MS"</span>);</div><div class="line">        <span class="keyword">do</span>&#123;</div><div class="line">            <span class="keyword">if</span>(calculator.isCompletedNormally()) &#123;</div><div class="line">            System.out.println(<span class="string">"计算完成 正在关闭Fork/Join池..."</span>);</div><div class="line">            pool.shutdown();</div><div class="line">        &#125;</div><div class="line">        &#125;<span class="keyword">while</span>(!calculator.isDone());</div><div class="line">        System.out.println(<span class="string">"计算结果为："</span>+f.get());</div><div class="line">        System.out.println(<span class="string">"线程已经从另一个线程偷取到的时间数:"</span>+pool.getStealCount());</div><div class="line">        System.out.println(<span class="string">"是否已经完成执行:"</span>+pool.isTerminated());</div><div class="line">        System.out.println(<span class="string">"并行的级别："</span>+pool.getParallelism());</div><div class="line">        System.out.println(<span class="string">"线程池的worker线程的数量："</span>+pool.getPoolSize());</div><div class="line"></div><div class="line">        System.out.println(<span class="string">"执行的任务数："</span>+pool.getQueuedTaskCount());</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>需要注意的是Fork/Join的为了充分减少等待时间 默认使用的是LIFO策略，所以我们在执行第一个任务的<br>时候尽量不要fork。具体原因还不是很理解，因为在invokeAll方法中也是这样子处理的。invokeAll源码如下<br><figure class="highlight java"><table><tr><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">invokeAll</span><span class="params">(ForkJoinTask&lt;?&gt; t1, ForkJoinTask&lt;?&gt; t2)</span> </span>&#123;</div><div class="line">    <span class="keyword">int</span> s1, s2;</div><div class="line">    t2.fork();</div><div class="line">    <span class="keyword">if</span> ((s1 = t1.doInvoke() &amp; DONE_MASK) != NORMAL)</div><div class="line">        t1.reportException(s1);</div><div class="line">    <span class="keyword">if</span> ((s2 = t2.doJoin() &amp; DONE_MASK) != NORMAL)</div><div class="line">        t2.reportException(s2);</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>首先Fork第二个任务。然后在执行第一个任务,其次是join第二个任务。</p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt; 首先看一下ForkJoin相关的几个API &lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;ForkJoinPool&lt;br&gt; &lt;code&gt;实现了forkjoin的线程池&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;ForkJoinWorkerThread&lt;br&gt; &lt;code&gt;forkjoin的线程&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;ForkJoinTask&lt;br&gt;  &lt;code&gt;forkjoin任务的父类 这是一个抽象类&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;RecursiveAction&lt;br&gt;  &lt;code&gt;无返回结果的任务接口&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;RecursiveTask&lt;br&gt;  &lt;code&gt;有返回结果的任务接口&lt;/code&gt;
+    
+    </summary>
+    
+      <category term="技术" scheme="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/"/>
+    
+      <category term="Fork/Join" scheme="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/Fork-Join/"/>
+    
+    
+      <category term="Fork/Join" scheme="http://blog.seoui.com/tags/Fork-Join/"/>
+    
+  </entry>
   
   <entry>
     <title>MongoDB常用操作</title>
     <link href="http://blog.seoui.com/2017/01/08/mongodbCommonoper/"/>
     <id>http://blog.seoui.com/2017/01/08/mongodbCommonoper/</id>
     <published>2017-01-07T16:00:00.000Z</published>
-    <updated>2017-01-08T06:57:09.924Z</updated>
+    <updated>2017-01-09T03:15:27.536Z</updated>
     
     <content type="html"><![CDATA[<p> 以下是在3.4.1版本中 其他版本可能略有区别,mongo默认登录时在test数据中。</p>
 <h3 id="数据库相关操作"><a href="#数据库相关操作" class="headerlink" title="数据库相关操作"></a>数据库相关操作</h3><p>登录到数据库</p>
@@ -120,7 +168,7 @@
     <link href="http://blog.seoui.com/2016/11/24/nginxMakeInstall/"/>
     <id>http://blog.seoui.com/2016/11/24/nginxMakeInstall/</id>
     <published>2016-11-23T16:00:00.000Z</published>
-    <updated>2017-01-08T05:52:22.575Z</updated>
+    <updated>2016-11-24T07:51:32.095Z</updated>
     
     <content type="html"><![CDATA[<p>nginx是比较常用的高性能HTTP服务器和反向代理服务器，许多用户更是把做反向代理使用，<br>常言道：好记性不如烂笔头 时间久了总是有些遗忘，本文记录一下源码编码安装以及常用模块的使用介绍。<br><a id="more"></a></p>
 <h3 id="编译安装"><a href="#编译安装" class="headerlink" title="编译安装"></a>编译安装</h3><pre><code class="shell">tar -zxf nginx-1.7.3.tar.gz
@@ -184,7 +232,7 @@ mkdir -pv /var/tmp/nginx/{proxy,client,fcgi,uwsgi,scgi}
     <link href="http://blog.seoui.com/2016/10/29/rabbitmqInstall/"/>
     <id>http://blog.seoui.com/2016/10/29/rabbitmqInstall/</id>
     <published>2016-10-28T16:00:00.000Z</published>
-    <updated>2016-10-29T05:09:49.338Z</updated>
+    <updated>2016-11-11T02:11:09.828Z</updated>
     
     <content type="html"><![CDATA[<h3 id="安装rabbitmq"><a href="#安装rabbitmq" class="headerlink" title="安装rabbitmq"></a>安装rabbitmq</h3><p>采用源码安装方式,首先去官网拉取源代码并解压,由于rabbitmq是采用erlang编写的 所以得先安装erlang环境,这里假设erlang环境已经安装好了。</p>
 <pre><code class="shell">wget http://www.rabbitmq.com/releases/rabbitmq-server/v3.4.0/rabbitmq-server-3.4.0.tar.gz
@@ -251,7 +299,7 @@ tar -zxf rabbitmq-server-3.4.0.tar.gz
     <link href="http://blog.seoui.com/2016/10/16/html-emmet/"/>
     <id>http://blog.seoui.com/2016/10/16/html-emmet/</id>
     <published>2016-10-15T16:00:00.000Z</published>
-    <updated>2016-10-16T14:05:29.617Z</updated>
+    <updated>2016-11-11T02:11:09.828Z</updated>
     
     <content type="html"><![CDATA[<p> Emmet是一个Web开发人员的工具包，可以大大提高你的HTML和CSS的工作流,这是在<a href="http://docs.emmet.io/" title="Emmet" target="_blank" rel="external">emmet官方文档</a>中看到的第一句话,当然这句话也简单的概括了它拥有的魅力。</p>
 <p> 下面是在WebStorm中作一些应用。<br><a id="more"></a></p>
@@ -306,7 +354,7 @@ tar -zxf rabbitmq-server-3.4.0.tar.gz
     <link href="http://blog.seoui.com/2016/07/07/supervisor/"/>
     <id>http://blog.seoui.com/2016/07/07/supervisor/</id>
     <published>2016-07-06T16:00:00.000Z</published>
-    <updated>2016-10-16T06:39:42.212Z</updated>
+    <updated>2016-11-11T02:11:09.828Z</updated>
     
     <content type="html"><![CDATA[<p> supervisor是一个制作守护进程的工具,用户可以在UNIX系统中监控、管理进程。常用于管理与某个用户或项目相关的进程。</p>
 <h3 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h3><p> 采用源码安装的方式,切换到3.1.3这个版本安装。</p>
@@ -356,7 +404,7 @@ tar -zxf rabbitmq-server-3.4.0.tar.gz
     <link href="http://blog.seoui.com/2016/07/04/gzip-uzip/"/>
     <id>http://blog.seoui.com/2016/07/04/gzip-uzip/</id>
     <published>2016-07-03T16:00:00.000Z</published>
-    <updated>2016-10-16T06:39:42.211Z</updated>
+    <updated>2016-11-11T02:11:09.828Z</updated>
     
     <content type="html"><![CDATA[<p> 文件的压缩/解压无论是在哪个操作系统上都比较常用 简答在这里演示一下。</p>
 <p>##zip</p>
@@ -397,7 +445,7 @@ tar -zxf rabbitmq-server-3.4.0.tar.gz
     <link href="http://blog.seoui.com/2016/06/18/docker.install/"/>
     <id>http://blog.seoui.com/2016/06/18/docker.install/</id>
     <published>2016-06-17T16:00:00.000Z</published>
-    <updated>2016-10-16T06:39:42.211Z</updated>
+    <updated>2016-11-11T02:11:09.827Z</updated>
     
     <content type="html"><![CDATA[<p>接触docker容器有这么几周的时间了,顺便在这里记录一下这段岁月,无特殊说明<br>操作系统均为 centos7</p>
 <p>1、首先安装docker</p>
@@ -437,7 +485,7 @@ tar -zxf rabbitmq-server-3.4.0.tar.gz
     <link href="http://blog.seoui.com/2016/06/17/ubuntu.networksetting/"/>
     <id>http://blog.seoui.com/2016/06/17/ubuntu.networksetting/</id>
     <published>2016-06-16T16:00:00.000Z</published>
-    <updated>2016-10-16T06:39:42.211Z</updated>
+    <updated>2016-11-11T02:11:09.827Z</updated>
     
     <content type="html"><![CDATA[<p> 用惯了centos 偶尔装了一次ubuntu版本为14.04来玩一玩发现设置静态网络(static)后不能上外网，在这里记录一下如何设置的。</p>
 <p> 1、首页静态IP参数 编辑文件 vim /etc/network/interfaces</p>
@@ -473,7 +521,7 @@ tar -zxf rabbitmq-server-3.4.0.tar.gz
     <link href="http://blog.seoui.com/2016/05/24/html-form-enterevent/"/>
     <id>http://blog.seoui.com/2016/05/24/html-form-enterevent/</id>
     <published>2016-05-23T16:00:00.000Z</published>
-    <updated>2016-10-16T06:39:42.211Z</updated>
+    <updated>2016-11-11T02:11:09.827Z</updated>
     
     <content type="html"><![CDATA[<p>经常写form表单以前没有怎么注意 无意中注意到一些元素组成的默认事件。</p>
 <p>在form表单中 目前发现具备以下情况会默认支持回车事件提交表单</p>
@@ -512,7 +560,7 @@ tar -zxf rabbitmq-server-3.4.0.tar.gz
     <link href="http://blog.seoui.com/2016/04/13/selenium-autowebTest/"/>
     <id>http://blog.seoui.com/2016/04/13/selenium-autowebTest/</id>
     <published>2016-04-12T16:00:00.000Z</published>
-    <updated>2016-10-16T06:39:42.210Z</updated>
+    <updated>2016-11-11T02:11:09.827Z</updated>
     
     <content type="html"><![CDATA[<p> 最近在做一个简单新浪微博抓取功能,遇到了请求被新浪拦截,正因为如此了解到selenium。</p>
 <p> <a href="http://docs.seleniumhq.org/" title="selenium" target="_blank" rel="external">selenium</a> 是一个web的自动化测试工具。运用好它能够完成很多自动化测试功能甚至会让你感到很多出乎意料的事情。</p>
@@ -547,7 +595,7 @@ tar -zxf rabbitmq-server-3.4.0.tar.gz
     <link href="http://blog.seoui.com/2016/03/16/svganimate-ie-support/"/>
     <id>http://blog.seoui.com/2016/03/16/svganimate-ie-support/</id>
     <published>2016-03-15T16:00:00.000Z</published>
-    <updated>2016-10-16T06:39:42.210Z</updated>
+    <updated>2016-11-11T02:11:09.826Z</updated>
     
     <content type="html"><![CDATA[<p>在IE浏览器上 无论是否=IE11 svg动画元素animate都得不到支持 接下来的事情就是让IE浏览器能够支持svg动画元素 包括 animate、animateTransform、animateMotion、animateColor、set 元素</p>
 <p>如果是IE内核的浏览器可以引入以下脚本</p>
@@ -582,7 +630,7 @@ tar -zxf rabbitmq-server-3.4.0.tar.gz
     <link href="http://blog.seoui.com/2016/03/09/centos7.install.mysql/"/>
     <id>http://blog.seoui.com/2016/03/09/centos7.install.mysql/</id>
     <published>2016-03-08T16:00:00.000Z</published>
-    <updated>2016-10-16T06:39:42.210Z</updated>
+    <updated>2016-11-11T02:11:09.826Z</updated>
     
     <content type="html"><![CDATA[<p>正常情况下一般都会选择yum安装 原因都知道 简单 快捷，但在安装Mysql时却总是不顺利。</p>
 <p>所以这里记录一下</p>
@@ -621,7 +669,7 @@ tar -zxf rabbitmq-server-3.4.0.tar.gz
     <link href="http://blog.seoui.com/2016/03/02/springmvcsupportjsonp/"/>
     <id>http://blog.seoui.com/2016/03/02/springmvcsupportjsonp/</id>
     <published>2016-03-01T16:00:00.000Z</published>
-    <updated>2016-10-16T06:39:42.210Z</updated>
+    <updated>2016-11-11T02:11:09.826Z</updated>
     
     <content type="html"><![CDATA[<p>这里测试的是spring mvc4的版本 </p>
 <p>定义一个扩展类 必须要加上@ControllerAdvice增加处理<br><figure class="highlight java"><table><tr><td class="code"><pre><div class="line"><span class="meta">@ControllerAdvice</span></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">JsonpSupportAdvice</span> <span class="keyword">extends</span> <span class="title">AbstractJsonpResponseBodyAdvice</span> </span>&#123;</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="title">JsonpSupportAdvice</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="comment">//参数包含callback的时候 使用jsonp的反馈形式</span></div><div class="line">		<span class="keyword">super</span>(<span class="string">"callback"</span>, <span class="string">"jsonp"</span>);</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
@@ -652,7 +700,7 @@ tar -zxf rabbitmq-server-3.4.0.tar.gz
     <link href="http://blog.seoui.com/2016/01/25/share-chrome-plugin/"/>
     <id>http://blog.seoui.com/2016/01/25/share-chrome-plugin/</id>
     <published>2016-01-24T16:00:00.000Z</published>
-    <updated>2016-10-23T08:42:59.498Z</updated>
+    <updated>2016-11-11T02:11:09.826Z</updated>
     
     <content type="html"><![CDATA[<p>在这里分享几个 个人常用的Google Chrome浏览器插件 保证实用。</p>
 <p>由于个人目前的工作会写一些代码 所以优先介绍几个GitHub插件</p>
@@ -711,7 +759,7 @@ tar -zxf rabbitmq-server-3.4.0.tar.gz
     <link href="http://blog.seoui.com/2016/01/04/crtbackspacebug/"/>
     <id>http://blog.seoui.com/2016/01/04/crtbackspacebug/</id>
     <published>2016-01-03T16:00:00.000Z</published>
-    <updated>2016-10-16T06:39:42.209Z</updated>
+    <updated>2016-11-11T02:11:09.826Z</updated>
     
     <content type="html"><![CDATA[<p> 使用secureCRT操作Hbase Shell的时候 难免会按错字符,当输入出错后 一般会使用BackSpace(退格)键删除字符。很不巧的是BackSpace键不会当做delete命令,这时需要设置一下CRT 。</p>
 <p> 首先在选项-&gt;会话选项-&gt;终端-&gt;仿真 终端设置为Linux；</p>
@@ -746,7 +794,7 @@ tar -zxf rabbitmq-server-3.4.0.tar.gz
     <link href="http://blog.seoui.com/2015/10/27/apachetomcatClustering/"/>
     <id>http://blog.seoui.com/2015/10/27/apachetomcatClustering/</id>
     <published>2015-10-26T16:00:00.000Z</published>
-    <updated>2016-10-16T06:39:42.209Z</updated>
+    <updated>2016-11-11T02:11:09.825Z</updated>
     
     <content type="html"><![CDATA[<p> 这次试验是用1台Apache2.2 、 2台tomcat服务器 、并使用Tomcat Connectors–mod_jk.so作为传送介质实现负载均衡。</p>
 <p>项目之前在单机上跑 切换到集群环境中 发现一堆的问题出现了,当然还有未知没有发现的。</p>
@@ -787,7 +835,7 @@ tar -zxf rabbitmq-server-3.4.0.tar.gz
     <link href="http://blog.seoui.com/2015/10/12/ThisAnimalYear/"/>
     <id>http://blog.seoui.com/2015/10/12/ThisAnimalYear/</id>
     <published>2015-10-11T16:00:00.000Z</published>
-    <updated>2016-10-16T06:39:42.209Z</updated>
+    <updated>2016-11-11T02:11:09.825Z</updated>
     
     <content type="html"><![CDATA[<p> 时间总是在不经意间流走,看着窗外静静的夜晚,偶尔会听到小汽车按喇叭的声音,这时候会特别的觉得甜美,就好像是家的呼唤,总会给予满满的期待与希望。对于我而言那是未来和目标,想想明年就是本命年了,所以这篇文字就在这个夜晚(2015-10-13 00:10:00)诞生了。</p>
 <blockquote>
@@ -817,7 +865,7 @@ tar -zxf rabbitmq-server-3.4.0.tar.gz
     <link href="http://blog.seoui.com/2015/09/12/linux.softInstall/"/>
     <id>http://blog.seoui.com/2015/09/12/linux.softInstall/</id>
     <published>2015-09-11T16:00:00.000Z</published>
-    <updated>2016-10-16T06:39:42.208Z</updated>
+    <updated>2016-11-11T02:11:09.825Z</updated>
     
     <content type="html"><![CDATA[<p>对于操作系统而言,如果没有软件和一些任务算法 那么这个系统意义是不大的。而我们使用操作系统目的是为了让一些软件和任务能够运行在系统上,从而帮助我们提高工作的效率。</p>
 <p>在Linux系统中常用的软件安装方式有<code>yum</code> <code>rpm</code> <code>gcc（编译源码安装）</code> 这3种方式，以下内容将对着3种安装方式做详细的介绍。</p>
@@ -942,7 +990,7 @@ tar -zxf rabbitmq-server-3.4.0.tar.gz
     <link href="http://blog.seoui.com/2015/09/12/linux.processmgr/"/>
     <id>http://blog.seoui.com/2015/09/12/linux.processmgr/</id>
     <published>2015-09-11T16:00:00.000Z</published>
-    <updated>2016-10-16T06:39:42.207Z</updated>
+    <updated>2016-11-11T02:11:09.824Z</updated>
     
     <content type="html"><![CDATA[<p>进程管理的内容有点多,这里简单介绍一下,以后将详细说明系统调度、进程管理等内容。</p>
 <p>需要明白父子进程的概念</p>
@@ -978,252 +1026,6 @@ tar -zxf rabbitmq-server-3.4.0.tar.gz
       <category term="linux" scheme="http://blog.seoui.com/tags/linux/"/>
     
       <category term="linux进程" scheme="http://blog.seoui.com/tags/linux%E8%BF%9B%E7%A8%8B/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Linux vi编辑工具</title>
-    <link href="http://blog.seoui.com/2015/09/11/linux.VIEditor/"/>
-    <id>http://blog.seoui.com/2015/09/11/linux.VIEditor/</id>
-    <published>2015-09-10T16:00:00.000Z</published>
-    <updated>2016-10-16T06:39:42.207Z</updated>
-    
-    <content type="html"><![CDATA[<p><code>vi</code>编辑器在linux系统中应该算是人气很高的一个工具了,在这里简单介绍一下伟大的<code>vi</code> <code>vim</code>一些功能与使用。</p>
-<p><img src="!--￼3--&gt;/images/2015/09/2015-09-11-linux.VIEditor-1.jpg" alt=""></p>
-<p><strong>基本使用</strong></p>
-<p>用vi创建一个文件</p>
- <figure class="highlight html"><table><tr><td class="code"><pre><div class="line">[root@localhost ~]# vi mytxt                                                                           </div><div class="line">~                                                                               </div><div class="line">~                                                                               </div><div class="line">~                                                                               </div><div class="line">~                                                                               </div><div class="line">~                                                                               </div><div class="line">~                                                                               </div><div class="line">~                                                                               </div><div class="line">~                                                                               </div><div class="line">~                                                                               </div><div class="line">~                                                                               </div><div class="line">~                                                                               </div><div class="line">~                                                                               </div><div class="line">"mytxt" [New File]</div></pre></td></tr></table></figure>
-<p>如果是新创建的文件会在最后的命令行左下角标识 <code>&quot;文件名&quot; [New File]</code> 的字样。</p>
-<p>vi的工作模式分为 命令模式  输入模式  转义模式</p>
-<p>1、转义模式 该模式一般通过:号触发输入一些命令后按下<code>Enter</code>键执行。</p>
-<p>通过<code>Esc</code>键退出焦点(进入命令模式),输入<code>:</code>号 进入vi编辑器工具命令行 输入<code>wq</code>命令 保存并退出编辑,<code>q!</code>命令退出不保存,下面列举几个常用的转义模式命令。</p>
-<table>
-<thead>
-<tr>
-<th>名称</th>
-<th style="text-align:center">说明</th>
-<th style="text-align:right">示例</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>:q!</td>
-<td style="text-align:center">退出VI 放弃保存</td>
-<td style="text-align:right">q!</td>
-</tr>
-<tr>
-<td>:w</td>
-<td style="text-align:center">在编辑模式下执行保存操作</td>
-<td style="text-align:right"></td>
-</tr>
-<tr>
-<td>:w!</td>
-<td style="text-align:center">在编辑模式下执行强制保存操作</td>
-<td style="text-align:right"></td>
-</tr>
-<tr>
-<td>:wq</td>
-<td style="text-align:center">保存并退出VI</td>
-<td style="text-align:right">wq</td>
-</tr>
-<tr>
-<td>:f</td>
-<td style="text-align:center">显示当前的文件名、光标所在行的行号以及显示比例</td>
-<td style="text-align:right"></td>
-</tr>
-<tr>
-<td>:set nu</td>
-<td style="text-align:center">显示行号</td>
-<td style="text-align:right">:set nu</td>
-</tr>
-<tr>
-<td>:set nonu</td>
-<td style="text-align:center">取消行号显示</td>
-<td style="text-align:right"></td>
-</tr>
-<tr>
-<td>:1[数字]</td>
-<td style="text-align:center">让光标定位到第[？]行</td>
-<td style="text-align:right">:5 光标定位到第5行</td>
-</tr>
-<tr>
-<td>:$</td>
-<td style="text-align:center">光标定位到最后一行</td>
-</tr>
-</tbody>
-</table>
-<p>2、命令方式  进入vi后默认是命令模式 当输入正确vi内置的命令后会响应操作，否则发出警告 提示这不是一个vi命令。</p>
-<table>
-<thead>
-<tr>
-<th>名称</th>
-<th style="text-align:center">说明</th>
-<th style="text-align:right">示例</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>^</td>
-<td style="text-align:center">把光标定位到本行的首字符</td>
-<td style="text-align:right"></td>
-</tr>
-<tr>
-<td>$</td>
-<td style="text-align:center">把光标定位到本行的尾字符</td>
-<td style="text-align:right"></td>
-</tr>
-<tr>
-<td>i</td>
-<td style="text-align:center">命令模式切换为编辑模式</td>
-<td style="text-align:right"></td>
-</tr>
-<tr>
-<td>a</td>
-<td style="text-align:center">切换到编辑模式 当前光标的字符后面</td>
-<td style="text-align:right"></td>
-</tr>
-<tr>
-<td>A</td>
-<td style="text-align:center">切换到编辑模式下 定位光标到当前行的最后一个字符</td>
-<td style="text-align:right"></td>
-</tr>
-<tr>
-<td>o</td>
-<td style="text-align:center">将光标定位到新插入的下一行</td>
-<td style="text-align:right"></td>
-</tr>
-<tr>
-<td>cw</td>
-<td style="text-align:center">删除光标之后一个单词</td>
-<td style="text-align:right"></td>
-</tr>
-<tr>
-<td>c$</td>
-<td style="text-align:center">删除光标之后的字符</td>
-<td style="text-align:right"></td>
-</tr>
-<tr>
-<td>c^</td>
-<td style="text-align:center">删除光标之前的字符</td>
-<td style="text-align:right"></td>
-</tr>
-<tr>
-<td>w</td>
-<td style="text-align:center">将光标往下移动一行</td>
-<td style="text-align:right"></td>
-</tr>
-<tr>
-<td>b</td>
-<td style="text-align:center">将光标往上移动一行</td>
-<td style="text-align:right"></td>
-</tr>
-<tr>
-<td>e</td>
-<td style="text-align:center">将光标定位到下一行的最后一个字符</td>
-<td style="text-align:right"></td>
-</tr>
-<tr>
-<td>G</td>
-<td style="text-align:center">将光标定位到最后一行</td>
-<td style="text-align:right"></td>
-</tr>
-<tr>
-<td>#G</td>
-<td style="text-align:center">将光标定位到指定行</td>
-<td style="text-align:right">2G将光标定位到第2行</td>
-</tr>
-</tbody>
-</table>
-<p><strong>复制 粘贴 撤销</strong></p>
-<table>
-<thead>
-<tr>
-<th>名称</th>
-<th style="text-align:center">说明</th>
-<th style="text-align:right">示例</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>yy</td>
-<td style="text-align:center">复制整行</td>
-<td style="text-align:right"></td>
-</tr>
-<tr>
-<td>yw</td>
-<td style="text-align:center">复制当前光标之后所在单词字符</td>
-<td style="text-align:right"></td>
-</tr>
-<tr>
-<td>y$</td>
-<td style="text-align:center">复制当前光标到行尾字符</td>
-<td style="text-align:right"></td>
-</tr>
-<tr>
-<td>y^</td>
-<td style="text-align:center">复制当前光标到行首支持</td>
-<td style="text-align:right"></td>
-</tr>
-<tr>
-<td>p/P</td>
-<td style="text-align:center">粘贴</td>
-<td style="text-align:right"></td>
-</tr>
-<tr>
-<td>u</td>
-<td style="text-align:center">取消最近一次操作的</td>
-<td style="text-align:right"></td>
-</tr>
-<tr>
-<td>U</td>
-<td style="text-align:center">取消当前行进行的所有操作</td>
-<td style="text-align:right"></td>
-</tr>
-<tr>
-<td>Ctrl+r</td>
-<td style="text-align:center">对使用u命令撤销的操作进行恢复</td>
-</tr>
-</tbody>
-</table>
-<p><strong>字符串查找</strong></p>
-<p>vi中查找字符串使用<code>/</code>, <code>?</code>字符触发 <em>需要注意的是/向光标以下查找,?向光标位置以上查找</em> 如查找光标以后文档中的 name</p>
- <figure class="highlight html"><table><tr><td class="code"><pre><div class="line">~                                                                               </div><div class="line">~                                                                               </div><div class="line">~                                                                               </div><div class="line">~                                                                               </div><div class="line">/name</div></pre></td></tr></table></figure>
-<p>被查到的字符会被高亮显示,如果文档中存在多个相同的字符串需要使用<code>n</code>下一个 | <code>N</code>上一个 查找。</p>
-<p><strong>字符串替换</strong></p>
-<p>当然一个方便好用的字符串编辑工具必须具备替换文字操作,这样才能增加写作的效率。</p>
-<p>使用命令<code>:s/</code>替换字符串。 基本语法</p>
-<ul>
-<li><code>:s/A/B</code>                 替换一行的一处 A 为B</li>
-<li><code>:s/A/B/g</code>               替换一行的多处 A 为B</li>
-<li><code>:s/A/B/c</code>               替换的时候有确认提示</li>
-<li><code>1,20s/A/B/g</code>            1-20行 将A替换为B</li>
-</ul>
-<p>如替换一处name为 xingming</p>
- <figure class="highlight html"><table><tr><td class="code"><pre><div class="line">~                                                                               </div><div class="line">~                                                                               </div><div class="line">~                                                                               </div><div class="line">~                                                                               </div><div class="line">:s/name/xingming</div></pre></td></tr></table></figure>
-<p><strong>同时编辑多个文件</strong></p>
-<p>使用VI 后面加多个文件名称即可 用的不是很多 如需要同时打开a.txt b.txt c.txt 只需 vi a.txt b.txt c.txt 默认打开第一个。</p>
-<p>:arts 显示多文件信息</p>
-<p>:next 向后切换文件</p>
-<p>:prev向前切换文件</p>
-<p>:first 定位首个文件</p>
-<p>:last 定位最后一个文件</p>
-<p>Ctrl+^快速定位到编辑器中切换前的文件</p>
-<p>常用的命令没有这么多 大部分命令都是经过自己在<code>centos6.5</code>上测试过。难免有错误 欢迎拍砖。</p>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;p&gt;&lt;code&gt;vi&lt;/code&gt;编辑器在linux系统中应该算是人气很高的一个工具了,在这里简单介绍一下伟大的&lt;code&gt;vi&lt;/code&gt; &lt;code&gt;vim&lt;/code&gt;一些功能与使用。&lt;/p&gt;
-&lt;p&gt;&lt;img src=&quot;!--￼3--&amp;gt;/images/2015/0
-    
-    </summary>
-    
-      <category term="技术" scheme="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/"/>
-    
-      <category term="linux" scheme="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/linux/"/>
-    
-    
-      <category term="linux" scheme="http://blog.seoui.com/tags/linux/"/>
     
   </entry>
   
