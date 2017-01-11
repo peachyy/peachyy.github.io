@@ -5,10 +5,106 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://blog.seoui.com/"/>
-  <updated>2017-01-09T06:08:07.704Z</updated>
+  <updated>2017-01-11T08:44:59.955Z</updated>
   <id>http://blog.seoui.com/</id>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>MongoDB搭建ReplSet复制集群</title>
+    <link href="http://blog.seoui.com/2017/01/11/mongodb-rs/"/>
+    <id>http://blog.seoui.com/2017/01/11/mongodb-rs/</id>
+    <published>2017-01-10T16:00:00.000Z</published>
+    <updated>2017-01-11T08:44:59.955Z</updated>
+    
+    <content type="html"><![CDATA[<p> MongoDB的复制集是一个主从复制模式 又具有故障转移的集群，任何成员都有可能是<code>master</code>，<br> 当master挂掉用会很快的重新选举一个节点来充当master。</p>
+<p> 复制集中的组成主要成员</p>
+<ul>
+<li>Primary<br> <code>数据读写 master节点</code></li>
+<li>Secondary<br> <code>备份Primary的数据 默认设置下 不可读 不可写</code></li>
+<li>arbiter<br> <code>投票节点 此节点不会存数据 只参与投票 ，当primary节点出现异常挂掉之后 arbiter节点负责从secondary
+  节点中选举一个节点升级为Primary节点</code></li>
+</ul>
+<p>其中可以设置Secondary节点可读，让Primary节点负责写，这些就实现了一个高效简单的读写分离。<br><a id="more"></a></p>
+<h4 id="环境搭建"><a href="#环境搭建" class="headerlink" title="环境搭建"></a>环境搭建</h4><p>以3个实例来演示一下复制集群的搭建过程 分别为:127.0.0.1:12345,127.0.0.1:12346,127.0.0.1:12347。<br>需要预先创建好各目录的文件夹 不然启动的时候会报错，这里还有一个坑是 pidfilepath配置项必须是绝对路径，<br>否则也会报错，replSet在同一个复制集中也需要具有一致的名称。</p>
+<p>注意在旧版本中是使用的是master slave模式 目前使用的是3.4官方不支持使用这种方式，<br>官方希望使用replset代替master slave。所以当你配置master或者slave的时候就会报错。</p>
+<p>127.0.0.1:12345配置</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><div class="line">port=12345</div><div class="line">fork=true</div><div class="line">dbpath=data/12345</div><div class="line">logpath=log/12345/mongod.log</div><div class="line">httpinterface=true</div><div class="line">rest=true</div><div class="line">logappend=true</div><div class="line">pidfilepath=/home/collect/mongodb-linux-x86_64-rhel70-3.4.1/log/12345/12345.pid</div><div class="line">replSet=mydbCenter</div><div class="line">oplogSize=512</div></pre></td></tr></table></figure>
+<p>127.0.0.1:12346配置</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><div class="line">port=12346</div><div class="line">fork=true</div><div class="line">dbpath=data/12346</div><div class="line">logpath=log/12346/mongod.log</div><div class="line">httpinterface=true</div><div class="line">rest=true</div><div class="line">logappend=true</div><div class="line">pidfilepath=/home/collect/mongodb-linux-x86_64-rhel70-3.4.1/log/12346/12346.pid</div><div class="line">replSet=mydbCenter</div><div class="line">oplogSize=512</div></pre></td></tr></table></figure>
+<p>127.0.0.1:12346配置</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><div class="line">port=12347</div><div class="line">fork=true</div><div class="line">dbpath=data/12347</div><div class="line">logpath=log/12347/mongod.log</div><div class="line">httpinterface=true</div><div class="line">rest=true</div><div class="line">logappend=true</div><div class="line">pidfilepath=/home/collect/mongodb-linux-x86_64-rhel70-3.4.1/log/12347/12347.pid</div><div class="line">replSet=mydbCenter</div><div class="line">oplogSize=512</div></pre></td></tr></table></figure>
+<p>分别启动好3个实例之后，随便进入一个实例 </p>
+<h4 id="初始化复制集群"><a href="#初始化复制集群" class="headerlink" title="初始化复制集群"></a>初始化复制集群</h4><p>首先创建1个配置对象 在js中就是一个简单的对象 、json串</p>
+<pre><code class="shell">var rs_conf={
+        &quot;_id&quot; : &quot;mydbCenter&quot;,
+        &quot;members&quot; : [
+                {
+                        &quot;_id&quot; : 0,
+                        &quot;host&quot; : &quot;127.0.0.1:12345&quot;
+                },
+                {
+                        &quot;_id&quot; : 1,
+                        &quot;host&quot; : &quot;127.0.0.1:12346&quot;
+                },
+                {
+                        &quot;_id&quot; : 2,
+                        &quot;host&quot; : &quot;127.0.0.1:12347&quot;
+                }
+        ]
+}
+</code></pre>
+<p>把配置应用到集群</p>
+<pre><code class="shell">rs.initiate(rs_conf)
+</code></pre>
+<p>这里有一个限制就是需要集群的节点中不能有数据 需要先清空一下 不然<code>initiate</code>的时候会出错。<br>配置成功后使用<code>rs.status()</code>命令查看各节点状态，一些正常 就能看到各节点的状态信息</p>
+<pre><code class="shell">rs.status()
+</code></pre>
+<p>搭建好复制集群之后命令行的标识符会变为相应的成员类型如</p>
+<pre><code class="shell">mydbCenter:PRIMARY&gt; 
+mydbCenter:SECONDARY&gt;
+</code></pre>
+<p>这也是检验集群是否搭建的成功的一个小标识。  </p>
+<p>接着可以尝试一下在Primary中写入一条数据。这条数据会立即同步到各个Secondary节点中。<br>当然前面也说过默认情况的Secondary不可读 会报下面的错误。</p>
+<pre><code class="shell">{
+        &quot;ok&quot; : 0,
+        &quot;errmsg&quot; : &quot;not master and slaveOk=false&quot;,
+        &quot;code&quot; : 13435,
+        &quot;codeName&quot; : &quot;NotMasterNoSlaveOk&quot;
+}
+</code></pre>
+<p>所以需要在Secondary中执行</p>
+<pre><code class="shell">db.getMongo().setSlaveOk()
+</code></pre>
+<p>在网络上看到有很多帖子说只要在Primary节点中执行 db.getMongo().setSlaveOk()<br>就能在Secondary节点中读取数据，但是在3.4版本试了一下是不行的。需要在Secondary中执行一下<br><code>db.getMongo().setSlaveOk()</code>让Secondary可读。</p>
+<h4 id="添加节点"><a href="#添加节点" class="headerlink" title="添加节点"></a>添加节点</h4><p>如果现在已经有搭建好一个复制集群了 老板想多加一台备份机器进去 怎么办？<br>只需要启动好新机器的实例后 在Primary中调用rs.add() 方法即可</p>
+<pre><code class="shell">rs.add({&quot;host&quot; : &quot;127.0.0.1:12348&quot;})
+</code></pre>
+<p>添加投票节点调用<code>rs.addArb()</code>方法。</p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt; MongoDB的复制集是一个主从复制模式 又具有故障转移的集群，任何成员都有可能是&lt;code&gt;master&lt;/code&gt;，&lt;br&gt; 当master挂掉用会很快的重新选举一个节点来充当master。&lt;/p&gt;
+&lt;p&gt; 复制集中的组成主要成员&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Primary&lt;br&gt; &lt;code&gt;数据读写 master节点&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;Secondary&lt;br&gt; &lt;code&gt;备份Primary的数据 默认设置下 不可读 不可写&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;arbiter&lt;br&gt; &lt;code&gt;投票节点 此节点不会存数据 只参与投票 ，当primary节点出现异常挂掉之后 arbiter节点负责从secondary
+  节点中选举一个节点升级为Primary节点&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;其中可以设置Secondary节点可读，让Primary节点负责写，这些就实现了一个高效简单的读写分离。&lt;br&gt;
+    
+    </summary>
+    
+      <category term="技术" scheme="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/"/>
+    
+      <category term="MongoDB" scheme="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/MongoDB/"/>
+    
+    
+      <category term="MongoDB" scheme="http://blog.seoui.com/tags/MongoDB/"/>
+    
+  </entry>
   
   <entry>
     <title>jdk1.7 Fork/Join并行框架学习</title>
@@ -982,50 +1078,6 @@ tar -zxf rabbitmq-server-3.4.0.tar.gz
       <category term="linux" scheme="http://blog.seoui.com/tags/linux/"/>
     
       <category term="linux软件安装" scheme="http://blog.seoui.com/tags/linux%E8%BD%AF%E4%BB%B6%E5%AE%89%E8%A3%85/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Linux 简单的进程管理</title>
-    <link href="http://blog.seoui.com/2015/09/12/linux.processmgr/"/>
-    <id>http://blog.seoui.com/2015/09/12/linux.processmgr/</id>
-    <published>2015-09-11T16:00:00.000Z</published>
-    <updated>2016-11-11T02:11:09.824Z</updated>
-    
-    <content type="html"><![CDATA[<p>进程管理的内容有点多,这里简单介绍一下,以后将详细说明系统调度、进程管理等内容。</p>
-<p>需要明白父子进程的概念</p>
-<ul>
-<li>子进程是由另一个进程所产生的，产生这个子进程的进程称为父进程</li>
-<li>父进程终止后 子进程会自动终止。但是子进程终止后 有可能会又会自动创建子进程。</li>
-</ul>
-<p>w  查看当前系统活动的信息 可以带参数user 如 w user </p>
-<p>ps 查看进程用的比较多的命令。</p>
-<p>kill 杀死(终止)进程</p>
-<p>killall -u apache 终止指定用户apache的进程。</p>
-<p>sleep 10000 让当前进程睡眠10000</p>
-<p>jobs 查看后台进程</p>
-<p>bg # 让后台的第#个进程运行。如 bg 1</p>
-<p>在前台运行的进程时按下Ctrl+z 可以让当前执行的进程在后台运行。</p>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;p&gt;进程管理的内容有点多,这里简单介绍一下,以后将详细说明系统调度、进程管理等内容。&lt;/p&gt;
-&lt;p&gt;需要明白父子进程的概念&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;子进程是由另一个进程所产生的，产生这个子进程的进程称为父进程&lt;/li&gt;
-&lt;li&gt;父进程终止后 子进程会自动终止。但是子进程终止后
-    
-    </summary>
-    
-      <category term="技术" scheme="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/"/>
-    
-      <category term="linux" scheme="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/linux/"/>
-    
-    
-      <category term="linux" scheme="http://blog.seoui.com/tags/linux/"/>
-    
-      <category term="linux进程" scheme="http://blog.seoui.com/tags/linux%E8%BF%9B%E7%A8%8B/"/>
     
   </entry>
   
