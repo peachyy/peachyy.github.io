@@ -5,10 +5,45 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://blog.seoui.com/"/>
-  <updated>2017-03-06T09:11:44.952Z</updated>
+  <updated>2017-04-18T09:25:59.989Z</updated>
   <id>http://blog.seoui.com/</id>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Mesos环境搭建</title>
+    <link href="http://blog.seoui.com/2017/04/18/mesosinstall/"/>
+    <id>http://blog.seoui.com/2017/04/18/mesosinstall/</id>
+    <published>2017-04-17T16:00:00.000Z</published>
+    <updated>2017-04-18T09:25:59.989Z</updated>
+    
+    <content type="html"><![CDATA[<p>  最近有一个实时的采集系统需求，目前的实现方式是用分布式定时任务来处理这一采集请求,希望有更多资源能够为任务分担压力，支持动态添加或者移除任务资源 从而达到提高采集效率，所以准备采用<code>Mesos</code>来做资源调度的工作。</p>
+<p>  因为自己硬件设备不够好的原因导致安装Mesos的时候出现了一个未知的问题 记录一下，以下是参考官方Getting Started的示例。</p>
+<h4 id="获取源码"><a href="#获取源码" class="headerlink" title="获取源码"></a>获取源码</h4><figure class="highlight plain"><table><tr><td class="code"><pre><div class="line"></div><div class="line">wget http://www.apache.org/dist/mesos/1.2.0/mesos-1.2.0.tar.gz</div><div class="line"></div><div class="line">tar -zxf mesos-1.2.0.tar.gz</div></pre></td></tr></table></figure>
+<h4 id="安装所需依赖"><a href="#安装所需依赖" class="headerlink" title="安装所需依赖"></a>安装所需依赖</h4><p> 由于本机是Ubuntu 14.04 如果是其他的系统请参考 <a href="http://mesos.apache.org/gettingstarted/" target="_blank" rel="external">http://mesos.apache.org/gettingstarted/</a></p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><div class="line"> </div><div class="line">apt-get update</div><div class="line"> </div><div class="line">apt-get install -y tar wget git</div><div class="line"></div><div class="line">apt-get install -y openjdk-7-jdk</div><div class="line"></div><div class="line">apt-get install -y autoconf libtool</div><div class="line"></div><div class="line">apt-get -y install build-essential python-dev python-virtualenv libcurl4-nss-dev  libsasl2-dev libsasl2-modules maven libapr1-dev libsvn-dev</div></pre></td></tr></table></figure>
+<h4 id="编译源码"><a href="#编译源码" class="headerlink" title="编译源码"></a>编译源码</h4><figure class="highlight plain"><table><tr><td class="code"><pre><div class="line"></div><div class="line">cd mesos-1.2.0</div><div class="line"></div><div class="line">./bootstrap</div><div class="line"></div><div class="line">mkdir build</div><div class="line"></div><div class="line">cd build</div><div class="line"></div><div class="line">../configure</div><div class="line"></div><div class="line">make -j3</div></pre></td></tr></table></figure>
+<h4 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h4><figure class="highlight plain"><table><tr><td class="code"><pre><div class="line"></div><div class="line">make check</div><div class="line"></div><div class="line">make install</div></pre></td></tr></table></figure>
+<h4 id="测试例子"><a href="#测试例子" class="headerlink" title="测试例子"></a>测试例子</h4><p>从官方示例复制 可以运行<br>指定IP的时候 如果需要外网访问可以设置具体的IP, 设置为127.0.0.1 只能用127.0.0.1的IP访问。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><div class="line"></div><div class="line"># Start Mesos master (ensure work directory exists and has proper permissions).</div><div class="line">$ ./bin/mesos-master.sh --ip=127.0.0.1 --work_dir=/var/lib/mesos</div><div class="line"></div><div class="line"># Start Mesos agent (ensure work directory exists and has proper permissions).</div><div class="line">$ ./bin/mesos-agent.sh --master=127.0.0.1:5050 --work_dir=/var/lib/mesos</div><div class="line"></div><div class="line"># Visit the Mesos web page.</div><div class="line">$ http://127.0.0.1:5050</div><div class="line"></div><div class="line"># Run C++ framework (exits after successfully running some tasks).</div><div class="line">$ ./src/test-framework --master=127.0.0.1:5050</div><div class="line"></div><div class="line"># Run Java framework (exits after successfully running some tasks).</div><div class="line">$ ./src/examples/java/test-framework 127.0.0.1:5050</div><div class="line"></div><div class="line"># Run Python framework (exits after successfully running some tasks).</div><div class="line">$ ./src/examples/python/test-framework 127.0.0.1:5050</div></pre></td></tr></table></figure>
+<p><code>需要注意的是</code> 安装之前要保证差不多2-4个GB的内存，不然在编译的时候总是报一些莫名奇妙的错误。还要保证安装之前要把依赖库安装好。</p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;  最近有一个实时的采集系统需求，目前的实现方式是用分布式定时任务来处理这一采集请求,希望有更多资源能够为任务分担压力，支持动态添加或者移除任务资源 从而达到提高采集效率，所以准备采用&lt;code&gt;Mesos&lt;/code&gt;来做资源调度的工作。&lt;/p&gt;
+&lt;p&gt;  因为自己硬件设
+    
+    </summary>
+    
+      <category term="技术" scheme="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/"/>
+    
+      <category term="Mesos" scheme="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/Mesos/"/>
+    
+    
+      <category term="技术栈" scheme="http://blog.seoui.com/tags/%E6%8A%80%E6%9C%AF%E6%A0%88/"/>
+    
+  </entry>
   
   <entry>
     <title>我的2017技术栈</title>
@@ -976,36 +1011,6 @@ tar -zxf rabbitmq-server-3.4.0.tar.gz
       <category term="集群" scheme="http://blog.seoui.com/tags/%E9%9B%86%E7%BE%A4/"/>
     
       <category term="session同步" scheme="http://blog.seoui.com/tags/session%E5%90%8C%E6%AD%A5/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>本命年你在哪 干什么 还爱着谁？</title>
-    <link href="http://blog.seoui.com/2015/10/12/ThisAnimalYear/"/>
-    <id>http://blog.seoui.com/2015/10/12/ThisAnimalYear/</id>
-    <published>2015-10-11T16:00:00.000Z</published>
-    <updated>2016-11-11T02:11:09.825Z</updated>
-    
-    <content type="html"><![CDATA[<p> 时间总是在不经意间流走,看着窗外静静的夜晚,偶尔会听到小汽车按喇叭的声音,这时候会特别的觉得甜美,就好像是家的呼唤,总会给予满满的期待与希望。对于我而言那是未来和目标,想想明年就是本命年了,所以这篇文字就在这个夜晚(2015-10-13 00:10:00)诞生了。</p>
-<blockquote>
-<p>###你在哪 多大 干什么<br>在一个美丽的山城——重庆,23岁 目前就职于一个不知名的软件公司做一份软件开发的工作(BS软件),因为自己比较喜欢玩电脑所以这份工作自己还算喜欢,也不算很喜欢啦。经常游走在互联网之间,一般都是默默的打开网页,悄悄的关闭网页。</p>
-<p>###爱着谁<br>  从小时候到现在说爱吧 应该是自己的家人、父亲、母亲、妹妹,很幸运在这个璀璨的年华遇到了她,没能好好珍惜 最后还是离我而去。不怨任何人,只怪自己。从校园到社会遇到了很多兄弟朋友这是一生中无价的财富,所以也是爱他们的。</p>
-<p>###想做什么<br>  工作上想来一转身 期望专注于前端,因为我更想和用户近距离的接触,更认真的去了解他们。<br>  都说北京是一个实现的梦想的地方 当然这么卑微的我也多少会受到一些影响,可惜没有足够的勇气。<br>  来一次说走就走旅行,去哪里都行。能遇到一生最重要的人。</p>
-</blockquote>
-<p>偶尔也会想想下一个本命年我还会在这个世界上吗？ 会是什么样的人呢？ 那时的我36岁,应该已经结婚有孩子了吧。</p>
-<p>本命年你在哪呢 多大 干什么呢? 爱的人还是她吗? 还有梦想吗? 下一个本命年呢? 非常期待听听你们的人生。</p>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;p&gt; 时间总是在不经意间流走,看着窗外静静的夜晚,偶尔会听到小汽车按喇叭的声音,这时候会特别的觉得甜美,就好像是家的呼唤,总会给予满满的期待与希望。对于我而言那是未来和目标,想想明年就是本命年了,所以这篇文字就在这个夜晚(2015-10-13 00:10:00)诞生了。&lt;/p&gt;
-    
-    </summary>
-    
-      <category term="随笔" scheme="http://blog.seoui.com/categories/%E9%9A%8F%E7%AC%94/"/>
-    
-    
-      <category term="本命年感慨" scheme="http://blog.seoui.com/tags/%E6%9C%AC%E5%91%BD%E5%B9%B4%E6%84%9F%E6%85%A8/"/>
     
   </entry>
   
