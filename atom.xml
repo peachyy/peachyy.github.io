@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://blog.seoui.com/"/>
-  <updated>2017-04-28T01:28:00.514Z</updated>
+  <updated>2017-04-28T03:20:50.083Z</updated>
   <id>http://blog.seoui.com/</id>
   
   <generator uri="http://hexo.io/">Hexo</generator>
@@ -15,7 +15,7 @@
     <link href="http://blog.seoui.com/2017/04/27/xpathstudy/"/>
     <id>http://blog.seoui.com/2017/04/27/xpathstudy/</id>
     <published>2017-04-26T16:00:00.000Z</published>
-    <updated>2017-04-28T01:28:00.514Z</updated>
+    <updated>2017-04-28T03:20:50.083Z</updated>
     
     <content type="html"><![CDATA[<p> <code>XPath</code>在选取<code>XML</code>文档中有着非常方便的功能，下面介绍一些常用的表达式语法。</p>
 <p> 假设如下XML<br> <figure class="highlight html"><table><tr><td class="code"><pre><div class="line">&lt;?xml version="1.0" encoding="ISO-8859-1"?&gt;</div><div class="line"><span class="tag">&lt;<span class="name">bookstore</span>&gt;</span></div><div class="line">	<span class="tag">&lt;<span class="name">book</span>&gt;</span></div><div class="line">	  <span class="tag">&lt;<span class="name">title</span> <span class="attr">lang</span>=<span class="string">"en"</span>&gt;</span>测试<span class="tag">&lt;/<span class="name">title</span>&gt;</span></div><div class="line">	  <span class="tag">&lt;<span class="name">author</span> <span class="attr">sex</span>=<span class="string">"女"</span>&gt;</span>笑笑笑<span class="tag">&lt;/<span class="name">author</span>&gt;</span> </div><div class="line">	  <span class="tag">&lt;<span class="name">year</span>&gt;</span>2017<span class="tag">&lt;/<span class="name">year</span>&gt;</span></div><div class="line">	  <span class="tag">&lt;<span class="name">price</span>&gt;</span>888<span class="tag">&lt;/<span class="name">price</span>&gt;</span></div><div class="line">	<span class="tag">&lt;/<span class="name">book</span>&gt;</span></div><div class="line">	<span class="tag">&lt;<span class="name">book</span>&gt;</span></div><div class="line">	  <span class="tag">&lt;<span class="name">title</span> <span class="attr">lang</span>=<span class="string">"en"</span>&gt;</span>测试1<span class="tag">&lt;/<span class="name">title</span>&gt;</span></div><div class="line">	  <span class="tag">&lt;<span class="name">author</span> <span class="attr">sex</span>=<span class="string">"女"</span> <span class="attr">age</span>=<span class="string">"18"</span>&gt;</span>笑笑笑1<span class="tag">&lt;/<span class="name">author</span>&gt;</span> </div><div class="line">	  <span class="tag">&lt;<span class="name">year</span>&gt;</span>2018<span class="tag">&lt;/<span class="name">year</span>&gt;</span></div><div class="line">	  <span class="tag">&lt;<span class="name">price</span>&gt;</span>889<span class="tag">&lt;/<span class="name">price</span>&gt;</span></div><div class="line">	<span class="tag">&lt;/<span class="name">book</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">bookstore</span>&gt;</span></div></pre></td></tr></table></figure></p>
@@ -84,6 +84,9 @@
 <p>选取bookstore所有的子book节点<br><figure class="highlight html"><table><tr><td class="code"><pre><div class="line">//bookstore/child::book</div></pre></td></tr></table></figure></p>
 <p>选取当前节点的所有 book 后代。</p>
 <figure class="highlight html"><table><tr><td class="code"><pre><div class="line">descendant::book</div></pre></td></tr></table></figure>
+<p>获取当前节点的父节点div<br><figure class="highlight html"><table><tr><td class="code"><pre><div class="line">./parent::div</div></pre></td></tr></table></figure></p>
+<p>获取当前节点之后兄弟节点div<br><figure class="highlight html"><table><tr><td class="code"><pre><div class="line">./following-sibling::div</div></pre></td></tr></table></figure></p>
+<p>获取当前节点之前兄弟节点div<br><figure class="highlight html"><table><tr><td class="code"><pre><div class="line">./preceding-sibling::div</div></pre></td></tr></table></figure></p>
 <h4 id="运算符"><a href="#运算符" class="headerlink" title="运算符"></a>运算符</h4><p>在前面其实已经使用到运算符 例如age=18 </p>
 <p>参考自 <a href="http://www.w3school.com.cn/xpath/xpath_operators.asp" target="_blank" rel="external">http://www.w3school.com.cn/xpath/xpath_operators.asp</a> 不在此说明</p>
 <h4 id="函数"><a href="#函数" class="headerlink" title="函数"></a>函数</h4><p>函数的使用方法在前面也使用到过 例如 <code>contains(text(),&#39;2018&#39;)</code><br>参考自 <a href="http://www.w3school.com.cn/xpath/xpath_functions.asp" target="_blank" rel="external">http://www.w3school.com.cn/xpath/xpath_functions.asp</a> 不在此说明</p>
