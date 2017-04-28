@@ -5,10 +5,105 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://blog.seoui.com/"/>
-  <updated>2017-04-18T09:25:59.989Z</updated>
+  <updated>2017-04-28T01:28:00.514Z</updated>
   <id>http://blog.seoui.com/</id>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>常用的XPath语法说明</title>
+    <link href="http://blog.seoui.com/2017/04/27/xpathstudy/"/>
+    <id>http://blog.seoui.com/2017/04/27/xpathstudy/</id>
+    <published>2017-04-26T16:00:00.000Z</published>
+    <updated>2017-04-28T01:28:00.514Z</updated>
+    
+    <content type="html"><![CDATA[<p> <code>XPath</code>在选取<code>XML</code>文档中有着非常方便的功能，下面介绍一些常用的表达式语法。</p>
+<p> 假设如下XML<br> <figure class="highlight html"><table><tr><td class="code"><pre><div class="line">&lt;?xml version="1.0" encoding="ISO-8859-1"?&gt;</div><div class="line"><span class="tag">&lt;<span class="name">bookstore</span>&gt;</span></div><div class="line">	<span class="tag">&lt;<span class="name">book</span>&gt;</span></div><div class="line">	  <span class="tag">&lt;<span class="name">title</span> <span class="attr">lang</span>=<span class="string">"en"</span>&gt;</span>测试<span class="tag">&lt;/<span class="name">title</span>&gt;</span></div><div class="line">	  <span class="tag">&lt;<span class="name">author</span> <span class="attr">sex</span>=<span class="string">"女"</span>&gt;</span>笑笑笑<span class="tag">&lt;/<span class="name">author</span>&gt;</span> </div><div class="line">	  <span class="tag">&lt;<span class="name">year</span>&gt;</span>2017<span class="tag">&lt;/<span class="name">year</span>&gt;</span></div><div class="line">	  <span class="tag">&lt;<span class="name">price</span>&gt;</span>888<span class="tag">&lt;/<span class="name">price</span>&gt;</span></div><div class="line">	<span class="tag">&lt;/<span class="name">book</span>&gt;</span></div><div class="line">	<span class="tag">&lt;<span class="name">book</span>&gt;</span></div><div class="line">	  <span class="tag">&lt;<span class="name">title</span> <span class="attr">lang</span>=<span class="string">"en"</span>&gt;</span>测试1<span class="tag">&lt;/<span class="name">title</span>&gt;</span></div><div class="line">	  <span class="tag">&lt;<span class="name">author</span> <span class="attr">sex</span>=<span class="string">"女"</span> <span class="attr">age</span>=<span class="string">"18"</span>&gt;</span>笑笑笑1<span class="tag">&lt;/<span class="name">author</span>&gt;</span> </div><div class="line">	  <span class="tag">&lt;<span class="name">year</span>&gt;</span>2018<span class="tag">&lt;/<span class="name">year</span>&gt;</span></div><div class="line">	  <span class="tag">&lt;<span class="name">price</span>&gt;</span>889<span class="tag">&lt;/<span class="name">price</span>&gt;</span></div><div class="line">	<span class="tag">&lt;/<span class="name">book</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">bookstore</span>&gt;</span></div></pre></td></tr></table></figure></p>
+<h4 id="基础表达式"><a href="#基础表达式" class="headerlink" title="基础表达式"></a>基础表达式</h4><p> 选取节点基础表达式 摘自<code>w3c</code></p>
+<table>
+<thead>
+<tr>
+<th>属性</th>
+<th style="text-align:center">含义</th>
+<th>example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>nodename</td>
+<td style="text-align:center">选取此节点的所有子节点</td>
+<td>bookstore</td>
+</tr>
+<tr>
+<td>*</td>
+<td style="text-align:center">任何元素</td>
+<td></td>
+</tr>
+<tr>
+<td>@*</td>
+<td style="text-align:center">任何属性的节点</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td style="text-align:center">任何属性的节点</td>
+<td></td>
+</tr>
+<tr>
+<td>/</td>
+<td style="text-align:center">从根节点选取。</td>
+<td>/bookstore</td>
+</tr>
+<tr>
+<td>//</td>
+<td style="text-align:center">从匹配选择的当前节点选择文档中的节点，而不考虑它们的位置</td>
+<td>//title</td>
+</tr>
+<tr>
+<td>.</td>
+<td style="text-align:center">选取当前节点。</td>
+<td>./title 选取当前节点下的title</td>
+</tr>
+<tr>
+<td>..</td>
+<td style="text-align:center">选取当前节点的父节点。</td>
+<td></td>
+</tr>
+<tr>
+<td>@</td>
+<td style="text-align:center">选取属性</td>
+<td>//title[@lang=’en’]</td>
+</tr>
+</tbody>
+</table>
+<p>一些定位的示例</p>
+<figure class="highlight html"><table><tr><td class="code"><pre><div class="line">获取所有的author节点</div><div class="line">//author</div><div class="line">获取第一个author节点 需要注意的是索引是从1开始的</div><div class="line">//author[1]</div><div class="line">获取拥有age属性的任何元素</div><div class="line">//*[@age]</div><div class="line"> 获取author节点的age属性=18的所有author节点</div><div class="line">//author[@age='18']</div></pre></td></tr></table></figure>
+<h4 id="轴"><a href="#轴" class="headerlink" title="轴"></a>轴</h4><p>稍微麻烦强大一点的定位<code>XPath Axes</code></p>
+<p>获取文本包含2018的所有父Book节点<br><figure class="highlight html"><table><tr><td class="code"><pre><div class="line">//*[contains(text(),'2018')]/ancestor::book</div></pre></td></tr></table></figure></p>
+<p>还有一个<code>ancestor-or-self</code>选取的父节点包含自身</p>
+<p>选取bookstore所有的子book节点<br><figure class="highlight html"><table><tr><td class="code"><pre><div class="line">//bookstore/child::book</div></pre></td></tr></table></figure></p>
+<p>选取当前节点的所有 book 后代。</p>
+<figure class="highlight html"><table><tr><td class="code"><pre><div class="line">descendant::book</div></pre></td></tr></table></figure>
+<h4 id="运算符"><a href="#运算符" class="headerlink" title="运算符"></a>运算符</h4><p>在前面其实已经使用到运算符 例如age=18 </p>
+<p>参考自 <a href="http://www.w3school.com.cn/xpath/xpath_operators.asp" target="_blank" rel="external">http://www.w3school.com.cn/xpath/xpath_operators.asp</a> 不在此说明</p>
+<h4 id="函数"><a href="#函数" class="headerlink" title="函数"></a>函数</h4><p>函数的使用方法在前面也使用到过 例如 <code>contains(text(),&#39;2018&#39;)</code><br>参考自 <a href="http://www.w3school.com.cn/xpath/xpath_functions.asp" target="_blank" rel="external">http://www.w3school.com.cn/xpath/xpath_functions.asp</a> 不在此说明</p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt; &lt;code&gt;XPath&lt;/code&gt;在选取&lt;code&gt;XML&lt;/code&gt;文档中有着非常方便的功能，下面介绍一些常用的表达式语法。&lt;/p&gt;
+&lt;p&gt; 假设如下XML&lt;br&gt; &lt;figure class=&quot;highlight html&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td clas
+    
+    </summary>
+    
+      <category term="技术" scheme="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/"/>
+    
+      <category term="XPath" scheme="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/XPath/"/>
+    
+    
+      <category term="XPath" scheme="http://blog.seoui.com/tags/XPath/"/>
+    
+  </entry>
   
   <entry>
     <title>Mesos环境搭建</title>
@@ -970,47 +1065,6 @@ tar -zxf rabbitmq-server-3.4.0.tar.gz
       <category term="hbase" scheme="http://blog.seoui.com/tags/hbase/"/>
     
       <category term="secureCRT" scheme="http://blog.seoui.com/tags/secureCRT/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>apache + tomcat实现集群session同步</title>
-    <link href="http://blog.seoui.com/2015/10/27/apachetomcatClustering/"/>
-    <id>http://blog.seoui.com/2015/10/27/apachetomcatClustering/</id>
-    <published>2015-10-26T16:00:00.000Z</published>
-    <updated>2016-11-11T02:11:09.825Z</updated>
-    
-    <content type="html"><![CDATA[<p> 这次试验是用1台Apache2.2 、 2台tomcat服务器 、并使用Tomcat Connectors–mod_jk.so作为传送介质实现负载均衡。</p>
-<p>项目之前在单机上跑 切换到集群环境中 发现一堆的问题出现了,当然还有未知没有发现的。</p>
-<p>遗留的问题</p>
-<ol>
-<li>如果集群节点多了，发布项目的时候用什么方式发布会比较方便</li>
-<li>文件存储的问题怎么解决</li>
-<li>系统日志怎么才能实现统一</li>
-<li>缓存服务怎么实现同步</li>
-<li>数据库并发问题 </li>
-</ol>
-<p>针对这些问题将在后面的博文中提供解决方案！！！</p>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;p&gt; 这次试验是用1台Apache2.2 、 2台tomcat服务器 、并使用Tomcat Connectors–mod_jk.so作为传送介质实现负载均衡。&lt;/p&gt;
-&lt;p&gt;项目之前在单机上跑 切换到集群环境中 发现一堆的问题出现了,当然还有未知没有发现的。&lt;/p&gt;
-&lt;p&gt;遗留
-    
-    </summary>
-    
-      <category term="技术" scheme="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/"/>
-    
-      <category term="java" scheme="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/java/"/>
-    
-    
-      <category term="apache" scheme="http://blog.seoui.com/tags/apache/"/>
-    
-      <category term="集群" scheme="http://blog.seoui.com/tags/%E9%9B%86%E7%BE%A4/"/>
-    
-      <category term="session同步" scheme="http://blog.seoui.com/tags/session%E5%90%8C%E6%AD%A5/"/>
     
   </entry>
   
