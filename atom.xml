@@ -5,17 +5,17 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://blog.seoui.com/"/>
-  <updated>2017-05-08T05:10:33.352Z</updated>
+  <updated>2017-05-08T05:24:06.902Z</updated>
   <id>http://blog.seoui.com/</id>
   
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
-    <title>使用jenv管理java库（国内的jenv）</title>
+    <title>使用jenv管理java库 国内版本</title>
     <link href="http://blog.seoui.com/2017/05/08/jenvmanager/"/>
     <id>http://blog.seoui.com/2017/05/08/jenvmanager/</id>
     <published>2017-05-07T16:00:00.000Z</published>
-    <updated>2017-05-08T05:10:33.352Z</updated>
+    <updated>2017-05-08T05:24:06.902Z</updated>
     
     <content type="html"><![CDATA[<p> <code>jenv</code>是一个并行版本管理的java开发包，注意是<code>国内的</code>，并不是<a href="https://github.com/gcuisinier/jenv" target="_blank" rel="external">https://github.com/gcuisinier/jenv</a>可以安装在<code>Linux</code> <code>Mac</code> <code>Windows</code>操作系统上，工具包为我们提供了常用的命令行接口 用户安装、删除、搜索、切换软件版本。</p>
 <h4 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h4> <figure class="highlight plain"><table><tr><td class="code"><pre><div class="line">curl -L -s get.jenv.io | bash</div></pre></td></tr></table></figure>
