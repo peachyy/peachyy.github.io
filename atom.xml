@@ -5,10 +5,53 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://blog.seoui.com/"/>
-  <updated>2017-04-28T03:20:50.083Z</updated>
+  <updated>2017-05-08T05:10:33.352Z</updated>
   <id>http://blog.seoui.com/</id>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>使用jenv管理java库（国内的jenv）</title>
+    <link href="http://blog.seoui.com/2017/05/08/jenvmanager/"/>
+    <id>http://blog.seoui.com/2017/05/08/jenvmanager/</id>
+    <published>2017-05-07T16:00:00.000Z</published>
+    <updated>2017-05-08T05:10:33.352Z</updated>
+    
+    <content type="html"><![CDATA[<p> <code>jenv</code>是一个并行版本管理的java开发包，注意是<code>国内的</code>，并不是<a href="https://github.com/gcuisinier/jenv" target="_blank" rel="external">https://github.com/gcuisinier/jenv</a>可以安装在<code>Linux</code> <code>Mac</code> <code>Windows</code>操作系统上，工具包为我们提供了常用的命令行接口 用户安装、删除、搜索、切换软件版本。</p>
+<h4 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h4> <figure class="highlight plain"><table><tr><td class="code"><pre><div class="line">curl -L -s get.jenv.io | bash</div></pre></td></tr></table></figure>
+<p> 下载完shell后需要重新进入一下终端 或者 <code>source $HOME/.jenv/bin/jenv-init.sh</code></p>
+<h4 id="命令解释"><a href="#命令解释" class="headerlink" title="命令解释"></a>命令解释</h4><p>jenv all  显示所有被管理着的软件包（candidate）</p>
+<p>jenv list candidate 列出candidate软件包的所有版本</p>
+<p>jenv install candidate version 安装指定版本的软件包</p>
+<p>jenv uninstall  candidate version 卸载指定版本的软件包</p>
+<p>jenv reinstall candidate version 重新安装软件包 如果不指定版本号 会删除以前旧的版本号 安装至最新版</p>
+<p>jenv use candidate version 使指定版本的软件包生效</p>
+<p>jenv default candidate version 默认使用指定版本的软件包</p>
+<p>jenv which candidate 列出当前用到的软件版本 及软件所在目录</p>
+<p>jenv cd candidate 进入指定软件包默认的版本的安装目录</p>
+<p>另外作者的源码托管地址在:<a href="https://github.com/linux-china/jenv" target="_blank" rel="external">https://github.com/linux-china/jenv</a></p>
+<h4 id="示例"><a href="#示例" class="headerlink" title="示例"></a>示例</h4><p>安装java1.8</p>
+ <figure class="highlight plain"><table><tr><td class="code"><pre><div class="line">jenv install java 1.8.0_77</div></pre></td></tr></table></figure>
+<p>卸载java1.8 </p>
+ <figure class="highlight plain"><table><tr><td class="code"><pre><div class="line">jenv uninstall java 1.8.0_77</div></pre></td></tr></table></figure>
+<p>进入安装目录 </p>
+ <figure class="highlight plain"><table><tr><td class="code"><pre><div class="line">jenv cd java</div></pre></td></tr></table></figure>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt; &lt;code&gt;jenv&lt;/code&gt;是一个并行版本管理的java开发包，注意是&lt;code&gt;国内的&lt;/code&gt;，并不是&lt;a href=&quot;https://github.com/gcuisinier/jenv&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;ht
+    
+    </summary>
+    
+      <category term="技术" scheme="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/"/>
+    
+      <category term="jenv" scheme="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/jenv/"/>
+    
+    
+      <category term="jenv" scheme="http://blog.seoui.com/tags/jenv/"/>
+    
+  </entry>
   
   <entry>
     <title>常用的XPath语法说明</title>
@@ -686,26 +729,25 @@ tar -zxf rabbitmq-server-3.4.0.tar.gz
     <link href="http://blog.seoui.com/2016/07/04/gzip-uzip/"/>
     <id>http://blog.seoui.com/2016/07/04/gzip-uzip/</id>
     <published>2016-07-03T16:00:00.000Z</published>
-    <updated>2016-11-11T02:11:09.828Z</updated>
+    <updated>2017-05-04T01:22:04.191Z</updated>
     
     <content type="html"><![CDATA[<p> 文件的压缩/解压无论是在哪个操作系统上都比较常用 简答在这里演示一下。</p>
-<p>##zip</p>
-<p> zip会把文件打包为.zip格式的文件包，比如 abc.zip</p>
+<h4 id="zip"><a href="#zip" class="headerlink" title="zip"></a>zip</h4><p> zip会把文件打包为.zip格式的文件包，比如 abc.zip</p>
  <figure class="highlight powershell"><table><tr><td class="code"><pre><div class="line"></div><div class="line">zip abc.zip testabc.txt</div></pre></td></tr></table></figure>
 <p>  上面的shell会把testabc.txt压缩在当前目录下的abc.zip文件中 当然你也可以指定压缩到你指定的路径如  zip /opt/abc.zip testabc.txt</p>
  <figure class="highlight powershell"><table><tr><td class="code"><pre><div class="line"></div><div class="line">unzip abc.zip</div></pre></td></tr></table></figure>
 <p>  把abc.zip包解压到当前目录 如需指定解压到其他目录 需要指定-d 参数 如  unzip abc.zip -d /opt/abc</p>
-<p>##gzip</p>
-<p>  从压缩后的压缩包文件格式上与zip命令不同的是gzip压缩后的文件格式为.gz </p>
+<h4 id="gzip"><a href="#gzip" class="headerlink" title="gzip"></a>gzip</h4><p>  从压缩后的压缩包文件格式上与zip命令不同的是gzip压缩后的文件格式为.gz </p>
  <figure class="highlight powershell"><table><tr><td class="code"><pre><div class="line">   </div><div class="line">//压缩为文件 abc.txt.gz 会删除原有的abc.txt文件</div><div class="line">gzip abc.txt </div><div class="line">   //解压abc.txt.gz 会删除原有的abc.txt.gz文件 </div><div class="line"></div><div class="line">   gunzip abc.txt.gz </div><div class="line">  </div><div class="line">  //如需要保留原来的压缩文件 需要加-c 参数 </div><div class="line">  // gzip -c abc.txt &gt; /root/abc.gz </div><div class="line">  // gunzip -c /abc.gz &gt; ./abc.txt</div></pre></td></tr></table></figure>
+<p> 补充一下怎么解压.xz格式的压缩包</p>
+ <figure class="highlight powershell"><table><tr><td class="code"><pre><div class="line">tar xvJf  ***.tar.xz</div></pre></td></tr></table></figure>
+<p> 或<br> <figure class="highlight powershell"><table><tr><td class="code"><pre><div class="line">xz -d ***.tar.xz</div><div class="line"></div><div class="line">tar -xvf  ***.tar</div></pre></td></tr></table></figure></p>
 ]]></content>
     
     <summary type="html">
     
       &lt;p&gt; 文件的压缩/解压无论是在哪个操作系统上都比较常用 简答在这里演示一下。&lt;/p&gt;
-&lt;p&gt;##zip&lt;/p&gt;
-&lt;p&gt; zip会把文件打包为.zip格式的文件包，比如 abc.zip&lt;/p&gt;
- &lt;figure class=&quot;highlight powershell&quot;&gt;&lt;tabl
+&lt;h4 id=&quot;zip&quot;&gt;&lt;a href=&quot;#zip&quot; class=&quot;headerlink&quot; title=&quot;zip&quot;&gt;&lt;/a&gt;zip&lt;/h4&gt;&lt;p&gt; zip会把文件打包为.zip格式的文件包，
     
     </summary>
     
@@ -1033,41 +1075,6 @@ tar -zxf rabbitmq-server-3.4.0.tar.gz
       <category term="googleChrome" scheme="http://blog.seoui.com/tags/googleChrome/"/>
     
       <category term="chrome" scheme="http://blog.seoui.com/tags/chrome/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Hbase Shell在secureCRT中退格键问题解决方法</title>
-    <link href="http://blog.seoui.com/2016/01/04/crtbackspacebug/"/>
-    <id>http://blog.seoui.com/2016/01/04/crtbackspacebug/</id>
-    <published>2016-01-03T16:00:00.000Z</published>
-    <updated>2016-11-11T02:11:09.826Z</updated>
-    
-    <content type="html"><![CDATA[<p> 使用secureCRT操作Hbase Shell的时候 难免会按错字符,当输入出错后 一般会使用BackSpace(退格)键删除字符。很不巧的是BackSpace键不会当做delete命令,这时需要设置一下CRT 。</p>
-<p> 首先在选项-&gt;会话选项-&gt;终端-&gt;仿真 终端设置为Linux；</p>
-<p> 然后勾选下面2个checkbox </p>
-<p>  在选项-&gt;会话选项-&gt;终端-&gt;仿真-&gt;映射键-&gt;其他设置 </p>
-<ul>
-<li>Backspace发送delete(B)</li>
-<li>Delete发送backspace(S) </li>
-</ul>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;p&gt; 使用secureCRT操作Hbase Shell的时候 难免会按错字符,当输入出错后 一般会使用BackSpace(退格)键删除字符。很不巧的是BackSpace键不会当做delete命令,这时需要设置一下CRT 。&lt;/p&gt;
-&lt;p&gt; 首先在选项-&amp;gt;会话选项-&amp;gt;
-    
-    </summary>
-    
-      <category term="技术" scheme="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/"/>
-    
-      <category term="hbase" scheme="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/hbase/"/>
-    
-    
-      <category term="hbase" scheme="http://blog.seoui.com/tags/hbase/"/>
-    
-      <category term="secureCRT" scheme="http://blog.seoui.com/tags/secureCRT/"/>
     
   </entry>
   
