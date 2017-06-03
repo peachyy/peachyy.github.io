@@ -5,20 +5,54 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://blog.seoui.com/"/>
-  <updated>2017-05-08T05:24:06.902Z</updated>
+  <updated>2017-06-03T15:33:37.877Z</updated>
   <id>http://blog.seoui.com/</id>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>htmlUnit根据html创建htmlPage</title>
+    <link href="http://blog.seoui.com/2017/06/03/htmlunitstringtopage/"/>
+    <id>http://blog.seoui.com/2017/06/03/htmlunitstringtopage/</id>
+    <published>2017-06-02T16:00:00.000Z</published>
+    <updated>2017-06-03T15:33:37.877Z</updated>
+    
+    <content type="html"><![CDATA[<p> 在<code>htmlunit</code>中可以通过URL轻松获取一个HtmlPage,但是却没有提供根据Html字符串创建一个HtmlPage。</p>
+<p> 通过Url获取一个page</p>
+ <figure class="highlight java"><table><tr><td class="code"><pre><div class="line"> </div><div class="line">HtmlPage page = webClient.getPage(<span class="string">"http://www.baidu.com/"</span>);</div></pre></td></tr></table></figure>
+<p> 但是源码包里面有通过<code>URL</code>下载网页源码，并通过<code>StringWebResponse</code>构建一个<code>HtmlPage</code>对象,<br> 所以利用这一个机制我们便可以利用<code>StringWebResponse</code> 手动构建一个HtmlPage对象。</p>
+<p> 实现方式如下</p>
+ <figure class="highlight java"><table><tr><td class="code"><pre><div class="line"></div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> HtmlPage <span class="title">getPage</span><span class="params">(WebClient client, String html, String url, WebWindow window)</span> </span>&#123;</div><div class="line">	<span class="keyword">try</span> &#123;</div><div class="line">		URL u = <span class="keyword">new</span> URL(StringUtils.isBlank(url) ? <span class="string">"http://www.idea.com"</span> : url);</div><div class="line">		StringWebResponse response = <span class="keyword">new</span> StringWebResponse(html, u);</div><div class="line">		HtmlPage page = HTMLParser.parseHtml(response, window != <span class="keyword">null</span> ? window : client.getCurrentWindow());</div><div class="line">		<span class="keyword">return</span> page;</div><div class="line">	&#125; <span class="keyword">catch</span> (Exception e) &#123;</div><div class="line">		<span class="keyword">throw</span> <span class="keyword">new</span> RuntimeException(<span class="string">"字符串转换为htmlPage出错"</span>, e);</div><div class="line">	&#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> HtmlPage <span class="title">getPage</span><span class="params">(String html)</span> </span>&#123;</div><div class="line">       <span class="keyword">return</span> getPage(<span class="keyword">new</span> WebClient(), html, <span class="keyword">null</span>,<span class="keyword">null</span>);</div><div class="line">   &#125;</div></pre></td></tr></table></figure>
+<p> 接下来调用<code>getPage</code>方法 并传入Html字符串就可以返回一个HtmlPage对象了。</p>
+<p> 本文参考 <a href="https://stackoverflow.com/questions/6136435/how-to-create-htmlunit-htmlpage-object-from-string" target="_blank" rel="external">https://stackoverflow.com/questions/6136435/how-to-create-htmlunit-htmlpage-object-from-string</a></p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt; 在&lt;code&gt;htmlunit&lt;/code&gt;中可以通过URL轻松获取一个HtmlPage,但是却没有提供根据Html字符串创建一个HtmlPage。&lt;/p&gt;
+&lt;p&gt; 通过Url获取一个page&lt;/p&gt;
+ &lt;figure class=&quot;highlight java&quot;&gt;&lt;ta
+    
+    </summary>
+    
+      <category term="技术" scheme="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/"/>
+    
+      <category term="htmlunit" scheme="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/htmlunit/"/>
+    
+    
+      <category term="jenv" scheme="http://blog.seoui.com/tags/jenv/"/>
+    
+  </entry>
   
   <entry>
     <title>使用jenv管理java库 国内版本</title>
     <link href="http://blog.seoui.com/2017/05/08/jenvmanager/"/>
     <id>http://blog.seoui.com/2017/05/08/jenvmanager/</id>
     <published>2017-05-07T16:00:00.000Z</published>
-    <updated>2017-05-08T05:24:06.902Z</updated>
+    <updated>2017-06-03T15:09:01.637Z</updated>
     
     <content type="html"><![CDATA[<p> <code>jenv</code>是一个并行版本管理的java开发包，注意是<code>国内的</code>，并不是<a href="https://github.com/gcuisinier/jenv" target="_blank" rel="external">https://github.com/gcuisinier/jenv</a>可以安装在<code>Linux</code> <code>Mac</code> <code>Windows</code>操作系统上，工具包为我们提供了常用的命令行接口 用户安装、删除、搜索、切换软件版本。</p>
-<h4 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h4> <figure class="highlight plain"><table><tr><td class="code"><pre><div class="line">curl -L -s get.jenv.io | bash</div></pre></td></tr></table></figure>
+<h4 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h4> <figure class="highlight shell"><table><tr><td class="code"><pre><div class="line">curl -L -s get.jenv.io | bash</div></pre></td></tr></table></figure>
 <p> 下载完shell后需要重新进入一下终端 或者 <code>source $HOME/.jenv/bin/jenv-init.sh</code></p>
 <h4 id="命令解释"><a href="#命令解释" class="headerlink" title="命令解释"></a>命令解释</h4><p>jenv all  显示所有被管理着的软件包（candidate）</p>
 <p>jenv list candidate 列出candidate软件包的所有版本</p>
@@ -31,11 +65,11 @@
 <p>jenv cd candidate 进入指定软件包默认的版本的安装目录</p>
 <p>另外作者的源码托管地址在:<a href="https://github.com/linux-china/jenv" target="_blank" rel="external">https://github.com/linux-china/jenv</a></p>
 <h4 id="示例"><a href="#示例" class="headerlink" title="示例"></a>示例</h4><p>安装java1.8</p>
- <figure class="highlight plain"><table><tr><td class="code"><pre><div class="line">jenv install java 1.8.0_77</div></pre></td></tr></table></figure>
+ <figure class="highlight shell"><table><tr><td class="code"><pre><div class="line">jenv install java 1.8.0_77</div></pre></td></tr></table></figure>
 <p>卸载java1.8 </p>
- <figure class="highlight plain"><table><tr><td class="code"><pre><div class="line">jenv uninstall java 1.8.0_77</div></pre></td></tr></table></figure>
+ <figure class="highlight shell"><table><tr><td class="code"><pre><div class="line">jenv uninstall java 1.8.0_77</div></pre></td></tr></table></figure>
 <p>进入安装目录 </p>
- <figure class="highlight plain"><table><tr><td class="code"><pre><div class="line">jenv cd java</div></pre></td></tr></table></figure>
+ <figure class="highlight shell"><table><tr><td class="code"><pre><div class="line">jenv cd java</div></pre></td></tr></table></figure>
 ]]></content>
     
     <summary type="html">
@@ -58,7 +92,7 @@
     <link href="http://blog.seoui.com/2017/04/27/xpathstudy/"/>
     <id>http://blog.seoui.com/2017/04/27/xpathstudy/</id>
     <published>2017-04-26T16:00:00.000Z</published>
-    <updated>2017-04-28T03:20:50.083Z</updated>
+    <updated>2017-06-03T15:09:01.637Z</updated>
     
     <content type="html"><![CDATA[<p> <code>XPath</code>在选取<code>XML</code>文档中有着非常方便的功能，下面介绍一些常用的表达式语法。</p>
 <p> 假设如下XML<br> <figure class="highlight html"><table><tr><td class="code"><pre><div class="line">&lt;?xml version="1.0" encoding="ISO-8859-1"?&gt;</div><div class="line"><span class="tag">&lt;<span class="name">bookstore</span>&gt;</span></div><div class="line">	<span class="tag">&lt;<span class="name">book</span>&gt;</span></div><div class="line">	  <span class="tag">&lt;<span class="name">title</span> <span class="attr">lang</span>=<span class="string">"en"</span>&gt;</span>测试<span class="tag">&lt;/<span class="name">title</span>&gt;</span></div><div class="line">	  <span class="tag">&lt;<span class="name">author</span> <span class="attr">sex</span>=<span class="string">"女"</span>&gt;</span>笑笑笑<span class="tag">&lt;/<span class="name">author</span>&gt;</span> </div><div class="line">	  <span class="tag">&lt;<span class="name">year</span>&gt;</span>2017<span class="tag">&lt;/<span class="name">year</span>&gt;</span></div><div class="line">	  <span class="tag">&lt;<span class="name">price</span>&gt;</span>888<span class="tag">&lt;/<span class="name">price</span>&gt;</span></div><div class="line">	<span class="tag">&lt;/<span class="name">book</span>&gt;</span></div><div class="line">	<span class="tag">&lt;<span class="name">book</span>&gt;</span></div><div class="line">	  <span class="tag">&lt;<span class="name">title</span> <span class="attr">lang</span>=<span class="string">"en"</span>&gt;</span>测试1<span class="tag">&lt;/<span class="name">title</span>&gt;</span></div><div class="line">	  <span class="tag">&lt;<span class="name">author</span> <span class="attr">sex</span>=<span class="string">"女"</span> <span class="attr">age</span>=<span class="string">"18"</span>&gt;</span>笑笑笑1<span class="tag">&lt;/<span class="name">author</span>&gt;</span> </div><div class="line">	  <span class="tag">&lt;<span class="name">year</span>&gt;</span>2018<span class="tag">&lt;/<span class="name">year</span>&gt;</span></div><div class="line">	  <span class="tag">&lt;<span class="name">price</span>&gt;</span>889<span class="tag">&lt;/<span class="name">price</span>&gt;</span></div><div class="line">	<span class="tag">&lt;/<span class="name">book</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">bookstore</span>&gt;</span></div></pre></td></tr></table></figure></p>
@@ -156,17 +190,17 @@
     <link href="http://blog.seoui.com/2017/04/18/mesosinstall/"/>
     <id>http://blog.seoui.com/2017/04/18/mesosinstall/</id>
     <published>2017-04-17T16:00:00.000Z</published>
-    <updated>2017-04-18T09:25:59.989Z</updated>
+    <updated>2017-06-03T15:09:01.637Z</updated>
     
     <content type="html"><![CDATA[<p>  最近有一个实时的采集系统需求，目前的实现方式是用分布式定时任务来处理这一采集请求,希望有更多资源能够为任务分担压力，支持动态添加或者移除任务资源 从而达到提高采集效率，所以准备采用<code>Mesos</code>来做资源调度的工作。</p>
 <p>  因为自己硬件设备不够好的原因导致安装Mesos的时候出现了一个未知的问题 记录一下，以下是参考官方Getting Started的示例。</p>
-<h4 id="获取源码"><a href="#获取源码" class="headerlink" title="获取源码"></a>获取源码</h4><figure class="highlight plain"><table><tr><td class="code"><pre><div class="line"></div><div class="line">wget http://www.apache.org/dist/mesos/1.2.0/mesos-1.2.0.tar.gz</div><div class="line"></div><div class="line">tar -zxf mesos-1.2.0.tar.gz</div></pre></td></tr></table></figure>
+<h4 id="获取源码"><a href="#获取源码" class="headerlink" title="获取源码"></a>获取源码</h4><figure class="highlight shell"><table><tr><td class="code"><pre><div class="line"></div><div class="line">wget http://www.apache.org/dist/mesos/1.2.0/mesos-1.2.0.tar.gz</div><div class="line"></div><div class="line">tar -zxf mesos-1.2.0.tar.gz</div></pre></td></tr></table></figure>
 <h4 id="安装所需依赖"><a href="#安装所需依赖" class="headerlink" title="安装所需依赖"></a>安装所需依赖</h4><p> 由于本机是Ubuntu 14.04 如果是其他的系统请参考 <a href="http://mesos.apache.org/gettingstarted/" target="_blank" rel="external">http://mesos.apache.org/gettingstarted/</a></p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><div class="line"> </div><div class="line">apt-get update</div><div class="line"> </div><div class="line">apt-get install -y tar wget git</div><div class="line"></div><div class="line">apt-get install -y openjdk-7-jdk</div><div class="line"></div><div class="line">apt-get install -y autoconf libtool</div><div class="line"></div><div class="line">apt-get -y install build-essential python-dev python-virtualenv libcurl4-nss-dev  libsasl2-dev libsasl2-modules maven libapr1-dev libsvn-dev</div></pre></td></tr></table></figure>
-<h4 id="编译源码"><a href="#编译源码" class="headerlink" title="编译源码"></a>编译源码</h4><figure class="highlight plain"><table><tr><td class="code"><pre><div class="line"></div><div class="line">cd mesos-1.2.0</div><div class="line"></div><div class="line">./bootstrap</div><div class="line"></div><div class="line">mkdir build</div><div class="line"></div><div class="line">cd build</div><div class="line"></div><div class="line">../configure</div><div class="line"></div><div class="line">make -j3</div></pre></td></tr></table></figure>
-<h4 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h4><figure class="highlight plain"><table><tr><td class="code"><pre><div class="line"></div><div class="line">make check</div><div class="line"></div><div class="line">make install</div></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="code"><pre><div class="line"> </div><div class="line">apt-get update</div><div class="line"> </div><div class="line">apt-get install -y tar wget git</div><div class="line"></div><div class="line">apt-get install -y openjdk-7-jdk</div><div class="line"></div><div class="line">apt-get install -y autoconf libtool</div><div class="line"></div><div class="line">apt-get -y install build-essential python-dev python-virtualenv libcurl4-nss-dev  libsasl2-dev libsasl2-modules maven libapr1-dev libsvn-dev</div></pre></td></tr></table></figure>
+<h4 id="编译源码"><a href="#编译源码" class="headerlink" title="编译源码"></a>编译源码</h4><figure class="highlight shell"><table><tr><td class="code"><pre><div class="line"></div><div class="line">cd mesos-1.2.0</div><div class="line"></div><div class="line">./bootstrap</div><div class="line"></div><div class="line">mkdir build</div><div class="line"></div><div class="line">cd build</div><div class="line"></div><div class="line">../configure</div><div class="line"></div><div class="line">make -j3</div></pre></td></tr></table></figure>
+<h4 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h4><figure class="highlight shell"><table><tr><td class="code"><pre><div class="line"></div><div class="line">make check</div><div class="line"></div><div class="line">make install</div></pre></td></tr></table></figure>
 <h4 id="测试例子"><a href="#测试例子" class="headerlink" title="测试例子"></a>测试例子</h4><p>从官方示例复制 可以运行<br>指定IP的时候 如果需要外网访问可以设置具体的IP, 设置为127.0.0.1 只能用127.0.0.1的IP访问。</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><div class="line"></div><div class="line"># Start Mesos master (ensure work directory exists and has proper permissions).</div><div class="line">$ ./bin/mesos-master.sh --ip=127.0.0.1 --work_dir=/var/lib/mesos</div><div class="line"></div><div class="line"># Start Mesos agent (ensure work directory exists and has proper permissions).</div><div class="line">$ ./bin/mesos-agent.sh --master=127.0.0.1:5050 --work_dir=/var/lib/mesos</div><div class="line"></div><div class="line"># Visit the Mesos web page.</div><div class="line">$ http://127.0.0.1:5050</div><div class="line"></div><div class="line"># Run C++ framework (exits after successfully running some tasks).</div><div class="line">$ ./src/test-framework --master=127.0.0.1:5050</div><div class="line"></div><div class="line"># Run Java framework (exits after successfully running some tasks).</div><div class="line">$ ./src/examples/java/test-framework 127.0.0.1:5050</div><div class="line"></div><div class="line"># Run Python framework (exits after successfully running some tasks).</div><div class="line">$ ./src/examples/python/test-framework 127.0.0.1:5050</div></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="code"><pre><div class="line"><span class="meta"></span></div><div class="line"># Start Mesos master (ensure work directory exists and has proper permissions).</div><div class="line"><span class="meta">$</span> ./bin/mesos-master.sh --ip=127.0.0.1 --work_dir=/var/lib/mesos</div><div class="line"><span class="meta"></span></div><div class="line"># Start Mesos agent (ensure work directory exists and has proper permissions).</div><div class="line"><span class="meta">$</span> ./bin/mesos-agent.sh --master=127.0.0.1:5050 --work_dir=/var/lib/mesos</div><div class="line"><span class="meta"></span></div><div class="line"># Visit the Mesos web page.</div><div class="line"><span class="meta">$</span> http://127.0.0.1:5050</div><div class="line"><span class="meta"></span></div><div class="line"># Run C++ framework (exits after successfully running some tasks).</div><div class="line"><span class="meta">$</span> ./src/test-framework --master=127.0.0.1:5050</div><div class="line"><span class="meta"></span></div><div class="line"># Run Java framework (exits after successfully running some tasks).</div><div class="line"><span class="meta">$</span> ./src/examples/java/test-framework 127.0.0.1:5050</div><div class="line"><span class="meta"></span></div><div class="line"># Run Python framework (exits after successfully running some tasks).</div><div class="line"><span class="meta">$</span> ./src/examples/python/test-framework 127.0.0.1:5050</div></pre></td></tr></table></figure>
 <p><code>需要注意的是</code> 安装之前要保证差不多2-4个GB的内存，不然在编译的时候总是报一些莫名奇妙的错误。还要保证安装之前要把依赖库安装好。</p>
 ]]></content>
     
@@ -191,7 +225,7 @@
     <link href="http://blog.seoui.com/2017/03/06/2017-target/"/>
     <id>http://blog.seoui.com/2017/03/06/2017-target/</id>
     <published>2017-03-05T16:00:00.000Z</published>
-    <updated>2017-03-06T09:11:44.952Z</updated>
+    <updated>2017-06-03T15:09:01.636Z</updated>
     
     <content type="html"><![CDATA[<p>  2017年已经过了差不多六分之一 为了给自己制定了一个技术计划(算是小目标吧)，所以在这里引导一下，<br>  当迷茫的时候可以look look!!!</p>
 <h3 id="后端"><a href="#后端" class="headerlink" title="后端"></a>后端</h3><ul>
@@ -244,7 +278,7 @@
     <link href="http://blog.seoui.com/2017/01/11/mongodb-rs/"/>
     <id>http://blog.seoui.com/2017/01/11/mongodb-rs/</id>
     <published>2017-01-10T16:00:00.000Z</published>
-    <updated>2017-01-11T08:44:59.955Z</updated>
+    <updated>2017-06-03T15:09:01.636Z</updated>
     
     <content type="html"><![CDATA[<p> MongoDB的复制集是一个主从复制模式 又具有故障转移的集群，任何成员都有可能是<code>master</code>，<br> 当master挂掉用会很快的重新选举一个节点来充当master。</p>
 <p> 复制集中的组成主要成员</p>
@@ -258,11 +292,11 @@
 <h4 id="环境搭建"><a href="#环境搭建" class="headerlink" title="环境搭建"></a>环境搭建</h4><p>以3个实例来演示一下复制集群的搭建过程 分别为:127.0.0.1:12345,127.0.0.1:12346,127.0.0.1:12347。<br>需要预先创建好各目录的文件夹 不然启动的时候会报错，这里还有一个坑是 pidfilepath配置项必须是绝对路径，<br>否则也会报错，replSet在同一个复制集中也需要具有一致的名称。</p>
 <p>注意在旧版本中是使用的是master slave模式 目前使用的是3.4官方不支持使用这种方式，<br>官方希望使用replset代替master slave。所以当你配置master或者slave的时候就会报错。</p>
 <p>127.0.0.1:12345配置</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><div class="line">port=12345</div><div class="line">fork=true</div><div class="line">dbpath=data/12345</div><div class="line">logpath=log/12345/mongod.log</div><div class="line">httpinterface=true</div><div class="line">rest=true</div><div class="line">logappend=true</div><div class="line">pidfilepath=/home/collect/mongodb-linux-x86_64-rhel70-3.4.1/log/12345/12345.pid</div><div class="line">replSet=mydbCenter</div><div class="line">oplogSize=512</div></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="code"><pre><div class="line">port=12345</div><div class="line">fork=true</div><div class="line">dbpath=data/12345</div><div class="line">logpath=log/12345/mongod.log</div><div class="line">httpinterface=true</div><div class="line">rest=true</div><div class="line">logappend=true</div><div class="line">pidfilepath=/home/collect/mongodb-linux-x86_64-rhel70-3.4.1/log/12345/12345.pid</div><div class="line">replSet=mydbCenter</div><div class="line">oplogSize=512</div></pre></td></tr></table></figure>
 <p>127.0.0.1:12346配置</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><div class="line">port=12346</div><div class="line">fork=true</div><div class="line">dbpath=data/12346</div><div class="line">logpath=log/12346/mongod.log</div><div class="line">httpinterface=true</div><div class="line">rest=true</div><div class="line">logappend=true</div><div class="line">pidfilepath=/home/collect/mongodb-linux-x86_64-rhel70-3.4.1/log/12346/12346.pid</div><div class="line">replSet=mydbCenter</div><div class="line">oplogSize=512</div></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="code"><pre><div class="line">port=12346</div><div class="line">fork=true</div><div class="line">dbpath=data/12346</div><div class="line">logpath=log/12346/mongod.log</div><div class="line">httpinterface=true</div><div class="line">rest=true</div><div class="line">logappend=true</div><div class="line">pidfilepath=/home/collect/mongodb-linux-x86_64-rhel70-3.4.1/log/12346/12346.pid</div><div class="line">replSet=mydbCenter</div><div class="line">oplogSize=512</div></pre></td></tr></table></figure>
 <p>127.0.0.1:12346配置</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><div class="line">port=12347</div><div class="line">fork=true</div><div class="line">dbpath=data/12347</div><div class="line">logpath=log/12347/mongod.log</div><div class="line">httpinterface=true</div><div class="line">rest=true</div><div class="line">logappend=true</div><div class="line">pidfilepath=/home/collect/mongodb-linux-x86_64-rhel70-3.4.1/log/12347/12347.pid</div><div class="line">replSet=mydbCenter</div><div class="line">oplogSize=512</div></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="code"><pre><div class="line">port=12347</div><div class="line">fork=true</div><div class="line">dbpath=data/12347</div><div class="line">logpath=log/12347/mongod.log</div><div class="line">httpinterface=true</div><div class="line">rest=true</div><div class="line">logappend=true</div><div class="line">pidfilepath=/home/collect/mongodb-linux-x86_64-rhel70-3.4.1/log/12347/12347.pid</div><div class="line">replSet=mydbCenter</div><div class="line">oplogSize=512</div></pre></td></tr></table></figure>
 <p>分别启动好3个实例之后，随便进入一个实例 </p>
 <h4 id="初始化复制集群"><a href="#初始化复制集群" class="headerlink" title="初始化复制集群"></a>初始化复制集群</h4><p>首先创建1个配置对象 在js中就是一个简单的对象 、json串</p>
 <pre><code class="shell">var rs_conf={
@@ -307,7 +341,7 @@ mydbCenter:SECONDARY&gt;
 </code></pre>
 <p>在网络上看到有很多帖子说只要在Primary节点中执行 db.getMongo().setSlaveOk()<br>就能在Secondary节点中读取数据，但是在3.4版本试了一下是不行的。需要在Secondary中执行一下<br><code>db.getMongo().setSlaveOk()</code>让Secondary可读。</p>
 <h4 id="添加节点"><a href="#添加节点" class="headerlink" title="添加节点"></a>添加节点</h4><p>如果现在已经有搭建好一个复制集群了 老板想多加一台备份机器进去 怎么办？<br>只需要启动好新机器的实例后 在Primary中调用rs.add() 方法即可</p>
-<pre><code class="shell">rs.add({&quot;host&quot; : &quot;127.0.0.1:12348&quot;})
+<pre><code class="shell">rs.add({"host" : "127.0.0.1:12348"})
 </code></pre>
 <p>添加投票节点调用<code>rs.addArb()</code>方法。</p>
 ]]></content>
@@ -340,7 +374,7 @@ mydbCenter:SECONDARY&gt;
     <link href="http://blog.seoui.com/2017/01/09/jdk7-forkjoin/"/>
     <id>http://blog.seoui.com/2017/01/09/jdk7-forkjoin/</id>
     <published>2017-01-08T16:00:00.000Z</published>
-    <updated>2017-01-09T06:08:07.704Z</updated>
+    <updated>2017-06-03T15:09:01.636Z</updated>
     
     <content type="html"><![CDATA[<p> 首先看一下ForkJoin相关的几个API </p>
 <ul>
@@ -388,30 +422,30 @@ mydbCenter:SECONDARY&gt;
     <link href="http://blog.seoui.com/2017/01/08/mongodbCommonoper/"/>
     <id>http://blog.seoui.com/2017/01/08/mongodbCommonoper/</id>
     <published>2017-01-07T16:00:00.000Z</published>
-    <updated>2017-01-09T06:14:47.813Z</updated>
+    <updated>2017-06-03T15:09:01.636Z</updated>
     
     <content type="html"><![CDATA[<p> 以下是在3.4.1版本中 其他版本可能略有区别,mongo默认登录时在test数据中。</p>
 <h3 id="数据库相关操作"><a href="#数据库相关操作" class="headerlink" title="数据库相关操作"></a>数据库相关操作</h3><p>登录到数据库</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><div class="line">bin/mongo --port 27017</div></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="code"><pre><div class="line">bin/mongo --port 27017</div></pre></td></tr></table></figure>
 <p>查看数据库列表</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><div class="line">show dbs</div></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="code"><pre><div class="line">show dbs</div></pre></td></tr></table></figure>
 <p>选择使用哪个数据库 类似mysql中的use,使用use后 创建的table默认会在当前使用的数据中</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><div class="line">use taoxs</div></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="code"><pre><div class="line">use taoxs</div></pre></td></tr></table></figure>
 <p>查看当前使用的数据库使用db或者db.getName()一样的。</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><div class="line">db </div><div class="line"></div><div class="line">db.getName()</div></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="code"><pre><div class="line">db </div><div class="line"></div><div class="line">db.getName()</div></pre></td></tr></table></figure>
 <a id="more"></a>
-<p>显示当前数据库下的所有table(集合)<br><figure class="highlight plain"><table><tr><td class="code"><pre><div class="line">show tables</div></pre></td></tr></table></figure></p>
-<h3 id="增删改查"><a href="#增删改查" class="headerlink" title="增删改查"></a>增删改查</h3><p>向taoxs_c1集合插入一行数据<br><figure class="highlight plain"><table><tr><td class="code"><pre><div class="line">&gt;db.taoxs_c1.insert(&#123;name:&apos;abc&apos;,sex:&apos;1&apos;&#125;)</div><div class="line"> WriteResult(&#123; &quot;nInserted&quot; : 1 &#125;)</div></pre></td></tr></table></figure></p>
-<p>查询all<br><figure class="highlight plain"><table><tr><td class="code"><pre><div class="line">&gt; db.taoxs_c1.find()</div><div class="line">&#123; &quot;_id&quot; : ObjectId(&quot;5871d9173c7ab1b751cfda4f&quot;), &quot;name&quot; : &quot;abc&quot;, &quot;sex&quot; : &quot;1&quot; &#125;</div></pre></td></tr></table></figure></p>
-<p>查询指定列<br><figure class="highlight plain"><table><tr><td class="code"><pre><div class="line">&gt; db.taoxs_c1.find(&#123;&#125;，&#123;name:true&#125;)</div><div class="line">&#123; &quot;_id&quot; : ObjectId(&quot;5871d9173c7ab1b751cfda4f&quot;), &quot;name&quot; : &quot;abc&quot; &#125;</div></pre></td></tr></table></figure></p>
-<p>查询count<br><figure class="highlight plain"><table><tr><td class="code"><pre><div class="line">&gt; db.taoxs_c1.find().count()</div><div class="line">1</div></pre></td></tr></table></figure></p>
-<p>查询限制行数limit<br><figure class="highlight plain"><table><tr><td class="code"><pre><div class="line">&gt; db.taoxs_c1.find().limit(5)</div></pre></td></tr></table></figure></p>
-<p>查询时忽略数据行数 可以用skip和limit配置实现分页的效果<br><figure class="highlight plain"><table><tr><td class="code"><pre><div class="line">&gt; db.taoxs_c1.find().skip(5)</div></pre></td></tr></table></figure></p>
-<p>结果排序 1：升序，-1：降序<br><figure class="highlight plain"><table><tr><td class="code"><pre><div class="line">&gt; db.taoxs_c1.find().sort(&#123;name:1&#125;)</div></pre></td></tr></table></figure></p>
+<p>显示当前数据库下的所有table(集合)<br><figure class="highlight shell"><table><tr><td class="code"><pre><div class="line">show tables</div></pre></td></tr></table></figure></p>
+<h3 id="增删改查"><a href="#增删改查" class="headerlink" title="增删改查"></a>增删改查</h3><p>向taoxs_c1集合插入一行数据<br><figure class="highlight shell"><table><tr><td class="code"><pre><div class="line"><span class="meta">&gt;</span>db.taoxs_c1.insert(&#123;name:'abc',sex:'1'&#125;)</div><div class="line"> WriteResult(&#123; "nInserted" : 1 &#125;)</div></pre></td></tr></table></figure></p>
+<p>查询all<br><figure class="highlight shell"><table><tr><td class="code"><pre><div class="line"><span class="meta">&gt;</span> db.taoxs_c1.find()</div><div class="line">&#123; "_id" : ObjectId("5871d9173c7ab1b751cfda4f"), "name" : "abc", "sex" : "1" &#125;</div></pre></td></tr></table></figure></p>
+<p>查询指定列<br><figure class="highlight shell"><table><tr><td class="code"><pre><div class="line"><span class="meta">&gt;</span> db.taoxs_c1.find(&#123;&#125;，&#123;name:true&#125;)</div><div class="line">&#123; "_id" : ObjectId("5871d9173c7ab1b751cfda4f"), "name" : "abc" &#125;</div></pre></td></tr></table></figure></p>
+<p>查询count<br><figure class="highlight shell"><table><tr><td class="code"><pre><div class="line"><span class="meta">&gt;</span> db.taoxs_c1.find().count()</div><div class="line">1</div></pre></td></tr></table></figure></p>
+<p>查询限制行数limit<br><figure class="highlight shell"><table><tr><td class="code"><pre><div class="line"><span class="meta">&gt;</span> db.taoxs_c1.find().limit(5)</div></pre></td></tr></table></figure></p>
+<p>查询时忽略数据行数 可以用skip和limit配置实现分页的效果<br><figure class="highlight shell"><table><tr><td class="code"><pre><div class="line"><span class="meta">&gt;</span> db.taoxs_c1.find().skip(5)</div></pre></td></tr></table></figure></p>
+<p>结果排序 1：升序，-1：降序<br><figure class="highlight shell"><table><tr><td class="code"><pre><div class="line"><span class="meta">&gt;</span> db.taoxs_c1.find().sort(&#123;name:1&#125;)</div></pre></td></tr></table></figure></p>
 <p>修改name 的值为dfg<br><code>默认情况下 只会只会修改第一行 ，会覆盖掉其他字段 也就是说在修改name的时候sex字段也会被覆盖掉</code><br>update方法签名：function (query, obj, upsert, multi)</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><div class="line">&gt; db.taoxs_c1.update(&#123;name:&apos;abc&apos;&#125;,&#123;$set:&#123;name:&apos;dfg&apos;&#125;&#125;)</div></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="code"><pre><div class="line"><span class="meta">&gt;</span> db.taoxs_c1.update(&#123;name:'abc'&#125;,&#123;$set:&#123;name:'dfg'&#125;&#125;)</div></pre></td></tr></table></figure>
 <p>如果需要多行删除需要指定multi参数为true 如果需要upsert 需要指定upsert参数为true</p>
-<p>删除操作<br><figure class="highlight plain"><table><tr><td class="code"><pre><div class="line">&gt; db.taoxs_c1.remove(&#123;name:&apos;dfg&apos;&#125;)</div></pre></td></tr></table></figure></p>
+<p>删除操作<br><figure class="highlight shell"><table><tr><td class="code"><pre><div class="line"><span class="meta">&gt;</span> db.taoxs_c1.remove(&#123;name:'dfg'&#125;)</div></pre></td></tr></table></figure></p>
 <p>mongodb中常用的条件查询类似sql中的where中条件符</p>
 <table>
 <thead>
@@ -469,13 +503,13 @@ mydbCenter:SECONDARY&gt;
     
       &lt;p&gt; 以下是在3.4.1版本中 其他版本可能略有区别,mongo默认登录时在test数据中。&lt;/p&gt;
 &lt;h3 id=&quot;数据库相关操作&quot;&gt;&lt;a href=&quot;#数据库相关操作&quot; class=&quot;headerlink&quot; title=&quot;数据库相关操作&quot;&gt;&lt;/a&gt;数据库相关操作&lt;/h3&gt;&lt;p&gt;登录到数据库&lt;/p&gt;
-&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;bin/mongo --port 27017&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;figure class=&quot;highlight shell&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;bin/mongo --port 27017&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
 &lt;p&gt;查看数据库列表&lt;/p&gt;
-&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;show dbs&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;figure class=&quot;highlight shell&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;show dbs&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
 &lt;p&gt;选择使用哪个数据库 类似mysql中的use,使用use后 创建的table默认会在当前使用的数据中&lt;/p&gt;
-&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;use taoxs&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;figure class=&quot;highlight shell&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;use taoxs&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
 &lt;p&gt;查看当前使用的数据库使用db或者db.getName()一样的。&lt;/p&gt;
-&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;db &lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;db.getName()&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;figure class=&quot;highlight shell&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;db &lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;db.getName()&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
     
     </summary>
     
@@ -493,14 +527,14 @@ mydbCenter:SECONDARY&gt;
     <link href="http://blog.seoui.com/2016/11/24/nginxMakeInstall/"/>
     <id>http://blog.seoui.com/2016/11/24/nginxMakeInstall/</id>
     <published>2016-11-23T16:00:00.000Z</published>
-    <updated>2016-11-24T07:51:32.095Z</updated>
+    <updated>2017-06-03T15:09:01.636Z</updated>
     
     <content type="html"><![CDATA[<p>nginx是比较常用的高性能HTTP服务器和反向代理服务器，许多用户更是把做反向代理使用，<br>常言道：好记性不如烂笔头 时间久了总是有些遗忘，本文记录一下源码编码安装以及常用模块的使用介绍。<br><a id="more"></a></p>
 <h3 id="编译安装"><a href="#编译安装" class="headerlink" title="编译安装"></a>编译安装</h3><pre><code class="shell">tar -zxf nginx-1.7.3.tar.gz
 cd nginx-1.7.3/
 groupadd -r nginx
 useradd -g nginx -s /sbin/nologin -M nginx
-#创建tmp文件夹 不然安装后启动会报错
+<span class="meta">#</span>创建tmp文件夹 不然安装后启动会报错
 mkdir -pv /var/tmp/nginx/{proxy,client,fcgi,uwsgi,scgi}
 
 ./configure \
@@ -557,7 +591,7 @@ mkdir -pv /var/tmp/nginx/{proxy,client,fcgi,uwsgi,scgi}
     <link href="http://blog.seoui.com/2016/10/29/rabbitmqInstall/"/>
     <id>http://blog.seoui.com/2016/10/29/rabbitmqInstall/</id>
     <published>2016-10-28T16:00:00.000Z</published>
-    <updated>2016-11-11T02:11:09.828Z</updated>
+    <updated>2017-06-03T15:09:01.635Z</updated>
     
     <content type="html"><![CDATA[<h3 id="安装rabbitmq"><a href="#安装rabbitmq" class="headerlink" title="安装rabbitmq"></a>安装rabbitmq</h3><p>采用源码安装方式,首先去官网拉取源代码并解压,由于rabbitmq是采用erlang编写的 所以得先安装erlang环境,这里假设erlang环境已经安装好了。</p>
 <pre><code class="shell">wget http://www.rabbitmq.com/releases/rabbitmq-server/v3.4.0/rabbitmq-server-3.4.0.tar.gz
@@ -576,12 +610,12 @@ make install TARGET_DIR=/opt/rabbitmq SBIN_DIR=/opt/rabbitmq/sbin MAN_DIR=/opt/r
 <pre><code class="shell">
 export RABBITMQ_HOME=/opt/rabbitmq
 export PATH=$RABBITMQ_HOME/sbin:$PATH
-#设置好之后 需要source一下才能生效
+<span class="meta">#</span>设置好之后 需要source一下才能生效
 </code></pre>
 <p>启动web管理插件 mq服务</p>
 <pre><code class="shell">
 rabbitmq-plugins enable rabbitmq_management
-#启动mq
+<span class="meta">#</span>启动mq
 rabbitmq-server start
 </code></pre>
 <p>到这里基本的安装已经完成此时可以 可以在本机使用<code>localhost:15672</code>访问了,rabbitmq内置了一个用户<code>guest/guest</code>不过只能用localhost访问。</p>
@@ -592,7 +626,7 @@ rabbitmqctl add_user  admin  admin
 </code></pre>
 <p>为用户赋予角色 </p>
 <p>在rabbitmq中角色有<code>administrator</code>、<code>monitoring</code> 、<code>management</code>、<code>policymaker</code>、<code>none</code>。</p>
-<pre><code class="shell">#为admin 赋予administrator角色
+<pre><code class="shell"><span class="meta">#</span>为admin 赋予administrator角色
 rabbitmqctl set_user_tags   admin  administrator
 </code></pre>
 <p>查看用户列表</p>
@@ -624,7 +658,7 @@ tar -zxf rabbitmq-server-3.4.0.tar.gz
     <link href="http://blog.seoui.com/2016/10/16/html-emmet/"/>
     <id>http://blog.seoui.com/2016/10/16/html-emmet/</id>
     <published>2016-10-15T16:00:00.000Z</published>
-    <updated>2016-11-11T02:11:09.828Z</updated>
+    <updated>2017-06-03T15:09:01.635Z</updated>
     
     <content type="html"><![CDATA[<p> Emmet是一个Web开发人员的工具包，可以大大提高你的HTML和CSS的工作流,这是在<a href="http://docs.emmet.io/" title="Emmet" target="_blank" rel="external">emmet官方文档</a>中看到的第一句话,当然这句话也简单的概括了它拥有的魅力。</p>
 <p> 下面是在WebStorm中作一些应用。<br><a id="more"></a></p>
@@ -660,7 +694,7 @@ tar -zxf rabbitmq-server-3.4.0.tar.gz
     
     <summary type="html">
     
-      &lt;p&gt; Emmet是一个Web开发人员的工具包，可以大大提高你的HTML和CSS的工作流,这是在&lt;a href=&quot;http://docs.emmet.io/&quot; title=&quot;Emmet&quot;&gt;emmet官方文档&lt;/a&gt;中看到的第一句话,当然这句话也简单的概括了它拥有的魅力。&lt;/p&gt;
+      &lt;p&gt; Emmet是一个Web开发人员的工具包，可以大大提高你的HTML和CSS的工作流,这是在&lt;a href=&quot;http://docs.emmet.io/&quot; title=&quot;Emmet&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;emmet官方文档&lt;/a&gt;中看到的第一句话,当然这句话也简单的概括了它拥有的魅力。&lt;/p&gt;
 &lt;p&gt; 下面是在WebStorm中作一些应用。&lt;br&gt;
     
     </summary>
@@ -679,11 +713,11 @@ tar -zxf rabbitmq-server-3.4.0.tar.gz
     <link href="http://blog.seoui.com/2016/07/07/supervisor/"/>
     <id>http://blog.seoui.com/2016/07/07/supervisor/</id>
     <published>2016-07-06T16:00:00.000Z</published>
-    <updated>2016-11-11T02:11:09.828Z</updated>
+    <updated>2017-06-03T15:09:01.634Z</updated>
     
     <content type="html"><![CDATA[<p> supervisor是一个制作守护进程的工具,用户可以在UNIX系统中监控、管理进程。常用于管理与某个用户或项目相关的进程。</p>
 <h3 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h3><p> 采用源码安装的方式,切换到3.1.3这个版本安装。</p>
- <figure class="highlight plain"><table><tr><td class="code"><pre><div class="line"></div><div class="line">git clone https://github.com/Supervisor/supervisor.git</div><div class="line">cd supervisor</div><div class="line">   git checkout 3.1.3</div><div class="line">   python setup.py install</div></pre></td></tr></table></figure>
+ <figure class="highlight shell"><table><tr><td class="code"><pre><div class="line"></div><div class="line">git clone https://github.com/Supervisor/supervisor.git</div><div class="line">cd supervisor</div><div class="line">   git checkout 3.1.3</div><div class="line">   python setup.py install</div></pre></td></tr></table></figure>
 <a id="more"></a>
 <p> 生成默认的supervisor配置文件</p>
  <figure class="highlight html"><table><tr><td class="code"><pre><div class="line"></div><div class="line">echo_supervisord_conf &gt; /etc/supervisord.conf</div></pre></td></tr></table></figure>
@@ -709,7 +743,7 @@ tar -zxf rabbitmq-server-3.4.0.tar.gz
     
       &lt;p&gt; supervisor是一个制作守护进程的工具,用户可以在UNIX系统中监控、管理进程。常用于管理与某个用户或项目相关的进程。&lt;/p&gt;
 &lt;h3 id=&quot;安装&quot;&gt;&lt;a href=&quot;#安装&quot; class=&quot;headerlink&quot; title=&quot;安装&quot;&gt;&lt;/a&gt;安装&lt;/h3&gt;&lt;p&gt; 采用源码安装的方式,切换到3.1.3这个版本安装。&lt;/p&gt;
- &lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;git clone https://github.com/Supervisor/supervisor.git&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;cd supervisor&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;   git checkout 3.1.3&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;   python setup.py install&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+ &lt;figure class=&quot;highlight shell&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;git clone https://github.com/Supervisor/supervisor.git&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;cd supervisor&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;   git checkout 3.1.3&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;   python setup.py install&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
     
     </summary>
     
@@ -729,7 +763,7 @@ tar -zxf rabbitmq-server-3.4.0.tar.gz
     <link href="http://blog.seoui.com/2016/07/04/gzip-uzip/"/>
     <id>http://blog.seoui.com/2016/07/04/gzip-uzip/</id>
     <published>2016-07-03T16:00:00.000Z</published>
-    <updated>2017-05-04T01:22:04.191Z</updated>
+    <updated>2017-06-03T15:09:01.634Z</updated>
     
     <content type="html"><![CDATA[<p> 文件的压缩/解压无论是在哪个操作系统上都比较常用 简答在这里演示一下。</p>
 <h4 id="zip"><a href="#zip" class="headerlink" title="zip"></a>zip</h4><p> zip会把文件打包为.zip格式的文件包，比如 abc.zip</p>
@@ -769,7 +803,7 @@ tar -zxf rabbitmq-server-3.4.0.tar.gz
     <link href="http://blog.seoui.com/2016/06/18/docker.install/"/>
     <id>http://blog.seoui.com/2016/06/18/docker.install/</id>
     <published>2016-06-17T16:00:00.000Z</published>
-    <updated>2016-11-11T02:11:09.827Z</updated>
+    <updated>2017-06-03T15:09:01.634Z</updated>
     
     <content type="html"><![CDATA[<p>接触docker容器有这么几周的时间了,顺便在这里记录一下这段岁月,无特殊说明<br>操作系统均为 centos7</p>
 <p>1、首先安装docker</p>
@@ -809,7 +843,7 @@ tar -zxf rabbitmq-server-3.4.0.tar.gz
     <link href="http://blog.seoui.com/2016/06/17/ubuntu.networksetting/"/>
     <id>http://blog.seoui.com/2016/06/17/ubuntu.networksetting/</id>
     <published>2016-06-16T16:00:00.000Z</published>
-    <updated>2016-11-11T02:11:09.827Z</updated>
+    <updated>2017-06-03T15:09:01.634Z</updated>
     
     <content type="html"><![CDATA[<p> 用惯了centos 偶尔装了一次ubuntu版本为14.04来玩一玩发现设置静态网络(static)后不能上外网，在这里记录一下如何设置的。</p>
 <p> 1、首页静态IP参数 编辑文件 vim /etc/network/interfaces</p>
@@ -845,7 +879,7 @@ tar -zxf rabbitmq-server-3.4.0.tar.gz
     <link href="http://blog.seoui.com/2016/05/24/html-form-enterevent/"/>
     <id>http://blog.seoui.com/2016/05/24/html-form-enterevent/</id>
     <published>2016-05-23T16:00:00.000Z</published>
-    <updated>2016-11-11T02:11:09.827Z</updated>
+    <updated>2017-06-03T15:09:01.633Z</updated>
     
     <content type="html"><![CDATA[<p>经常写form表单以前没有怎么注意 无意中注意到一些元素组成的默认事件。</p>
 <p>在form表单中 目前发现具备以下情况会默认支持回车事件提交表单</p>
@@ -884,7 +918,7 @@ tar -zxf rabbitmq-server-3.4.0.tar.gz
     <link href="http://blog.seoui.com/2016/04/13/selenium-autowebTest/"/>
     <id>http://blog.seoui.com/2016/04/13/selenium-autowebTest/</id>
     <published>2016-04-12T16:00:00.000Z</published>
-    <updated>2016-11-11T02:11:09.827Z</updated>
+    <updated>2017-06-03T15:09:01.633Z</updated>
     
     <content type="html"><![CDATA[<p> 最近在做一个简单新浪微博抓取功能,遇到了请求被新浪拦截,正因为如此了解到selenium。</p>
 <p> <a href="http://docs.seleniumhq.org/" title="selenium" target="_blank" rel="external">selenium</a> 是一个web的自动化测试工具。运用好它能够完成很多自动化测试功能甚至会让你感到很多出乎意料的事情。</p>
@@ -919,7 +953,7 @@ tar -zxf rabbitmq-server-3.4.0.tar.gz
     <link href="http://blog.seoui.com/2016/03/16/svganimate-ie-support/"/>
     <id>http://blog.seoui.com/2016/03/16/svganimate-ie-support/</id>
     <published>2016-03-15T16:00:00.000Z</published>
-    <updated>2016-11-11T02:11:09.826Z</updated>
+    <updated>2017-06-03T15:09:01.633Z</updated>
     
     <content type="html"><![CDATA[<p>在IE浏览器上 无论是否=IE11 svg动画元素animate都得不到支持 接下来的事情就是让IE浏览器能够支持svg动画元素 包括 animate、animateTransform、animateMotion、animateColor、set 元素</p>
 <p>如果是IE内核的浏览器可以引入以下脚本</p>
@@ -954,7 +988,7 @@ tar -zxf rabbitmq-server-3.4.0.tar.gz
     <link href="http://blog.seoui.com/2016/03/09/centos7.install.mysql/"/>
     <id>http://blog.seoui.com/2016/03/09/centos7.install.mysql/</id>
     <published>2016-03-08T16:00:00.000Z</published>
-    <updated>2016-11-11T02:11:09.826Z</updated>
+    <updated>2017-06-03T15:09:01.633Z</updated>
     
     <content type="html"><![CDATA[<p>正常情况下一般都会选择yum安装 原因都知道 简单 快捷，但在安装Mysql时却总是不顺利。</p>
 <p>所以这里记录一下</p>
@@ -993,7 +1027,7 @@ tar -zxf rabbitmq-server-3.4.0.tar.gz
     <link href="http://blog.seoui.com/2016/03/02/springmvcsupportjsonp/"/>
     <id>http://blog.seoui.com/2016/03/02/springmvcsupportjsonp/</id>
     <published>2016-03-01T16:00:00.000Z</published>
-    <updated>2016-11-11T02:11:09.826Z</updated>
+    <updated>2017-06-03T15:09:01.632Z</updated>
     
     <content type="html"><![CDATA[<p>这里测试的是spring mvc4的版本 </p>
 <p>定义一个扩展类 必须要加上@ControllerAdvice增加处理<br><figure class="highlight java"><table><tr><td class="code"><pre><div class="line"><span class="meta">@ControllerAdvice</span></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">JsonpSupportAdvice</span> <span class="keyword">extends</span> <span class="title">AbstractJsonpResponseBodyAdvice</span> </span>&#123;</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="title">JsonpSupportAdvice</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="comment">//参数包含callback的时候 使用jsonp的反馈形式</span></div><div class="line">		<span class="keyword">super</span>(<span class="string">"callback"</span>, <span class="string">"jsonp"</span>);</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
@@ -1016,65 +1050,6 @@ tar -zxf rabbitmq-server-3.4.0.tar.gz
       <category term="java" scheme="http://blog.seoui.com/tags/java/"/>
     
       <category term="springmvc" scheme="http://blog.seoui.com/tags/springmvc/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>分享几个常用的Google Chrome插件</title>
-    <link href="http://blog.seoui.com/2016/01/25/share-chrome-plugin/"/>
-    <id>http://blog.seoui.com/2016/01/25/share-chrome-plugin/</id>
-    <published>2016-01-24T16:00:00.000Z</published>
-    <updated>2016-11-11T02:11:09.826Z</updated>
-    
-    <content type="html"><![CDATA[<p>在这里分享几个 个人常用的Google Chrome浏览器插件 保证实用。</p>
-<p>由于个人目前的工作会写一些代码 所以优先介绍几个GitHub插件</p>
-<p>1.OctoTree</p>
-<p> 扩展Chrome浏览器在浏览GitHub代码的时候能像本地文件系统一样列出一棵树，可以用于GitHub、GitLab</p>
-<p> <img src="http://static.1.seoui.com/images/2016/01/2016-01-25-share-chrome-plugin-01.png" alt="Octotree"></p>
-<p>2.Isometric Contributions</p>
-<p> 支持在GitHub个人主页的图表统计转换柱状的图表统计 更能直观的看出提交代码的频率 就像盖房子一样。</p>
-<p> <img src="http://static.1.seoui.com/images/2016/01/2016-01-25-share-chrome-plugin-02.png" alt="Isometric Contributions"></p>
-<p>3.Avatars for Github</p>
-<p>  在Github首页上有我关注的人已经关注的项目动态 使用此插件支持在关注的人前面加上头像 这样能更直观看到谁更新了动态信息。</p>
-<p> <img src="http://static.1.seoui.com/images/2016/01/2016-01-25-share-chrome-plugin-03.png" alt="Avatars for Github"></p>
-<p>4.ZenHub</p>
-<p> 增强你的工作流，特别是启动，快速移动工程团队和开源社区等特性构建，支持实时拖拽 Issue Task Boards；通过一个 +1 按钮来进行反馈；支持直接上传任意的文件类型到 GitHub 接口。ZenHub 能把很多进程集中化到 GitHub，让你的团队更精炼更敏捷</p>
-<p> <img src="http://static.1.seoui.com/images/2016/01/2016-01-25-share-chrome-plugin-04.png" alt="ZenHub"></p>
-<p>5.Github Linker</p>
-<p> GitHub Linker 支持连接到(相当于IDE里面的代码引用的感觉)NPM，bower，Composer &amp; Duo 到它们的 Github 库页面。它也解决了在 .js, .jsx, .coffee 或 .md 文件的 require() 声明     </p>
-<p> <img src="http://static.1.seoui.com/images/2016/01/2016-01-25-share-chrome-plugin-05.png" alt="Github Linker"></p>
-<p>API调用插件</p>
-<p>6.JSONView</p>
-<p>   JSONView是一个将JSON字符串转换为 可读性的格式查看 JSON 的插件。调用API时非常有用     </p>
-<p> <img src="http://static.1.seoui.com/images/2016/01/2016-01-25-share-chrome-plugin-06.png" alt="JSONView"></p>
-<p>Markdown插件</p>
-<p>7.Markdown Editor</p>
-<p>  支持在Chrome浏览器上所见即所得的编辑MarkDown文本，本人使用较少 但也比较实用 默认的风格为GitHub </p>
-<p> <img src="http://static.1.seoui.com/images/2016/01/2016-01-25-share-chrome-plugin-07.png" alt="JSONView"></p>
-<p>其他常用插件</p>
-<p>8.Proxy SwitchySharp</p>
-<p>  设置网络代理 翻墙必备</p>
-<p> <img src="http://static.1.seoui.com/images/2016/01/2016-01-25-share-chrome-plugin-08.png" alt="JSONView"></p>
-<p>9.Visual Event</p>
-<p> 能更直观的看到网页DOM元素上的事件信息以及事件所触发的代码 前端开发神器</p>
-<p> <img src="http://static.1.seoui.com/images/2016/01/2016-01-25-share-chrome-plugin-09.png" alt="JSONView"></p>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;p&gt;在这里分享几个 个人常用的Google Chrome浏览器插件 保证实用。&lt;/p&gt;
-&lt;p&gt;由于个人目前的工作会写一些代码 所以优先介绍几个GitHub插件&lt;/p&gt;
-&lt;p&gt;1.OctoTree&lt;/p&gt;
-&lt;p&gt; 扩展Chrome浏览器在浏览GitHub代码的时候能像本地文件系统
-    
-    </summary>
-    
-      <category term="google chrome" scheme="http://blog.seoui.com/categories/google-chrome/"/>
-    
-    
-      <category term="googleChrome" scheme="http://blog.seoui.com/tags/googleChrome/"/>
-    
-      <category term="chrome" scheme="http://blog.seoui.com/tags/chrome/"/>
     
   </entry>
   
