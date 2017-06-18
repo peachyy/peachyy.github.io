@@ -5,10 +5,73 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://blog.seoui.com/"/>
-  <updated>2017-06-03T15:48:17.409Z</updated>
+  <updated>2017-06-18T12:35:26.895Z</updated>
   <id>http://blog.seoui.com/</id>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Objenesis轻松实现为无参构造的类实例化</title>
+    <link href="http://blog.seoui.com/2017/06/18/objenesis/"/>
+    <id>http://blog.seoui.com/2017/06/18/objenesis/</id>
+    <published>2017-06-17T16:00:00.000Z</published>
+    <updated>2017-06-18T12:35:26.895Z</updated>
+    
+    <content type="html"><![CDATA[<p><code>Objenesis</code>是一个用于实例化java类的小型Java库。</p>
+<p> 主要对于用户推荐使用以下3个API</p>
+<ul>
+<li>Objenesis </li>
+<li>ObjectInstantiator</li>
+<li>InstantiatorStrategy</li>
+</ul>
+<p> 首先得创建一个没有无参构建器的java类<code>Example.java</code></p>
+ <figure class="highlight java"><table><tr><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Example</span>  </span>&#123;</div><div class="line">	<span class="comment">//为属性设置一个默认值</span></div><div class="line">    <span class="keyword">private</span> String name=<span class="string">"没有无参构造函数"</span>;</div><div class="line"><span class="comment">//    public Example()&#123;&#125;</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Example</span><span class="params">(String name)</span></span>&#123;</div><div class="line">        System.out.println(<span class="string">"创建了---"</span>+Example.class.getName());</div><div class="line">        <span class="keyword">this</span>.name=name;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getName</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> <span class="keyword">this</span>.name;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>正常情况下这个类在外部情况 如果不调用<code>Example(name)</code>这个构建方法 是没有办法实例化的，如果你正好有这个需求</p>
+<p>这个时候<code>Objenesis</code>就有用武之地了</p>
+<h4 id="方法一"><a href="#方法一" class="headerlink" title="方法一"></a>方法一</h4><pre><code class="java">Objenesis objenesis = <span class="keyword">new</span> ObjenesisStd(<span class="keyword">true</span>);
+ObjectInstantiator thingyInstantiator = objenesis.getInstantiatorOf(Example.class);
+
+Example example1 = (Example)thingyInstantiator.newInstance();
+System.out.println(<span class="string">"example1:"</span>+example1+<span class="string">"---"</span>+example1.getName());
+Example example2 = (Example)thingyInstantiator.newInstance();
+System.out.println(<span class="string">"example2:"</span>+example2+<span class="string">"---"</span>+example2.getName());
+Example example3 = (Example)thingyInstantiator.newInstance();
+System.out.println(<span class="string">"example3:"</span>+example3+<span class="string">"---"</span>+example3.getName());
+</code></pre>
+<p>运行结果 发现属性name原本我们是设置一个默认值的，利用<code>Objenesis</code>实例化后默认值为<code>null</code>了。</p>
+<pre><code class="html">
+example1:Example@38cccef---null
+example2:Example@5679c6c6---null
+example3:Example@27ddd392---null
+</code></pre>
+<h4 id="方法二"><a href="#方法二" class="headerlink" title="方法二"></a>方法二</h4><pre><code class="java">
+Example example4 =objenesis.newInstance(Example.class);
+System.out.println(<span class="string">"example4:"</span>+example4+<span class="string">"----"</span>+example4.getName());
+</code></pre>
+<p> 同样也能够创建成功。</p>
+<p> 区别在与 如果想批量实例化多个对象 那么方法一的效率会更高 。</p>
+<p>另外<code>Objenesis</code>在spring4.0+版本中也有用到 不再强制要求写一个无参构造器了。<code>kryo</code>序列化中也有用到。</p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;&lt;code&gt;Objenesis&lt;/code&gt;是一个用于实例化java类的小型Java库。&lt;/p&gt;
+&lt;p&gt; 主要对于用户推荐使用以下3个API&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Objenesis &lt;/li&gt;
+&lt;li&gt;ObjectInstantiator&lt;/li&gt;
+&lt;li&gt;Insta
+    
+    </summary>
+    
+      <category term="技术" scheme="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/"/>
+    
+      <category term="Objenesis" scheme="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/Objenesis/"/>
+    
+    
+      <category term="Objenesis" scheme="http://blog.seoui.com/tags/Objenesis/"/>
+    
+  </entry>
   
   <entry>
     <title>htmlUnit根据html创建htmlPage</title>
@@ -1019,37 +1082,6 @@ tar -zxf rabbitmq-server-3.4.0.tar.gz
       <category term="centos" scheme="http://blog.seoui.com/tags/centos/"/>
     
       <category term="mysql" scheme="http://blog.seoui.com/tags/mysql/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>springMvc支持jsonp适配</title>
-    <link href="http://blog.seoui.com/2016/03/02/springmvcsupportjsonp/"/>
-    <id>http://blog.seoui.com/2016/03/02/springmvcsupportjsonp/</id>
-    <published>2016-03-01T16:00:00.000Z</published>
-    <updated>2017-06-03T15:09:01.632Z</updated>
-    
-    <content type="html"><![CDATA[<p>这里测试的是spring mvc4的版本 </p>
-<p>定义一个扩展类 必须要加上@ControllerAdvice增加处理<br><figure class="highlight java"><table><tr><td class="code"><pre><div class="line"><span class="meta">@ControllerAdvice</span></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">JsonpSupportAdvice</span> <span class="keyword">extends</span> <span class="title">AbstractJsonpResponseBodyAdvice</span> </span>&#123;</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="title">JsonpSupportAdvice</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="comment">//参数包含callback的时候 使用jsonp的反馈形式</span></div><div class="line">		<span class="keyword">super</span>(<span class="string">"callback"</span>, <span class="string">"jsonp"</span>);</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
-<p>并配置好映射 jsonp –application/javascript<br><figure class="highlight xml"><table><tr><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">bean</span></span></div><div class="line">	<span class="attr">class</span>=<span class="string">"org.springframework.web.servlet.view.ContentNegotiatingViewResolver"</span></div><div class="line">	<span class="attr">p:order</span>=<span class="string">"0"</span> <span class="attr">p:defaultContentType</span>=<span class="string">"text/html"</span> <span class="attr">p:ignoreAcceptHeader</span>=<span class="string">"true"</span></div><div class="line">	<span class="attr">p:favorPathExtension</span>=<span class="string">"true"</span> <span class="attr">p:favorParameter</span>=<span class="string">"true"</span> <span class="attr">p:parameterName</span>=<span class="string">"content"</span>&gt;</div><div class="line">	<span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"mediaTypes"</span>&gt;</span></div><div class="line">		<span class="tag">&lt;<span class="name">map</span>&gt;</span></div><div class="line">			<span class="tag">&lt;<span class="name">entry</span> <span class="attr">key</span>=<span class="string">"html"</span> <span class="attr">value</span>=<span class="string">"text/html"</span> /&gt;</span></div><div class="line">			<span class="tag">&lt;<span class="name">entry</span> <span class="attr">key</span>=<span class="string">"pdf"</span> <span class="attr">value</span>=<span class="string">"application/pdf"</span> /&gt;</span></div><div class="line">			<span class="tag">&lt;<span class="name">entry</span> <span class="attr">key</span>=<span class="string">"xsl"</span> <span class="attr">value</span>=<span class="string">"application/vnd.ms-excel"</span> /&gt;</span></div><div class="line">			<span class="tag">&lt;<span class="name">entry</span> <span class="attr">key</span>=<span class="string">"xml"</span> <span class="attr">value</span>=<span class="string">"application/xml"</span> /&gt;</span></div><div class="line">			<span class="tag">&lt;<span class="name">entry</span> <span class="attr">key</span>=<span class="string">"json"</span> <span class="attr">value</span>=<span class="string">"application/json"</span> /&gt;</span></div><div class="line">			<span class="tag">&lt;<span class="name">entry</span> <span class="attr">key</span>=<span class="string">"jsonp"</span> <span class="attr">value</span>=<span class="string">"application/javascript"</span>/&gt;</span></div><div class="line">		<span class="tag">&lt;/<span class="name">map</span>&gt;</span></div><div class="line">	<span class="tag">&lt;/<span class="name">property</span>&gt;</span></div><div class="line">	.......</div><div class="line">	.....</div></pre></td></tr></table></figure></p>
-<p>OK 到这里配置完成 访问请求的时候只需加上callback参数即为jsonp的数据返回格式。        </p>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;p&gt;这里测试的是spring mvc4的版本 &lt;/p&gt;
-&lt;p&gt;定义一个扩展类 必须要加上@ControllerAdvice增加处理&lt;br&gt;&lt;figure class=&quot;highlight java&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div c
-    
-    </summary>
-    
-      <category term="技术" scheme="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/"/>
-    
-      <category term="springmvc" scheme="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/springmvc/"/>
-    
-    
-      <category term="java" scheme="http://blog.seoui.com/tags/java/"/>
-    
-      <category term="springmvc" scheme="http://blog.seoui.com/tags/springmvc/"/>
     
   </entry>
   
