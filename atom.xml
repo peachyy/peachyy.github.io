@@ -5,10 +5,125 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://blog.seoui.com/"/>
-  <updated>2017-06-19T13:07:40.043Z</updated>
+  <updated>2017-07-02T07:11:02.696Z</updated>
   <id>http://blog.seoui.com/</id>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>记一次Mysql5.7安装</title>
+    <link href="http://blog.seoui.com/2017/07/02/mysql5_7install/"/>
+    <id>http://blog.seoui.com/2017/07/02/mysql5_7install/</id>
+    <published>2017-07-01T16:00:00.000Z</published>
+    <updated>2017-07-02T07:11:02.696Z</updated>
+    
+    <content type="html"><![CDATA[<h4 id="下载"><a href="#下载" class="headerlink" title="下载"></a>下载</h4><p> 下载mysql5.7地址:<code>wget https://cdn.mysql.com//Downloads/MySQL-5.7/mysql-5.7.18-1.el6.x86_64.rpm-bundle.tar</code></p>
+<p> 另外分享一个百度云盘的下载链接 <code>http://pan.baidu.com/s/1qYAuYBi</code></p>
+<p> 下载下来之后 得到一个mysql-5.7.18-1.el6.x86_64.rpm-bundle.tar</p>
+<p> 解压 得到以下rpm包</p>
+ <figure class="highlight bash"><table><tr><td class="code"><pre><div class="line">  tar -vxf mysql-5.7.18-1.el6.x86_64.rpm-bundle.tar </div><div class="line"> </div><div class="line">-rw-r--r-- 1 root root  470507520 Jul  1 23:05 mysql-5.7.18-1.el6.x86_64.rpm-bundle.tar</div><div class="line">-rw-r--r-- 1 7155 31415  23618836 Mar 20 02:40 mysql-community-client-5.7.18-1.el6.x86_64.rpm</div><div class="line">-rw-r--r-- 1 7155 31415    335496 Mar 20 02:40 mysql-community-common-5.7.18-1.el6.x86_64.rpm</div><div class="line">-rw-r--r-- 1 7155 31415   3747352 Mar 20 02:40 mysql-community-devel-5.7.18-1.el6.x86_64.rpm</div><div class="line">-rw-r--r-- 1 7155 31415  39086508 Mar 20 02:40 mysql-community-embedded-5.7.18-1.el6.x86_64.rpm</div><div class="line">-rw-r--r-- 1 7155 31415 135869292 Mar 20 02:40 mysql-community-embedded-devel-5.7.18-1.el6.x86_64.rpm</div><div class="line">-rw-r--r-- 1 7155 31415   2177064 Mar 20 02:40 mysql-community-libs-5.7.18-1.el6.x86_64.rpm</div><div class="line">-rw-r--r-- 1 7155 31415   1723180 Mar 20 02:40 mysql-community-libs-compat-5.7.18-1.el6.x86_64.rpm</div><div class="line">-rw-r--r-- 1 7155 31415 159060212 Mar 20 02:41 mysql-community-server-5.7.18-1.el6.x86_64.rpm</div><div class="line">-rw-r--r-- 1 7155 31415 104881084 Mar 20 02:41 mysql-community-test-5.7.18-1.el6.x86_64.rpm</div></pre></td></tr></table></figure>
+<h4 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h4><p> 这里主要安装 server 和client<br> <figure class="highlight bash"><table><tr><td class="code"><pre><div class="line">yum install libaio  <span class="comment">#首先安装软件包的依赖</span></div><div class="line"><span class="comment">#依次安装</span></div><div class="line">rpm -ivh mysql-community-common-5.7.18-1.el6.x86_64.rpm</div><div class="line">rpm -ivh mysql-community-libs-5.7.18-1.el6.x86_64.rpm</div><div class="line">rpm -ivh mysql-community-client-5.7.18-1.el6.x86_64.rpm</div><div class="line">rpm -ivh mysql-community-server-5.7.18-1.el6.x86_64.rpm</div></pre></td></tr></table></figure></p>
+<p> 另外附上安装之后的一些参数默认值</p>
+<table>
+<thead>
+<tr>
+<th>Files or Resources</th>
+<th style="text-align:center">Location</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Client programs and scripts</td>
+<td style="text-align:center">/usr/bin</td>
+</tr>
+<tr>
+<td>mysqld server</td>
+<td style="text-align:center">/usr/sbin</td>
+</tr>
+<tr>
+<td>Configuration file</td>
+<td style="text-align:center">/etc/my.cnf</td>
+</tr>
+<tr>
+<td>Data directory</td>
+<td style="text-align:center">/var/lib/mysql</td>
+</tr>
+<tr>
+<td>Error log file</td>
+<td style="text-align:center">For RHEL, Oracle Linux, CentOS or Fedora platforms: /var/log/mysqld.log For SLES: /var/log/mysql/mysqld.log</td>
+</tr>
+<tr>
+<td>Value of secure_file_priv</td>
+<td style="text-align:center">/var/lib/mysql-files</td>
+</tr>
+<tr>
+<td>System V init script</td>
+<td style="text-align:center">For RHEL, Oracle Linux, CentOS or Fedora platforms: /etc/init.d/mysqld For SLES: /etc/init.d/mysql For SLES: /etc/init.d/mysql</td>
+</tr>
+<tr>
+<td>Systemd service</td>
+<td style="text-align:center">For RHEL, Oracle Linux, CentOS or Fedora platforms: mysqld For SLES: mysql</td>
+</tr>
+<tr>
+<td>Pid file</td>
+<td style="text-align:center">/var/run/mysql/mysqld.pid</td>
+</tr>
+<tr>
+<td>Socket</td>
+<td style="text-align:center">/var/lib/mysql/mysql.sock</td>
+</tr>
+<tr>
+<td>Keyring directory</td>
+<td style="text-align:center">/var/lib/mysql-keyring</td>
+</tr>
+<tr>
+<td>Unix manual pages</td>
+<td style="text-align:center">/usr/share/man</td>
+</tr>
+<tr>
+<td>Include (header) files</td>
+<td style="text-align:center">/usr/include/mysql</td>
+</tr>
+<tr>
+<td>Libraries</td>
+<td style="text-align:center">/usr/lib/mysql</td>
+</tr>
+<tr>
+<td>Miscellaneous support files (for example, error messages, and character set files)</td>
+<td style="text-align:center">/usr/share/mysql</td>
+</tr>
+</tbody>
+</table>
+<p> 安装完成之后还会创建一个名为mysql的用户和一个mysql用户组在系统上。</p>
+<p> <em>需要注意的是在旧版本的mysql中配置文件的路径在 /usr/my.cnf ，强烈建议您把/usr/my.cnf这个配置迁移到/etc/my.cnf。然后删除/usr/my.cnf</em></p>
+<h4 id="启动"><a href="#启动" class="headerlink" title="启动"></a>启动</h4> <figure class="highlight bash"><table><tr><td class="code"><pre><div class="line">sudo service mysqld start</div></pre></td></tr></table></figure>
+<p> 启动完成之后 会把root超级用户的密码自动生成 在日志中可以看到生成的密码，而且需要用户强制修改 不得不说这个版本对安全性提高了不少,在修改密码的时候还定义了密码的策略 如 安装密码长度、密码的复杂度等。</p>
+<p> 查看密码</p>
+ <figure class="highlight bash"><table><tr><td class="code"><pre><div class="line"> sudo grep <span class="string">'temporary password'</span> /var/<span class="built_in">log</span>/mysqld.log</div><div class="line"></div><div class="line">[root@localhost ~]<span class="comment"># sudo grep 'temporary password' /var/log/mysqld.log</span></div><div class="line">2017-07-02T06:05:16.890856Z 1 [Note] A temporary password is generated <span class="keyword">for</span> root@localhost: cfDZrTud2L(j</div></pre></td></tr></table></figure>
+<h4 id="修改密码"><a href="#修改密码" class="headerlink" title="修改密码"></a>修改密码</h4> <figure class="highlight bash"><table><tr><td class="code"><pre><div class="line">mysql -u root -p</div><div class="line"><span class="comment">#输入日志中的密码</span></div><div class="line"></div><div class="line">ALTER USER <span class="string">'root'</span>@<span class="string">'localhost'</span> IDENTIFIED BY <span class="string">'root'</span>;</div></pre></td></tr></table></figure>
+<p> 报错了 <code>ERROR 1819 (HY000): Your password does not satisfy the current policy requirements</code></p>
+<p> 在5.7版本中会报错 就是前面说到的提供了默认的<code>validate_password</code>密码安全策略，这是一个插件 只不过在5.7版本中默认被安装了</p>
+<p> 由于我这里是本机，    密码设置简单点不会被忘记，所以我们修改一下密码的安全策略</p>
+ <figure class="highlight html"><table><tr><td class="code"><pre><div class="line">set global validate_password_policy=0;#使用只按照密码长度验证 也就是策略中的第0个密码策略方式</div><div class="line">set global validate_password_length=2;#密码的长度要求</div><div class="line">ALTER USER 'root'@'localhost' IDENTIFIED BY 'root'; #这个时候才执行这个语句就没有报错了</div></pre></td></tr></table></figure>
+<p> 参考文档  <a href="https://dev.mysql.com/doc/refman/5.7/en/linux-installation-rpm.html" target="_blank" rel="external">https://dev.mysql.com/doc/refman/5.7/en/linux-installation-rpm.html</a></p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;h4 id=&quot;下载&quot;&gt;&lt;a href=&quot;#下载&quot; class=&quot;headerlink&quot; title=&quot;下载&quot;&gt;&lt;/a&gt;下载&lt;/h4&gt;&lt;p&gt; 下载mysql5.7地址:&lt;code&gt;wget https://cdn.mysql.com//Downloads/MySQL-5.7/my
+    
+    </summary>
+    
+      <category term="技术" scheme="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/"/>
+    
+      <category term="Mysql" scheme="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/Mysql/"/>
+    
+    
+      <category term="mysql" scheme="http://blog.seoui.com/tags/mysql/"/>
+    
+      <category term="mysql5.7" scheme="http://blog.seoui.com/tags/mysql5-7/"/>
+    
+  </entry>
   
   <entry>
     <title>Objenesis轻松实现为无参构造的类实例化</title>
@@ -598,7 +713,7 @@ mydbCenter:SECONDARY&gt;
 cd nginx-1.7.3/
 groupadd -r nginx
 useradd -g nginx -s /sbin/nologin -M nginx
-<span class="meta">#</span>创建tmp文件夹 不然安装后启动会报错
+<span class="meta">#</span><span class="bash">创建tmp文件夹 不然安装后启动会报错</span>
 mkdir -pv /var/tmp/nginx/{proxy,client,fcgi,uwsgi,scgi}
 
 ./configure \
@@ -674,12 +789,12 @@ make install TARGET_DIR=/opt/rabbitmq SBIN_DIR=/opt/rabbitmq/sbin MAN_DIR=/opt/r
 <pre><code class="shell">
 export RABBITMQ_HOME=/opt/rabbitmq
 export PATH=$RABBITMQ_HOME/sbin:$PATH
-<span class="meta">#</span>设置好之后 需要source一下才能生效
+<span class="meta">#</span><span class="bash">设置好之后 需要<span class="built_in">source</span>一下才能生效</span>
 </code></pre>
 <p>启动web管理插件 mq服务</p>
 <pre><code class="shell">
 rabbitmq-plugins enable rabbitmq_management
-<span class="meta">#</span>启动mq
+<span class="meta">#</span><span class="bash">启动mq</span>
 rabbitmq-server start
 </code></pre>
 <p>到这里基本的安装已经完成此时可以 可以在本机使用<code>localhost:15672</code>访问了,rabbitmq内置了一个用户<code>guest/guest</code>不过只能用localhost访问。</p>
@@ -690,7 +805,7 @@ rabbitmqctl add_user  admin  admin
 </code></pre>
 <p>为用户赋予角色 </p>
 <p>在rabbitmq中角色有<code>administrator</code>、<code>monitoring</code> 、<code>management</code>、<code>policymaker</code>、<code>none</code>。</p>
-<pre><code class="shell"><span class="meta">#</span>为admin 赋予administrator角色
+<pre><code class="shell"><span class="meta">#</span><span class="bash">为admin 赋予administrator角色</span>
 rabbitmqctl set_user_tags   admin  administrator
 </code></pre>
 <p>查看用户列表</p>
@@ -1044,45 +1159,6 @@ tar -zxf rabbitmq-server-3.4.0.tar.gz
     
     
       <category term="svg" scheme="http://blog.seoui.com/tags/svg/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Centos7 安装mysql</title>
-    <link href="http://blog.seoui.com/2016/03/09/centos7.install.mysql/"/>
-    <id>http://blog.seoui.com/2016/03/09/centos7.install.mysql/</id>
-    <published>2016-03-08T16:00:00.000Z</published>
-    <updated>2017-06-03T15:09:01.633Z</updated>
-    
-    <content type="html"><![CDATA[<p>正常情况下一般都会选择yum安装 原因都知道 简单 快捷，但在安装Mysql时却总是不顺利。</p>
-<p>所以这里记录一下</p>
-<p>首先去拉取rpm文件 </p>
- <figure class="highlight html"><table><tr><td class="code"><pre><div class="line"></div><div class="line">wget http://dev.mysql.com/get/mysql-community-release-el7-5.noarch.rpm</div></pre></td></tr></table></figure>
-<p>安装rpm并安装mysql-community-server</p>
- <figure class="highlight html"><table><tr><td class="code"><pre><div class="line"></div><div class="line">rpm -ivh mysql-community-release-el7-5.noarch.rpm</div><div class="line"></div><div class="line">yum install mysql-community-server</div></pre></td></tr></table></figure>
-<p>安装完成后<br>设置密码 注意设置密码之前最好重启一下mysqld</p>
- <figure class="highlight html"><table><tr><td class="code"><pre><div class="line"> </div><div class="line">service mysqld restart</div><div class="line">mysql -uroot</div><div class="line">set password for ‘root’@‘localhost’ = password('mypasswd');</div></pre></td></tr></table></figure>
-<p>如有需要可以  设置一下允许远程访问</p>
- <figure class="highlight html"><table><tr><td class="code"><pre><div class="line">update user set host = '%' where user ='root';</div><div class="line">flush privileges;</div></pre></td></tr></table></figure>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;p&gt;正常情况下一般都会选择yum安装 原因都知道 简单 快捷，但在安装Mysql时却总是不顺利。&lt;/p&gt;
-&lt;p&gt;所以这里记录一下&lt;/p&gt;
-&lt;p&gt;首先去拉取rpm文件 &lt;/p&gt;
- &lt;figure class=&quot;highlight html&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td clas
-    
-    </summary>
-    
-      <category term="技术" scheme="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/"/>
-    
-      <category term="mysql" scheme="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/mysql/"/>
-    
-    
-      <category term="centos" scheme="http://blog.seoui.com/tags/centos/"/>
-    
-      <category term="mysql" scheme="http://blog.seoui.com/tags/mysql/"/>
     
   </entry>
   

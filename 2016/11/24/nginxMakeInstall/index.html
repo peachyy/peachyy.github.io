@@ -2,7 +2,7 @@
 cd nginx-1.7.3/
 groupadd -r nginx
 useradd -g nginx -s /sbin/nologin -M nginx
-<span class="meta">#</span>创建tmp文件夹 不然安装后启动会报错
+<span class="meta">#</span><span class="bash">创建tmp文件夹 不然安装后启动会报错</span>
 mkdir -pv /var/tmp/nginx/{proxy,client,fcgi,uwsgi,scgi}
 
 ./configure \
