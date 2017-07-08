@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://blog.seoui.com/"/>
-  <updated>2017-07-02T07:11:02.696Z</updated>
+  <updated>2017-07-08T06:07:32.077Z</updated>
   <id>http://blog.seoui.com/</id>
   
   <generator uri="http://hexo.io/">Hexo</generator>
@@ -15,7 +15,7 @@
     <link href="http://blog.seoui.com/2017/07/02/mysql5_7install/"/>
     <id>http://blog.seoui.com/2017/07/02/mysql5_7install/</id>
     <published>2017-07-01T16:00:00.000Z</published>
-    <updated>2017-07-02T07:11:02.696Z</updated>
+    <updated>2017-07-08T06:07:32.077Z</updated>
     
     <content type="html"><![CDATA[<h4 id="下载"><a href="#下载" class="headerlink" title="下载"></a>下载</h4><p> 下载mysql5.7地址:<code>wget https://cdn.mysql.com//Downloads/MySQL-5.7/mysql-5.7.18-1.el6.x86_64.rpm-bundle.tar</code></p>
 <p> 另外分享一个百度云盘的下载链接 <code>http://pan.baidu.com/s/1qYAuYBi</code></p>
@@ -130,7 +130,7 @@
     <link href="http://blog.seoui.com/2017/06/18/objenesis/"/>
     <id>http://blog.seoui.com/2017/06/18/objenesis/</id>
     <published>2017-06-17T16:00:00.000Z</published>
-    <updated>2017-06-19T13:07:40.043Z</updated>
+    <updated>2017-07-08T06:07:32.074Z</updated>
     
     <content type="html"><![CDATA[<p><code>Objenesis</code>是一个用于实例化java类的小型Java库。</p>
 <p> 主要对于用户推荐使用以下3个API</p>
@@ -194,7 +194,7 @@ System.out.println(<span class="string">"example4:"</span>+example4+<span class=
     <link href="http://blog.seoui.com/2017/06/03/htmlunitstringtopage/"/>
     <id>http://blog.seoui.com/2017/06/03/htmlunitstringtopage/</id>
     <published>2017-06-02T16:00:00.000Z</published>
-    <updated>2017-06-03T15:48:17.409Z</updated>
+    <updated>2017-07-08T06:07:32.071Z</updated>
     
     <content type="html"><![CDATA[<p> 在<code>htmlunit</code>中可以通过URL轻松获取一个HtmlPage,但是却没有提供根据Html字符串创建一个HtmlPage。</p>
 <p> 通过Url获取一个page</p>
@@ -228,7 +228,7 @@ System.out.println(<span class="string">"example4:"</span>+example4+<span class=
     <link href="http://blog.seoui.com/2017/05/08/jenvmanager/"/>
     <id>http://blog.seoui.com/2017/05/08/jenvmanager/</id>
     <published>2017-05-07T16:00:00.000Z</published>
-    <updated>2017-06-03T15:09:01.637Z</updated>
+    <updated>2017-07-08T06:07:32.068Z</updated>
     
     <content type="html"><![CDATA[<p> <code>jenv</code>是一个并行版本管理的java开发包，注意是<code>国内的</code>，并不是<a href="https://github.com/gcuisinier/jenv" target="_blank" rel="external">https://github.com/gcuisinier/jenv</a>可以安装在<code>Linux</code> <code>Mac</code> <code>Windows</code>操作系统上，工具包为我们提供了常用的命令行接口 用户安装、删除、搜索、切换软件版本。</p>
 <h4 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h4> <figure class="highlight shell"><table><tr><td class="code"><pre><div class="line">curl -L -s get.jenv.io | bash</div></pre></td></tr></table></figure>
@@ -271,7 +271,7 @@ System.out.println(<span class="string">"example4:"</span>+example4+<span class=
     <link href="http://blog.seoui.com/2017/04/27/xpathstudy/"/>
     <id>http://blog.seoui.com/2017/04/27/xpathstudy/</id>
     <published>2017-04-26T16:00:00.000Z</published>
-    <updated>2017-06-03T15:09:01.637Z</updated>
+    <updated>2017-07-08T06:07:32.065Z</updated>
     
     <content type="html"><![CDATA[<p> <code>XPath</code>在选取<code>XML</code>文档中有着非常方便的功能，下面介绍一些常用的表达式语法。</p>
 <p> 假设如下XML<br> <figure class="highlight html"><table><tr><td class="code"><pre><div class="line">&lt;?xml version="1.0" encoding="ISO-8859-1"?&gt;</div><div class="line"><span class="tag">&lt;<span class="name">bookstore</span>&gt;</span></div><div class="line">	<span class="tag">&lt;<span class="name">book</span>&gt;</span></div><div class="line">	  <span class="tag">&lt;<span class="name">title</span> <span class="attr">lang</span>=<span class="string">"en"</span>&gt;</span>测试<span class="tag">&lt;/<span class="name">title</span>&gt;</span></div><div class="line">	  <span class="tag">&lt;<span class="name">author</span> <span class="attr">sex</span>=<span class="string">"女"</span>&gt;</span>笑笑笑<span class="tag">&lt;/<span class="name">author</span>&gt;</span> </div><div class="line">	  <span class="tag">&lt;<span class="name">year</span>&gt;</span>2017<span class="tag">&lt;/<span class="name">year</span>&gt;</span></div><div class="line">	  <span class="tag">&lt;<span class="name">price</span>&gt;</span>888<span class="tag">&lt;/<span class="name">price</span>&gt;</span></div><div class="line">	<span class="tag">&lt;/<span class="name">book</span>&gt;</span></div><div class="line">	<span class="tag">&lt;<span class="name">book</span>&gt;</span></div><div class="line">	  <span class="tag">&lt;<span class="name">title</span> <span class="attr">lang</span>=<span class="string">"en"</span>&gt;</span>测试1<span class="tag">&lt;/<span class="name">title</span>&gt;</span></div><div class="line">	  <span class="tag">&lt;<span class="name">author</span> <span class="attr">sex</span>=<span class="string">"女"</span> <span class="attr">age</span>=<span class="string">"18"</span>&gt;</span>笑笑笑1<span class="tag">&lt;/<span class="name">author</span>&gt;</span> </div><div class="line">	  <span class="tag">&lt;<span class="name">year</span>&gt;</span>2018<span class="tag">&lt;/<span class="name">year</span>&gt;</span></div><div class="line">	  <span class="tag">&lt;<span class="name">price</span>&gt;</span>889<span class="tag">&lt;/<span class="name">price</span>&gt;</span></div><div class="line">	<span class="tag">&lt;/<span class="name">book</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">bookstore</span>&gt;</span></div></pre></td></tr></table></figure></p>
@@ -369,7 +369,7 @@ System.out.println(<span class="string">"example4:"</span>+example4+<span class=
     <link href="http://blog.seoui.com/2017/04/18/mesosinstall/"/>
     <id>http://blog.seoui.com/2017/04/18/mesosinstall/</id>
     <published>2017-04-17T16:00:00.000Z</published>
-    <updated>2017-06-03T15:09:01.637Z</updated>
+    <updated>2017-07-08T06:07:32.062Z</updated>
     
     <content type="html"><![CDATA[<p>  最近有一个实时的采集系统需求，目前的实现方式是用分布式定时任务来处理这一采集请求,希望有更多资源能够为任务分担压力，支持动态添加或者移除任务资源 从而达到提高采集效率，所以准备采用<code>Mesos</code>来做资源调度的工作。</p>
 <p>  因为自己硬件设备不够好的原因导致安装Mesos的时候出现了一个未知的问题 记录一下，以下是参考官方Getting Started的示例。</p>
@@ -404,7 +404,7 @@ System.out.println(<span class="string">"example4:"</span>+example4+<span class=
     <link href="http://blog.seoui.com/2017/03/06/2017-target/"/>
     <id>http://blog.seoui.com/2017/03/06/2017-target/</id>
     <published>2017-03-05T16:00:00.000Z</published>
-    <updated>2017-06-03T15:09:01.636Z</updated>
+    <updated>2017-07-08T06:07:32.059Z</updated>
     
     <content type="html"><![CDATA[<p>  2017年已经过了差不多六分之一 为了给自己制定了一个技术计划(算是小目标吧)，所以在这里引导一下，<br>  当迷茫的时候可以look look!!!</p>
 <h3 id="后端"><a href="#后端" class="headerlink" title="后端"></a>后端</h3><ul>
@@ -457,7 +457,7 @@ System.out.println(<span class="string">"example4:"</span>+example4+<span class=
     <link href="http://blog.seoui.com/2017/01/11/mongodb-rs/"/>
     <id>http://blog.seoui.com/2017/01/11/mongodb-rs/</id>
     <published>2017-01-10T16:00:00.000Z</published>
-    <updated>2017-06-03T15:09:01.636Z</updated>
+    <updated>2017-07-08T06:07:32.057Z</updated>
     
     <content type="html"><![CDATA[<p> MongoDB的复制集是一个主从复制模式 又具有故障转移的集群，任何成员都有可能是<code>master</code>，<br> 当master挂掉用会很快的重新选举一个节点来充当master。</p>
 <p> 复制集中的组成主要成员</p>
@@ -553,7 +553,7 @@ mydbCenter:SECONDARY&gt;
     <link href="http://blog.seoui.com/2017/01/09/jdk7-forkjoin/"/>
     <id>http://blog.seoui.com/2017/01/09/jdk7-forkjoin/</id>
     <published>2017-01-08T16:00:00.000Z</published>
-    <updated>2017-06-03T15:09:01.636Z</updated>
+    <updated>2017-07-08T06:07:32.054Z</updated>
     
     <content type="html"><![CDATA[<p> 首先看一下ForkJoin相关的几个API </p>
 <ul>
@@ -601,7 +601,7 @@ mydbCenter:SECONDARY&gt;
     <link href="http://blog.seoui.com/2017/01/08/mongodbCommonoper/"/>
     <id>http://blog.seoui.com/2017/01/08/mongodbCommonoper/</id>
     <published>2017-01-07T16:00:00.000Z</published>
-    <updated>2017-06-03T15:09:01.636Z</updated>
+    <updated>2017-07-08T06:07:32.051Z</updated>
     
     <content type="html"><![CDATA[<p> 以下是在3.4.1版本中 其他版本可能略有区别,mongo默认登录时在test数据中。</p>
 <h3 id="数据库相关操作"><a href="#数据库相关操作" class="headerlink" title="数据库相关操作"></a>数据库相关操作</h3><p>登录到数据库</p>
@@ -706,7 +706,7 @@ mydbCenter:SECONDARY&gt;
     <link href="http://blog.seoui.com/2016/11/24/nginxMakeInstall/"/>
     <id>http://blog.seoui.com/2016/11/24/nginxMakeInstall/</id>
     <published>2016-11-23T16:00:00.000Z</published>
-    <updated>2017-06-03T15:09:01.636Z</updated>
+    <updated>2017-07-08T06:07:32.048Z</updated>
     
     <content type="html"><![CDATA[<p>nginx是比较常用的高性能HTTP服务器和反向代理服务器，许多用户更是把做反向代理使用，<br>常言道：好记性不如烂笔头 时间久了总是有些遗忘，本文记录一下源码编码安装以及常用模块的使用介绍。<br><a id="more"></a></p>
 <h3 id="编译安装"><a href="#编译安装" class="headerlink" title="编译安装"></a>编译安装</h3><pre><code class="shell">tar -zxf nginx-1.7.3.tar.gz
@@ -770,7 +770,7 @@ mkdir -pv /var/tmp/nginx/{proxy,client,fcgi,uwsgi,scgi}
     <link href="http://blog.seoui.com/2016/10/29/rabbitmqInstall/"/>
     <id>http://blog.seoui.com/2016/10/29/rabbitmqInstall/</id>
     <published>2016-10-28T16:00:00.000Z</published>
-    <updated>2017-06-03T15:09:01.635Z</updated>
+    <updated>2017-07-08T06:07:32.045Z</updated>
     
     <content type="html"><![CDATA[<h3 id="安装rabbitmq"><a href="#安装rabbitmq" class="headerlink" title="安装rabbitmq"></a>安装rabbitmq</h3><p>采用源码安装方式,首先去官网拉取源代码并解压,由于rabbitmq是采用erlang编写的 所以得先安装erlang环境,这里假设erlang环境已经安装好了。</p>
 <pre><code class="shell">wget http://www.rabbitmq.com/releases/rabbitmq-server/v3.4.0/rabbitmq-server-3.4.0.tar.gz
@@ -837,7 +837,7 @@ tar -zxf rabbitmq-server-3.4.0.tar.gz
     <link href="http://blog.seoui.com/2016/10/16/html-emmet/"/>
     <id>http://blog.seoui.com/2016/10/16/html-emmet/</id>
     <published>2016-10-15T16:00:00.000Z</published>
-    <updated>2017-06-03T15:09:01.635Z</updated>
+    <updated>2017-07-08T06:07:32.043Z</updated>
     
     <content type="html"><![CDATA[<p> Emmet是一个Web开发人员的工具包，可以大大提高你的HTML和CSS的工作流,这是在<a href="http://docs.emmet.io/" title="Emmet" target="_blank" rel="external">emmet官方文档</a>中看到的第一句话,当然这句话也简单的概括了它拥有的魅力。</p>
 <p> 下面是在WebStorm中作一些应用。<br><a id="more"></a></p>
@@ -892,7 +892,7 @@ tar -zxf rabbitmq-server-3.4.0.tar.gz
     <link href="http://blog.seoui.com/2016/07/07/supervisor/"/>
     <id>http://blog.seoui.com/2016/07/07/supervisor/</id>
     <published>2016-07-06T16:00:00.000Z</published>
-    <updated>2017-06-03T15:09:01.634Z</updated>
+    <updated>2017-07-08T06:07:32.040Z</updated>
     
     <content type="html"><![CDATA[<p> supervisor是一个制作守护进程的工具,用户可以在UNIX系统中监控、管理进程。常用于管理与某个用户或项目相关的进程。</p>
 <h3 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h3><p> 采用源码安装的方式,切换到3.1.3这个版本安装。</p>
@@ -942,7 +942,7 @@ tar -zxf rabbitmq-server-3.4.0.tar.gz
     <link href="http://blog.seoui.com/2016/07/04/gzip-uzip/"/>
     <id>http://blog.seoui.com/2016/07/04/gzip-uzip/</id>
     <published>2016-07-03T16:00:00.000Z</published>
-    <updated>2017-06-03T15:09:01.634Z</updated>
+    <updated>2017-07-08T06:07:32.037Z</updated>
     
     <content type="html"><![CDATA[<p> 文件的压缩/解压无论是在哪个操作系统上都比较常用 简答在这里演示一下。</p>
 <h4 id="zip"><a href="#zip" class="headerlink" title="zip"></a>zip</h4><p> zip会把文件打包为.zip格式的文件包，比如 abc.zip</p>
@@ -982,7 +982,7 @@ tar -zxf rabbitmq-server-3.4.0.tar.gz
     <link href="http://blog.seoui.com/2016/06/18/docker.install/"/>
     <id>http://blog.seoui.com/2016/06/18/docker.install/</id>
     <published>2016-06-17T16:00:00.000Z</published>
-    <updated>2017-06-03T15:09:01.634Z</updated>
+    <updated>2017-07-08T06:07:32.034Z</updated>
     
     <content type="html"><![CDATA[<p>接触docker容器有这么几周的时间了,顺便在这里记录一下这段岁月,无特殊说明<br>操作系统均为 centos7</p>
 <p>1、首先安装docker</p>
@@ -1022,7 +1022,7 @@ tar -zxf rabbitmq-server-3.4.0.tar.gz
     <link href="http://blog.seoui.com/2016/06/17/ubuntu.networksetting/"/>
     <id>http://blog.seoui.com/2016/06/17/ubuntu.networksetting/</id>
     <published>2016-06-16T16:00:00.000Z</published>
-    <updated>2017-06-03T15:09:01.634Z</updated>
+    <updated>2017-07-08T06:07:32.031Z</updated>
     
     <content type="html"><![CDATA[<p> 用惯了centos 偶尔装了一次ubuntu版本为14.04来玩一玩发现设置静态网络(static)后不能上外网，在这里记录一下如何设置的。</p>
 <p> 1、首页静态IP参数 编辑文件 vim /etc/network/interfaces</p>
@@ -1058,7 +1058,7 @@ tar -zxf rabbitmq-server-3.4.0.tar.gz
     <link href="http://blog.seoui.com/2016/05/24/html-form-enterevent/"/>
     <id>http://blog.seoui.com/2016/05/24/html-form-enterevent/</id>
     <published>2016-05-23T16:00:00.000Z</published>
-    <updated>2017-06-03T15:09:01.633Z</updated>
+    <updated>2017-07-08T06:07:32.028Z</updated>
     
     <content type="html"><![CDATA[<p>经常写form表单以前没有怎么注意 无意中注意到一些元素组成的默认事件。</p>
 <p>在form表单中 目前发现具备以下情况会默认支持回车事件提交表单</p>
@@ -1097,7 +1097,7 @@ tar -zxf rabbitmq-server-3.4.0.tar.gz
     <link href="http://blog.seoui.com/2016/04/13/selenium-autowebTest/"/>
     <id>http://blog.seoui.com/2016/04/13/selenium-autowebTest/</id>
     <published>2016-04-12T16:00:00.000Z</published>
-    <updated>2017-06-03T15:09:01.633Z</updated>
+    <updated>2017-07-08T06:07:32.025Z</updated>
     
     <content type="html"><![CDATA[<p> 最近在做一个简单新浪微博抓取功能,遇到了请求被新浪拦截,正因为如此了解到selenium。</p>
 <p> <a href="http://docs.seleniumhq.org/" title="selenium" target="_blank" rel="external">selenium</a> 是一个web的自动化测试工具。运用好它能够完成很多自动化测试功能甚至会让你感到很多出乎意料的事情。</p>
@@ -1132,7 +1132,7 @@ tar -zxf rabbitmq-server-3.4.0.tar.gz
     <link href="http://blog.seoui.com/2016/03/16/svganimate-ie-support/"/>
     <id>http://blog.seoui.com/2016/03/16/svganimate-ie-support/</id>
     <published>2016-03-15T16:00:00.000Z</published>
-    <updated>2017-06-03T15:09:01.633Z</updated>
+    <updated>2017-07-08T06:07:32.022Z</updated>
     
     <content type="html"><![CDATA[<p>在IE浏览器上 无论是否=IE11 svg动画元素animate都得不到支持 接下来的事情就是让IE浏览器能够支持svg动画元素 包括 animate、animateTransform、animateMotion、animateColor、set 元素</p>
 <p>如果是IE内核的浏览器可以引入以下脚本</p>
