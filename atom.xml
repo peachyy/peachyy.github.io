@@ -5,10 +5,104 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://blog.seoui.com/"/>
-  <updated>2017-07-02T07:11:02.696Z</updated>
+  <updated>2017-08-19T15:41:55.912Z</updated>
   <id>http://blog.seoui.com/</id>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>基于redis的延迟消息队列设计</title>
+    <link href="http://blog.seoui.com/2017/08/19/delayqueue/"/>
+    <id>http://blog.seoui.com/2017/08/19/delayqueue/</id>
+    <published>2017-08-18T16:00:00.000Z</published>
+    <updated>2017-08-19T15:41:55.912Z</updated>
+    
+    <content type="html"><![CDATA[<h4 id="需求背景"><a href="#需求背景" class="headerlink" title="需求背景"></a>需求背景</h4><ul>
+<li>用户下订单成功之后隔20分钟给用户发送上门服务通知短信</li>
+<li>订单完成一个小时之后通知用户对上门服务进行评价</li>
+<li><p>业务执行失败之后隔10分钟重试一次</p>
+<p>类似的场景比较多 简单的处理方式就是使用定时任务 假如数据比较多的时候 有的数据可能延迟比较严重,而且越来越多的定时业务导致任务调度很繁琐不好管理。 </p>
+</li>
+</ul>
+<h4 id="队列设计"><a href="#队列设计" class="headerlink" title="队列设计"></a>队列设计</h4><p> 目前可以考虑使用<code>rabbitmq</code>来满足需求 但是不打算使用,因为目前太多的业务使用了另外的MQ中间件。</p>
+<p> <em>开发前需要考虑的问题？</em></p>
+<ul>
+<li>及时性 消费端能按时收到</li>
+<li>同一时间消息的消费权重</li>
+<li>可靠性 消息不能出现没有被消费掉的情况</li>
+<li>可恢复 假如有其他情况 导致消息系统不可用了 至少能保证数据可以恢复</li>
+<li>可撤回 因为是延迟消息 没有到执行时间的消息支持可以取消消费</li>
+<li>高可用 多实例 这里指HA/主备模式并不是多实例同时一起工作</li>
+<li><p>消费端如何消费</p>
+<p>当然初步选用<code>redis</code>作为数据缓存的主要原因是因为<code>redis</code>自身支持<code>zset</code>的数据结构(score 延迟时间毫秒) 这样就少了排序的烦恼而且性能还很高,正好我们的需求就是按时间维度去判定执行的顺序 同时也支持<code>map</code> <code>list</code>数据结构。</p>
+</li>
+</ul>
+<p>简单定义一个消息数据结构</p>
+ <figure class="highlight java"><table><tr><td class="code"><pre><div class="line"></div><div class="line"><span class="keyword">private</span> String topic;<span class="comment">/***topic**/</span></div><div class="line"><span class="keyword">private</span> String id;<span class="comment">/***自动生成 全局惟一 snowflake**/</span></div><div class="line"><span class="keyword">private</span> String bizKey;</div><div class="line"><span class="keyword">private</span> <span class="keyword">long</span> delay;<span class="comment">/***延时毫秒数**/</span></div><div class="line"><span class="keyword">private</span> <span class="keyword">int</span> priority;<span class="comment">//优先级</span></div><div class="line"><span class="keyword">private</span> <span class="keyword">long</span> ttl;<span class="comment">/**消费端消费的ttl**/</span></div><div class="line"><span class="keyword">private</span> String body;<span class="comment">/***消息体**/</span></div><div class="line"><span class="keyword">private</span> <span class="keyword">long</span> createTime=System.currentTimeMillis();</div><div class="line"><span class="keyword">private</span> <span class="keyword">int</span> status= Status.WaitPut.ordinal();</div></pre></td></tr></table></figure>
+<p> 运行原理：</p>
+<ol>
+<li>用<code>Map</code>来存储元数据。id作为key,整个消息结构序列化(json/…)之后作为value</li>
+<li>将<code>id</code>放入其中(有N个)一个<code>zset</code>有序列表中,以createTime+delay+priority作为score。修改状态为正在延迟中</li>
+<li>使用timer实时监控<code>zset</code>有序列表中top 10的数据 。 如果数据<code>score</code>&gt;=当前时间毫秒就取出来,根据<code>topic</code>重新放入一个新的可消费列表(<code>list</code>)中,在zset中删除已经取出来的数据,并修改状态为待消费</li>
+<li>客户端获取数据只需要从可消费队列中获取就可以了。并且状态必须为待消费 运行时间需要&lt;=当前时间的 如果不满足 重新放入<code>zset</code>列表中,修改状态为正在延迟。如果满足修改状态为已消费。或者直接删除元数据。</li>
+</ol>
+<h4 id="客户端"><a href="#客户端" class="headerlink" title="客户端"></a>客户端</h4><p> 因为涉及到不同程序语言的问题,所以当前默认支持<code>http</code>访问方式。</p>
+<ol>
+<li>添加延时消息添加成功之后返回消费唯一ID  POST /push {…..消息体}</li>
+<li>删除延时消息 需要传递消息ID           GET /delete?id=</li>
+<li>恢复延时消息                         GET /reStore?expire=true|false   expire是否恢复已过期未执行的消息。</li>
+<li>恢复单个延时消息 需要传递消息ID       GET /reStore/id</li>
+<li>获取消息 需要长连接                  GET /get/topic</li>
+</ol>
+<p>用nginx暴露服务,配置为轮询 在添加延迟消息的时候就可以流量平均分配。 </p>
+<p>目前系统中客户端并没有采用HTTP长连接的方式来消费消息,而是采用MQ的方式来消费数据这样客户端就可以不用关心延迟消息队列。只需要在发送MQ的时候拦截一下 如果是延迟消息就用延迟消息系统处理。</p>
+<h4 id="如果实现消费可恢复"><a href="#如果实现消费可恢复" class="headerlink" title="如果实现消费可恢复"></a>如果实现消费可恢复</h4><p> 实现恢复的原理 正常情况下一般都是记录日志,比如<code>mysql</code>的<code>binlog</code>等。</p>
+<p>这里我们直接采用<code>mysql</code>数据库作为记录日志。</p>
+<p>目前打算创建以下2张表:</p>
+<ol>
+<li>消息表  字段包括整个消息体 </li>
+<li>消息流转表  字段包括消息ID、变更状态、变更时间、<code>zset</code>扫描线程Name、host/ip </li>
+</ol>
+<p>定义<code>zset</code>扫描线程Name是为了更清楚的看到消息被分发到具体哪个<code>zset</code>中。前提是<code>zset</code>的key和监控<code>zset</code>的线程名称要有点关系 这里也可以是zset key。</p>
+<p>举个栗子</p>
+<p>假如<code>redis</code>服务器宕机了,重启之后发现数据也没有了。所以这个恢复是很有必要的,只需要从表1也就是<code>消息表</code>中把消息状态不等于已消费的数据全部重新分发到延迟队列中去,然后同步一下状态就可以了。</p>
+<p>当然恢复单个任务也可以这么干。</p>
+<h4 id="关于高可用"><a href="#关于高可用" class="headerlink" title="关于高可用"></a>关于高可用</h4><p>分布式协调还是选用<code>zookeeper</code>吧。</p>
+<p>如果有多个实例最多同时只能有1个实例工作 这样就避免了分布式竞争锁带来的坏处,当然如果业务需要多个实例同时工作也是支持的,也就是一个消息最多只能有1个实例处理,可以选用<code>zookeeper</code>或者<code>redis</code>就能实现分布式锁了。</p>
+<p>最终做了一下测试多实例同时运行,可能因为会涉及到锁的问题性能有所下降,反而单机效果很好。所以比较推荐基于docker的主备部署模式。</p>
+<h4 id="扩展"><a href="#扩展" class="headerlink" title="扩展"></a>扩展</h4><p>支持<code>zset</code>队列个数可配置 避免大数据带来高延迟的问题。</p>
+<p>目前存在日志和<code>redis</code>元数据有可能不一致的问题 如<code>mysql</code>挂了,写日志不会成功。</p>
+<p>设计图：<br><figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="http://static.1.seoui.com/images/2017/08/delayqueue.png" alt="" title="">
+                </div>
+                <div class="image-caption"></div>
+            </figure></p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;h4 id=&quot;需求背景&quot;&gt;&lt;a href=&quot;#需求背景&quot; class=&quot;headerlink&quot; title=&quot;需求背景&quot;&gt;&lt;/a&gt;需求背景&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;用户下订单成功之后隔20分钟给用户发送上门服务通知短信&lt;/li&gt;
+&lt;li&gt;订单完成一个小时之后通知用户对上门服务
+    
+    </summary>
+    
+      <category term="技术" scheme="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/"/>
+    
+      <category term="redis" scheme="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/redis/"/>
+    
+      <category term="延迟消息" scheme="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/redis/%E5%BB%B6%E8%BF%9F%E6%B6%88%E6%81%AF/"/>
+    
+    
+      <category term="延迟队列" scheme="http://blog.seoui.com/tags/%E5%BB%B6%E8%BF%9F%E9%98%9F%E5%88%97/"/>
+    
+      <category term="redis" scheme="http://blog.seoui.com/tags/redis/"/>
+    
+      <category term="延迟消息" scheme="http://blog.seoui.com/tags/%E5%BB%B6%E8%BF%9F%E6%B6%88%E6%81%AF/"/>
+    
+  </entry>
   
   <entry>
     <title>记一次Mysql5.7安装</title>
@@ -1124,41 +1218,6 @@ tar -zxf rabbitmq-server-3.4.0.tar.gz
     
     
       <category term="selenium" scheme="http://blog.seoui.com/tags/selenium/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>让IE浏览器支持SVG动画</title>
-    <link href="http://blog.seoui.com/2016/03/16/svganimate-ie-support/"/>
-    <id>http://blog.seoui.com/2016/03/16/svganimate-ie-support/</id>
-    <published>2016-03-15T16:00:00.000Z</published>
-    <updated>2017-06-03T15:09:01.633Z</updated>
-    
-    <content type="html"><![CDATA[<p>在IE浏览器上 无论是否=IE11 svg动画元素animate都得不到支持 接下来的事情就是让IE浏览器能够支持svg动画元素 包括 animate、animateTransform、animateMotion、animateColor、set 元素</p>
-<p>如果是IE内核的浏览器可以引入以下脚本</p>
-<p>在html文档中使用 引入script</p>
-<figure class="highlight html"><table><tr><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">type</span>=<span class="string">"text/javascript"</span> <span class="attr">src</span>=<span class="string">"smil.check.js"</span>&gt;</span><span class="undefined"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></div></pre></td></tr></table></figure>
-<p>在svg文件中使用</p>
-<figure class="highlight xml"><table><tr><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">svg</span>&gt;</span></div><div class="line"> <span class="tag">&lt;<span class="name">elements..</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">script</span> <span class="attr">type</span>=<span class="string">"text/ecmascript"</span> <span class="attr">xlink:href</span>=<span class="string">"smil.check.js"</span> /&gt;</span><span class="xml"></span></div><div class="line"><span class="tag">&lt;/<span class="name">svg</span>&gt;</span></div></pre></td></tr></table></figure>
-<p>接下来就由奇迹发生了 在IE中svg动画元素居然可以动了。</p>
-<p>经过测试感觉动画的偏移不是特别精确 如果需要特别精确的话 估计这个还是有些问题。</p>
-<p>此文参考</p>
-<p>   <a href="http://stackoverflow.com/questions/15738752/svg-animation-not-working-ie9-ie10" title="http://stackoverflow.com/questions/15738752/svg-animation-not-working-ie9-ie10" target="_blank" rel="external">http://stackoverflow.com/questions/15738752/svg-animation-not-working-ie9-ie10</a></p>
-<p>另外smil.check.js托管在github地址为:</p>
-<p><a href="https://github.com/FakeSmile/FakeSmile" title="https://github.com/FakeSmile/FakeSmile" target="_blank" rel="external">https://github.com/FakeSmile/FakeSmile</a></p>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;p&gt;在IE浏览器上 无论是否=IE11 svg动画元素animate都得不到支持 接下来的事情就是让IE浏览器能够支持svg动画元素 包括 animate、animateTransform、animateMotion、animateColor、set 元素&lt;/p&gt;
-&lt;p&gt;如果是
-    
-    </summary>
-    
-      <category term="技术" scheme="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/"/>
-    
-    
-      <category term="svg" scheme="http://blog.seoui.com/tags/svg/"/>
     
   </entry>
   
