@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://blog.seoui.com/"/>
-  <updated>2017-08-19T16:03:59.115Z</updated>
+  <updated>2017-08-20T02:00:04.545Z</updated>
   <id>http://blog.seoui.com/</id>
   
   <generator uri="http://hexo.io/">Hexo</generator>
@@ -15,7 +15,7 @@
     <link href="http://blog.seoui.com/2017/08/19/delayqueue/"/>
     <id>http://blog.seoui.com/2017/08/19/delayqueue/</id>
     <published>2017-08-18T16:00:00.000Z</published>
-    <updated>2017-08-19T16:03:59.115Z</updated>
+    <updated>2017-08-20T02:00:04.545Z</updated>
     
     <content type="html"><![CDATA[<h4 id="需求背景"><a href="#需求背景" class="headerlink" title="需求背景"></a>需求背景</h4><ul>
 <li>用户下订单成功之后隔20分钟给用户发送上门服务通知短信</li>
@@ -56,7 +56,7 @@
 </ol>
 <p>用nginx暴露服务,配置为轮询 在添加延迟消息的时候就可以流量平均分配。 </p>
 <p>目前系统中客户端并没有采用HTTP长连接的方式来消费消息,而是采用MQ的方式来消费数据这样客户端就可以不用关心延迟消息队列。只需要在发送MQ的时候拦截一下 如果是延迟消息就用延迟消息系统处理。</p>
-<h4 id="如何实现消费可恢复"><a href="#如何实现消费可恢复" class="headerlink" title="如何实现消费可恢复"></a>如何实现消费可恢复</h4><p> 实现恢复的原理 正常情况下一般都是记录日志,比如<code>mysql</code>的<code>binlog</code>等。</p>
+<h4 id="消息可恢复"><a href="#消息可恢复" class="headerlink" title="消息可恢复"></a>消息可恢复</h4><p> 实现恢复的原理 正常情况下一般都是记录日志,比如<code>mysql</code>的<code>binlog</code>等。</p>
 <p>这里我们直接采用<code>mysql</code>数据库作为记录日志。</p>
 <p>目前打算创建以下2张表:</p>
 <ol>
@@ -473,7 +473,7 @@ System.out.println(<span class="string">"example4:"</span>+example4+<span class=
 <h4 id="编译源码"><a href="#编译源码" class="headerlink" title="编译源码"></a>编译源码</h4><figure class="highlight shell"><table><tr><td class="code"><pre><div class="line"></div><div class="line">cd mesos-1.2.0</div><div class="line"></div><div class="line">./bootstrap</div><div class="line"></div><div class="line">mkdir build</div><div class="line"></div><div class="line">cd build</div><div class="line"></div><div class="line">../configure</div><div class="line"></div><div class="line">make -j3</div></pre></td></tr></table></figure>
 <h4 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h4><figure class="highlight shell"><table><tr><td class="code"><pre><div class="line"></div><div class="line">make check</div><div class="line"></div><div class="line">make install</div></pre></td></tr></table></figure>
 <h4 id="测试例子"><a href="#测试例子" class="headerlink" title="测试例子"></a>测试例子</h4><p>从官方示例复制 可以运行<br>指定IP的时候 如果需要外网访问可以设置具体的IP, 设置为127.0.0.1 只能用127.0.0.1的IP访问。</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><div class="line"><span class="meta"></span></div><div class="line"># Start Mesos master (ensure work directory exists and has proper permissions).</div><div class="line"><span class="meta">$</span> ./bin/mesos-master.sh --ip=127.0.0.1 --work_dir=/var/lib/mesos</div><div class="line"><span class="meta"></span></div><div class="line"># Start Mesos agent (ensure work directory exists and has proper permissions).</div><div class="line"><span class="meta">$</span> ./bin/mesos-agent.sh --master=127.0.0.1:5050 --work_dir=/var/lib/mesos</div><div class="line"><span class="meta"></span></div><div class="line"># Visit the Mesos web page.</div><div class="line"><span class="meta">$</span> http://127.0.0.1:5050</div><div class="line"><span class="meta"></span></div><div class="line"># Run C++ framework (exits after successfully running some tasks).</div><div class="line"><span class="meta">$</span> ./src/test-framework --master=127.0.0.1:5050</div><div class="line"><span class="meta"></span></div><div class="line"># Run Java framework (exits after successfully running some tasks).</div><div class="line"><span class="meta">$</span> ./src/examples/java/test-framework 127.0.0.1:5050</div><div class="line"><span class="meta"></span></div><div class="line"># Run Python framework (exits after successfully running some tasks).</div><div class="line"><span class="meta">$</span> ./src/examples/python/test-framework 127.0.0.1:5050</div></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="code"><pre><div class="line"><span class="meta"></span></div><div class="line">#<span class="bash"> Start Mesos master (ensure work directory exists and has proper permissions).</span></div><div class="line"><span class="meta">$</span><span class="bash"> ./bin/mesos-master.sh --ip=127.0.0.1 --work_dir=/var/lib/mesos</span></div><div class="line"><span class="meta"></span></div><div class="line">#<span class="bash"> Start Mesos agent (ensure work directory exists and has proper permissions).</span></div><div class="line"><span class="meta">$</span><span class="bash"> ./bin/mesos-agent.sh --master=127.0.0.1:5050 --work_dir=/var/lib/mesos</span></div><div class="line"><span class="meta"></span></div><div class="line">#<span class="bash"> Visit the Mesos web page.</span></div><div class="line"><span class="meta">$</span><span class="bash"> http://127.0.0.1:5050</span></div><div class="line"><span class="meta"></span></div><div class="line">#<span class="bash"> Run C++ framework (exits after successfully running some tasks).</span></div><div class="line"><span class="meta">$</span><span class="bash"> ./src/<span class="built_in">test</span>-framework --master=127.0.0.1:5050</span></div><div class="line"><span class="meta"></span></div><div class="line">#<span class="bash"> Run Java framework (exits after successfully running some tasks).</span></div><div class="line"><span class="meta">$</span><span class="bash"> ./src/examples/java/<span class="built_in">test</span>-framework 127.0.0.1:5050</span></div><div class="line"><span class="meta"></span></div><div class="line">#<span class="bash"> Run Python framework (exits after successfully running some tasks).</span></div><div class="line"><span class="meta">$</span><span class="bash"> ./src/examples/python/<span class="built_in">test</span>-framework 127.0.0.1:5050</span></div></pre></td></tr></table></figure>
 <p><code>需要注意的是</code> 安装之前要保证差不多2-4个GB的内存，不然在编译的时候总是报一些莫名奇妙的错误。还要保证安装之前要把依赖库安装好。</p>
 ]]></content>
     
