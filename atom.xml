@@ -5,17 +5,118 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://blog.seoui.com/"/>
-  <updated>2017-09-05T11:26:02.419Z</updated>
+  <updated>2017-09-17T10:50:48.757Z</updated>
   <id>http://blog.seoui.com/</id>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>常用搜索引擎技巧</title>
+    <link href="http://blog.seoui.com/2017/09/17/searcheng/"/>
+    <id>http://blog.seoui.com/2017/09/17/searcheng/</id>
+    <published>2017-09-16T16:00:00.000Z</published>
+    <updated>2017-09-17T10:50:48.757Z</updated>
+    
+    <content type="html"><![CDATA[<p>在这个互联网资源繁多的情况下，想在网上找点东西，第一时刻想到的就是google一下、百度一下，<br>但是从海量数据里更精准的找到你想要的内容的确需要一点小技巧。</p>
+<h5 id="双引号搜索"><a href="#双引号搜索" class="headerlink" title="双引号搜索"></a>双引号搜索</h5><p>  带了双引号的搜索都是精准搜索 简单理解就是不分词。</p>
+<p>  如：”笑松小站”  结果会搜索出包含搜索关键词的网页</p>
+<h5 id="混合查询"><a href="#混合查询" class="headerlink" title="+ - 混合查询"></a>+ - 混合查询</h5><p>  有点类似于条件判断   <em>注意一下符号前必须要带1个空格</em><br>  如: <code>百度 -一下</code>  结果会包含<code>百度</code>且不包含<code>一下</code>数据。<br>        <code>百度 +一下</code> 结果会包含<code>百度</code>且包含<code>一下</code>数据。  </p>
+<h5 id="书名搜索"><a href="#书名搜索" class="headerlink" title="书名搜索"></a>书名搜索</h5><p>   使用《》括起来的关键字不会被分词 <em>在百度有效</em><br>   如:<code>《中国共产党纪律处分条例》</code></p>
+<h5 id="site-搜索"><a href="#site-搜索" class="headerlink" title="site 搜索"></a>site 搜索</h5><p>   指定搜索某个站点的网页<br>   如:<code>site:movie.douban.com 加勒比海盗</code>     指定搜索豆瓣电影 关键字为 加勒比海盗</p>
+<h5 id="fileType-文件类型搜索"><a href="#fileType-文件类型搜索" class="headerlink" title="fileType 文件类型搜索"></a>fileType 文件类型搜索</h5><p>   指定搜索某种文件类型<br>   如:<code>filetype:ppt docker</code>  搜索结果为包含docker的ppt类型的文档。</p>
+<h5 id="Intitle-指定标题搜索"><a href="#Intitle-指定标题搜索" class="headerlink" title="Intitle 指定标题搜索"></a>Intitle 指定标题搜索</h5><p>  指定标题搜索包含某个关键字 与之同类型的还有<code>intext</code>。<br>  如:<code>intitle:战狼</code> 、<code>intext:战狼</code></p>
+<h5 id="inurl-包含URL搜索"><a href="#inurl-包含URL搜索" class="headerlink" title="inurl 包含URL搜索"></a>inurl 包含URL搜索</h5><p>   在指定URL中搜索指定关键词  感觉和site有点类似。<br>   如:<code>inurl:seoui.com 测试</code>  </p>
+<p>  目前个人用的比较多的就是这几个 另外在Google上发现还有许多的高级搜索有待挖掘。<br>   另外前段时间在网上找到了一个表格 在这里记录一下。</p>
+<table>
+<thead>
+<tr>
+<th>符号</th>
+<th style="text-align:center">描述</th>
+<th style="text-align:right">用法</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>allinanchor</td>
+<td style="text-align:center">限制搜索的词语是网页中链接内包含的关键词（可使用多个关键词）</td>
+<td style="text-align:right">allinanchor:keyword1 keyword2</td>
+</tr>
+<tr>
+<td>allinanchor</td>
+<td style="text-align:center">限制搜索的词语是网页中链接内包含的关键词（可使用多个关键词）</td>
+<td style="text-align:right">allinanchor:keyword1 keyword2</td>
+</tr>
+<tr>
+<td>allintext</td>
+<td style="text-align:center">限制搜索的词语是网页内文包含的关键词（可使用多个关键词）</td>
+<td style="text-align:right">allintext:keyword1 keyword2</td>
+</tr>
+<tr>
+<td>allintitle</td>
+<td style="text-align:center">限制搜索的词语是网页标题中包含的关键词（可使用多个关键词）</td>
+<td style="text-align:right">allintitle:keyword1 keyword2</td>
+</tr>
+<tr>
+<td>allinurl</td>
+<td style="text-align:center">限制搜索的词语是网页网址中包含的关键词（可使用多个关键词）</td>
+<td style="text-align:right">inurl:keyword1 keyword2</td>
+</tr>
+<tr>
+<td>filetype</td>
+<td style="text-align:center">限制所搜索的文件一个特定的格式</td>
+<td style="text-align:right">filetype:extension</td>
+</tr>
+<tr>
+<td>inanchor</td>
+<td style="text-align:center">限制搜索的词语是网页中链接内包含的关键词</td>
+<td style="text-align:right">inanchor:keyword</td>
+</tr>
+<tr>
+<td>intext</td>
+<td style="text-align:center">限制搜索的词语是网页内文包含的关键词</td>
+<td style="text-align:right">intext:keyword</td>
+</tr>
+<tr>
+<td>intitle</td>
+<td style="text-align:center">限制搜索的词语是网页标题中包含的关键词</td>
+<td style="text-align:right">intitle:keyword</td>
+</tr>
+<tr>
+<td>inurl</td>
+<td style="text-align:center">限制搜索的网页的地址</td>
+<td style="text-align:right">inurl:keyword</td>
+</tr>
+<tr>
+<td>site</td>
+<td style="text-align:center">限制所进行的搜索在指定的域名或网站内</td>
+<td style="text-align:right">site:domain</td>
+</tr>
+</tbody>
+</table>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;在这个互联网资源繁多的情况下，想在网上找点东西，第一时刻想到的就是google一下、百度一下，&lt;br&gt;但是从海量数据里更精准的找到你想要的内容的确需要一点小技巧。&lt;/p&gt;
+&lt;h5 id=&quot;双引号搜索&quot;&gt;&lt;a href=&quot;#双引号搜索&quot; class=&quot;headerlink&quot; 
+    
+    </summary>
+    
+      <category term="技术" scheme="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/"/>
+    
+      <category term="搜索引擎" scheme="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/%E6%90%9C%E7%B4%A2%E5%BC%95%E6%93%8E/"/>
+    
+    
+      <category term="搜索引擎" scheme="http://blog.seoui.com/tags/%E6%90%9C%E7%B4%A2%E5%BC%95%E6%93%8E/"/>
+    
+  </entry>
   
   <entry>
     <title>断点续传下载原理实现</title>
     <link href="http://blog.seoui.com/2017/09/05/breakpoint-download/"/>
     <id>http://blog.seoui.com/2017/09/05/breakpoint-download/</id>
     <published>2017-09-04T16:00:00.000Z</published>
-    <updated>2017-09-05T11:26:02.419Z</updated>
+    <updated>2017-09-17T07:15:35.511Z</updated>
     
     <content type="html"><![CDATA[<h4 id="需求背景"><a href="#需求背景" class="headerlink" title="需求背景"></a>需求背景</h4><ul>
 <li>动态创建的文件下载的时候希望浏览器显示下载进度</li>
@@ -74,7 +175,7 @@
     <link href="http://blog.seoui.com/2017/08/19/delayqueue/"/>
     <id>http://blog.seoui.com/2017/08/19/delayqueue/</id>
     <published>2017-08-18T16:00:00.000Z</published>
-    <updated>2017-09-05T10:46:53.858Z</updated>
+    <updated>2017-08-22T13:30:31.903Z</updated>
     
     <content type="html"><![CDATA[<h4 id="需求背景"><a href="#需求背景" class="headerlink" title="需求背景"></a>需求背景</h4><ul>
 <li>用户下订单成功之后隔20分钟给用户发送上门服务通知短信</li>
@@ -168,7 +269,7 @@
     <link href="http://blog.seoui.com/2017/07/02/mysql5_7install/"/>
     <id>http://blog.seoui.com/2017/07/02/mysql5_7install/</id>
     <published>2017-07-01T16:00:00.000Z</published>
-    <updated>2017-07-08T06:07:32.077Z</updated>
+    <updated>2017-07-02T07:11:02.696Z</updated>
     
     <content type="html"><![CDATA[<h4 id="下载"><a href="#下载" class="headerlink" title="下载"></a>下载</h4><p> 下载mysql5.7地址:<code>wget https://cdn.mysql.com//Downloads/MySQL-5.7/mysql-5.7.18-1.el6.x86_64.rpm-bundle.tar</code></p>
 <p> 另外分享一个百度云盘的下载链接 <code>http://pan.baidu.com/s/1qYAuYBi</code></p>
@@ -283,7 +384,7 @@
     <link href="http://blog.seoui.com/2017/06/18/objenesis/"/>
     <id>http://blog.seoui.com/2017/06/18/objenesis/</id>
     <published>2017-06-17T16:00:00.000Z</published>
-    <updated>2017-07-08T06:07:32.074Z</updated>
+    <updated>2017-06-19T13:07:40.043Z</updated>
     
     <content type="html"><![CDATA[<p><code>Objenesis</code>是一个用于实例化java类的小型Java库。</p>
 <p> 主要对于用户推荐使用以下3个API</p>
@@ -347,7 +448,7 @@ System.out.println(<span class="string">"example4:"</span>+example4+<span class=
     <link href="http://blog.seoui.com/2017/06/03/htmlunitstringtopage/"/>
     <id>http://blog.seoui.com/2017/06/03/htmlunitstringtopage/</id>
     <published>2017-06-02T16:00:00.000Z</published>
-    <updated>2017-07-08T06:07:32.071Z</updated>
+    <updated>2017-06-03T15:48:17.409Z</updated>
     
     <content type="html"><![CDATA[<p> 在<code>htmlunit</code>中可以通过URL轻松获取一个HtmlPage,但是却没有提供根据Html字符串创建一个HtmlPage。</p>
 <p> 通过Url获取一个page</p>
@@ -381,7 +482,7 @@ System.out.println(<span class="string">"example4:"</span>+example4+<span class=
     <link href="http://blog.seoui.com/2017/05/08/jenvmanager/"/>
     <id>http://blog.seoui.com/2017/05/08/jenvmanager/</id>
     <published>2017-05-07T16:00:00.000Z</published>
-    <updated>2017-07-08T06:07:32.068Z</updated>
+    <updated>2017-06-03T15:09:01.637Z</updated>
     
     <content type="html"><![CDATA[<p> <code>jenv</code>是一个并行版本管理的java开发包，注意是<code>国内的</code>，并不是<a href="https://github.com/gcuisinier/jenv" target="_blank" rel="external">https://github.com/gcuisinier/jenv</a>可以安装在<code>Linux</code> <code>Mac</code> <code>Windows</code>操作系统上，工具包为我们提供了常用的命令行接口 用户安装、删除、搜索、切换软件版本。</p>
 <h4 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h4> <figure class="highlight shell"><table><tr><td class="code"><pre><div class="line">curl -L -s get.jenv.io | bash</div></pre></td></tr></table></figure>
@@ -424,7 +525,7 @@ System.out.println(<span class="string">"example4:"</span>+example4+<span class=
     <link href="http://blog.seoui.com/2017/04/27/xpathstudy/"/>
     <id>http://blog.seoui.com/2017/04/27/xpathstudy/</id>
     <published>2017-04-26T16:00:00.000Z</published>
-    <updated>2017-07-08T06:07:32.065Z</updated>
+    <updated>2017-06-03T15:09:01.637Z</updated>
     
     <content type="html"><![CDATA[<p> <code>XPath</code>在选取<code>XML</code>文档中有着非常方便的功能，下面介绍一些常用的表达式语法。</p>
 <p> 假设如下XML<br> <figure class="highlight html"><table><tr><td class="code"><pre><div class="line">&lt;?xml version="1.0" encoding="ISO-8859-1"?&gt;</div><div class="line"><span class="tag">&lt;<span class="name">bookstore</span>&gt;</span></div><div class="line">	<span class="tag">&lt;<span class="name">book</span>&gt;</span></div><div class="line">	  <span class="tag">&lt;<span class="name">title</span> <span class="attr">lang</span>=<span class="string">"en"</span>&gt;</span>测试<span class="tag">&lt;/<span class="name">title</span>&gt;</span></div><div class="line">	  <span class="tag">&lt;<span class="name">author</span> <span class="attr">sex</span>=<span class="string">"女"</span>&gt;</span>笑笑笑<span class="tag">&lt;/<span class="name">author</span>&gt;</span> </div><div class="line">	  <span class="tag">&lt;<span class="name">year</span>&gt;</span>2017<span class="tag">&lt;/<span class="name">year</span>&gt;</span></div><div class="line">	  <span class="tag">&lt;<span class="name">price</span>&gt;</span>888<span class="tag">&lt;/<span class="name">price</span>&gt;</span></div><div class="line">	<span class="tag">&lt;/<span class="name">book</span>&gt;</span></div><div class="line">	<span class="tag">&lt;<span class="name">book</span>&gt;</span></div><div class="line">	  <span class="tag">&lt;<span class="name">title</span> <span class="attr">lang</span>=<span class="string">"en"</span>&gt;</span>测试1<span class="tag">&lt;/<span class="name">title</span>&gt;</span></div><div class="line">	  <span class="tag">&lt;<span class="name">author</span> <span class="attr">sex</span>=<span class="string">"女"</span> <span class="attr">age</span>=<span class="string">"18"</span>&gt;</span>笑笑笑1<span class="tag">&lt;/<span class="name">author</span>&gt;</span> </div><div class="line">	  <span class="tag">&lt;<span class="name">year</span>&gt;</span>2018<span class="tag">&lt;/<span class="name">year</span>&gt;</span></div><div class="line">	  <span class="tag">&lt;<span class="name">price</span>&gt;</span>889<span class="tag">&lt;/<span class="name">price</span>&gt;</span></div><div class="line">	<span class="tag">&lt;/<span class="name">book</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">bookstore</span>&gt;</span></div></pre></td></tr></table></figure></p>
@@ -522,7 +623,7 @@ System.out.println(<span class="string">"example4:"</span>+example4+<span class=
     <link href="http://blog.seoui.com/2017/04/18/mesosinstall/"/>
     <id>http://blog.seoui.com/2017/04/18/mesosinstall/</id>
     <published>2017-04-17T16:00:00.000Z</published>
-    <updated>2017-07-08T06:07:32.062Z</updated>
+    <updated>2017-06-03T15:09:01.637Z</updated>
     
     <content type="html"><![CDATA[<p>  最近有一个实时的采集系统需求，目前的实现方式是用分布式定时任务来处理这一采集请求,希望有更多资源能够为任务分担压力，支持动态添加或者移除任务资源 从而达到提高采集效率，所以准备采用<code>Mesos</code>来做资源调度的工作。</p>
 <p>  因为自己硬件设备不够好的原因导致安装Mesos的时候出现了一个未知的问题 记录一下，以下是参考官方Getting Started的示例。</p>
@@ -557,7 +658,7 @@ System.out.println(<span class="string">"example4:"</span>+example4+<span class=
     <link href="http://blog.seoui.com/2017/03/06/2017-target/"/>
     <id>http://blog.seoui.com/2017/03/06/2017-target/</id>
     <published>2017-03-05T16:00:00.000Z</published>
-    <updated>2017-07-08T06:07:32.059Z</updated>
+    <updated>2017-06-03T15:09:01.636Z</updated>
     
     <content type="html"><![CDATA[<p>  2017年已经过了差不多六分之一 为了给自己制定了一个技术计划(算是小目标吧)，所以在这里引导一下，<br>  当迷茫的时候可以look look!!!</p>
 <h3 id="后端"><a href="#后端" class="headerlink" title="后端"></a>后端</h3><ul>
@@ -610,7 +711,7 @@ System.out.println(<span class="string">"example4:"</span>+example4+<span class=
     <link href="http://blog.seoui.com/2017/01/11/mongodb-rs/"/>
     <id>http://blog.seoui.com/2017/01/11/mongodb-rs/</id>
     <published>2017-01-10T16:00:00.000Z</published>
-    <updated>2017-07-08T06:07:32.057Z</updated>
+    <updated>2017-06-03T15:09:01.636Z</updated>
     
     <content type="html"><![CDATA[<p> MongoDB的复制集是一个主从复制模式 又具有故障转移的集群，任何成员都有可能是<code>master</code>，<br> 当master挂掉用会很快的重新选举一个节点来充当master。</p>
 <p> 复制集中的组成主要成员</p>
@@ -706,7 +807,7 @@ mydbCenter:SECONDARY&gt;
     <link href="http://blog.seoui.com/2017/01/09/jdk7-forkjoin/"/>
     <id>http://blog.seoui.com/2017/01/09/jdk7-forkjoin/</id>
     <published>2017-01-08T16:00:00.000Z</published>
-    <updated>2017-07-08T06:07:32.054Z</updated>
+    <updated>2017-06-03T15:09:01.636Z</updated>
     
     <content type="html"><![CDATA[<p> 首先看一下ForkJoin相关的几个API </p>
 <ul>
@@ -754,7 +855,7 @@ mydbCenter:SECONDARY&gt;
     <link href="http://blog.seoui.com/2017/01/08/mongodbCommonoper/"/>
     <id>http://blog.seoui.com/2017/01/08/mongodbCommonoper/</id>
     <published>2017-01-07T16:00:00.000Z</published>
-    <updated>2017-07-08T06:07:32.051Z</updated>
+    <updated>2017-06-03T15:09:01.636Z</updated>
     
     <content type="html"><![CDATA[<p> 以下是在3.4.1版本中 其他版本可能略有区别,mongo默认登录时在test数据中。</p>
 <h3 id="数据库相关操作"><a href="#数据库相关操作" class="headerlink" title="数据库相关操作"></a>数据库相关操作</h3><p>登录到数据库</p>
@@ -859,7 +960,7 @@ mydbCenter:SECONDARY&gt;
     <link href="http://blog.seoui.com/2016/11/24/nginxMakeInstall/"/>
     <id>http://blog.seoui.com/2016/11/24/nginxMakeInstall/</id>
     <published>2016-11-23T16:00:00.000Z</published>
-    <updated>2017-07-08T06:07:32.048Z</updated>
+    <updated>2017-06-03T15:09:01.636Z</updated>
     
     <content type="html"><![CDATA[<p>nginx是比较常用的高性能HTTP服务器和反向代理服务器，许多用户更是把做反向代理使用，<br>常言道：好记性不如烂笔头 时间久了总是有些遗忘，本文记录一下源码编码安装以及常用模块的使用介绍。<br><a id="more"></a></p>
 <h3 id="编译安装"><a href="#编译安装" class="headerlink" title="编译安装"></a>编译安装</h3><pre><code class="shell">tar -zxf nginx-1.7.3.tar.gz
@@ -923,7 +1024,7 @@ mkdir -pv /var/tmp/nginx/{proxy,client,fcgi,uwsgi,scgi}
     <link href="http://blog.seoui.com/2016/10/29/rabbitmqInstall/"/>
     <id>http://blog.seoui.com/2016/10/29/rabbitmqInstall/</id>
     <published>2016-10-28T16:00:00.000Z</published>
-    <updated>2017-07-08T06:07:32.045Z</updated>
+    <updated>2017-06-03T15:09:01.635Z</updated>
     
     <content type="html"><![CDATA[<h3 id="安装rabbitmq"><a href="#安装rabbitmq" class="headerlink" title="安装rabbitmq"></a>安装rabbitmq</h3><p>采用源码安装方式,首先去官网拉取源代码并解压,由于rabbitmq是采用erlang编写的 所以得先安装erlang环境,这里假设erlang环境已经安装好了。</p>
 <pre><code class="shell">wget http://www.rabbitmq.com/releases/rabbitmq-server/v3.4.0/rabbitmq-server-3.4.0.tar.gz
@@ -990,7 +1091,7 @@ tar -zxf rabbitmq-server-3.4.0.tar.gz
     <link href="http://blog.seoui.com/2016/10/16/html-emmet/"/>
     <id>http://blog.seoui.com/2016/10/16/html-emmet/</id>
     <published>2016-10-15T16:00:00.000Z</published>
-    <updated>2017-07-08T06:07:32.043Z</updated>
+    <updated>2017-06-03T15:09:01.635Z</updated>
     
     <content type="html"><![CDATA[<p> Emmet是一个Web开发人员的工具包，可以大大提高你的HTML和CSS的工作流,这是在<a href="http://docs.emmet.io/" title="Emmet" target="_blank" rel="external">emmet官方文档</a>中看到的第一句话,当然这句话也简单的概括了它拥有的魅力。</p>
 <p> 下面是在WebStorm中作一些应用。<br><a id="more"></a></p>
@@ -1045,7 +1146,7 @@ tar -zxf rabbitmq-server-3.4.0.tar.gz
     <link href="http://blog.seoui.com/2016/07/07/supervisor/"/>
     <id>http://blog.seoui.com/2016/07/07/supervisor/</id>
     <published>2016-07-06T16:00:00.000Z</published>
-    <updated>2017-07-08T06:07:32.040Z</updated>
+    <updated>2017-06-03T15:09:01.634Z</updated>
     
     <content type="html"><![CDATA[<p> supervisor是一个制作守护进程的工具,用户可以在UNIX系统中监控、管理进程。常用于管理与某个用户或项目相关的进程。</p>
 <h3 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h3><p> 采用源码安装的方式,切换到3.1.3这个版本安装。</p>
@@ -1095,7 +1196,7 @@ tar -zxf rabbitmq-server-3.4.0.tar.gz
     <link href="http://blog.seoui.com/2016/07/04/gzip-uzip/"/>
     <id>http://blog.seoui.com/2016/07/04/gzip-uzip/</id>
     <published>2016-07-03T16:00:00.000Z</published>
-    <updated>2017-07-08T06:07:32.037Z</updated>
+    <updated>2017-06-03T15:09:01.634Z</updated>
     
     <content type="html"><![CDATA[<p> 文件的压缩/解压无论是在哪个操作系统上都比较常用 简答在这里演示一下。</p>
 <h4 id="zip"><a href="#zip" class="headerlink" title="zip"></a>zip</h4><p> zip会把文件打包为.zip格式的文件包，比如 abc.zip</p>
@@ -1135,7 +1236,7 @@ tar -zxf rabbitmq-server-3.4.0.tar.gz
     <link href="http://blog.seoui.com/2016/06/18/docker.install/"/>
     <id>http://blog.seoui.com/2016/06/18/docker.install/</id>
     <published>2016-06-17T16:00:00.000Z</published>
-    <updated>2017-07-08T06:07:32.034Z</updated>
+    <updated>2017-06-03T15:09:01.634Z</updated>
     
     <content type="html"><![CDATA[<p>接触docker容器有这么几周的时间了,顺便在这里记录一下这段岁月,无特殊说明<br>操作系统均为 centos7</p>
 <p>1、首先安装docker</p>
@@ -1175,7 +1276,7 @@ tar -zxf rabbitmq-server-3.4.0.tar.gz
     <link href="http://blog.seoui.com/2016/06/17/ubuntu.networksetting/"/>
     <id>http://blog.seoui.com/2016/06/17/ubuntu.networksetting/</id>
     <published>2016-06-16T16:00:00.000Z</published>
-    <updated>2017-07-08T06:07:32.031Z</updated>
+    <updated>2017-06-03T15:09:01.634Z</updated>
     
     <content type="html"><![CDATA[<p> 用惯了centos 偶尔装了一次ubuntu版本为14.04来玩一玩发现设置静态网络(static)后不能上外网，在这里记录一下如何设置的。</p>
 <p> 1、首页静态IP参数 编辑文件 vim /etc/network/interfaces</p>
@@ -1203,45 +1304,6 @@ tar -zxf rabbitmq-server-3.4.0.tar.gz
       <category term="linux" scheme="http://blog.seoui.com/tags/linux/"/>
     
       <category term="ubuntu" scheme="http://blog.seoui.com/tags/ubuntu/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>form表单默认回车事件的问题</title>
-    <link href="http://blog.seoui.com/2016/05/24/html-form-enterevent/"/>
-    <id>http://blog.seoui.com/2016/05/24/html-form-enterevent/</id>
-    <published>2016-05-23T16:00:00.000Z</published>
-    <updated>2017-07-08T06:07:32.028Z</updated>
-    
-    <content type="html"><![CDATA[<p>经常写form表单以前没有怎么注意 无意中注意到一些元素组成的默认事件。</p>
-<p>在form表单中 目前发现具备以下情况会默认支持回车事件提交表单</p>
-<ol>
-<li>所有的表单元素中只有1个text 无论提交按钮是否为type=submit</li>
-<li><p>表单中的提交按钮type=submit</p>
-<figure class="highlight html"><table><tr><td class="code"><pre><div class="line"></div><div class="line">//此代码默认就具有了回车提交表单的事件  需要格外小心</div><div class="line"> <span class="tag">&lt;<span class="name">form</span>&gt;</span></div><div class="line">       <span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">"text"</span> <span class="attr">value</span>=<span class="string">""</span> <span class="attr">name</span>=<span class="string">"name"</span>&gt;</span></div><div class="line">       <span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">"button"</span> <span class="attr">value</span>=<span class="string">"button"</span>/&gt;</span></div><div class="line">   <span class="tag">&lt;/<span class="name">form</span>&gt;</span></div></pre></td></tr></table></figure>
-</li>
-</ol>
-<p>如果我们的表单中仅有一个text的话怎么阻止默认回车事件呢?</p>
-<p>可以在表单中多加一个隐藏的text</p>
- <figure class="highlight html"><table><tr><td class="code"><pre><div class="line"></div><div class="line"><span class="tag">&lt;<span class="name">form</span>&gt;</span></div><div class="line">      <span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">"text"</span> <span class="attr">value</span>=<span class="string">""</span> <span class="attr">name</span>=<span class="string">"name"</span>&gt;</span></div><div class="line">      <span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">"text"</span> <span class="attr">style</span>=<span class="string">"display: none;"</span>&gt;</span></div><div class="line">      <span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">"button"</span> <span class="attr">value</span>=<span class="string">"button"</span>/&gt;</span></div><div class="line">  <span class="tag">&lt;/<span class="name">form</span>&gt;</span></div></pre></td></tr></table></figure>
-<p>示例demo 具有默认事件：<a href="http://peachyy.github.io/demos/htmlformenterevent/index.html" title="http://peachyy.github.io/demos/" target="_blank" rel="external">http://peachyy.github.io/demos/htmlformenterevent/index.html</a></p>
-<p>示例demo 不具有默认事件：<a href="http://peachyy.github.io/demos/htmlformenterevent/index2.html" title="http://peachyy.github.io/demos/" target="_blank" rel="external">http://peachyy.github.io/demos/htmlformenterevent/index.html</a></p>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;p&gt;经常写form表单以前没有怎么注意 无意中注意到一些元素组成的默认事件。&lt;/p&gt;
-&lt;p&gt;在form表单中 目前发现具备以下情况会默认支持回车事件提交表单&lt;/p&gt;
-&lt;ol&gt;
-&lt;li&gt;所有的表单元素中只有1个text 无论提交按钮是否为type=submit&lt;/li&gt;
-&lt;li&gt;
-    
-    </summary>
-    
-      <category term="技术" scheme="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/"/>
-    
-    
-      <category term="from" scheme="http://blog.seoui.com/tags/from/"/>
     
   </entry>
   
