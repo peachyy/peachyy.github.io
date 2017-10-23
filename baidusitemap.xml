@@ -4,6 +4,26 @@
 
     
   <url>
+    <loc>http://blog.seoui.com/2017/10/23/nexus3-uploadfile/</loc>
+    <lastmod>2017-10-23T05:33:08.000Z</lastmod>
+    <data>
+        <display>
+        <title>nexus3 添加第三方本地文件jar到仓库</title>
+        <pubTime>2017-10-22T16:00:00.000Z</pubTime>
+        
+        <tag>nexus3</tag>
+         
+         
+           
+             
+              <breadCrumb title="技术" url="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://blog.seoui.com/2017/10/11/nginxpass/</loc>
     <lastmod>2017-10-11T03:15:37.019Z</lastmod>
     <data>
@@ -73,26 +93,6 @@
     
     
   <url>
-    <loc>http://blog.seoui.com/2015/07/21/browerNotification/</loc>
-    <lastmod>2017-09-05T10:46:53.858Z</lastmod>
-    <data>
-        <display>
-        <title>浏览器对Notification通知的支持</title>
-        <pubTime>2015-07-20T16:00:00.000Z</pubTime>
-        
-        <tag>javascript</tag>
-         
-         
-           
-             
-              <breadCrumb title="技术" url="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
     <loc>http://blog.seoui.com/2017/08/19/delayqueue/</loc>
     <lastmod>2017-09-05T10:46:53.858Z</lastmod>
     <data>
@@ -116,6 +116,26 @@
           
              
               <breadCrumb title="延迟消息" url="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/redis/%E5%BB%B6%E8%BF%9F%E6%B6%88%E6%81%AF/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://blog.seoui.com/2015/07/21/browerNotification/</loc>
+    <lastmod>2017-09-05T10:46:53.858Z</lastmod>
+    <data>
+        <display>
+        <title>浏览器对Notification通知的支持</title>
+        <pubTime>2015-07-20T16:00:00.000Z</pubTime>
+        
+        <tag>javascript</tag>
+         
+         
+           
+             
+              <breadCrumb title="技术" url="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/"/>
           
         </display>
     </data>

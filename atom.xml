@@ -5,10 +5,47 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://blog.seoui.com/"/>
-  <updated>2017-10-11T03:15:37.019Z</updated>
+  <updated>2017-10-23T05:33:08.000Z</updated>
   <id>http://blog.seoui.com/</id>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>nexus3 添加第三方本地文件jar到仓库</title>
+    <link href="http://blog.seoui.com/2017/10/23/nexus3-uploadfile/"/>
+    <id>http://blog.seoui.com/2017/10/23/nexus3-uploadfile/</id>
+    <published>2017-10-22T16:00:00.000Z</published>
+    <updated>2017-10-23T05:33:08.000Z</updated>
+    
+    <content type="html"><![CDATA[<p>因为nexus3和nexus2手动上传第三方jar有点区别 故记录一下。</p>
+<p>如上传京东 open-api-sdk-2.0.jar </p>
+<p>首先创建一个目录 方便执行上传的时候url参数 也可以不创建</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><div class="line">mkdir jd &amp;&amp; <span class="built_in">cd</span> jd</div></pre></td></tr></table></figure>
+<p> 简单的创建一个POM文件 vi open-api-sdk-2.0.pom 和把第三方jar文件放在此目录下</p>
+ <figure class="highlight xml"><table><tr><td class="code"><pre><div class="line"> <span class="tag">&lt;<span class="name">project</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">modelVersion</span>&gt;</span>4.0.0<span class="tag">&lt;/<span class="name">modelVersion</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>com.jd<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>open-api-sdk<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">version</span>&gt;</span>2.0<span class="tag">&lt;/<span class="name">version</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">project</span>&gt;</span></div></pre></td></tr></table></figure>
+<p> 上传XML</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><div class="line">curl -v -u admin:admin123 --upload-file pom.xml http://localhost:8081/nexus/repository/maven-releases/com/jd/open-api-sdk/2.0/open-api-sdk-2.0.pom</div></pre></td></tr></table></figure>
+<p>上传JAR文件</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><div class="line">curl -v -u admin:admin123 --upload-file open-api-sdk-2.0.jar  http://localhost:8081/nexus/repository/maven-releases/open-api-sdk/2.0/open-api-sdk-2.0.jar</div></pre></td></tr></table></figure>
+<p>都上传成功后 在项目中d的pom.xml就可以使用</p>
+<figure class="highlight xml"><table><tr><td class="code"><pre><div class="line"></div><div class="line"> <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></div><div class="line">   <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>com.jd<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></div><div class="line">   <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>open-api-sdk<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span> </div><div class="line">   <span class="tag">&lt;<span class="name">version</span>&gt;</span>2.0<span class="tag">&lt;/<span class="name">version</span>&gt;</span> </div><div class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></div></pre></td></tr></table></figure>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;因为nexus3和nexus2手动上传第三方jar有点区别 故记录一下。&lt;/p&gt;
+&lt;p&gt;如上传京东 open-api-sdk-2.0.jar &lt;/p&gt;
+&lt;p&gt;首先创建一个目录 方便执行上传的时候url参数 也可以不创建&lt;/p&gt;
+&lt;figure class=&quot;highligh
+    
+    </summary>
+    
+      <category term="技术" scheme="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/"/>
+    
+    
+      <category term="nexus3" scheme="http://blog.seoui.com/tags/nexus3/"/>
+    
+  </entry>
   
   <entry>
     <title>nginx配置proxy_pass URL末尾加与不加/(斜线)的区别</title>
@@ -1256,46 +1293,6 @@ tar -zxf rabbitmq-server-3.4.0.tar.gz
       <category term="unzip" scheme="http://blog.seoui.com/tags/unzip/"/>
     
       <category term="gunzip" scheme="http://blog.seoui.com/tags/gunzip/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Hello Docker</title>
-    <link href="http://blog.seoui.com/2016/06/18/docker.install/"/>
-    <id>http://blog.seoui.com/2016/06/18/docker.install/</id>
-    <published>2016-06-17T16:00:00.000Z</published>
-    <updated>2017-07-08T06:07:32.034Z</updated>
-    
-    <content type="html"><![CDATA[<p>接触docker容器有这么几周的时间了,顺便在这里记录一下这段岁月,无特殊说明<br>操作系统均为 centos7</p>
-<p>1、首先安装docker</p>
-<p> 参考 <a href="https://docs.docker.com/linux/step_one/" title="https://docs.docker.com/linux/step_one/" target="_blank" rel="external">https://docs.docker.com/linux/step_one/</a></p>
-<p> 检查有没有安装curl 如果没有安装可以使用 apt-get install curl  安装curl,已经安装了则忽略。 </p>
-<pre><code>which curl
-</code></pre><p> 安装最新的版本Docker 执行命令 自动根据自身环境安装</p>
- <figure class="highlight html"><table><tr><td class="code"><pre><div class="line"></div><div class="line">curl -fsSL https://get.docker.com/ | sh</div></pre></td></tr></table></figure>
-<p> 验证安装是否成功</p>
-  <figure class="highlight html"><table><tr><td class="code"><pre><div class="line">   docker version</div><div class="line">  </div><div class="line">Client:</div><div class="line"> Version:      1.11.2</div><div class="line"> API version:  1.23</div><div class="line"> Go version:   go1.5.4</div><div class="line"> Git commit:   b9f10c9</div><div class="line"> Built:        Wed Jun  1 21:47:50 2016</div><div class="line"> OS/Arch:      linux/amd64</div><div class="line"></div><div class="line">Server:</div><div class="line"> Version:      1.11.2</div><div class="line"> API version:  1.23</div><div class="line"> Go version:   go1.5.4</div><div class="line"> Git commit:   b9f10c9</div><div class="line"> Built:        Wed Jun  1 21:47:50 2016</div><div class="line"> OS/Arch:      linux/amd64</div></pre></td></tr></table></figure>
-<p> 输出docker版本号信息 则表示成功</p>
-<p>2、运行第一个Docker容器 busybox</p>
- <figure class="highlight html"><table><tr><td class="code"><pre><div class="line">  </div><div class="line">docker run -it --rm busybox</div></pre></td></tr></table></figure>
-<p>  busybox是一个很小的linux系统 只有1M的样子吧,执行完这个命令后 docker会首先检查本地镜像有没有叫busybox,如果没有会去中央仓库拉取（pull）,拉取完成后运行(run) 这个容器,参数-it 表示命令行交互 –rm表示运行结束后立即删除这个容器。</p>
-<p> 这里有2个概念 pull拉取出来的叫做镜像(image) run运行的叫做容器(container),一个image可以有多个container,镜像有自己的镜像ID ,容器也有自己的容器ID,这里可以描述得不太好，大概就是意思。</p>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;p&gt;接触docker容器有这么几周的时间了,顺便在这里记录一下这段岁月,无特殊说明&lt;br&gt;操作系统均为 centos7&lt;/p&gt;
-&lt;p&gt;1、首先安装docker&lt;/p&gt;
-&lt;p&gt; 参考 &lt;a href=&quot;https://docs.docker.com/linux/step_one/
-    
-    </summary>
-    
-      <category term="技术" scheme="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/"/>
-    
-      <category term="docker" scheme="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/docker/"/>
-    
-    
-      <category term="docker" scheme="http://blog.seoui.com/tags/docker/"/>
     
   </entry>
   
