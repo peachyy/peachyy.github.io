@@ -5,10 +5,57 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://blog.seoui.com/"/>
-  <updated>2017-10-23T05:33:08.000Z</updated>
+  <updated>2017-10-30T05:59:45.659Z</updated>
   <id>http://blog.seoui.com/</id>
   
+  <author>
+    <name>peachyy</name>
+    
+  </author>
+  
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>NFS 安装与配置</title>
+    <link href="http://blog.seoui.com/2017/10/30/nfs-config/"/>
+    <id>http://blog.seoui.com/2017/10/30/nfs-config/</id>
+    <published>2017-10-29T16:00:00.000Z</published>
+    <updated>2017-10-30T05:59:45.659Z</updated>
+    
+    <content type="html"><![CDATA[<p> <code>NFS</code>通常用于网络中的多台计算机实现共享存储。</p>
+<p> 由于测试环境没有购买阿里云的NFS，所以自己搭建一个NFS文件系统，实现一些比如上传图片，静态资源等同享功能。</p>
+<p> 下面的测试是在<code>CentOS release 6.8 (Final)</code>中进行的。其他的系统略有不同。</p>
+<p>  网络环境 ：<br>  nfs服务器IP: 192.168.18.183<br>  nfs客户端IP: 192.168.18.182</p>
+<h4 id="服务器安装"><a href="#服务器安装" class="headerlink" title="服务器安装"></a>服务器安装</h4><figure class="highlight bash"><table><tr><td class="code"><pre><div class="line">yum install nfs-utils rpcbind</div></pre></td></tr></table></figure>
+<h5 id="配置需要共享的目录"><a href="#配置需要共享的目录" class="headerlink" title="配置需要共享的目录"></a>配置需要共享的目录</h5><p>more /etc/exports</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><div class="line">/home/www       *(rw,async,no_root_squash,no_subtree_check)</div></pre></td></tr></table></figure>
+<p><em>关于配置文件<code>exports</code>的一些参数说明</em></p>
+<p>rw：read-write，可读写；<br>ro：read-only，只读；<br>sync：同步写入（文件同时写入硬盘和内存），适用在通信比较频繁且实时性比较高的场合<br>async：异步写入（文件先写入内存，稍候再写入硬盘），性能较好（速度快），适合超大或者超多文件的写入，但有数据丢失的风险，比如突然断电等情况；<br>root_squash（默认）：将来访的root用户映射为匿名用户或用户组；<br>no_root_squash：来访的root用户保持root帐号权限（可能会不安全）；<br>no_all_squash（默认）：访问用户先与本机用户匹配，匹配失败后再映射为匿名用户或用户组；<br>all_squash：将来访的所有用户映射为匿名用户或用户组；<br>secure（默认）：限制客户端只能从小于1024的tcp/ip端口连接服务器；<br>insecure：允许客户端从大于1024的tcp/ip端口连接服务器；<br>anonuid：匿名用户的UID值，通常是nobody或nfsnobody，可以在此处自行设定；<br>anongid：匿名用户的GID值；<br>no_subtree_check：如果NFS输出的是一个子目录，则无需检查其父目录的权限（可以提高效率）</p>
+<h5 id="启动nfs服务器"><a href="#启动nfs服务器" class="headerlink" title="启动nfs服务器"></a>启动nfs服务器</h5><figure class="highlight bash"><table><tr><td class="code"><pre><div class="line">service rpcbind start</div><div class="line"></div><div class="line">service nfs start</div></pre></td></tr></table></figure>
+<p>查看是否启动成功，能看到前面在<code>/etc/exports</code>文件中设置的共享目录 则可以认为启动成功了。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><div class="line">showmount -e localhost</div><div class="line"></div><div class="line">Export list <span class="keyword">for</span> localhost:</div><div class="line">/home/www *</div></pre></td></tr></table></figure>
+<h4 id="客户端安装"><a href="#客户端安装" class="headerlink" title="客户端安装"></a>客户端安装</h4><p>  客户端也是需要安装这两个软件 区别是安装好之后不需要启动。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><div class="line">yum install nfs-utils rpcbind</div></pre></td></tr></table></figure>
+<h5 id="挂载NFS目录"><a href="#挂载NFS目录" class="headerlink" title="挂载NFS目录"></a>挂载NFS目录</h5><p>挂载的时候需要注意的是 如果挂载的目录当前已经存在 挂载后默认会覆盖掉。</p>
+<pre><code class="bash">mount -t nfs 192.168.18.183:/home/www /home/www
+</code></pre>
+<p>这个时候就挂载成功了，尝试修改客户端<code>/home/www</code>的文件 会立即同步到服务端的<code>/home/www</code>下面。同时服务端更新了文件也会立即同步到客户端。<br>如果文件很大的话 会有一个网络延时，所以这个需要权衡  当然内网传输还是很快的。</p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt; &lt;code&gt;NFS&lt;/code&gt;通常用于网络中的多台计算机实现共享存储。&lt;/p&gt;
+&lt;p&gt; 由于测试环境没有购买阿里云的NFS，所以自己搭建一个NFS文件系统，实现一些比如上传图片，静态资源等同享功能。&lt;/p&gt;
+&lt;p&gt; 下面的测试是在&lt;code&gt;CentOS release
+    
+    </summary>
+    
+      <category term="技术" scheme="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/"/>
+    
+    
+      <category term="NFS" scheme="http://blog.seoui.com/tags/NFS/"/>
+    
+  </entry>
   
   <entry>
     <title>nexus3 添加第三方本地文件jar到仓库</title>
@@ -1253,46 +1300,6 @@ tar -zxf rabbitmq-server-3.4.0.tar.gz
       <category term="linux" scheme="http://blog.seoui.com/tags/linux/"/>
     
       <category term="supervisor" scheme="http://blog.seoui.com/tags/supervisor/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>gzip 和 zip在linux上的使用</title>
-    <link href="http://blog.seoui.com/2016/07/04/gzip-uzip/"/>
-    <id>http://blog.seoui.com/2016/07/04/gzip-uzip/</id>
-    <published>2016-07-03T16:00:00.000Z</published>
-    <updated>2017-07-08T06:07:32.037Z</updated>
-    
-    <content type="html"><![CDATA[<p> 文件的压缩/解压无论是在哪个操作系统上都比较常用 简答在这里演示一下。</p>
-<h4 id="zip"><a href="#zip" class="headerlink" title="zip"></a>zip</h4><p> zip会把文件打包为.zip格式的文件包，比如 abc.zip</p>
- <figure class="highlight powershell"><table><tr><td class="code"><pre><div class="line"></div><div class="line">zip abc.zip testabc.txt</div></pre></td></tr></table></figure>
-<p>  上面的shell会把testabc.txt压缩在当前目录下的abc.zip文件中 当然你也可以指定压缩到你指定的路径如  zip /opt/abc.zip testabc.txt</p>
- <figure class="highlight powershell"><table><tr><td class="code"><pre><div class="line"></div><div class="line">unzip abc.zip</div></pre></td></tr></table></figure>
-<p>  把abc.zip包解压到当前目录 如需指定解压到其他目录 需要指定-d 参数 如  unzip abc.zip -d /opt/abc</p>
-<h4 id="gzip"><a href="#gzip" class="headerlink" title="gzip"></a>gzip</h4><p>  从压缩后的压缩包文件格式上与zip命令不同的是gzip压缩后的文件格式为.gz </p>
- <figure class="highlight powershell"><table><tr><td class="code"><pre><div class="line">   </div><div class="line">//压缩为文件 abc.txt.gz 会删除原有的abc.txt文件</div><div class="line">gzip abc.txt </div><div class="line">   //解压abc.txt.gz 会删除原有的abc.txt.gz文件 </div><div class="line"></div><div class="line">   gunzip abc.txt.gz </div><div class="line">  </div><div class="line">  //如需要保留原来的压缩文件 需要加-c 参数 </div><div class="line">  // gzip -c abc.txt &gt; /root/abc.gz </div><div class="line">  // gunzip -c /abc.gz &gt; ./abc.txt</div></pre></td></tr></table></figure>
-<p> 补充一下怎么解压.xz格式的压缩包</p>
- <figure class="highlight powershell"><table><tr><td class="code"><pre><div class="line">tar xvJf  ***.tar.xz</div></pre></td></tr></table></figure>
-<p> 或<br> <figure class="highlight powershell"><table><tr><td class="code"><pre><div class="line">xz -d ***.tar.xz</div><div class="line"></div><div class="line">tar -xvf  ***.tar</div></pre></td></tr></table></figure></p>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;p&gt; 文件的压缩/解压无论是在哪个操作系统上都比较常用 简答在这里演示一下。&lt;/p&gt;
-&lt;h4 id=&quot;zip&quot;&gt;&lt;a href=&quot;#zip&quot; class=&quot;headerlink&quot; title=&quot;zip&quot;&gt;&lt;/a&gt;zip&lt;/h4&gt;&lt;p&gt; zip会把文件打包为.zip格式的文件包，
-    
-    </summary>
-    
-      <category term="技术" scheme="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/"/>
-    
-      <category term="linux" scheme="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/linux/"/>
-    
-    
-      <category term="linux" scheme="http://blog.seoui.com/tags/linux/"/>
-    
-      <category term="unzip" scheme="http://blog.seoui.com/tags/unzip/"/>
-    
-      <category term="gunzip" scheme="http://blog.seoui.com/tags/gunzip/"/>
     
   </entry>
   
