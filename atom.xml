@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://blog.seoui.com/"/>
-  <updated>2017-11-20T09:53:17.782Z</updated>
+  <updated>2017-11-21T13:50:31.873Z</updated>
   <id>http://blog.seoui.com/</id>
   
   <author>
@@ -20,7 +20,7 @@
     <link href="http://blog.seoui.com/2017/11/20/nginx-concat/"/>
     <id>http://blog.seoui.com/2017/11/20/nginx-concat/</id>
     <published>2017-11-19T16:00:00.000Z</published>
-    <updated>2017-11-20T09:53:17.782Z</updated>
+    <updated>2017-11-21T13:50:31.873Z</updated>
     
     <content type="html"><![CDATA[<p> 网页中引入多个CSS和JS的时候，浏览器会发出很多(css个数+js个数)次网络请求，甚至有的网页中有数十个以上的CSS或JS文件，用户体验特别不好，正好可以利用<code>nginx-http-concat</code> nginx模块简单的把这个问题解决好。</p>
 <h4 id="安装模块"><a href="#安装模块" class="headerlink" title="安装模块"></a>安装模块</h4><p>首先去拉取<code>nginx</code>源码 并解压 </p>
@@ -122,7 +122,7 @@ concat_types text/css application/javascript;
     <link href="http://blog.seoui.com/2017/10/30/nfs-config/"/>
     <id>http://blog.seoui.com/2017/10/30/nfs-config/</id>
     <published>2017-10-29T16:00:00.000Z</published>
-    <updated>2017-10-30T05:59:45.659Z</updated>
+    <updated>2017-11-21T13:50:31.873Z</updated>
     
     <content type="html"><![CDATA[<p> <code>NFS</code>通常用于网络中的多台计算机实现共享存储。</p>
 <p> 由于测试环境没有购买阿里云的NFS，所以自己搭建一个NFS文件系统，实现一些比如上传图片，静态资源等同享功能。</p>
@@ -164,7 +164,7 @@ concat_types text/css application/javascript;
     <link href="http://blog.seoui.com/2017/10/23/nexus3-uploadfile/"/>
     <id>http://blog.seoui.com/2017/10/23/nexus3-uploadfile/</id>
     <published>2017-10-22T16:00:00.000Z</published>
-    <updated>2017-10-23T05:33:08.000Z</updated>
+    <updated>2017-11-21T13:50:31.873Z</updated>
     
     <content type="html"><![CDATA[<p>因为nexus3和nexus2手动上传第三方jar有点区别 故记录一下。</p>
 <p>如上传京东 open-api-sdk-2.0.jar </p>
@@ -201,7 +201,7 @@ concat_types text/css application/javascript;
     <link href="http://blog.seoui.com/2017/10/11/nginxpass/"/>
     <id>http://blog.seoui.com/2017/10/11/nginxpass/</id>
     <published>2017-10-10T16:00:00.000Z</published>
-    <updated>2017-10-11T03:15:37.019Z</updated>
+    <updated>2017-10-13T14:11:38.587Z</updated>
     
     <content type="html"><![CDATA[<p>假设访问路径的 /pss/bill.html </p>
 <h5 id="加-斜线的情况"><a href="#加-斜线的情况" class="headerlink" title="加/斜线的情况"></a>加/斜线的情况</h5><figure class="highlight lua"><table><tr><td class="code"><pre><div class="line">location  /pss/ &#123;</div><div class="line">  proxy_pass http://<span class="number">127.0</span><span class="number">.0</span><span class="number">.1</span>:<span class="number">18081</span>/;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
@@ -229,7 +229,7 @@ concat_types text/css application/javascript;
     <link href="http://blog.seoui.com/2017/09/17/searcheng/"/>
     <id>http://blog.seoui.com/2017/09/17/searcheng/</id>
     <published>2017-09-16T16:00:00.000Z</published>
-    <updated>2017-10-11T03:07:12.608Z</updated>
+    <updated>2017-09-17T10:50:48.757Z</updated>
     
     <content type="html"><![CDATA[<p>在这个互联网资源繁多的情况下，想在网上找点东西，第一时刻想到的就是google一下、百度一下，<br>但是从海量数据里更精准的找到你想要的内容的确需要一点小技巧。</p>
 <h5 id="双引号搜索"><a href="#双引号搜索" class="headerlink" title="双引号搜索"></a>双引号搜索</h5><p>  带了双引号的搜索都是精准搜索 简单理解就是不分词。</p>
@@ -330,7 +330,7 @@ concat_types text/css application/javascript;
     <link href="http://blog.seoui.com/2017/09/05/breakpoint-download/"/>
     <id>http://blog.seoui.com/2017/09/05/breakpoint-download/</id>
     <published>2017-09-04T16:00:00.000Z</published>
-    <updated>2017-09-05T11:26:02.419Z</updated>
+    <updated>2017-09-17T07:15:35.511Z</updated>
     
     <content type="html"><![CDATA[<h4 id="需求背景"><a href="#需求背景" class="headerlink" title="需求背景"></a>需求背景</h4><ul>
 <li>动态创建的文件下载的时候希望浏览器显示下载进度</li>
@@ -389,7 +389,7 @@ concat_types text/css application/javascript;
     <link href="http://blog.seoui.com/2017/08/19/delayqueue/"/>
     <id>http://blog.seoui.com/2017/08/19/delayqueue/</id>
     <published>2017-08-18T16:00:00.000Z</published>
-    <updated>2017-09-05T10:46:53.858Z</updated>
+    <updated>2017-08-22T13:30:31.903Z</updated>
     
     <content type="html"><![CDATA[<h4 id="需求背景"><a href="#需求背景" class="headerlink" title="需求背景"></a>需求背景</h4><ul>
 <li>用户下订单成功之后隔20分钟给用户发送上门服务通知短信</li>
@@ -483,7 +483,7 @@ concat_types text/css application/javascript;
     <link href="http://blog.seoui.com/2017/07/02/mysql5_7install/"/>
     <id>http://blog.seoui.com/2017/07/02/mysql5_7install/</id>
     <published>2017-07-01T16:00:00.000Z</published>
-    <updated>2017-07-08T06:07:32.077Z</updated>
+    <updated>2017-07-02T07:11:02.696Z</updated>
     
     <content type="html"><![CDATA[<h4 id="下载"><a href="#下载" class="headerlink" title="下载"></a>下载</h4><p> 下载mysql5.7地址:<code>wget https://cdn.mysql.com//Downloads/MySQL-5.7/mysql-5.7.18-1.el6.x86_64.rpm-bundle.tar</code></p>
 <p> 另外分享一个百度云盘的下载链接 <code>http://pan.baidu.com/s/1qYAuYBi</code></p>
@@ -598,7 +598,7 @@ concat_types text/css application/javascript;
     <link href="http://blog.seoui.com/2017/06/18/objenesis/"/>
     <id>http://blog.seoui.com/2017/06/18/objenesis/</id>
     <published>2017-06-17T16:00:00.000Z</published>
-    <updated>2017-07-08T06:07:32.074Z</updated>
+    <updated>2017-06-19T13:07:40.043Z</updated>
     
     <content type="html"><![CDATA[<p><code>Objenesis</code>是一个用于实例化java类的小型Java库。</p>
 <p> 主要对于用户推荐使用以下3个API</p>
@@ -662,7 +662,7 @@ System.out.println(<span class="string">"example4:"</span>+example4+<span class=
     <link href="http://blog.seoui.com/2017/06/03/htmlunitstringtopage/"/>
     <id>http://blog.seoui.com/2017/06/03/htmlunitstringtopage/</id>
     <published>2017-06-02T16:00:00.000Z</published>
-    <updated>2017-07-08T06:07:32.071Z</updated>
+    <updated>2017-06-03T15:48:17.409Z</updated>
     
     <content type="html"><![CDATA[<p> 在<code>htmlunit</code>中可以通过URL轻松获取一个HtmlPage,但是却没有提供根据Html字符串创建一个HtmlPage。</p>
 <p> 通过Url获取一个page</p>
@@ -696,7 +696,7 @@ System.out.println(<span class="string">"example4:"</span>+example4+<span class=
     <link href="http://blog.seoui.com/2017/05/08/jenvmanager/"/>
     <id>http://blog.seoui.com/2017/05/08/jenvmanager/</id>
     <published>2017-05-07T16:00:00.000Z</published>
-    <updated>2017-07-08T06:07:32.068Z</updated>
+    <updated>2017-06-03T15:09:01.637Z</updated>
     
     <content type="html"><![CDATA[<p> <code>jenv</code>是一个并行版本管理的java开发包，注意是<code>国内的</code>，并不是<a href="https://github.com/gcuisinier/jenv" target="_blank" rel="external">https://github.com/gcuisinier/jenv</a>可以安装在<code>Linux</code> <code>Mac</code> <code>Windows</code>操作系统上，工具包为我们提供了常用的命令行接口 用户安装、删除、搜索、切换软件版本。</p>
 <h4 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h4> <figure class="highlight shell"><table><tr><td class="code"><pre><div class="line">curl -L -s get.jenv.io | bash</div></pre></td></tr></table></figure>
@@ -739,7 +739,7 @@ System.out.println(<span class="string">"example4:"</span>+example4+<span class=
     <link href="http://blog.seoui.com/2017/04/27/xpathstudy/"/>
     <id>http://blog.seoui.com/2017/04/27/xpathstudy/</id>
     <published>2017-04-26T16:00:00.000Z</published>
-    <updated>2017-07-08T06:07:32.065Z</updated>
+    <updated>2017-06-03T15:09:01.637Z</updated>
     
     <content type="html"><![CDATA[<p> <code>XPath</code>在选取<code>XML</code>文档中有着非常方便的功能，下面介绍一些常用的表达式语法。</p>
 <p> 假设如下XML<br> <figure class="highlight html"><table><tr><td class="code"><pre><div class="line">&lt;?xml version="1.0" encoding="ISO-8859-1"?&gt;</div><div class="line"><span class="tag">&lt;<span class="name">bookstore</span>&gt;</span></div><div class="line">	<span class="tag">&lt;<span class="name">book</span>&gt;</span></div><div class="line">	  <span class="tag">&lt;<span class="name">title</span> <span class="attr">lang</span>=<span class="string">"en"</span>&gt;</span>测试<span class="tag">&lt;/<span class="name">title</span>&gt;</span></div><div class="line">	  <span class="tag">&lt;<span class="name">author</span> <span class="attr">sex</span>=<span class="string">"女"</span>&gt;</span>笑笑笑<span class="tag">&lt;/<span class="name">author</span>&gt;</span> </div><div class="line">	  <span class="tag">&lt;<span class="name">year</span>&gt;</span>2017<span class="tag">&lt;/<span class="name">year</span>&gt;</span></div><div class="line">	  <span class="tag">&lt;<span class="name">price</span>&gt;</span>888<span class="tag">&lt;/<span class="name">price</span>&gt;</span></div><div class="line">	<span class="tag">&lt;/<span class="name">book</span>&gt;</span></div><div class="line">	<span class="tag">&lt;<span class="name">book</span>&gt;</span></div><div class="line">	  <span class="tag">&lt;<span class="name">title</span> <span class="attr">lang</span>=<span class="string">"en"</span>&gt;</span>测试1<span class="tag">&lt;/<span class="name">title</span>&gt;</span></div><div class="line">	  <span class="tag">&lt;<span class="name">author</span> <span class="attr">sex</span>=<span class="string">"女"</span> <span class="attr">age</span>=<span class="string">"18"</span>&gt;</span>笑笑笑1<span class="tag">&lt;/<span class="name">author</span>&gt;</span> </div><div class="line">	  <span class="tag">&lt;<span class="name">year</span>&gt;</span>2018<span class="tag">&lt;/<span class="name">year</span>&gt;</span></div><div class="line">	  <span class="tag">&lt;<span class="name">price</span>&gt;</span>889<span class="tag">&lt;/<span class="name">price</span>&gt;</span></div><div class="line">	<span class="tag">&lt;/<span class="name">book</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">bookstore</span>&gt;</span></div></pre></td></tr></table></figure></p>
@@ -837,7 +837,7 @@ System.out.println(<span class="string">"example4:"</span>+example4+<span class=
     <link href="http://blog.seoui.com/2017/04/18/mesosinstall/"/>
     <id>http://blog.seoui.com/2017/04/18/mesosinstall/</id>
     <published>2017-04-17T16:00:00.000Z</published>
-    <updated>2017-07-08T06:07:32.062Z</updated>
+    <updated>2017-06-03T15:09:01.637Z</updated>
     
     <content type="html"><![CDATA[<p>  最近有一个实时的采集系统需求，目前的实现方式是用分布式定时任务来处理这一采集请求,希望有更多资源能够为任务分担压力，支持动态添加或者移除任务资源 从而达到提高采集效率，所以准备采用<code>Mesos</code>来做资源调度的工作。</p>
 <p>  因为自己硬件设备不够好的原因导致安装Mesos的时候出现了一个未知的问题 记录一下，以下是参考官方Getting Started的示例。</p>
@@ -872,7 +872,7 @@ System.out.println(<span class="string">"example4:"</span>+example4+<span class=
     <link href="http://blog.seoui.com/2017/03/06/2017-target/"/>
     <id>http://blog.seoui.com/2017/03/06/2017-target/</id>
     <published>2017-03-05T16:00:00.000Z</published>
-    <updated>2017-07-08T06:07:32.059Z</updated>
+    <updated>2017-06-03T15:09:01.636Z</updated>
     
     <content type="html"><![CDATA[<p>  2017年已经过了差不多六分之一 为了给自己制定了一个技术计划(算是小目标吧)，所以在这里引导一下，<br>  当迷茫的时候可以look look!!!</p>
 <h3 id="后端"><a href="#后端" class="headerlink" title="后端"></a>后端</h3><ul>
@@ -925,7 +925,7 @@ System.out.println(<span class="string">"example4:"</span>+example4+<span class=
     <link href="http://blog.seoui.com/2017/01/11/mongodb-rs/"/>
     <id>http://blog.seoui.com/2017/01/11/mongodb-rs/</id>
     <published>2017-01-10T16:00:00.000Z</published>
-    <updated>2017-07-08T06:07:32.057Z</updated>
+    <updated>2017-06-03T15:09:01.636Z</updated>
     
     <content type="html"><![CDATA[<p> MongoDB的复制集是一个主从复制模式 又具有故障转移的集群，任何成员都有可能是<code>master</code>，<br> 当master挂掉用会很快的重新选举一个节点来充当master。</p>
 <p> 复制集中的组成主要成员</p>
@@ -1021,7 +1021,7 @@ mydbCenter:SECONDARY&gt;
     <link href="http://blog.seoui.com/2017/01/09/jdk7-forkjoin/"/>
     <id>http://blog.seoui.com/2017/01/09/jdk7-forkjoin/</id>
     <published>2017-01-08T16:00:00.000Z</published>
-    <updated>2017-07-08T06:07:32.054Z</updated>
+    <updated>2017-06-03T15:09:01.636Z</updated>
     
     <content type="html"><![CDATA[<p> 首先看一下ForkJoin相关的几个API </p>
 <ul>
@@ -1069,7 +1069,7 @@ mydbCenter:SECONDARY&gt;
     <link href="http://blog.seoui.com/2017/01/08/mongodbCommonoper/"/>
     <id>http://blog.seoui.com/2017/01/08/mongodbCommonoper/</id>
     <published>2017-01-07T16:00:00.000Z</published>
-    <updated>2017-07-08T06:07:32.051Z</updated>
+    <updated>2017-06-03T15:09:01.636Z</updated>
     
     <content type="html"><![CDATA[<p> 以下是在3.4.1版本中 其他版本可能略有区别,mongo默认登录时在test数据中。</p>
 <h3 id="数据库相关操作"><a href="#数据库相关操作" class="headerlink" title="数据库相关操作"></a>数据库相关操作</h3><p>登录到数据库</p>
@@ -1174,7 +1174,7 @@ mydbCenter:SECONDARY&gt;
     <link href="http://blog.seoui.com/2016/11/24/nginxMakeInstall/"/>
     <id>http://blog.seoui.com/2016/11/24/nginxMakeInstall/</id>
     <published>2016-11-23T16:00:00.000Z</published>
-    <updated>2017-07-08T06:07:32.048Z</updated>
+    <updated>2017-06-03T15:09:01.636Z</updated>
     
     <content type="html"><![CDATA[<p>nginx是比较常用的高性能HTTP服务器和反向代理服务器，许多用户更是把做反向代理使用，<br>常言道：好记性不如烂笔头 时间久了总是有些遗忘，本文记录一下源码编码安装以及常用模块的使用介绍。<br><a id="more"></a></p>
 <h3 id="编译安装"><a href="#编译安装" class="headerlink" title="编译安装"></a>编译安装</h3><pre><code class="shell">tar -zxf nginx-1.7.3.tar.gz
@@ -1238,7 +1238,7 @@ mkdir -pv /var/tmp/nginx/{proxy,client,fcgi,uwsgi,scgi}
     <link href="http://blog.seoui.com/2016/10/29/rabbitmqInstall/"/>
     <id>http://blog.seoui.com/2016/10/29/rabbitmqInstall/</id>
     <published>2016-10-28T16:00:00.000Z</published>
-    <updated>2017-07-08T06:07:32.045Z</updated>
+    <updated>2017-06-03T15:09:01.635Z</updated>
     
     <content type="html"><![CDATA[<h3 id="安装rabbitmq"><a href="#安装rabbitmq" class="headerlink" title="安装rabbitmq"></a>安装rabbitmq</h3><p>采用源码安装方式,首先去官网拉取源代码并解压,由于rabbitmq是采用erlang编写的 所以得先安装erlang环境,这里假设erlang环境已经安装好了。</p>
 <pre><code class="shell">wget http://www.rabbitmq.com/releases/rabbitmq-server/v3.4.0/rabbitmq-server-3.4.0.tar.gz
@@ -1305,7 +1305,7 @@ tar -zxf rabbitmq-server-3.4.0.tar.gz
     <link href="http://blog.seoui.com/2016/10/16/html-emmet/"/>
     <id>http://blog.seoui.com/2016/10/16/html-emmet/</id>
     <published>2016-10-15T16:00:00.000Z</published>
-    <updated>2017-07-08T06:07:32.043Z</updated>
+    <updated>2017-06-03T15:09:01.635Z</updated>
     
     <content type="html"><![CDATA[<p> Emmet是一个Web开发人员的工具包，可以大大提高你的HTML和CSS的工作流,这是在<a href="http://docs.emmet.io/" title="Emmet" target="_blank" rel="external">emmet官方文档</a>中看到的第一句话,当然这句话也简单的概括了它拥有的魅力。</p>
 <p> 下面是在WebStorm中作一些应用。<br><a id="more"></a></p>
