@@ -2,6 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://blog.seoui.com/guestbook/index.html</loc>
+    
+    <lastmod>2017-12-01T02:44:09.667Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://blog.seoui.com/links/index.html</loc>
     
     <lastmod>2017-12-01T02:35:56.748Z</lastmod>
@@ -58,14 +65,14 @@
   </url>
   
   <url>
-    <loc>http://blog.seoui.com/2015/07/21/browerNotification/</loc>
+    <loc>http://blog.seoui.com/2017/08/19/delayqueue/</loc>
     
     <lastmod>2017-09-05T10:46:53.858Z</lastmod>
     
   </url>
   
   <url>
-    <loc>http://blog.seoui.com/2017/08/19/delayqueue/</loc>
+    <loc>http://blog.seoui.com/2015/07/21/browerNotification/</loc>
     
     <lastmod>2017-09-05T10:46:53.858Z</lastmod>
     
@@ -75,13 +82,6 @@
     <loc>http://blog.seoui.com/tags/index.html</loc>
     
     <lastmod>2017-07-08T06:07:32.106Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://blog.seoui.com/guestbook/index.html</loc>
-    
-    <lastmod>2017-07-08T06:07:32.092Z</lastmod>
     
   </url>
   

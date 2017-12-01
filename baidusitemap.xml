@@ -4,6 +4,7 @@
 
     
     
+    
   <url>
     <loc>http://blog.seoui.com/2017/11/20/nginx-concat/</loc>
     <lastmod>2017-11-20T09:53:17.782Z</lastmod>
@@ -134,26 +135,6 @@
     
     
   <url>
-    <loc>http://blog.seoui.com/2015/07/21/browerNotification/</loc>
-    <lastmod>2017-09-05T10:46:53.858Z</lastmod>
-    <data>
-        <display>
-        <title>浏览器对Notification通知的支持</title>
-        <pubTime>2015-07-20T16:00:00.000Z</pubTime>
-        
-        <tag>javascript</tag>
-         
-         
-           
-             
-              <breadCrumb title="技术" url="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
     <loc>http://blog.seoui.com/2017/08/19/delayqueue/</loc>
     <lastmod>2017-09-05T10:46:53.858Z</lastmod>
     <data>
@@ -183,6 +164,25 @@
     </url>
 
     
+  <url>
+    <loc>http://blog.seoui.com/2015/07/21/browerNotification/</loc>
+    <lastmod>2017-09-05T10:46:53.858Z</lastmod>
+    <data>
+        <display>
+        <title>浏览器对Notification通知的支持</title>
+        <pubTime>2015-07-20T16:00:00.000Z</pubTime>
+        
+        <tag>javascript</tag>
+         
+         
+           
+             
+              <breadCrumb title="技术" url="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/"/>
+          
+        </display>
+    </data>
+    </url>
+
     
     
     
