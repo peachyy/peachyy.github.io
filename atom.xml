@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://blog.seoui.com/"/>
-  <updated>2017-11-20T09:53:17.782Z</updated>
+  <updated>2018-01-02T05:06:47.201Z</updated>
   <id>http://blog.seoui.com/</id>
   
   <author>
@@ -14,6 +14,41 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>回想我的2017年</title>
+    <link href="http://blog.seoui.com/2018/01/02/think2017/"/>
+    <id>http://blog.seoui.com/2018/01/02/think2017/</id>
+    <published>2018-01-01T16:00:00.000Z</published>
+    <updated>2018-01-02T05:06:47.201Z</updated>
+    
+    <content type="html"><![CDATA[<pre><code>时光匆匆而去 好像2017年才刚刚开始就结束了，时间留下的仅有一些残留的记录罢了。
+</code></pre><h4 id="无趣的时间轴"><a href="#无趣的时间轴" class="headerlink" title="无趣的时间轴"></a>无趣的时间轴</h4><ul>
+<li>3月份 购买了人生第一套房子</li>
+<li>5月份 之前公司还可以 就是不想安于现状，所有离职换到目前所待的一家小创业公司。<pre><code>ps: 几乎是天天加班哇，简直就没有时间写东西和思考人生，每天都在忙碌着。
+</code></pre></li>
+<li>6月份   终于开始了房奴的时代。</li>
+<li>7月份  去年开了一家美业店，一直利润不佳，所以转出去了</li>
+<li>11月份  和相恋2年的女朋友终于修成正果，拍了婚纱照并定了春节之后几天结婚。 </li>
+</ul>
+<h4 id="回想实在点的吧"><a href="#回想实在点的吧" class="headerlink" title="回想实在点的吧"></a>回想实在点的吧</h4><p> 在年初的时候就给自己定下一些技术目标，到了现在这个时候确实也没有完成，总结了一下 自身原因吧，能坚持做一件事情并且一直坚持下去真的很不简单，这一年里陆续看了一些框架源码<br>比如说 <code>spring</code>、<code>mybatis</code>、<code>dubbo</code>,<code>grpc</code>,<code>canal</code>,<code>zuul</code>,<code>ribbon</code> 不能说全部都完全理解到了 但是还是学到很多设计理念和实现方法，很惭愧只写了17篇博文，更加扩展了<code>redis</code><br>的使用场景范围，这种中间件确实是太强悍了，解决了很多比较难攻克的问题 比如做一些高速缓存、排序、分布式等。学习了<code>groovy</code> <code>scala</code> 语言 不过都是搞起玩的，没有运用到工作环境中去，<br>另外还学了一下<code>lua</code> 是个很不错的东西。</p>
+<p> 关于微服务架构改造在5月份之前 也就是上一家公司大胆的尝试了一次 效果还很不错，技术选型也就是在当下比较热门的<code>spring cloud</code>技术栈，选择了基于<code>docker</code>容器的部署方式，原计划是选用<br><code>Kubernetes</code>,但是由于资源限制没有选用这种专业的容器集群编排工具，而是使用简单的<code>docker compose</code> 解决容器编排的问题。</p>
+<p>后续待完善</p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;pre&gt;&lt;code&gt;时光匆匆而去 好像2017年才刚刚开始就结束了，时间留下的仅有一些残留的记录罢了。
+&lt;/code&gt;&lt;/pre&gt;&lt;h4 id=&quot;无趣的时间轴&quot;&gt;&lt;a href=&quot;#无趣的时间轴&quot; class=&quot;headerlink&quot; title=&quot;无趣的时间轴&quot;&gt;&lt;/a&gt;无趣
+    
+    </summary>
+    
+      <category term="随笔" scheme="http://blog.seoui.com/categories/%E9%9A%8F%E7%AC%94/"/>
+    
+    
+      <category term="思考" scheme="http://blog.seoui.com/tags/%E6%80%9D%E8%80%83/"/>
+    
+  </entry>
   
   <entry>
     <title>nginx-http-concat资源文件合并模块</title>
@@ -1082,17 +1117,17 @@ mydbCenter:SECONDARY&gt;
 <figure class="highlight shell"><table><tr><td class="code"><pre><div class="line">db </div><div class="line"></div><div class="line">db.getName()</div></pre></td></tr></table></figure>
 <a id="more"></a>
 <p>显示当前数据库下的所有table(集合)<br><figure class="highlight shell"><table><tr><td class="code"><pre><div class="line">show tables</div></pre></td></tr></table></figure></p>
-<h3 id="增删改查"><a href="#增删改查" class="headerlink" title="增删改查"></a>增删改查</h3><p>向taoxs_c1集合插入一行数据<br><figure class="highlight shell"><table><tr><td class="code"><pre><div class="line"><span class="meta">&gt;</span><span class="bash">db.taoxs_c1.insert(&#123;name:<span class="string">'abc'</span>,sex:<span class="string">'1'</span>&#125;)</span></div><div class="line"> WriteResult(&#123; "nInserted" : 1 &#125;)</div></pre></td></tr></table></figure></p>
-<p>查询all<br><figure class="highlight shell"><table><tr><td class="code"><pre><div class="line"><span class="meta">&gt;</span><span class="bash"> db.taoxs_c1.find()</span></div><div class="line">&#123; "_id" : ObjectId("5871d9173c7ab1b751cfda4f"), "name" : "abc", "sex" : "1" &#125;</div></pre></td></tr></table></figure></p>
-<p>查询指定列<br><figure class="highlight shell"><table><tr><td class="code"><pre><div class="line"><span class="meta">&gt;</span><span class="bash"> db.taoxs_c1.find(&#123;&#125;，&#123;name:<span class="literal">true</span>&#125;)</span></div><div class="line">&#123; "_id" : ObjectId("5871d9173c7ab1b751cfda4f"), "name" : "abc" &#125;</div></pre></td></tr></table></figure></p>
-<p>查询count<br><figure class="highlight shell"><table><tr><td class="code"><pre><div class="line"><span class="meta">&gt;</span><span class="bash"> db.taoxs_c1.find().count()</span></div><div class="line">1</div></pre></td></tr></table></figure></p>
-<p>查询限制行数limit<br><figure class="highlight shell"><table><tr><td class="code"><pre><div class="line"><span class="meta">&gt;</span><span class="bash"> db.taoxs_c1.find().<span class="built_in">limit</span>(5)</span></div></pre></td></tr></table></figure></p>
-<p>查询时忽略数据行数 可以用skip和limit配置实现分页的效果<br><figure class="highlight shell"><table><tr><td class="code"><pre><div class="line"><span class="meta">&gt;</span><span class="bash"> db.taoxs_c1.find().skip(5)</span></div></pre></td></tr></table></figure></p>
-<p>结果排序 1：升序，-1：降序<br><figure class="highlight shell"><table><tr><td class="code"><pre><div class="line"><span class="meta">&gt;</span><span class="bash"> db.taoxs_c1.find().sort(&#123;name:1&#125;)</span></div></pre></td></tr></table></figure></p>
+<h3 id="增删改查"><a href="#增删改查" class="headerlink" title="增删改查"></a>增删改查</h3><p>向taoxs_c1集合插入一行数据<br><figure class="highlight shell"><table><tr><td class="code"><pre><div class="line"><span class="meta">&gt;</span>db.taoxs_c1.insert(&#123;name:'abc',sex:'1'&#125;)</div><div class="line"> WriteResult(&#123; "nInserted" : 1 &#125;)</div></pre></td></tr></table></figure></p>
+<p>查询all<br><figure class="highlight shell"><table><tr><td class="code"><pre><div class="line"><span class="meta">&gt;</span> db.taoxs_c1.find()</div><div class="line">&#123; "_id" : ObjectId("5871d9173c7ab1b751cfda4f"), "name" : "abc", "sex" : "1" &#125;</div></pre></td></tr></table></figure></p>
+<p>查询指定列<br><figure class="highlight shell"><table><tr><td class="code"><pre><div class="line"><span class="meta">&gt;</span> db.taoxs_c1.find(&#123;&#125;，&#123;name:true&#125;)</div><div class="line">&#123; "_id" : ObjectId("5871d9173c7ab1b751cfda4f"), "name" : "abc" &#125;</div></pre></td></tr></table></figure></p>
+<p>查询count<br><figure class="highlight shell"><table><tr><td class="code"><pre><div class="line"><span class="meta">&gt;</span> db.taoxs_c1.find().count()</div><div class="line">1</div></pre></td></tr></table></figure></p>
+<p>查询限制行数limit<br><figure class="highlight shell"><table><tr><td class="code"><pre><div class="line"><span class="meta">&gt;</span> db.taoxs_c1.find().limit(5)</div></pre></td></tr></table></figure></p>
+<p>查询时忽略数据行数 可以用skip和limit配置实现分页的效果<br><figure class="highlight shell"><table><tr><td class="code"><pre><div class="line"><span class="meta">&gt;</span> db.taoxs_c1.find().skip(5)</div></pre></td></tr></table></figure></p>
+<p>结果排序 1：升序，-1：降序<br><figure class="highlight shell"><table><tr><td class="code"><pre><div class="line"><span class="meta">&gt;</span> db.taoxs_c1.find().sort(&#123;name:1&#125;)</div></pre></td></tr></table></figure></p>
 <p>修改name 的值为dfg<br><code>默认情况下 只会只会修改第一行 ，会覆盖掉其他字段 也就是说在修改name的时候sex字段也会被覆盖掉</code><br>update方法签名：function (query, obj, upsert, multi)</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><div class="line"><span class="meta">&gt;</span><span class="bash"> db.taoxs_c1.update(&#123;name:<span class="string">'abc'</span>&#125;,&#123;<span class="variable">$set</span>:&#123;name:<span class="string">'dfg'</span>&#125;&#125;)</span></div></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="code"><pre><div class="line"><span class="meta">&gt;</span> db.taoxs_c1.update(&#123;name:'abc'&#125;,&#123;$set:&#123;name:'dfg'&#125;&#125;)</div></pre></td></tr></table></figure>
 <p>如果需要多行删除需要指定multi参数为true 如果需要upsert 需要指定upsert参数为true</p>
-<p>删除操作<br><figure class="highlight shell"><table><tr><td class="code"><pre><div class="line"><span class="meta">&gt;</span><span class="bash"> db.taoxs_c1.remove(&#123;name:<span class="string">'dfg'</span>&#125;)</span></div></pre></td></tr></table></figure></p>
+<p>删除操作<br><figure class="highlight shell"><table><tr><td class="code"><pre><div class="line"><span class="meta">&gt;</span> db.taoxs_c1.remove(&#123;name:'dfg'&#125;)</div></pre></td></tr></table></figure></p>
 <p>mongodb中常用的条件查询类似sql中的where中条件符</p>
 <table>
 <thead>
@@ -1297,61 +1332,6 @@ tar -zxf rabbitmq-server-3.4.0.tar.gz
     
     
       <category term="rabbitmq" scheme="http://blog.seoui.com/tags/rabbitmq/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>emmet编写Html</title>
-    <link href="http://blog.seoui.com/2016/10/16/html-emmet/"/>
-    <id>http://blog.seoui.com/2016/10/16/html-emmet/</id>
-    <published>2016-10-15T16:00:00.000Z</published>
-    <updated>2017-07-08T06:07:32.043Z</updated>
-    
-    <content type="html"><![CDATA[<p> Emmet是一个Web开发人员的工具包，可以大大提高你的HTML和CSS的工作流,这是在<a href="http://docs.emmet.io/" title="Emmet" target="_blank" rel="external">emmet官方文档</a>中看到的第一句话,当然这句话也简单的概括了它拥有的魅力。</p>
-<p> 下面是在WebStorm中作一些应用。<br><a id="more"></a></p>
-<h2 id="构建一张html网页"><a href="#构建一张html网页" class="headerlink" title="构建一张html网页"></a>构建一张html网页</h2><p>  一张基本的网页结构一般是具有<code>&lt;html&gt;</code> <code>&lt;head&gt;</code> <code>&lt;body&gt;</code> ,使用emmet只需要按一个tab键的时间就可以实现，输入<code>!</code>,然后按Tab键就能实现如下效果,</p>
- <figure class="highlight html"><table><tr><td class="code"><pre><div class="line"><span class="meta">&lt;!doctype html&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">html</span> <span class="attr">lang</span>=<span class="string">"en"</span>&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">"UTF-8"</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">name</span>=<span class="string">"viewport"</span></span></div><div class="line">          <span class="attr">content</span>=<span class="string">"width=device-width, user-scalable=no, initial-scale=1.0, maxeimum-scale=1.0, minimum-scale=1.0"</span>&gt;</div><div class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">http-equiv</span>=<span class="string">"X-UA-Compatible"</span> <span class="attr">content</span>=<span class="string">"ie=edge"</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">title</span>&gt;</span>Document<span class="tag">&lt;/<span class="name">title</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></div><div class="line"></div><div class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></div></pre></td></tr></table></figure>
-<p> 上面的效果使用<code>html:5</code> 然后按Tab键同样也能实现,如果是html4可以用<code>html:4s</code> ,xhtml用<code>html:xt</code> 然后按Tab键。</p>
-<h2 id="添加元素及属性"><a href="#添加元素及属性" class="headerlink" title="添加元素及属性"></a>添加元素及属性</h2><p>为元素添加class或者id 如输入<code>span.clsspan#myspan</code> 按Tab 会生成如下代码</p>
- <figure class="highlight html"><table><tr><td class="code"><pre><div class="line"></div><div class="line"><span class="tag">&lt;<span class="name">span</span> <span class="attr">class</span>=<span class="string">"clsspan"</span> <span class="attr">id</span>=<span class="string">"myspan"</span>&gt;</span><span class="tag">&lt;/<span class="name">span</span>&gt;</span></div></pre></td></tr></table></figure>
-<p>为元素添加属性值 如输入<code>span{this is my span !!!}+a[href=http://blog.seoui.com]</code></p>
- <figure class="highlight html"><table><tr><td class="code"><pre><div class="line"></div><div class="line"><span class="tag">&lt;<span class="name">span</span>&gt;</span>this is my span !!!<span class="tag">&lt;/<span class="name">span</span>&gt;</span><span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"http://blog.seoui.com"</span>&gt;</span><span class="tag">&lt;/<span class="name">a</span>&gt;</span></div></pre></td></tr></table></figure>
-<h2 id="标签结构嵌套"><a href="#标签结构嵌套" class="headerlink" title="标签结构嵌套"></a>标签结构嵌套</h2><p> <code>&gt;</code> 子元素标记</p>
-<p> <code>+</code> 同级元素追加标记</p>
-<p> <code>^</code> 向当前父级元素追加标记</p>
-<p>添加子元素实例 如 <code>span&gt;p.item</code> </p>
- <figure class="highlight html"><table><tr><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">span</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">p</span> <span class="attr">class</span>=<span class="string">"item"</span>&gt;</span><span class="tag">&lt;/<span class="name">p</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">span</span>&gt;</span></div></pre></td></tr></table></figure>
-<p>添加同级元素实例 如 <code>span+p.item</code> </p>
-<figure class="highlight html"><table><tr><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">span</span>&gt;</span><span class="tag">&lt;/<span class="name">span</span>&gt;</span><span class="tag">&lt;<span class="name">p</span> <span class="attr">class</span>=<span class="string">"item"</span>&gt;</span><span class="tag">&lt;/<span class="name">p</span>&gt;</span></div></pre></td></tr></table></figure>
-<p>添加父级元素实例 如 <code>span&gt;div^p</code> </p>
-<figure class="highlight html"><table><tr><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">span</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">div</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">span</span>&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">p</span>&gt;</span><span class="tag">&lt;/<span class="name">p</span>&gt;</span></div></pre></td></tr></table></figure>
-<h2 id="分组"><a href="#分组" class="headerlink" title="分组"></a>分组</h2><p>以上虽然能轻松实现一些html的元素构建,但是如果遇到批量或者很多的类似的元素怎么办呢?</p>
-<p>分组其实就是用<code>()</code>把标记分开,让他们成为一个独立的块。</p>
-<p>如 <code>(div.item&gt;p)+(div.deatil&gt;span)</code> 然后按tab会生成以下代码</p>
-<figure class="highlight html"><table><tr><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"item"</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">p</span>&gt;</span><span class="tag">&lt;/<span class="name">p</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"deatil"</span>&gt;</span><span class="tag">&lt;<span class="name">span</span>&gt;</span><span class="tag">&lt;/<span class="name">span</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></div></pre></td></tr></table></figure>
-<p>如果我想重复生成2次上面的结构,使用<code>((div.item&gt;p)+(div.deatil&gt;span))*2</code>就能实现</p>
-<figure class="highlight html"><table><tr><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"item"</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">p</span>&gt;</span><span class="tag">&lt;/<span class="name">p</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"deatil"</span>&gt;</span><span class="tag">&lt;<span class="name">span</span>&gt;</span><span class="tag">&lt;/<span class="name">span</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"item"</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">p</span>&gt;</span><span class="tag">&lt;/<span class="name">p</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"deatil"</span>&gt;</span><span class="tag">&lt;<span class="name">span</span>&gt;</span><span class="tag">&lt;/<span class="name">span</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></div></pre></td></tr></table></figure>
-<p>生成多个带属性的元素 如 <code>ul&gt;li.item$*2</code></p>
-<figure class="highlight html"><table><tr><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">ul</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">li</span> <span class="attr">class</span>=<span class="string">"item1"</span>&gt;</span><span class="tag">&lt;/<span class="name">li</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">li</span> <span class="attr">class</span>=<span class="string">"item2"</span>&gt;</span><span class="tag">&lt;/<span class="name">li</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">ul</span>&gt;</span></div></pre></td></tr></table></figure>
-<h2 id="隐式标签"><a href="#隐式标签" class="headerlink" title="隐式标签"></a>隐式标签</h2><p>所谓隐式标签就是可以不用声明标签名称可以直接操作 如<code>.item</code>会生成</p>
-<figure class="highlight html"><table><tr><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"item"</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></div></pre></td></tr></table></figure>
-<p>当然不会很死板的一直生成div 隐式标签会根据父元素来生成适当的标签 如在ul内部使用隐式标签则会生成li。</p>
-<p>li 、tr 、 td 、 option 都是隐式标签</p>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;p&gt; Emmet是一个Web开发人员的工具包，可以大大提高你的HTML和CSS的工作流,这是在&lt;a href=&quot;http://docs.emmet.io/&quot; title=&quot;Emmet&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;emmet官方文档&lt;/a&gt;中看到的第一句话,当然这句话也简单的概括了它拥有的魅力。&lt;/p&gt;
-&lt;p&gt; 下面是在WebStorm中作一些应用。&lt;br&gt;
-    
-    </summary>
-    
-      <category term="技术" scheme="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/"/>
-    
-      <category term="emmet" scheme="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/emmet/"/>
-    
-    
-      <category term="emmet" scheme="http://blog.seoui.com/tags/emmet/"/>
     
   </entry>
   
