@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://blog.seoui.com/"/>
-  <updated>2018-01-27T10:11:19.261Z</updated>
+  <updated>2018-04-18T10:37:36.797Z</updated>
   <id>http://blog.seoui.com/</id>
   
   <author>
@@ -14,6 +14,40 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>JVM远程调试功能</title>
+    <link href="http://blog.seoui.com/2018/04/18/jvmremote-debug/"/>
+    <id>http://blog.seoui.com/2018/04/18/jvmremote-debug/</id>
+    <published>2018-04-17T16:00:00.000Z</published>
+    <updated>2018-04-18T10:37:36.797Z</updated>
+    
+    <content type="html"><![CDATA[<p>有时候想调试线上的程序 可以启用远程调试功能 在本地调试远程代码。</p>
+<h4 id="远程JVM启用调试模式"><a href="#远程JVM启用调试模式" class="headerlink" title="远程JVM启用调试模式"></a>远程JVM启用调试模式</h4> <figure class="highlight lua"><table><tr><td class="code"><pre><div class="line">/usr/<span class="keyword">local</span>/jdk/bin/java -server -Xms256m -Xmx256m -XX:PermSize=<span class="number">64</span>m -XX:MaxPermSize=<span class="number">128</span>m -Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=<span class="number">1506</span> -jar /home/web/api<span class="number">-1.0</span>-SNAPSHOT/lib/api<span class="number">-1.0</span>-SNAPSHOT.jar <span class="comment">--spring.config.location=file:/home/web/api-1.0-SNAPSHOT/conf/</span></div></pre></td></tr></table></figure>
+<p><code>-XDebug</code> 表示虚拟机启用调试功能<br><code>-Xrunjdwp</code> 加载JDWP<br><code>transport</code>  调试程序JVM使用的进程之间通讯方式<br><code>dt_socket</code> socket通讯<br><code>server=y/n</code> JVM是否需要作为调试服务器执行<br><code>address</code> 调试服务器监听的端口号<br><code>suspend=y/n</code> 调试客户端建立连接之后启动虚拟机</p>
+<p>JVM启动之后用验证监听的端口号是否生效了 <code>netstat -anp | grep 1506</code></p>
+ <figure class="highlight bash"><table><tr><td class="code"><pre><div class="line">tcp        0      0 0.0.0.0:1506                0.0.0.0:*                   LISTEN      4841/java</div></pre></td></tr></table></figure>
+<h4 id="本地调试配置"><a href="#本地调试配置" class="headerlink" title="本地调试配置"></a>本地调试配置</h4><p><img src="http://static.1.seoui.com/images/2018/04/18/jvmremote-debug.png" alt=""></p>
+<p>然后<code>debug</code>启动 访问远程服务器某个服务 在本地就支持打断点调试了。   </p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;有时候想调试线上的程序 可以启用远程调试功能 在本地调试远程代码。&lt;/p&gt;
+&lt;h4 id=&quot;远程JVM启用调试模式&quot;&gt;&lt;a href=&quot;#远程JVM启用调试模式&quot; class=&quot;headerlink&quot; title=&quot;远程JVM启用调试模式&quot;&gt;&lt;/a&gt;远程JVM启用调试模式&lt;
+    
+    </summary>
+    
+      <category term="技术" scheme="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/"/>
+    
+      <category term="java" scheme="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/java/"/>
+    
+    
+      <category term="jvm" scheme="http://blog.seoui.com/tags/jvm/"/>
+    
+      <category term="远程调试" scheme="http://blog.seoui.com/tags/%E8%BF%9C%E7%A8%8B%E8%B0%83%E8%AF%95/"/>
+    
+  </entry>
   
   <entry>
     <title>Lua在Redis中的应用</title>
@@ -1262,70 +1296,6 @@ mydbCenter:SECONDARY&gt;
     
     
       <category term="MongoDB" scheme="http://blog.seoui.com/tags/MongoDB/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>nginx编译安装</title>
-    <link href="http://blog.seoui.com/2016/11/24/nginxMakeInstall/"/>
-    <id>http://blog.seoui.com/2016/11/24/nginxMakeInstall/</id>
-    <published>2016-11-23T16:00:00.000Z</published>
-    <updated>2018-01-27T10:19:40.786Z</updated>
-    
-    <content type="html"><![CDATA[<p>nginx是比较常用的高性能HTTP服务器和反向代理服务器，许多用户更是把做反向代理使用，<br>常言道：好记性不如烂笔头 时间久了总是有些遗忘，本文记录一下源码编码安装以及常用模块的使用介绍。<br><a id="more"></a></p>
-<h3 id="编译安装"><a href="#编译安装" class="headerlink" title="编译安装"></a>编译安装</h3><pre><code class="shell">tar -zxf nginx-1.7.3.tar.gz
-cd nginx-1.7.3/
-groupadd -r nginx
-useradd -g nginx -s /sbin/nologin -M nginx
-<span class="meta">#</span><span class="bash">创建tmp文件夹 不然安装后启动会报错</span>
-mkdir -pv /var/tmp/nginx/{proxy,client,fcgi,uwsgi,scgi}
-
-./configure \
-    --prefix=/usr/local/nginx \
-    --sbin-path=/usr/sbin/nginx \
-    --conf-path=/etc/nginx/nginx.conf \
-    --error-log-path=/var/log/nginx/error.log \
-    --http-log-path=/var/log/nginx/access.log \
-    --pid-path=/var/run/nginx/nginx.pid  \
-    --lock-path=/var/lock/nginx.lock \
-    --user=nginx \
-    --group=nginx \
-    --with-http_ssl_module \
-    --with-http_flv_module \
-    --with-http_stub_status_module \
-    --with-http_gzip_static_module \
-    --http-client-body-temp-path=/var/tmp/nginx/client/ \
-    --http-proxy-temp-path=/var/tmp/nginx/proxy/ \
-    --http-fastcgi-temp-path=/var/tmp/nginx/fcgi/ \
-    --http-uwsgi-temp-path=/var/tmp/nginx/uwsgi \
-    --http-scgi-temp-path=/var/tmp/nginx/scgi \
-    --with-pcre
-
-    make
-    make install
-</code></pre>
-<p> 到此简单的安装算是完成了。</p>
-<h3 id="常用模块配置"><a href="#常用模块配置" class="headerlink" title="常用模块配置"></a>常用模块配置</h3><h4 id="nginx-status"><a href="#nginx-status" class="headerlink" title="nginx status"></a>nginx status</h4><pre><code class="shell">location /nginx_status 
-{
-    stub_status on;
-    access_log off;
-}
-</code></pre>
-<p>配置好后重新启动nginx   <code>curl localhost/nginx_status</code> 查看状态<br>如果出现无法识别stub_status的时候可能是安装的时候没有安装http_stub_status_module模块。</p>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;p&gt;nginx是比较常用的高性能HTTP服务器和反向代理服务器，许多用户更是把做反向代理使用，&lt;br&gt;常言道：好记性不如烂笔头 时间久了总是有些遗忘，本文记录一下源码编码安装以及常用模块的使用介绍。&lt;br&gt;
-    
-    </summary>
-    
-      <category term="技术" scheme="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/"/>
-    
-      <category term="nginx" scheme="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/nginx/"/>
-    
-    
-      <category term="nginx" scheme="http://blog.seoui.com/tags/nginx/"/>
     
   </entry>
   
