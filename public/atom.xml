@@ -1,0 +1,1233 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>笑松小站</title>
+  <subtitle>写我喜欢 读我所爱</subtitle>
+  <link href="/atom.xml" rel="self"/>
+  
+  <link href="http://blog.seoui.com/"/>
+  <updated>2018-05-09T08:07:20.527Z</updated>
+  <id>http://blog.seoui.com/</id>
+  
+  <author>
+    <name>peachyy</name>
+    
+  </author>
+  
+  <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>base64文件大小计算</title>
+    <link href="http://blog.seoui.com/2018/05/09/base64_file_size/"/>
+    <id>http://blog.seoui.com/2018/05/09/base64_file_size/</id>
+    <published>2018-05-08T16:00:00.000Z</published>
+    <updated>2018-05-09T08:07:20.527Z</updated>
+    
+    <content type="html"><![CDATA[<p>有时候图片被<code>base64</code>之后需要计算图片大小，因为被编码后全是字符，计算文件大小可以反序列化成文件之后再获取大小，但是会比较麻烦。简单介绍一种利用<code>base64</code>编码原理计算大小的方法。</p>
+<h4 id="编码原理"><a href="#编码原理" class="headerlink" title="编码原理"></a>编码原理</h4><p>要求把<code>3</code>个<code>8</code>位字节<code>（3*8=24）</code>转化为<code>4</code>个<code>6</code>位的字节<code>（4*6=24）</code>，之后在6位的前面补两个0，形成8位一个字节的形式。 如果剩下的字符不足<code>3</code>个字节，用<code>0</code>填充，输出字符使用<code>’=’</code>，因此编码后输出的文本末尾可能会出现<code>1</code>或<code>2</code>个<code>’=’</code></p>
+<h4 id="示例"><a href="#示例" class="headerlink" title="示例"></a>示例</h4><p>找一张图片文件<code>https://www.baidu.com/img/bd_logo1.png</code> 下载到本地<code>base64</code>编码之后的图片显示结果如下</p>
+<p><img id="imgcase" width="70px" height="0px" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAhwAAAECCAMAAACCFP44AAAACXBIWXMAAAsTAAALEwEAmpwYAAAKTWlDQ1BQaG90b3Nob3AgSUNDIHByb2ZpbGUAAHjanVN3WJP3Fj7f92UPVkLY8LGXbIEAIiOsCMgQWaIQkgBhhBASQMWFiApWFBURnEhVxILVCkidiOKgKLhnQYqIWotVXDjuH9yntX167+3t+9f7vOec5/zOec8PgBESJpHmomoAOVKFPDrYH49PSMTJvYACFUjgBCAQ5svCZwXFAADwA3l4fnSwP/wBr28AAgBw1S4kEsfh/4O6UCZXACCRAOAiEucLAZBSAMguVMgUAMgYALBTs2QKAJQAAGx5fEIiAKoNAOz0ST4FANipk9wXANiiHKkIAI0BAJkoRyQCQLsAYFWBUiwCwMIAoKxAIi4EwK4BgFm2MkcCgL0FAHaOWJAPQGAAgJlCLMwAIDgCAEMeE80DIEwDoDDSv+CpX3CFuEgBAMDLlc2XS9IzFLiV0Bp38vDg4iHiwmyxQmEXKRBmCeQinJebIxNI5wNMzgwAABr50cH+OD+Q5+bk4eZm52zv9MWi/mvwbyI+IfHf/ryMAgQAEE7P79pf5eXWA3DHAbB1v2upWwDaVgBo3/ldM9sJoFoK0Hr5i3k4/EAenqFQyDwdHAoLC+0lYqG9MOOLPv8z4W/gi372/EAe/tt68ABxmkCZrcCjg/1xYW52rlKO58sEQjFu9+cj/seFf/2OKdHiNLFcLBWK8ViJuFAiTcd5uVKRRCHJleIS6X8y8R+W/QmTdw0ArIZPwE62B7XLbMB+7gECiw5Y0nYAQH7zLYwaC5EAEGc0Mnn3AACTv/mPQCsBAM2XpOMAALzoGFyolBdMxggAAESggSqwQQcMwRSswA6cwR28wBcCYQZEQAwkwDwQQgbkgBwKoRiWQRlUwDrYBLWwAxqgEZrhELTBMTgN5+ASXIHrcBcGYBiewhi8hgkEQcgIE2EhOogRYo7YIs4IF5mOBCJhSDSSgKQg6YgUUSLFyHKkAqlCapFdSCPyLXIUOY1cQPqQ28ggMor8irxHMZSBslED1AJ1QLmoHxqKxqBz0XQ0D12AlqJr0Rq0Hj2AtqKn0UvodXQAfYqOY4DRMQ5mjNlhXIyHRWCJWBomxxZj5Vg1Vo81Yx1YN3YVG8CeYe8IJAKLgBPsCF6EEMJsgpCQR1hMWEOoJewjtBK6CFcJg4Qxwicik6hPtCV6EvnEeGI6sZBYRqwm7iEeIZ4lXicOE1+TSCQOyZLkTgohJZAySQtJa0jbSC2kU6Q+0hBpnEwm65Btyd7kCLKArCCXkbeQD5BPkvvJw+S3FDrFiOJMCaIkUqSUEko1ZT/lBKWfMkKZoKpRzame1AiqiDqfWkltoHZQL1OHqRM0dZolzZsWQ8ukLaPV0JppZ2n3aC/pdLoJ3YMeRZfQl9Jr6Afp5+mD9HcMDYYNg8dIYigZaxl7GacYtxkvmUymBdOXmchUMNcyG5lnmA+Yb1VYKvYqfBWRyhKVOpVWlX6V56pUVXNVP9V5qgtUq1UPq15WfaZGVbNQ46kJ1Bar1akdVbupNq7OUndSj1DPUV+jvl/9gvpjDbKGhUaghkijVGO3xhmNIRbGMmXxWELWclYD6yxrmE1iW7L57Ex2Bfsbdi97TFNDc6pmrGaRZp3mcc0BDsax4PA52ZxKziHODc57LQMtPy2x1mqtZq1+rTfaetq+2mLtcu0W7eva73VwnUCdLJ31Om0693UJuja6UbqFutt1z+o+02PreekJ9cr1Dund0Uf1bfSj9Rfq79bv0R83MDQINpAZbDE4Y/DMkGPoa5hpuNHwhOGoEctoupHEaKPRSaMnuCbuh2fjNXgXPmasbxxirDTeZdxrPGFiaTLbpMSkxeS+Kc2Ua5pmutG003TMzMgs3KzYrMnsjjnVnGueYb7ZvNv8jYWlRZzFSos2i8eW2pZ8ywWWTZb3rJhWPlZ5VvVW16xJ1lzrLOtt1ldsUBtXmwybOpvLtqitm63Edptt3xTiFI8p0in1U27aMez87ArsmuwG7Tn2YfYl9m32zx3MHBId1jt0O3xydHXMdmxwvOuk4TTDqcSpw+lXZxtnoXOd8zUXpkuQyxKXdpcXU22niqdun3rLleUa7rrStdP1o5u7m9yt2W3U3cw9xX2r+00umxvJXcM970H08PdY4nHM452nm6fC85DnL152Xlle+70eT7OcJp7WMG3I28Rb4L3Le2A6Pj1l+s7pAz7GPgKfep+Hvqa+It89viN+1n6Zfgf8nvs7+sv9j/i/4XnyFvFOBWABwQHlAb2BGoGzA2sDHwSZBKUHNQWNBbsGLww+FUIMCQ1ZH3KTb8AX8hv5YzPcZyya0RXKCJ0VWhv6MMwmTB7WEY6GzwjfEH5vpvlM6cy2CIjgR2yIuB9pGZkX+X0UKSoyqi7qUbRTdHF09yzWrORZ+2e9jvGPqYy5O9tqtnJ2Z6xqbFJsY+ybuIC4qriBeIf4RfGXEnQTJAntieTE2MQ9ieNzAudsmjOc5JpUlnRjruXcorkX5unOy553PFk1WZB8OIWYEpeyP+WDIEJQLxhP5aduTR0T8oSbhU9FvqKNolGxt7hKPJLmnVaV9jjdO31D+miGT0Z1xjMJT1IreZEZkrkj801WRNberM/ZcdktOZSclJyjUg1plrQr1zC3KLdPZisrkw3keeZtyhuTh8r35CP5c/PbFWyFTNGjtFKuUA4WTC+oK3hbGFt4uEi9SFrUM99m/ur5IwuCFny9kLBQuLCz2Lh4WfHgIr9FuxYji1MXdy4xXVK6ZHhp8NJ9y2jLspb9UOJYUlXyannc8o5Sg9KlpUMrglc0lamUycturvRauWMVYZVkVe9ql9VbVn8qF5VfrHCsqK74sEa45uJXTl/VfPV5bdra3kq3yu3rSOuk626s91m/r0q9akHV0IbwDa0b8Y3lG19tSt50oXpq9Y7NtM3KzQM1YTXtW8y2rNvyoTaj9nqdf13LVv2tq7e+2Sba1r/dd3vzDoMdFTve75TsvLUreFdrvUV99W7S7oLdjxpiG7q/5n7duEd3T8Wej3ulewf2Re/ranRvbNyvv7+yCW1SNo0eSDpw5ZuAb9qb7Zp3tXBaKg7CQeXBJ9+mfHvjUOihzsPcw83fmX+39QjrSHkr0jq/dawto22gPaG97+iMo50dXh1Hvrf/fu8x42N1xzWPV56gnSg98fnkgpPjp2Snnp1OPz3Umdx590z8mWtdUV29Z0PPnj8XdO5Mt1/3yfPe549d8Lxw9CL3Ytslt0utPa49R35w/eFIr1tv62X3y+1XPK509E3rO9Hv03/6asDVc9f41y5dn3m978bsG7duJt0cuCW69fh29u0XdwruTNxdeo94r/y+2v3qB/oP6n+0/rFlwG3g+GDAYM/DWQ/vDgmHnv6U/9OH4dJHzEfVI0YjjY+dHx8bDRq98mTOk+GnsqcTz8p+Vv9563Or59/94vtLz1j82PAL+YvPv655qfNy76uprzrHI8cfvM55PfGm/K3O233vuO+638e9H5ko/ED+UPPR+mPHp9BP9z7nfP78L/eE8/sl0p8zAAAAIGNIUk0AAHolAACAgwAA+f8AAIDpAAB1MAAA6mAAADqYAAAXb5JfxUYAAAMAUExURQAAAP///+EGASMZ3Pz7/vX0/fb1/fLx/fPy/fTz/TIo3kY94UxD4l9X5XJr6Hdw6Xhx6YR+64uF7JqV75uW75yX752Y76Sf8K+r8rGt87ay88fE9snG9s/M99DN99bU+NjW+drY+dza+eLg+uvq/Ozr/O3s/O7t/O/u/CQa3CYc3Cce3Sge3Ssh3Swi3Swj3i0k3i4l3i8m3jAn3jMq3zQr3zUs3zYt3zcu3zgv3zkw4Dkw3zox4Dsy4Dwz4D004D414D834UA44UI54UM64UQ74UU84UY+4khA4kpC4k1F409H41JK41JL5FNM5FZO5FlR5VtU5VxV5V9Y5mFa5mNc5mRd5mVe52Zf52dg52hh52li52pj52tl6G5n6G9o6HNt6XRu6Xlz6nt16n136n546n9664F764J864R/7IaB7IiD7IuG7Y2I7Y+K7ZGM7pCL7ZKN7pGM7ZOO7pSP7paR7piU75+b8KCc8KSg8aej8aik8auo8rKv87Sx87e09Lm29Lu49Ly59L+89cG+9cPB9sXD9svJ983L99DO+NPR+NTS+N7d+uDf+uPi++Tj++Xk++bl++fm++no/Ojn++rp/Ono+/Dw/fb2/vn5/vr6/vz8//7+//zo5/3r6uMTDuMUD+MVEOMWEeMXEuMYE+MaFfCFgvGHhPGJhvGOi/KRjvKUkfKWk/Shn/SmpPWpp/WsqvWurPa0sve5t/e6uPe9u/e/vffBv/rT0vrU0/rW1frY1/va2fvc2/vd3Pvg3/zj4vvi4fzl5Pzn5uEHAuEIA+EJBOEKBeILBuIMB+INCOIPCuIQC+QbF+QdGeQfG+QgHOUjH+UlIeUpJeUqJuYtKeYvK+YzL+c2Muc5Nec8OOg+OuhAPOlEQelGQ+lIRelKR+lMSepPTOtWU+tZVuteW+xiX+1mY+1qZ+1tau5wbu92dO99e/B/ffCAfvCCgPOZl/OenPjBwPjEw/jGxfnJyPnMy/nPzv3u7v3w8P719f729v75+f/7+//9/f///4DJalUAAAEAdFJOU////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////wBT9wclAAAP2klEQVR42uzdaXwURRoGcKsrJEAIi0G5A4RATEICaBQWMYiEXcGA4Y6yHIICcikKAlkuJYRICCLHLklmhMUgghwiiAguiC6IcsgRORRRdzlFFLwRE377wWRm+qjq7pnumeme5/mYeaeH6frT3dNVXXUTQRBGbsIuQIADAQ4EOBDgQIADAQ4EOBDgQIADAQ4EAQ4EOBDgQIADAQ4EOBDgQIADAQ4EOBAEOBDgQIADAQ4EOBDgQIADAQ4EOBDgQBDgQIADAQ4EOBDgQIADAQ4EOBDgQIADAQ4EAQ4EOBDgQIADAQ4EOBDgQIADAQ4EOBAEOBDgQIADAQ4EOBDgQIADAQ4EOBDgQBDgQIADAQ4EOBDgQIADAQ4EOBDgQIADAQ4EAQ4EOBDgQIADAQ4EOBDgQIADAQ4EOBAEOBDgQIADAQ4EOBDgQIADAQ4EOBDgQBDgQIADAQ4EOHzP0uyH7klO6TSofiEIAIcohU+0oRVpN8UBBMDhTuz91COZ/4QC4KhMo1QqSscCHqTJjw0Zk1MEHKGRxq2oJGmLWLUNe/5R0XZ8VeAIgcSnUVkylI8MCYPdJe1mAof98xBVyGilyvx7RDVjncBh88xUskGT5skrZ7eWFA0uBg5bJ6yLIg4aJavMSZYVPeQADjunHmUkRvWylVI6CjjsnO4sHDXFdYs7KFY9Bxz2TSzLBk2p5lnn6Klc1S4BOGybp5k4aH3PultYVcOBw7Z5kI3jEY+yuBRWVVIccNg0VZLYODp61A1gl40ADpsmj3IS7yqL4VTdEQ4c9kw2D0dDV9lAXlkD4LBnonmtPs31MzaJV/Yn4LBnhvJafUJl1TO8KpoOHPZMFq/VoyurunJxJBYBhy3Tl9fqlb9DFlN+CoDDlunPa/SbK4pmq+CYBxy2zEAtp5VsFRxNgcOWGcZr9Fsrip5UwbEI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"></p>
+<p> 去掉base64编码中的前缀 <code>data:image/png;base64,</code></p>
+ <figure class="highlight javascript"><table><tr><td class="code"><pre><div class="line"><span class="keyword">var</span> baseStr=<span class="built_in">document</span>.getElementById(<span class="string">"imgcase"</span>).getAttribute(<span class="string">"src"</span>),tag=<span class="string">"base64,"</span>;</div><div class="line">baseStr=baseStr.substring(baseStr.indexOf(tag)+tag.length);</div></pre></td></tr></table></figure>
+<p> 去掉base64编码中的<code>=</code>号</p>
+ <figure class="highlight javascript"><table><tr><td class="code"><pre><div class="line"><span class="keyword">var</span> eqTagIndex=baseStr.indexOf(<span class="string">"="</span>);</div><div class="line">baseStr=eqTagIndex!=<span class="number">-1</span>?baseStr.substring(<span class="number">0</span>,eqTagIndex):baseStr;</div></pre></td></tr></table></figure>
+<p> 计算文件流大小</p>
+ <figure class="highlight javascript"><table><tr><td class="code"><pre><div class="line"><span class="keyword">var</span> strLen=baseStr.length;</div><div class="line"><span class="keyword">var</span> fileSize=strLen-(strLen/<span class="number">8</span>)*<span class="number">2</span></div><div class="line">alert(<span class="string">"文件大小:"</span>+fileSize);</div></pre></td></tr></table></figure>
+<p>完整代码：<a href="https://demohubs.github.io/frontendLab/baseimgfileSize.html" target="_blank" rel="external">https://https://demohubs.github.io/frontendLab/baseimgfileSize.html</a>  </p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;有时候图片被&lt;code&gt;base64&lt;/code&gt;之后需要计算图片大小，因为被编码后全是字符，计算文件大小可以反序列化成文件之后再获取大小，但是会比较麻烦。简单介绍一种利用&lt;code&gt;base64&lt;/code&gt;编码原理计算大小的方法。&lt;/p&gt;
+&lt;h4 id=&quot;编码原理&quot;&gt;&lt;
+    
+    </summary>
+    
+      <category term="技术" scheme="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/"/>
+    
+      <category term="base64" scheme="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/base64/"/>
+    
+    
+      <category term="base64" scheme="http://blog.seoui.com/tags/base64/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>JVM远程调试功能</title>
+    <link href="http://blog.seoui.com/2018/04/18/jvmremote-debug/"/>
+    <id>http://blog.seoui.com/2018/04/18/jvmremote-debug/</id>
+    <published>2018-04-17T16:00:00.000Z</published>
+    <updated>2018-04-18T10:37:36.797Z</updated>
+    
+    <content type="html"><![CDATA[<p>有时候想调试线上的程序 可以启用远程调试功能 在本地调试远程代码。</p>
+<h4 id="远程JVM启用调试模式"><a href="#远程JVM启用调试模式" class="headerlink" title="远程JVM启用调试模式"></a>远程JVM启用调试模式</h4> <figure class="highlight lua"><table><tr><td class="code"><pre><div class="line">/usr/<span class="keyword">local</span>/jdk/bin/java -server -Xms256m -Xmx256m -XX:PermSize=<span class="number">64</span>m -XX:MaxPermSize=<span class="number">128</span>m -Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=<span class="number">1506</span> -jar /home/web/api<span class="number">-1.0</span>-SNAPSHOT/lib/api<span class="number">-1.0</span>-SNAPSHOT.jar <span class="comment">--spring.config.location=file:/home/web/api-1.0-SNAPSHOT/conf/</span></div></pre></td></tr></table></figure>
+<p><code>-XDebug</code> 表示虚拟机启用调试功能<br><code>-Xrunjdwp</code> 加载JDWP<br><code>transport</code>  调试程序JVM使用的进程之间通讯方式<br><code>dt_socket</code> socket通讯<br><code>server=y/n</code> JVM是否需要作为调试服务器执行<br><code>address</code> 调试服务器监听的端口号<br><code>suspend=y/n</code> 调试客户端建立连接之后启动虚拟机</p>
+<p>JVM启动之后用验证监听的端口号是否生效了 <code>netstat -anp | grep 1506</code></p>
+ <figure class="highlight bash"><table><tr><td class="code"><pre><div class="line">tcp        0      0 0.0.0.0:1506                0.0.0.0:*                   LISTEN      4841/java</div></pre></td></tr></table></figure>
+<h4 id="本地调试配置"><a href="#本地调试配置" class="headerlink" title="本地调试配置"></a>本地调试配置</h4><p><img src="http://static.1.seoui.com/images/2018/04/18/jvmremote-debug.png" alt=""></p>
+<p>然后<code>debug</code>启动 访问远程服务器某个服务 在本地就支持打断点调试了。   </p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;有时候想调试线上的程序 可以启用远程调试功能 在本地调试远程代码。&lt;/p&gt;
+&lt;h4 id=&quot;远程JVM启用调试模式&quot;&gt;&lt;a href=&quot;#远程JVM启用调试模式&quot; class=&quot;headerlink&quot; title=&quot;远程JVM启用调试模式&quot;&gt;&lt;/a&gt;远程JVM启用调试模式&lt;
+    
+    </summary>
+    
+      <category term="技术" scheme="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/"/>
+    
+      <category term="java" scheme="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/java/"/>
+    
+    
+      <category term="jvm" scheme="http://blog.seoui.com/tags/jvm/"/>
+    
+      <category term="远程调试" scheme="http://blog.seoui.com/tags/%E8%BF%9C%E7%A8%8B%E8%B0%83%E8%AF%95/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Lua在Redis中的应用</title>
+    <link href="http://blog.seoui.com/2018/01/27/redis-lua/"/>
+    <id>http://blog.seoui.com/2018/01/27/redis-lua/</id>
+    <published>2018-01-26T16:00:00.000Z</published>
+    <updated>2018-01-27T10:11:19.261Z</updated>
+    
+    <content type="html"><![CDATA[<p><code>redis</code>从2.6版本开始内置支持<code>Lua</code>解释器，解释器提供了3个函数来处理<code>redis</code>的命令<code>redis.call()</code> <code>redis.pcall()</code>和 <code>redis.log</code>,同时<code>redis</code> 也保证脚本会以原子性的方式执行。这是一个很重要的因素。</p>
+<p>本文涉及到的命令有 <code>EVAL</code>  <code>EVALSHA</code> <code>SCRIPT LOAD</code> <code>SCRIPT FLUSH</code> <code>SCRIPT EXISTS</code> <code>SCRIPT KILL</code></p>
+<p><em>redis.call()， redis.pcall() 函数的区别就是处理错误异常的情况不同，其他的功能是一样的 具体使用哪个看需求而论</em></p>
+<ul>
+<li><code>redis.call()</code>  执行命令的过程中发生错误时，脚本会停止执行，并返回一个脚本错误</li>
+<li><code>redis.pcall()</code> 执行命令的过程中发生错误时，脚本会继续执行，但是会记录错误信息 返回一个带 err 域的 Lua 表(table)</li>
+<li><code>redis.log(loglevel, message)</code> 触发<code>redis</code>记录日志 日志级别有 redis.LOG_DEBUG redis.LOG_VERBOSE redis.LOG_NOTICE redis.LOG_WARNING</li>
+</ul>
+<h4 id="EVAL"><a href="#EVAL" class="headerlink" title="EVAL"></a>EVAL</h4><p><code>EVAL</code>命令对 <code>Lua</code> 脚本进行执行求值。</p>
+<p> 语法：EVAL script numkeys key [key …] arg [arg …]</p>
+<p> <code>script</code> lua脚本内容 注意的是脚本不应该是<code>Lua</code>函数。<br> <code>numkeys</code> 表示指定键名参数的个数。<br> <code>key [key ...]</code> 表示脚本对应的<code>key</code>值列表 在脚本中可以使用<em><code>KEYS[1]</code> <code>KEYS[2]</code> <code>KEYS[3]</code> <code>KEYS[n]</code></em> n从1开始 。<br> <code>arg [arg ...]</code> 命名行中传递的参数列表 在脚本中可以使用<em><code>ARGV[1]</code> <code>ARGV[2]</code> <code>ARGV[3]</code> <code>ARGV[n]</code></em> n从1开始 。</p>
+<p> 一个示例胜过千言万语的解释</p>
+ <figure class="highlight lua"><table><tr><td class="code"><pre><div class="line">eval <span class="string">"return &#123;KEYS[1],KEYS[2],ARGV[1],ARGV[2]&#125;"</span> <span class="number">2</span> id name <span class="number">3</span> mytest</div></pre></td></tr></table></figure>
+<p>执行上面脚本返回</p>
+ <figure class="highlight lua"><table><tr><td class="code"><pre><div class="line"><span class="number">1</span>) <span class="string">"id"</span></div><div class="line"><span class="number">2</span>) <span class="string">"name"</span></div><div class="line"><span class="number">3</span>) <span class="string">"2"</span></div><div class="line"><span class="number">4</span>) <span class="string">"mytest"</span></div></pre></td></tr></table></figure>
+<h4 id="EVALSHA"><a href="#EVALSHA" class="headerlink" title="EVALSHA"></a>EVALSHA</h4><p>  此命令和<code>EVAL</code>的区别是<code>EVAL</code>每次都需要传入脚本的主体内容，对网络带宽不是很友好。而<code>EVALSHA</code>命令正好可以解决这个问题。</p>
+<p>  语法： EVALSHA sha1 numkeys key [key …] arg [arg …]</p>
+<p>  <code>sha1</code> 缓存中的<code>sha</code>值 这个值可以利用<code>SCRIPT LOAD</code>生成<br>  <code>numkeys</code> 表示指定键名参数的个数。<br>  <code>key [key ...]</code> 表示脚本对应的<code>key</code>值列表 在脚本中可以使用<em><code>KEYS[1]</code> <code>KEYS[2]</code> <code>KEYS[3]</code> <code>KEYS[n]</code></em> n从1开始 。<br>  <code>arg [arg ...]</code> 命名行中传递的参数列表 在脚本中可以使用<em><code>ARGV[1]</code> <code>ARGV[2]</code> <code>ARGV[3]</code> <code>ARGV[n]</code></em> n从1开始 。</p>
+ <figure class="highlight lua"><table><tr><td class="code"><pre><div class="line">&gt; SCRIPT LOAD <span class="string">"return &#123;KEYS[1],KEYS[2],ARGV[1],ARGV[2]&#125;"</span></div><div class="line"><span class="string">"a42059b356c875f0717db19a51f6aaca9ae659ea"</span></div><div class="line">&gt; EVALSHA a42059b356c875f0717db19a51f6aaca9ae659ea <span class="number">2</span> id name <span class="number">2</span> mytest</div><div class="line"><span class="number">1</span>) <span class="string">"id"</span></div><div class="line"><span class="number">2</span>) <span class="string">"name"</span></div><div class="line"><span class="number">3</span>) <span class="string">"2"</span></div><div class="line"><span class="number">4</span>) <span class="string">"mytest"</span></div><div class="line">&gt;</div></pre></td></tr></table></figure>
+<p>1、首先利用<code>SCRIPT LOAD</code>把脚本的主体缓存在<code>redis</code>中,会返回一个sha的key<br>2、<code>EVALSHA</code> 执行命令 把sha带上 其他的和eval没有区别。</p>
+<h4 id="脚本缓存"><a href="#脚本缓存" class="headerlink" title="脚本缓存"></a>脚本缓存</h4><p>  <code>redis</code>保证了所有运行过的脚本都能缓存起来 前面也提到过使用<code>SCRIPT LOAD</code>也能将脚本缓存并返回sha值，那么也能使用<code>SCRIPT FLUSH</code>清空脚本缓存</p>
+<ul>
+<li><code>SCRIPT LOAD</code> 加载脚本到缓存中</li>
+<li><code>SCRIPT FLUSH</code> 清除所有 Lua 脚本缓存。</li>
+<li><code>SCRIPT EXISTS</code> 判断sha值是否已经缓存好了，返回值为  0 和 1 ，后者表示存在于缓存中，在程序开发中非常有用 比如 <code>redis</code>出现了什么异常情况后，脚本缓存被清空了，或者被人为执行了<code>SCRIPT FLUSH</code>命令，这个时候就可以优先尝试一下<code>SCRIPT EXISTS</code>命令如果返回0表示不存在 就需要先执行<code>SCRIPT LOAD</code>先把脚本加载到缓存中之后再执行</li>
+</ul>
+<h4 id="SCRIPT-KILL"><a href="#SCRIPT-KILL" class="headerlink" title="SCRIPT KILL"></a>SCRIPT KILL</h4><p> 杀死当前正在运行的 <code>Lua</code> 脚本，<code>当且仅当这个脚本没有执行过任何写操作时，这个命令才生效</code>。</p>
+<p> <code>SCRIPT KILL</code> 执行成功返回OK，其他情况返回错误信息</p>
+<h4 id="业务场景案例"><a href="#业务场景案例" class="headerlink" title="业务场景案例"></a>业务场景案例</h4><ul>
+<li><a href="https://github.com/spring-cloud/spring-cloud-gateway/tree/rate-limiter-no-lua" target="_blank" rel="external">spring-cloud-gateway</a>  springc cloud 网关限流</li>
+<li>需要原子操作的零散逻辑</li>
+<li>分布式限流</li>
+<li>….</li>
+</ul>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;&lt;code&gt;redis&lt;/code&gt;从2.6版本开始内置支持&lt;code&gt;Lua&lt;/code&gt;解释器，解释器提供了3个函数来处理&lt;code&gt;redis&lt;/code&gt;的命令&lt;code&gt;redis.call()&lt;/code&gt; &lt;code&gt;redis.pcall()&lt;/code&gt;和
+    
+    </summary>
+    
+      <category term="redis" scheme="http://blog.seoui.com/categories/redis/"/>
+    
+      <category term="lua" scheme="http://blog.seoui.com/categories/redis/lua/"/>
+    
+    
+      <category term="redis" scheme="http://blog.seoui.com/tags/redis/"/>
+    
+      <category term="lua" scheme="http://blog.seoui.com/tags/lua/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>回想我的2017年</title>
+    <link href="http://blog.seoui.com/2018/01/02/think2017/"/>
+    <id>http://blog.seoui.com/2018/01/02/think2017/</id>
+    <published>2018-01-01T16:00:00.000Z</published>
+    <updated>2018-01-27T10:19:40.792Z</updated>
+    
+    <content type="html"><![CDATA[<pre><code>时光匆匆而去 好像2017年才刚刚开始就结束了，时间留下的仅有一些残留的记忆罢了。
+</code></pre><h4 id="无趣的时间轴"><a href="#无趣的时间轴" class="headerlink" title="无趣的时间轴"></a>无趣的时间轴</h4><ul>
+<li>3月份 购买了人生第一套房子</li>
+<li>5月份 之前公司还可以 就是不想安于现状，所有离职换到目前所待的一家小创业公司。<pre><code>ps: 几乎是天天加班哇，简直就没有时间写东西和思考人生，每天都在忙碌着。
+</code></pre></li>
+<li>6月份   终于开始了房奴的时代。</li>
+<li>7月份  去年开了一家美业店，一直利润不佳，所以转出去了</li>
+<li>11月份  和相恋2年的女朋友终于修成正果，拍了婚纱照并定了春节之后几天结婚。 </li>
+</ul>
+<h4 id="回想实在点的吧"><a href="#回想实在点的吧" class="headerlink" title="回想实在点的吧"></a>回想实在点的吧</h4><p> 在年初的时候就给自己定下一些技术目标，到了现在这个时候确实也没有完成，总结了一下 自身原因吧，能坚持做一件事情并且一直坚持下去真的很不简单，这一年里陆续看了一些框架源码<br>比如说 <code>spring</code>、<code>mybatis</code>、<code>dubbo</code>,<code>grpc</code>,<code>canal</code>,<code>zuul</code>,<code>ribbon</code> 不能说全部都完全理解到了 但是还是学到很多设计理念和实现方法，很惭愧只写了17篇博文，更加扩展了<code>redis</code><br>的使用场景范围，这种中间件确实是太强悍了，解决了很多比较难攻克的问题 比如做一些高速缓存、排序、分布式等。学习了<code>groovy</code> <code>scala</code> 语言 不过都是搞起玩的，没有运用到工作环境中去，<br>另外还学了一下<code>lua</code> 是个很不错的东西。</p>
+<p> 关于微服务架构改造在5月份之前 也就是上一家公司大胆的尝试了一次 效果还很不错，技术选型也就是在当下比较热门的<code>spring cloud</code>技术栈，选择了基于<code>docker</code>容器的部署方式，原计划是选用<br><code>Kubernetes</code>,但是由于资源限制没有选用这种专业的容器集群编排工具，而是使用简单的<code>docker compose</code> 解决容器编排的问题。</p>
+<p> 进入计算机这个圈子最初是因为比较喜欢搞前端，学习了<code>html</code> <code>css</code> <code>javascript</code> 后来涉及到业务系统，熟悉了 <code>c#</code> <code>java</code> 之后就没有专门做前端方面的事情。<br>从2017年初开始已经完成没有涉及到前端的工作了，想想真是搞笑，造化弄人啊！！！不过现在依然对前端比较有兴趣 只是没有太多的时间研究前端方面的技术了。<br>有限的时间里 只能选择放弃一部分，更认真的对待另一部分了。</p>
+<h4 id="2018年如何书写"><a href="#2018年如何书写" class="headerlink" title="2018年如何书写"></a>2018年如何书写</h4><p> 最近确实迷失了方向，没有了目标，惶恐  我最担心的就是现在这个样子 暂时写不出来了 。但是生活方面还是希望过得简单、开心、健康 对了还有多多赚钱。</p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;pre&gt;&lt;code&gt;时光匆匆而去 好像2017年才刚刚开始就结束了，时间留下的仅有一些残留的记忆罢了。
+&lt;/code&gt;&lt;/pre&gt;&lt;h4 id=&quot;无趣的时间轴&quot;&gt;&lt;a href=&quot;#无趣的时间轴&quot; class=&quot;headerlink&quot; title=&quot;无趣的时间轴&quot;&gt;&lt;/a&gt;无趣
+    
+    </summary>
+    
+      <category term="随笔" scheme="http://blog.seoui.com/categories/%E9%9A%8F%E7%AC%94/"/>
+    
+    
+      <category term="思考" scheme="http://blog.seoui.com/tags/%E6%80%9D%E8%80%83/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>nginx-http-concat资源文件合并模块</title>
+    <link href="http://blog.seoui.com/2017/11/20/nginx-concat/"/>
+    <id>http://blog.seoui.com/2017/11/20/nginx-concat/</id>
+    <published>2017-11-19T16:00:00.000Z</published>
+    <updated>2018-01-27T10:19:40.792Z</updated>
+    
+    <content type="html"><![CDATA[<p> 网页中引入多个CSS和JS的时候，浏览器会发出很多(css个数+js个数)次网络请求，甚至有的网页中有数十个以上的CSS或JS文件，用户体验特别不好，正好可以利用<code>nginx-http-concat</code> nginx模块简单的把这个问题解决好。</p>
+<h4 id="安装模块"><a href="#安装模块" class="headerlink" title="安装模块"></a>安装模块</h4><p>首先去拉取<code>nginx</code>源码 并解压 </p>
+<pre><code class="bash">wget http://nginx.org/download/nginx-1.7.3.tar.gz
+tar -zxf nginx-1.7.3.tar.gz
+</code></pre>
+<p>拉取<code>nginx-http-concat</code> 模块源码 </p>
+<pre><code class="bash">git <span class="built_in">clone</span> https://github.com/DemoHubs/nginx-http-concat.git
+</code></pre>
+<p>编译并安装源码</p>
+<pre><code class="bash"><span class="built_in">cd</span> nginx-1.7.3
+
+./configure \
+    --prefix=/usr/<span class="built_in">local</span>/nginx \
+    --without-http_rewrite_module \
+    --without-http_gzip_module \
+    --with-http_stub_status_module \
+    --add-module=../nginx-http-concat 
+
+make
+make install 
+
+<span class="comment">#验证安装能看到之前设置的编译模块算安装成功了</span>
+/usr/<span class="built_in">local</span>/nginx/sbin/nginx -V
+<span class="built_in">cd</span> /usr/<span class="built_in">local</span>/nginx
+</code></pre>
+<h4 id="配置http-concat"><a href="#配置http-concat" class="headerlink" title="配置http-concat"></a>配置http-concat</h4><p>在location 更改一下配置</p>
+<pre><code class="lua"><span class="built_in">concat</span> on;
+concat_max_files <span class="number">20</span>;
+concat_unique off;
+concat_types text/css application/javascript;
+</code></pre>
+<p><code>concat</code> 表示启用concat模块</p>
+<p><code>concat_max_files</code> 文件合并的最大个数</p>
+<p><code>concat_unique</code> 是否允许css和js合并到同一个文件 默认为on  正常情况下这里我们不需要开启 设置off就好了</p>
+<p><code>concat_delimiter</code> 每个文件合并的分隔符号 一般设置为<code>\n</code> 不设置默认就是</p>
+<p><code>concat_ignore_file_error</code>  默认为<code>off</code> 忽略合并的文件有错误的情况 比如403 或 404</p>
+<p>如果要使用<code>concat</code>的功能的时候 需要在<code>URL</code> 中加上<code>??</code>两个问号来告诉<code>nginx</code>此次请求使用文件合并的方式获取资源</p>
+<p>完整配置</p>
+<pre><code class="lua">location / {
+     root   html;
+     index  index.html index.htm;
+     <span class="built_in">concat</span> on;
+     concat_max_files <span class="number">20</span>;
+     concat_unique off;
+     concat_types text/css application/javascript;
+ }
+</code></pre>
+<h4 id="测试结果"><a href="#测试结果" class="headerlink" title="测试结果"></a>测试结果</h4><p>首先简单的在nginx安装目录的html文件夹里面创建几个js和css来方便我们合并测试</p>
+<pre><code class="bash"><span class="built_in">echo</span> <span class="string">"var a1=1;"</span>&gt;a.js
+<span class="built_in">echo</span> <span class="string">"var a2=2;"</span>&gt;a2.js
+<span class="built_in">echo</span> <span class="string">"var a3=3;"</span>&gt;a3.js
+<span class="built_in">echo</span> <span class="string">"a{color:red}"</span>&gt;a.css
+<span class="built_in">echo</span> <span class="string">"a{border:1px solod green;}"</span>&gt;a1.css
+<span class="built_in">echo</span> <span class="string">"a{border:1px solod red;}"</span>&gt;a2.css
+</code></pre>
+<p>创建好之后的目录视图</p>
+<pre><code class="bash"> ll /usr/<span class="built_in">local</span>/nginx/html
+
+-rw-r--r-- 1 root root  537 11月 20 17:08 50x.html
+-rw-r--r-- 1 root root   27 11月 20 17:23 a1.css
+-rw-r--r-- 1 root root   25 11月 20 17:24 a2.css
+-rw-r--r-- 1 root root   10 11月 20 17:22 a2.js
+-rw-r--r-- 1 root root   10 11月 20 17:23 a3.js
+-rw-r--r-- 1 root root   13 11月 20 17:23 a.css
+-rw-r--r-- 1 root root   10 11月 20 17:22 a.js
+-rw-r--r-- 1 root root  612 11月 20 17:08 index.html
+</code></pre>
+<p>启动nginx </p>
+<pre><code class="bash">sbin/nginx
+</code></pre>
+<p>这个时候再浏览器上访问 </p>
+<p><em>需要在<code>URL</code> 中加上<code>??</code>两个问号来告诉<code>nginx</code>此次请求使用文件合并的方式获取资源</em></p>
+<p>浏览器访问：<a href="http://192.168.139.205/??a.css,a1.css,a2.css" target="_blank" rel="external">http://192.168.139.205/??a.css,a1.css,a2.css</a></p>
+<p>结果包含了a.css,a1.css,a2.css的css</p>
+<p>浏览器访问：<a href="http://192.168.139.205/??a.js,a2.js,a3.js" target="_blank" rel="external">http://192.168.139.205/??a.js,a2.js,a3.js</a><br>结果包含了a.js,a2.js,a3.js的js</p>
+<p>如果资源文件被缓存了 想更新可以加个版本号 就会从服务器上取最新文件</p>
+<pre><code class="html"><span class="tag">&lt;<span class="name">link</span> <span class="attr">rel</span>=<span class="string">"stylesheet"</span> <span class="attr">href</span>=<span class="string">"??foo1.css,foo2.css,subdir/foo3.css?v=2345"</span> /&gt;</span>
+</code></pre>
+<p>如果你是使用的<a href="http://tengine.taobao.org" target="_blank" rel="external">tengine</a>那么这个模块原生支持 不用手动安装</p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt; 网页中引入多个CSS和JS的时候，浏览器会发出很多(css个数+js个数)次网络请求，甚至有的网页中有数十个以上的CSS或JS文件，用户体验特别不好，正好可以利用&lt;code&gt;nginx-http-concat&lt;/code&gt; nginx模块简单的把这个问题解决好。&lt;/p&gt;
+
+    
+    </summary>
+    
+      <category term="技术" scheme="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/"/>
+    
+    
+      <category term="nginx" scheme="http://blog.seoui.com/tags/nginx/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>NFS 安装与配置</title>
+    <link href="http://blog.seoui.com/2017/10/30/nfs-config/"/>
+    <id>http://blog.seoui.com/2017/10/30/nfs-config/</id>
+    <published>2017-10-29T16:00:00.000Z</published>
+    <updated>2018-01-27T10:19:40.791Z</updated>
+    
+    <content type="html"><![CDATA[<p> <code>NFS</code>通常用于网络中的多台计算机实现共享存储。</p>
+<p> 由于测试环境没有购买阿里云的NFS，所以自己搭建一个NFS文件系统，实现一些比如上传图片，静态资源等同享功能。</p>
+<p> 下面的测试是在<code>CentOS release 6.8 (Final)</code>中进行的。其他的系统略有不同。</p>
+<p>  网络环境 ：<br>  nfs服务器IP: 192.168.18.183<br>  nfs客户端IP: 192.168.18.182</p>
+<h4 id="服务器安装"><a href="#服务器安装" class="headerlink" title="服务器安装"></a>服务器安装</h4><figure class="highlight bash"><table><tr><td class="code"><pre><div class="line">yum install nfs-utils rpcbind</div></pre></td></tr></table></figure>
+<h5 id="配置需要共享的目录"><a href="#配置需要共享的目录" class="headerlink" title="配置需要共享的目录"></a>配置需要共享的目录</h5><p>more /etc/exports</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><div class="line">/home/www       *(rw,async,no_root_squash,no_subtree_check)</div></pre></td></tr></table></figure>
+<p><em>关于配置文件<code>exports</code>的一些参数说明</em></p>
+<p>rw：read-write，可读写；<br>ro：read-only，只读；<br>sync：同步写入（文件同时写入硬盘和内存），适用在通信比较频繁且实时性比较高的场合<br>async：异步写入（文件先写入内存，稍候再写入硬盘），性能较好（速度快），适合超大或者超多文件的写入，但有数据丢失的风险，比如突然断电等情况；<br>root_squash（默认）：将来访的root用户映射为匿名用户或用户组；<br>no_root_squash：来访的root用户保持root帐号权限（可能会不安全）；<br>no_all_squash（默认）：访问用户先与本机用户匹配，匹配失败后再映射为匿名用户或用户组；<br>all_squash：将来访的所有用户映射为匿名用户或用户组；<br>secure（默认）：限制客户端只能从小于1024的tcp/ip端口连接服务器；<br>insecure：允许客户端从大于1024的tcp/ip端口连接服务器；<br>anonuid：匿名用户的UID值，通常是nobody或nfsnobody，可以在此处自行设定；<br>anongid：匿名用户的GID值；<br>no_subtree_check：如果NFS输出的是一个子目录，则无需检查其父目录的权限（可以提高效率）</p>
+<h5 id="启动nfs服务器"><a href="#启动nfs服务器" class="headerlink" title="启动nfs服务器"></a>启动nfs服务器</h5><figure class="highlight bash"><table><tr><td class="code"><pre><div class="line">service rpcbind start</div><div class="line"></div><div class="line">service nfs start</div></pre></td></tr></table></figure>
+<p>查看是否启动成功，能看到前面在<code>/etc/exports</code>文件中设置的共享目录 则可以认为启动成功了。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><div class="line">showmount -e localhost</div><div class="line"></div><div class="line">Export list <span class="keyword">for</span> localhost:</div><div class="line">/home/www *</div></pre></td></tr></table></figure>
+<h4 id="客户端安装"><a href="#客户端安装" class="headerlink" title="客户端安装"></a>客户端安装</h4><p>  客户端也是需要安装这两个软件 区别是安装好之后不需要启动。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><div class="line">yum install nfs-utils rpcbind</div></pre></td></tr></table></figure>
+<h5 id="挂载NFS目录"><a href="#挂载NFS目录" class="headerlink" title="挂载NFS目录"></a>挂载NFS目录</h5><p>挂载的时候需要注意的是 如果挂载的目录当前已经存在 挂载后默认会覆盖掉。</p>
+<pre><code class="bash">mount -t nfs 192.168.18.183:/home/www /home/www
+</code></pre>
+<p>这个时候就挂载成功了，尝试修改客户端<code>/home/www</code>的文件 会立即同步到服务端的<code>/home/www</code>下面。同时服务端更新了文件也会立即同步到客户端。<br>如果文件很大的话 会有一个网络延时，所以这个需要权衡  当然内网传输还是很快的。</p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt; &lt;code&gt;NFS&lt;/code&gt;通常用于网络中的多台计算机实现共享存储。&lt;/p&gt;
+&lt;p&gt; 由于测试环境没有购买阿里云的NFS，所以自己搭建一个NFS文件系统，实现一些比如上传图片，静态资源等同享功能。&lt;/p&gt;
+&lt;p&gt; 下面的测试是在&lt;code&gt;CentOS release
+    
+    </summary>
+    
+      <category term="技术" scheme="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/"/>
+    
+    
+      <category term="NFS" scheme="http://blog.seoui.com/tags/NFS/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>nexus3 添加第三方本地文件jar到仓库</title>
+    <link href="http://blog.seoui.com/2017/10/23/nexus3-uploadfile/"/>
+    <id>http://blog.seoui.com/2017/10/23/nexus3-uploadfile/</id>
+    <published>2017-10-22T16:00:00.000Z</published>
+    <updated>2018-01-27T10:19:40.791Z</updated>
+    
+    <content type="html"><![CDATA[<p>因为nexus3和nexus2手动上传第三方jar有点区别 故记录一下。</p>
+<p>如上传京东 open-api-sdk-2.0.jar </p>
+<p>首先创建一个目录 方便执行上传的时候url参数 也可以不创建</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><div class="line">mkdir jd &amp;&amp; <span class="built_in">cd</span> jd</div></pre></td></tr></table></figure>
+<p> 简单的创建一个POM文件 vi open-api-sdk-2.0.pom 和把第三方jar文件放在此目录下</p>
+ <figure class="highlight xml"><table><tr><td class="code"><pre><div class="line"> <span class="tag">&lt;<span class="name">project</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">modelVersion</span>&gt;</span>4.0.0<span class="tag">&lt;/<span class="name">modelVersion</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>com.jd<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>open-api-sdk<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">version</span>&gt;</span>2.0<span class="tag">&lt;/<span class="name">version</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">project</span>&gt;</span></div></pre></td></tr></table></figure>
+<p> 上传XML</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><div class="line">curl -v -u admin:admin123 --upload-file pom.xml http://localhost:8081/nexus/repository/maven-releases/com/jd/open-api-sdk/2.0/open-api-sdk-2.0.pom</div></pre></td></tr></table></figure>
+<p>上传JAR文件</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><div class="line">curl -v -u admin:admin123 --upload-file open-api-sdk-2.0.jar  http://localhost:8081/nexus/repository/maven-releases/open-api-sdk/2.0/open-api-sdk-2.0.jar</div></pre></td></tr></table></figure>
+<p>都上传成功后 在项目中d的pom.xml就可以使用</p>
+<figure class="highlight xml"><table><tr><td class="code"><pre><div class="line"></div><div class="line"> <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></div><div class="line">   <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>com.jd<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></div><div class="line">   <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>open-api-sdk<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span> </div><div class="line">   <span class="tag">&lt;<span class="name">version</span>&gt;</span>2.0<span class="tag">&lt;/<span class="name">version</span>&gt;</span> </div><div class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></div></pre></td></tr></table></figure>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;因为nexus3和nexus2手动上传第三方jar有点区别 故记录一下。&lt;/p&gt;
+&lt;p&gt;如上传京东 open-api-sdk-2.0.jar &lt;/p&gt;
+&lt;p&gt;首先创建一个目录 方便执行上传的时候url参数 也可以不创建&lt;/p&gt;
+&lt;figure class=&quot;highligh
+    
+    </summary>
+    
+      <category term="技术" scheme="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/"/>
+    
+    
+      <category term="nexus3" scheme="http://blog.seoui.com/tags/nexus3/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>nginx配置proxy_pass URL末尾加与不加/(斜线)的区别</title>
+    <link href="http://blog.seoui.com/2017/10/11/nginxpass/"/>
+    <id>http://blog.seoui.com/2017/10/11/nginxpass/</id>
+    <published>2017-10-10T16:00:00.000Z</published>
+    <updated>2018-01-27T10:19:40.791Z</updated>
+    
+    <content type="html"><![CDATA[<p>假设访问路径的 /pss/bill.html </p>
+<h5 id="加-斜线的情况"><a href="#加-斜线的情况" class="headerlink" title="加/斜线的情况"></a>加/斜线的情况</h5><figure class="highlight lua"><table><tr><td class="code"><pre><div class="line">location  /pss/ &#123;</div><div class="line">  proxy_pass http://<span class="number">127.0</span><span class="number">.0</span><span class="number">.1</span>:<span class="number">18081</span>/;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>被代理的真实访问路径为：<a href="http://127.0.0.1:18081/bill.html" target="_blank" rel="external">http://127.0.0.1:18081/bill.html</a></p>
+<h5 id="不加-斜线的情况"><a href="#不加-斜线的情况" class="headerlink" title="不加/斜线的情况"></a>不加/斜线的情况</h5><figure class="highlight lua"><table><tr><td class="code"><pre><div class="line">location  /pss/ &#123;</div><div class="line">  proxy_pass http://<span class="number">127.0</span><span class="number">.0</span><span class="number">.1</span>:<span class="number">18081</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>被代理的真实访问路径为：<a href="http://127.0.0.1:18081/pss/bill.html" target="_blank" rel="external">http://127.0.0.1:18081/pss/bill.html</a></p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;假设访问路径的 /pss/bill.html &lt;/p&gt;
+&lt;h5 id=&quot;加-斜线的情况&quot;&gt;&lt;a href=&quot;#加-斜线的情况&quot; class=&quot;headerlink&quot; title=&quot;加/斜线的情况&quot;&gt;&lt;/a&gt;加/斜线的情况&lt;/h5&gt;&lt;figure class=&quot;highlig
+    
+    </summary>
+    
+      <category term="技术" scheme="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/"/>
+    
+    
+      <category term="nginx" scheme="http://blog.seoui.com/tags/nginx/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>常用搜索引擎技巧</title>
+    <link href="http://blog.seoui.com/2017/09/17/searcheng/"/>
+    <id>http://blog.seoui.com/2017/09/17/searcheng/</id>
+    <published>2017-09-16T16:00:00.000Z</published>
+    <updated>2018-01-27T10:19:40.791Z</updated>
+    
+    <content type="html"><![CDATA[<p>在这个互联网资源繁多的情况下，想在网上找点东西，第一时刻想到的就是google一下、百度一下，<br>但是从海量数据里更精准的找到你想要的内容的确需要一点小技巧。</p>
+<h5 id="双引号搜索"><a href="#双引号搜索" class="headerlink" title="双引号搜索"></a>双引号搜索</h5><p>  带了双引号的搜索都是精准搜索 简单理解就是不分词。</p>
+<p>  如：”笑松小站”  结果会搜索出包含搜索关键词的网页</p>
+<h5 id="混合查询"><a href="#混合查询" class="headerlink" title="+ - 混合查询"></a>+ - 混合查询</h5><p>  有点类似于条件判断   <em>注意一下符号前必须要带1个空格</em><br>  如: <code>百度 -一下</code>  结果会包含<code>百度</code>且不包含<code>一下</code>数据。<br>        <code>百度 +一下</code> 结果会包含<code>百度</code>且包含<code>一下</code>数据。  </p>
+<h5 id="书名搜索"><a href="#书名搜索" class="headerlink" title="书名搜索"></a>书名搜索</h5><p>   使用《》括起来的关键字不会被分词 <em>在百度有效</em><br>   如:<code>《中国共产党纪律处分条例》</code></p>
+<h5 id="site-搜索"><a href="#site-搜索" class="headerlink" title="site 搜索"></a>site 搜索</h5><p>   指定搜索某个站点的网页<br>   如:<code>site:movie.douban.com 加勒比海盗</code>     指定搜索豆瓣电影 关键字为 加勒比海盗</p>
+<h5 id="fileType-文件类型搜索"><a href="#fileType-文件类型搜索" class="headerlink" title="fileType 文件类型搜索"></a>fileType 文件类型搜索</h5><p>   指定搜索某种文件类型<br>   如:<code>filetype:ppt docker</code>  搜索结果为包含docker的ppt类型的文档。</p>
+<h5 id="Intitle-指定标题搜索"><a href="#Intitle-指定标题搜索" class="headerlink" title="Intitle 指定标题搜索"></a>Intitle 指定标题搜索</h5><p>  指定标题搜索包含某个关键字 与之同类型的还有<code>intext</code>。<br>  如:<code>intitle:战狼</code> 、<code>intext:战狼</code></p>
+<h5 id="inurl-包含URL搜索"><a href="#inurl-包含URL搜索" class="headerlink" title="inurl 包含URL搜索"></a>inurl 包含URL搜索</h5><p>   在指定URL中搜索指定关键词  感觉和site有点类似。<br>   如:<code>inurl:seoui.com 测试</code>  </p>
+<p>  目前个人用的比较多的就是这几个 另外在Google上发现还有许多的高级搜索有待挖掘。<br>   另外前段时间在网上找到了一个表格 在这里记录一下。</p>
+<table>
+<thead>
+<tr>
+<th>符号</th>
+<th style="text-align:center">描述</th>
+<th style="text-align:right">用法</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>allinanchor</td>
+<td style="text-align:center">限制搜索的词语是网页中链接内包含的关键词（可使用多个关键词）</td>
+<td style="text-align:right">allinanchor:keyword1 keyword2</td>
+</tr>
+<tr>
+<td>allinanchor</td>
+<td style="text-align:center">限制搜索的词语是网页中链接内包含的关键词（可使用多个关键词）</td>
+<td style="text-align:right">allinanchor:keyword1 keyword2</td>
+</tr>
+<tr>
+<td>allintext</td>
+<td style="text-align:center">限制搜索的词语是网页内文包含的关键词（可使用多个关键词）</td>
+<td style="text-align:right">allintext:keyword1 keyword2</td>
+</tr>
+<tr>
+<td>allintitle</td>
+<td style="text-align:center">限制搜索的词语是网页标题中包含的关键词（可使用多个关键词）</td>
+<td style="text-align:right">allintitle:keyword1 keyword2</td>
+</tr>
+<tr>
+<td>allinurl</td>
+<td style="text-align:center">限制搜索的词语是网页网址中包含的关键词（可使用多个关键词）</td>
+<td style="text-align:right">inurl:keyword1 keyword2</td>
+</tr>
+<tr>
+<td>filetype</td>
+<td style="text-align:center">限制所搜索的文件一个特定的格式</td>
+<td style="text-align:right">filetype:extension</td>
+</tr>
+<tr>
+<td>inanchor</td>
+<td style="text-align:center">限制搜索的词语是网页中链接内包含的关键词</td>
+<td style="text-align:right">inanchor:keyword</td>
+</tr>
+<tr>
+<td>intext</td>
+<td style="text-align:center">限制搜索的词语是网页内文包含的关键词</td>
+<td style="text-align:right">intext:keyword</td>
+</tr>
+<tr>
+<td>intitle</td>
+<td style="text-align:center">限制搜索的词语是网页标题中包含的关键词</td>
+<td style="text-align:right">intitle:keyword</td>
+</tr>
+<tr>
+<td>inurl</td>
+<td style="text-align:center">限制搜索的网页的地址</td>
+<td style="text-align:right">inurl:keyword</td>
+</tr>
+<tr>
+<td>site</td>
+<td style="text-align:center">限制所进行的搜索在指定的域名或网站内</td>
+<td style="text-align:right">site:domain</td>
+</tr>
+</tbody>
+</table>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;在这个互联网资源繁多的情况下，想在网上找点东西，第一时刻想到的就是google一下、百度一下，&lt;br&gt;但是从海量数据里更精准的找到你想要的内容的确需要一点小技巧。&lt;/p&gt;
+&lt;h5 id=&quot;双引号搜索&quot;&gt;&lt;a href=&quot;#双引号搜索&quot; class=&quot;headerlink&quot; 
+    
+    </summary>
+    
+      <category term="技术" scheme="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/"/>
+    
+      <category term="搜索引擎" scheme="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/%E6%90%9C%E7%B4%A2%E5%BC%95%E6%93%8E/"/>
+    
+    
+      <category term="搜索引擎" scheme="http://blog.seoui.com/tags/%E6%90%9C%E7%B4%A2%E5%BC%95%E6%93%8E/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>断点续传下载原理实现</title>
+    <link href="http://blog.seoui.com/2017/09/05/breakpoint-download/"/>
+    <id>http://blog.seoui.com/2017/09/05/breakpoint-download/</id>
+    <published>2017-09-04T16:00:00.000Z</published>
+    <updated>2018-01-27T10:19:40.790Z</updated>
+    
+    <content type="html"><![CDATA[<h4 id="需求背景"><a href="#需求背景" class="headerlink" title="需求背景"></a>需求背景</h4><ul>
+<li>动态创建的文件下载的时候希望浏览器显示下载进度</li>
+<li>动态创建的文件希望能够分段下载</li>
+</ul>
+<h4 id="HTTP断点续传报文"><a href="#HTTP断点续传报文" class="headerlink" title="HTTP断点续传报文"></a>HTTP断点续传报文</h4><p> 要实现<code>HTTP</code>断点续传必须要简单了解以下几个报文。</p>
+<ul>
+<li>Accept-Ranges  告诉客户端(浏览器..)服务器端支持断点续传 <code>服务器端返回</code></li>
+<li>Range          客户端告诉服务器端从指定的的位置/范围(这里值字节数)下载资源  <code>客户端发出</code></li>
+<li>Content-Range  服务器端告诉客户端响应的数据信息，在整个返回体中本部分的字节位置 <code>服务器端返回</code></li>
+<li>ETag           资源标识   <code>非必须</code> <code>服务器端返回</code></li>
+<li>Last-Modified  资源最后一次更新的时间 <code>非必须</code> <code>服务器端返回</code></li>
+</ul>
+<p><code>Range</code> 的范围格式</p>
+<ol>
+<li>表示0-499个字节范围：Range: bytes=0-499</li>
+<li>表示最后500个字节范围：Range: bytes=-500</li>
+<li>表示500字节开始到结束范围：Range: bytes=500-</li>
+<li>表示第一个和最后一个字节：Range: bytes=0-0,-1</li>
+<li>表示同时指定几个范围：Range: bytes=500-600,601-999</li>
+</ol>
+<p><code>Content-Range</code> 的数据格式    </p>
+<p>Content-Range: bytes 0-499/22036 ：表示返回0-499字节范围数据 资源一共22036个字节</p>
+<p>原理</p>
+<ol>
+<li>客户端发起请求 设置<code>Range</code>指定开始字节数或结束字节数 如果是从0开始也可以不用设置。</li>
+<li>服务器端检查到客户端<code>Range</code>头 解析开始字节数以及结束字节数 并返回报文头 <code>Accept-Ranges</code>表示支持断点续传，<code>Content-Range</code>记录该次向客户端写入流的位置信息，然后再写入流到客户端。</li>
+<li>服务端可以使用<code>ETag</code> <code>Last-Modified</code> 标记一下资源是否被修改。作一些验证工作，如果验证不通过则返回错误，非必须项。</li>
+</ol>
+<h4 id="java实现"><a href="#java实现" class="headerlink" title="java实现"></a>java实现</h4><figure class="highlight java"><table><tr><td class="code"><pre><div class="line">   OutputStream os=<span class="keyword">null</span>;</div><div class="line">    InputStream inputStream =<span class="keyword">null</span>;</div><div class="line">    File zipFile=<span class="keyword">null</span>;</div><div class="line">    <span class="keyword">try</span>&#123;</div><div class="line">        <span class="keyword">long</span> zipStart=System.currentTimeMillis();</div><div class="line">        zipFile=createFile();<span class="comment">//动态根据业务创建文件</span></div><div class="line">        <span class="keyword">if</span>(logger.isInfoEnabled())&#123;</div><div class="line">            logger.info(String.format(<span class="string">"压缩ZIP 花费时间 %s(s) "</span>,</div><div class="line">		(System.currentTimeMillis()-zipStart)/<span class="number">1000</span>));</div><div class="line">        &#125;</div><div class="line">        <span class="keyword">if</span> (zipFile.exists()) &#123;</div><div class="line">            <span class="keyword">long</span> downloadStart=System.currentTimeMillis();</div><div class="line">            inputStream= <span class="keyword">new</span> BufferedInputStream(<span class="keyword">new</span> FileInputStream(zipFile));</div><div class="line">            response.reset();</div><div class="line">            os=<span class="keyword">new</span> BufferedOutputStream(response.getOutputStream());</div><div class="line">            String userAgent = request.getHeader(<span class="string">"USER-AGENT"</span>);</div><div class="line">            String fileName=zipFile.getName();</div><div class="line">            <span class="keyword">if</span> (<span class="keyword">null</span> != userAgent &amp;&amp; -<span class="number">1</span> != userAgent.indexOf(<span class="string">"MSIE"</span>)) &#123;</div><div class="line">                fileName = URLEncoder.encode(fileName, <span class="string">"UTF8"</span>);</div><div class="line">            &#125; <span class="keyword">else</span> <span class="keyword">if</span> (<span class="keyword">null</span> != userAgent &amp;&amp; -<span class="number">1</span> != userAgent.indexOf(<span class="string">"Mozilla"</span>)) &#123;</div><div class="line">                fileName = <span class="keyword">new</span> String(fileName.getBytes(<span class="string">"utf-8"</span>), <span class="string">"ISO-8859-1"</span>);</div><div class="line">            &#125;</div><div class="line">            response.setHeader(<span class="string">"Accept-Ranges"</span>, <span class="string">"bytes"</span>);</div><div class="line">            response.setHeader(<span class="string">"Content-Disposition"</span>, </div><div class="line">		<span class="string">"attachment;filename="</span>+ fileName);</div><div class="line">            response.setContentType(MediaType.APPLICATION_OCTET_STREAM_VALUE);</div><div class="line">            <span class="keyword">long</span> pos = <span class="number">0</span>, fileSize=zipFile.length(),</div><div class="line">	last=fileSize-<span class="number">1</span>;</div><div class="line">            response.setHeader(<span class="string">"ETag"</span>,zipFile.getName().</div><div class="line">		 concat(Objects.toString(fileSize))</div><div class="line">                    .concat(<span class="string">"_"</span>).concat(Objects.toString(zipFile.lastModified())));</div><div class="line">            response.setDateHeader(<span class="string">"Last-Modified"</span>,zipFile.lastModified());</div><div class="line">            response.setDateHeader(<span class="string">"Expires"</span>,</div><div class="line">			System.currentTimeMillis()+<span class="number">1000</span>*<span class="number">60</span>*<span class="number">60</span>*<span class="number">24</span>);</div><div class="line">            <span class="keyword">if</span> (<span class="keyword">null</span> != request.getHeader(<span class="string">"Range"</span>)) &#123;</div><div class="line">                response.setStatus(HttpServletResponse.SC_PARTIAL_CONTENT);</div><div class="line">                <span class="keyword">try</span> &#123;</div><div class="line">                    <span class="comment">// 暂时只处理这2种range格式 1、RANGE: bytes=111- 2、Range: bytes=0-499</span></div><div class="line">                    String numRang = request.getHeader(<span class="string">"Range"</span>)</div><div class="line">			.replaceAll(<span class="string">"bytes="</span>, <span class="string">""</span>);</div><div class="line">                    String[] strRange = numRang.split(<span class="string">"-"</span>);</div><div class="line">                    <span class="keyword">if</span> (strRange.length == <span class="number">2</span>) &#123;</div><div class="line">                        pos = Long.parseLong(strRange[<span class="number">0</span>].trim());</div><div class="line">                        last = Long.parseLong(strRange[<span class="number">1</span>].trim());</div><div class="line">                    &#125; <span class="keyword">else</span> &#123;</div><div class="line">                        pos = Long.parseLong(numRang.replaceAll(<span class="string">"-"</span>, <span class="string">""</span>).trim());</div><div class="line">                    &#125;</div><div class="line">                &#125; <span class="keyword">catch</span> (NumberFormatException e) &#123;</div><div class="line">                    logger.error(request.getHeader(<span class="string">"Range"</span>) + <span class="string">" error"</span>);</div><div class="line">                    pos = <span class="number">0</span>;</div><div class="line">                &#125;</div><div class="line">            &#125;</div><div class="line">            <span class="keyword">long</span> rangLength = last - pos + <span class="number">1</span>;</div><div class="line">            String contentRange = <span class="keyword">new</span> StringBuffer(<span class="string">"bytes "</span>).</div><div class="line">			append(String.valueOf(pos)).</div><div class="line">			append(<span class="string">"-"</span>).append(last).append(<span class="string">"/"</span>).</div><div class="line">			append(String.valueOf(fileSize)).toString();</div><div class="line">            response.setHeader(<span class="string">"Content-Range"</span>, contentRange);</div><div class="line">            response.addHeader(<span class="string">"Content-Length"</span>,Objects.toString(rangLength));</div><div class="line">            <span class="keyword">if</span>(pos&gt;<span class="number">0</span>)&#123;</div><div class="line">                inputStream.skip(pos);</div><div class="line">            &#125;</div><div class="line">            <span class="keyword">byte</span>[] buffer = <span class="keyword">new</span> <span class="keyword">byte</span>[<span class="number">1024</span>*<span class="number">512</span>];<span class="comment">//每次以512KB 0.5MB的流量下载</span></div><div class="line">            <span class="keyword">int</span> length = <span class="number">0</span>,sendTotal=<span class="number">0</span>;</div><div class="line">            <span class="keyword">while</span> (sendTotal &lt; rangLength &amp;&amp; length!=-<span class="number">1</span>) &#123;</div><div class="line">                length = inputStream.read(buffer, <span class="number">0</span>,</div><div class="line">		((rangLength - sendTotal) &lt;= buffer.length ?</div><div class="line">                        ((<span class="keyword">int</span>) (rangLength - sendTotal)) : buffer.length));</div><div class="line">                sendTotal = sendTotal + length;</div><div class="line">                os.write(buffer, <span class="number">0</span>, length);</div><div class="line">            &#125;</div><div class="line">            <span class="keyword">if</span>(os!=<span class="keyword">null</span>)&#123;</div><div class="line">                os.flush();</div><div class="line">            &#125;</div><div class="line">            <span class="keyword">if</span>(logger.isInfoEnabled())&#123;</div><div class="line">                logger.info(String.format(<span class="string">"下载 花费时间 %s(s) "</span>,</div><div class="line">		(System.currentTimeMillis()-downloadStart)/<span class="number">1000</span>));</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line"></div><div class="line">    &#125;<span class="keyword">catch</span> (Exception e)&#123;</div><div class="line">        <span class="keyword">if</span>(StringUtils.endsWithIgnoreCase(e.getMessage(),<span class="string">"Broken pipe"</span>))&#123;</div><div class="line">            logger.error(<span class="string">"用户取消下载"</span>);</div><div class="line">        &#125;</div><div class="line">        logger.error(e.getMessage(),e);</div><div class="line">    &#125;<span class="keyword">finally</span> &#123;</div><div class="line">        <span class="keyword">if</span>(os!=<span class="keyword">null</span>)&#123;</div><div class="line">            <span class="keyword">try</span>&#123;</div><div class="line">                os.close();</div><div class="line">            &#125;<span class="keyword">catch</span> (Exception e)&#123;&#125;</div><div class="line">        &#125;</div><div class="line">        <span class="keyword">if</span>(inputStream!=<span class="keyword">null</span>)&#123;</div><div class="line">            <span class="keyword">try</span>&#123;</div><div class="line">                IOUtils.closeQuietly(inputStream);</div><div class="line">            &#125;<span class="keyword">catch</span> (Exception e)&#123;&#125;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>比如<code>google</code>浏览器下载的时候就能看到下载进度以及暂停下载和恢复下载操作，也可以设置<code>Range</code>测试分段下载。</p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;h4 id=&quot;需求背景&quot;&gt;&lt;a href=&quot;#需求背景&quot; class=&quot;headerlink&quot; title=&quot;需求背景&quot;&gt;&lt;/a&gt;需求背景&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;动态创建的文件下载的时候希望浏览器显示下载进度&lt;/li&gt;
+&lt;li&gt;动态创建的文件希望能够分段下载&lt;/li&gt;
+&lt;/
+    
+    </summary>
+    
+      <category term="技术" scheme="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/"/>
+    
+      <category term="HTTP" scheme="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/HTTP/"/>
+    
+    
+      <category term="断点续传" scheme="http://blog.seoui.com/tags/%E6%96%AD%E7%82%B9%E7%BB%AD%E4%BC%A0/"/>
+    
+      <category term="http" scheme="http://blog.seoui.com/tags/http/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>基于redis的延迟消息队列设计</title>
+    <link href="http://blog.seoui.com/2017/08/19/delayqueue/"/>
+    <id>http://blog.seoui.com/2017/08/19/delayqueue/</id>
+    <published>2017-08-18T16:00:00.000Z</published>
+    <updated>2018-01-27T10:19:40.790Z</updated>
+    
+    <content type="html"><![CDATA[<h4 id="需求背景"><a href="#需求背景" class="headerlink" title="需求背景"></a>需求背景</h4><ul>
+<li>用户下订单成功之后隔20分钟给用户发送上门服务通知短信</li>
+<li>订单完成一个小时之后通知用户对上门服务进行评价</li>
+<li><p>业务执行失败之后隔10分钟重试一次</p>
+<p>类似的场景比较多 简单的处理方式就是使用定时任务 假如数据比较多的时候 有的数据可能延迟比较严重,而且越来越多的定时业务导致任务调度很繁琐不好管理。 </p>
+</li>
+</ul>
+<h4 id="队列设计"><a href="#队列设计" class="headerlink" title="队列设计"></a>队列设计</h4><p> 目前可以考虑使用<code>rabbitmq</code>来满足需求 但是不打算使用,因为目前太多的业务使用了另外的MQ中间件。</p>
+<p> <em>开发前需要考虑的问题？</em></p>
+<ul>
+<li>及时性 消费端能按时收到</li>
+<li>同一时间消息的消费权重</li>
+<li>可靠性 消息不能出现没有被消费掉的情况</li>
+<li>可恢复 假如有其他情况 导致消息系统不可用了 至少能保证数据可以恢复</li>
+<li>可撤回 因为是延迟消息 没有到执行时间的消息支持可以取消消费</li>
+<li>高可用 多实例 这里指HA/主备模式并不是多实例同时一起工作</li>
+<li><p>消费端如何消费</p>
+<p>当然初步选用<code>redis</code>作为数据缓存的主要原因是因为<code>redis</code>自身支持<code>zset</code>的数据结构(score 延迟时间毫秒) 这样就少了排序的烦恼而且性能还很高,正好我们的需求就是按时间维度去判定执行的顺序 同时也支持<code>map</code> <code>list</code>数据结构。</p>
+</li>
+</ul>
+<p>简单定义一个消息数据结构</p>
+ <figure class="highlight java"><table><tr><td class="code"><pre><div class="line"></div><div class="line"><span class="keyword">private</span> String topic;<span class="comment">/***topic**/</span></div><div class="line"><span class="keyword">private</span> String id;<span class="comment">/***自动生成 全局惟一 snowflake**/</span></div><div class="line"><span class="keyword">private</span> String bizKey;</div><div class="line"><span class="keyword">private</span> <span class="keyword">long</span> delay;<span class="comment">/***延时毫秒数**/</span></div><div class="line"><span class="keyword">private</span> <span class="keyword">int</span> priority;<span class="comment">//优先级</span></div><div class="line"><span class="keyword">private</span> <span class="keyword">long</span> ttl;<span class="comment">/**消费端消费的ttl**/</span></div><div class="line"><span class="keyword">private</span> String body;<span class="comment">/***消息体**/</span></div><div class="line"><span class="keyword">private</span> <span class="keyword">long</span> createTime=System.currentTimeMillis();</div><div class="line"><span class="keyword">private</span> <span class="keyword">int</span> status= Status.WaitPut.ordinal();</div></pre></td></tr></table></figure>
+<p> 运行原理：</p>
+<ol>
+<li>用<code>Map</code>来存储元数据。id作为key,整个消息结构序列化(json/…)之后作为value,放入元消息池中。</li>
+<li>将<code>id</code>放入其中(有N个)一个<code>zset</code>有序列表中,以createTime+delay+priority作为score。修改状态为正在延迟中</li>
+<li>使用timer实时监控<code>zset</code>有序列表中top 10的数据 。 如果数据<code>score</code>&lt;=当前时间毫秒就取出来,根据<code>topic</code>重新放入一个新的可消费列表(<code>list</code>)中,在zset中删除已经取出来的数据,并修改状态为待消费</li>
+<li>客户端获取数据只需要从可消费队列中获取就可以了。并且状态必须为待消费 运行时间需要&lt;=当前时间的 如果不满足 重新放入<code>zset</code>列表中,修改状态为正在延迟。如果满足修改状态为已消费。或者直接删除元数据。</li>
+</ol>
+<h4 id="客户端"><a href="#客户端" class="headerlink" title="客户端"></a>客户端</h4><p> 因为涉及到不同程序语言的问题,所以当前默认支持<code>http</code>访问方式。</p>
+<ol>
+<li>添加延时消息添加成功之后返回消费唯一ID  POST /push {…..消息体}</li>
+<li>删除延时消息 需要传递消息ID           GET /delete?id=</li>
+<li>恢复延时消息                         GET /reStore?expire=true|false   expire是否恢复已过期未执行的消息。</li>
+<li>恢复单个延时消息 需要传递消息ID       GET /reStore/id</li>
+<li>获取消息 需要长连接                  GET /get/topic</li>
+</ol>
+<p>用nginx暴露服务,配置为轮询 在添加延迟消息的时候就可以流量平均分配。 </p>
+<p>目前系统中客户端并没有采用HTTP长连接的方式来消费消息,而是采用MQ的方式来消费数据这样客户端就可以不用关心延迟消息队列。只需要在发送MQ的时候拦截一下 如果是延迟消息就用延迟消息系统处理。</p>
+<h4 id="消息可恢复"><a href="#消息可恢复" class="headerlink" title="消息可恢复"></a>消息可恢复</h4><p> 实现恢复的原理 正常情况下一般都是记录日志,比如<code>mysql</code>的<code>binlog</code>等。</p>
+<p>这里我们直接采用<code>mysql</code>数据库作为记录日志。</p>
+<p>目前打算创建以下2张表:</p>
+<ol>
+<li>消息表  字段包括整个消息体 </li>
+<li>消息流转表  字段包括消息ID、变更状态、变更时间、<code>zset</code>扫描线程Name、host/ip </li>
+</ol>
+<p>定义<code>zset</code>扫描线程Name是为了更清楚的看到消息被分发到具体哪个<code>zset</code>中。前提是<code>zset</code>的key和监控<code>zset</code>的线程名称要有点关系 这里也可以是zset key。</p>
+<p>举个栗子</p>
+<p>假如<code>redis</code>服务器宕机了,重启之后发现数据也没有了。所以这个恢复是很有必要的,只需要从表1也就是<code>消息表</code>中把消息状态不等于已消费的数据全部重新分发到延迟队列中去,然后同步一下状态就可以了。</p>
+<p>当然恢复单个任务也可以这么干。</p>
+<h4 id="关于高可用"><a href="#关于高可用" class="headerlink" title="关于高可用"></a>关于高可用</h4><p>分布式协调还是选用<code>zookeeper</code>吧。</p>
+<p>如果有多个实例最多同时只能有1个实例工作 这样就避免了分布式竞争锁带来的坏处,当然如果业务需要多个实例同时工作也是支持的,也就是一个消息最多只能有1个实例处理,可以选用<code>zookeeper</code>或者<code>redis</code>就能实现分布式锁了。</p>
+<p>最终做了一下测试多实例同时运行,可能因为会涉及到锁的问题性能有所下降,反而单机效果很好。所以比较推荐基于docker的主备部署模式。</p>
+<h4 id="扩展"><a href="#扩展" class="headerlink" title="扩展"></a>扩展</h4><p>支持<code>zset</code>队列个数可配置 避免大数据带来高延迟的问题。</p>
+<p>目前存在日志和<code>redis</code>元数据有可能不一致的问题 如<code>mysql</code>挂了,写日志不会成功。</p>
+<p>设计图：<br><figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="http://static.1.seoui.com/images/2017/08/delayqueue.png" alt="" title="">
+                </div>
+                <div class="image-caption"></div>
+            </figure></p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;h4 id=&quot;需求背景&quot;&gt;&lt;a href=&quot;#需求背景&quot; class=&quot;headerlink&quot; title=&quot;需求背景&quot;&gt;&lt;/a&gt;需求背景&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;用户下订单成功之后隔20分钟给用户发送上门服务通知短信&lt;/li&gt;
+&lt;li&gt;订单完成一个小时之后通知用户对上门服务
+    
+    </summary>
+    
+      <category term="技术" scheme="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/"/>
+    
+      <category term="redis" scheme="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/redis/"/>
+    
+      <category term="延迟消息" scheme="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/redis/%E5%BB%B6%E8%BF%9F%E6%B6%88%E6%81%AF/"/>
+    
+    
+      <category term="延迟队列" scheme="http://blog.seoui.com/tags/%E5%BB%B6%E8%BF%9F%E9%98%9F%E5%88%97/"/>
+    
+      <category term="redis" scheme="http://blog.seoui.com/tags/redis/"/>
+    
+      <category term="延迟消息" scheme="http://blog.seoui.com/tags/%E5%BB%B6%E8%BF%9F%E6%B6%88%E6%81%AF/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>记一次Mysql5.7安装</title>
+    <link href="http://blog.seoui.com/2017/07/02/mysql5_7install/"/>
+    <id>http://blog.seoui.com/2017/07/02/mysql5_7install/</id>
+    <published>2017-07-01T16:00:00.000Z</published>
+    <updated>2018-01-27T10:19:40.790Z</updated>
+    
+    <content type="html"><![CDATA[<h4 id="下载"><a href="#下载" class="headerlink" title="下载"></a>下载</h4><p> 下载mysql5.7地址:<code>wget https://cdn.mysql.com//Downloads/MySQL-5.7/mysql-5.7.18-1.el6.x86_64.rpm-bundle.tar</code></p>
+<p> 另外分享一个百度云盘的下载链接 <code>http://pan.baidu.com/s/1qYAuYBi</code></p>
+<p> 下载下来之后 得到一个mysql-5.7.18-1.el6.x86_64.rpm-bundle.tar</p>
+<p> 解压 得到以下rpm包</p>
+ <figure class="highlight bash"><table><tr><td class="code"><pre><div class="line">  tar -vxf mysql-5.7.18-1.el6.x86_64.rpm-bundle.tar </div><div class="line"> </div><div class="line">-rw-r--r-- 1 root root  470507520 Jul  1 23:05 mysql-5.7.18-1.el6.x86_64.rpm-bundle.tar</div><div class="line">-rw-r--r-- 1 7155 31415  23618836 Mar 20 02:40 mysql-community-client-5.7.18-1.el6.x86_64.rpm</div><div class="line">-rw-r--r-- 1 7155 31415    335496 Mar 20 02:40 mysql-community-common-5.7.18-1.el6.x86_64.rpm</div><div class="line">-rw-r--r-- 1 7155 31415   3747352 Mar 20 02:40 mysql-community-devel-5.7.18-1.el6.x86_64.rpm</div><div class="line">-rw-r--r-- 1 7155 31415  39086508 Mar 20 02:40 mysql-community-embedded-5.7.18-1.el6.x86_64.rpm</div><div class="line">-rw-r--r-- 1 7155 31415 135869292 Mar 20 02:40 mysql-community-embedded-devel-5.7.18-1.el6.x86_64.rpm</div><div class="line">-rw-r--r-- 1 7155 31415   2177064 Mar 20 02:40 mysql-community-libs-5.7.18-1.el6.x86_64.rpm</div><div class="line">-rw-r--r-- 1 7155 31415   1723180 Mar 20 02:40 mysql-community-libs-compat-5.7.18-1.el6.x86_64.rpm</div><div class="line">-rw-r--r-- 1 7155 31415 159060212 Mar 20 02:41 mysql-community-server-5.7.18-1.el6.x86_64.rpm</div><div class="line">-rw-r--r-- 1 7155 31415 104881084 Mar 20 02:41 mysql-community-test-5.7.18-1.el6.x86_64.rpm</div></pre></td></tr></table></figure>
+<h4 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h4><p> 这里主要安装 server 和client<br> <figure class="highlight bash"><table><tr><td class="code"><pre><div class="line">yum install libaio  <span class="comment">#首先安装软件包的依赖</span></div><div class="line"><span class="comment">#依次安装</span></div><div class="line">rpm -ivh mysql-community-common-5.7.18-1.el6.x86_64.rpm</div><div class="line">rpm -ivh mysql-community-libs-5.7.18-1.el6.x86_64.rpm</div><div class="line">rpm -ivh mysql-community-client-5.7.18-1.el6.x86_64.rpm</div><div class="line">rpm -ivh mysql-community-server-5.7.18-1.el6.x86_64.rpm</div></pre></td></tr></table></figure></p>
+<p> 另外附上安装之后的一些参数默认值</p>
+<table>
+<thead>
+<tr>
+<th>Files or Resources</th>
+<th style="text-align:center">Location</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Client programs and scripts</td>
+<td style="text-align:center">/usr/bin</td>
+</tr>
+<tr>
+<td>mysqld server</td>
+<td style="text-align:center">/usr/sbin</td>
+</tr>
+<tr>
+<td>Configuration file</td>
+<td style="text-align:center">/etc/my.cnf</td>
+</tr>
+<tr>
+<td>Data directory</td>
+<td style="text-align:center">/var/lib/mysql</td>
+</tr>
+<tr>
+<td>Error log file</td>
+<td style="text-align:center">For RHEL, Oracle Linux, CentOS or Fedora platforms: /var/log/mysqld.log For SLES: /var/log/mysql/mysqld.log</td>
+</tr>
+<tr>
+<td>Value of secure_file_priv</td>
+<td style="text-align:center">/var/lib/mysql-files</td>
+</tr>
+<tr>
+<td>System V init script</td>
+<td style="text-align:center">For RHEL, Oracle Linux, CentOS or Fedora platforms: /etc/init.d/mysqld For SLES: /etc/init.d/mysql For SLES: /etc/init.d/mysql</td>
+</tr>
+<tr>
+<td>Systemd service</td>
+<td style="text-align:center">For RHEL, Oracle Linux, CentOS or Fedora platforms: mysqld For SLES: mysql</td>
+</tr>
+<tr>
+<td>Pid file</td>
+<td style="text-align:center">/var/run/mysql/mysqld.pid</td>
+</tr>
+<tr>
+<td>Socket</td>
+<td style="text-align:center">/var/lib/mysql/mysql.sock</td>
+</tr>
+<tr>
+<td>Keyring directory</td>
+<td style="text-align:center">/var/lib/mysql-keyring</td>
+</tr>
+<tr>
+<td>Unix manual pages</td>
+<td style="text-align:center">/usr/share/man</td>
+</tr>
+<tr>
+<td>Include (header) files</td>
+<td style="text-align:center">/usr/include/mysql</td>
+</tr>
+<tr>
+<td>Libraries</td>
+<td style="text-align:center">/usr/lib/mysql</td>
+</tr>
+<tr>
+<td>Miscellaneous support files (for example, error messages, and character set files)</td>
+<td style="text-align:center">/usr/share/mysql</td>
+</tr>
+</tbody>
+</table>
+<p> 安装完成之后还会创建一个名为mysql的用户和一个mysql用户组在系统上。</p>
+<p> <em>需要注意的是在旧版本的mysql中配置文件的路径在 /usr/my.cnf ，强烈建议您把/usr/my.cnf这个配置迁移到/etc/my.cnf。然后删除/usr/my.cnf</em></p>
+<h4 id="启动"><a href="#启动" class="headerlink" title="启动"></a>启动</h4> <figure class="highlight bash"><table><tr><td class="code"><pre><div class="line">sudo service mysqld start</div></pre></td></tr></table></figure>
+<p> 启动完成之后 会把root超级用户的密码自动生成 在日志中可以看到生成的密码，而且需要用户强制修改 不得不说这个版本对安全性提高了不少,在修改密码的时候还定义了密码的策略 如 安装密码长度、密码的复杂度等。</p>
+<p> 查看密码</p>
+ <figure class="highlight bash"><table><tr><td class="code"><pre><div class="line"> sudo grep <span class="string">'temporary password'</span> /var/<span class="built_in">log</span>/mysqld.log</div><div class="line"></div><div class="line">[root@localhost ~]<span class="comment"># sudo grep 'temporary password' /var/log/mysqld.log</span></div><div class="line">2017-07-02T06:05:16.890856Z 1 [Note] A temporary password is generated <span class="keyword">for</span> root@localhost: cfDZrTud2L(j</div></pre></td></tr></table></figure>
+<h4 id="修改密码"><a href="#修改密码" class="headerlink" title="修改密码"></a>修改密码</h4> <figure class="highlight bash"><table><tr><td class="code"><pre><div class="line">mysql -u root -p</div><div class="line"><span class="comment">#输入日志中的密码</span></div><div class="line"></div><div class="line">ALTER USER <span class="string">'root'</span>@<span class="string">'localhost'</span> IDENTIFIED BY <span class="string">'root'</span>;</div></pre></td></tr></table></figure>
+<p> 报错了 <code>ERROR 1819 (HY000): Your password does not satisfy the current policy requirements</code></p>
+<p> 在5.7版本中会报错 就是前面说到的提供了默认的<code>validate_password</code>密码安全策略，这是一个插件 只不过在5.7版本中默认被安装了</p>
+<p> 由于我这里是本机，    密码设置简单点不会被忘记，所以我们修改一下密码的安全策略</p>
+ <figure class="highlight html"><table><tr><td class="code"><pre><div class="line">set global validate_password_policy=0;#使用只按照密码长度验证 也就是策略中的第0个密码策略方式</div><div class="line">set global validate_password_length=2;#密码的长度要求</div><div class="line">ALTER USER 'root'@'localhost' IDENTIFIED BY 'root'; #这个时候才执行这个语句就没有报错了</div></pre></td></tr></table></figure>
+<p> 参考文档  <a href="https://dev.mysql.com/doc/refman/5.7/en/linux-installation-rpm.html" target="_blank" rel="external">https://dev.mysql.com/doc/refman/5.7/en/linux-installation-rpm.html</a></p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;h4 id=&quot;下载&quot;&gt;&lt;a href=&quot;#下载&quot; class=&quot;headerlink&quot; title=&quot;下载&quot;&gt;&lt;/a&gt;下载&lt;/h4&gt;&lt;p&gt; 下载mysql5.7地址:&lt;code&gt;wget https://cdn.mysql.com//Downloads/MySQL-5.7/my
+    
+    </summary>
+    
+      <category term="技术" scheme="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/"/>
+    
+      <category term="Mysql" scheme="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/Mysql/"/>
+    
+    
+      <category term="mysql" scheme="http://blog.seoui.com/tags/mysql/"/>
+    
+      <category term="mysql5.7" scheme="http://blog.seoui.com/tags/mysql5-7/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Objenesis轻松实现为无参构造的类实例化</title>
+    <link href="http://blog.seoui.com/2017/06/18/objenesis/"/>
+    <id>http://blog.seoui.com/2017/06/18/objenesis/</id>
+    <published>2017-06-17T16:00:00.000Z</published>
+    <updated>2018-01-27T10:19:40.789Z</updated>
+    
+    <content type="html"><![CDATA[<p><code>Objenesis</code>是一个用于实例化java类的小型Java库。</p>
+<p> 主要对于用户推荐使用以下3个API</p>
+<ul>
+<li>Objenesis </li>
+<li>ObjectInstantiator</li>
+<li>InstantiatorStrategy</li>
+</ul>
+<p> 首先得创建一个没有无参构建器的java类<code>Example.java</code></p>
+ <figure class="highlight java"><table><tr><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Example</span>  </span>&#123;</div><div class="line">	<span class="comment">//为属性设置一个默认值</span></div><div class="line">    <span class="keyword">private</span> String name=<span class="string">"没有无参构造函数"</span>;</div><div class="line"><span class="comment">//    public Example()&#123;&#125;</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Example</span><span class="params">(String name)</span></span>&#123;</div><div class="line">        System.out.println(<span class="string">"创建了---"</span>+Example.class.getName());</div><div class="line">        <span class="keyword">this</span>.name=name;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getName</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> <span class="keyword">this</span>.name;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>正常情况下这个类在外部情况 如果不调用<code>Example(name)</code>这个构建方法 是没有办法实例化的，如果你正好有这个需求</p>
+<p>这个时候<code>Objenesis</code>就有用武之地了</p>
+<h4 id="方法一"><a href="#方法一" class="headerlink" title="方法一"></a>方法一</h4><pre><code class="java">Objenesis objenesis = <span class="keyword">new</span> ObjenesisStd(<span class="keyword">true</span>);
+ObjectInstantiator thingyInstantiator = objenesis.getInstantiatorOf(Example.class);
+
+Example example1 = (Example)thingyInstantiator.newInstance();
+System.out.println(<span class="string">"example1:"</span>+example1+<span class="string">"---"</span>+example1.getName());
+Example example2 = (Example)thingyInstantiator.newInstance();
+System.out.println(<span class="string">"example2:"</span>+example2+<span class="string">"---"</span>+example2.getName());
+Example example3 = (Example)thingyInstantiator.newInstance();
+System.out.println(<span class="string">"example3:"</span>+example3+<span class="string">"---"</span>+example3.getName());
+</code></pre>
+<p>运行结果 发现属性name原本我们是设置一个默认值的，利用<code>Objenesis</code>实例化后默认值为<code>null</code>了。</p>
+<pre><code class="html">
+example1:Example@38cccef---null
+example2:Example@5679c6c6---null
+example3:Example@27ddd392---null
+</code></pre>
+<h4 id="方法二"><a href="#方法二" class="headerlink" title="方法二"></a>方法二</h4><pre><code class="java">
+Example example4 =objenesis.newInstance(Example.class);
+System.out.println(<span class="string">"example4:"</span>+example4+<span class="string">"----"</span>+example4.getName());
+</code></pre>
+<p> 同样也能够创建成功。</p>
+<p> 区别在与 如果想批量实例化多个对象 那么方法一的效率会更高 。</p>
+<p>另外<code>Objenesis</code>在spring4.0+版本中也有用到 不再强制要求写一个无参构造器了。<code>kryo</code>序列化中也有用到。</p>
+<p>测试代码:<a href="https://github.com/peachyy/objenesis-example" target="_blank" rel="external">https://github.com/peachyy/objenesis-example</a></p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;&lt;code&gt;Objenesis&lt;/code&gt;是一个用于实例化java类的小型Java库。&lt;/p&gt;
+&lt;p&gt; 主要对于用户推荐使用以下3个API&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Objenesis &lt;/li&gt;
+&lt;li&gt;ObjectInstantiator&lt;/li&gt;
+&lt;li&gt;Insta
+    
+    </summary>
+    
+      <category term="技术" scheme="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/"/>
+    
+      <category term="Objenesis" scheme="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/Objenesis/"/>
+    
+    
+      <category term="Objenesis" scheme="http://blog.seoui.com/tags/Objenesis/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>htmlUnit根据html创建htmlPage</title>
+    <link href="http://blog.seoui.com/2017/06/03/htmlunitstringtopage/"/>
+    <id>http://blog.seoui.com/2017/06/03/htmlunitstringtopage/</id>
+    <published>2017-06-02T16:00:00.000Z</published>
+    <updated>2018-01-27T10:19:40.789Z</updated>
+    
+    <content type="html"><![CDATA[<p> 在<code>htmlunit</code>中可以通过URL轻松获取一个HtmlPage,但是却没有提供根据Html字符串创建一个HtmlPage。</p>
+<p> 通过Url获取一个page</p>
+ <figure class="highlight java"><table><tr><td class="code"><pre><div class="line"> </div><div class="line">HtmlPage page = webClient.getPage(<span class="string">"http://www.baidu.com/"</span>);</div></pre></td></tr></table></figure>
+<p> 但是源码包里面有通过<code>URL</code>下载网页源码，并通过<code>StringWebResponse</code>构建一个<code>HtmlPage</code>对象,<br> 所以利用这一个机制我们便可以利用<code>StringWebResponse</code> 手动构建一个HtmlPage对象。</p>
+<p> 实现方式如下</p>
+ <figure class="highlight java"><table><tr><td class="code"><pre><div class="line"></div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> HtmlPage <span class="title">getPage</span><span class="params">(WebClient client, String html, String url, WebWindow window)</span> </span>&#123;</div><div class="line">	<span class="keyword">try</span> &#123;</div><div class="line">		URL u = <span class="keyword">new</span> URL(StringUtils.isBlank(url) ? <span class="string">"http://www.idea.com"</span> : url);</div><div class="line">		StringWebResponse response = <span class="keyword">new</span> StringWebResponse(html, u);</div><div class="line">		HtmlPage page = HTMLParser.parseHtml(response, window != <span class="keyword">null</span> ? window : client.getCurrentWindow());</div><div class="line">		<span class="keyword">return</span> page;</div><div class="line">	&#125; <span class="keyword">catch</span> (Exception e) &#123;</div><div class="line">		<span class="keyword">throw</span> <span class="keyword">new</span> RuntimeException(<span class="string">"字符串转换为htmlPage出错"</span>, e);</div><div class="line">	&#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> HtmlPage <span class="title">getPage</span><span class="params">(String html)</span> </span>&#123;</div><div class="line">       <span class="keyword">return</span> getPage(<span class="keyword">new</span> WebClient(), html, <span class="keyword">null</span>,<span class="keyword">null</span>);</div><div class="line">   &#125;</div></pre></td></tr></table></figure>
+<p> 接下来调用<code>getPage</code>方法 并传入Html字符串就可以返回一个HtmlPage对象了。</p>
+<p> 本文参考 <a href="https://stackoverflow.com/questions/6136435/how-to-create-htmlunit-htmlpage-object-from-string" target="_blank" rel="external">https://stackoverflow.com/questions/6136435/how-to-create-htmlunit-htmlpage-object-from-string</a></p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt; 在&lt;code&gt;htmlunit&lt;/code&gt;中可以通过URL轻松获取一个HtmlPage,但是却没有提供根据Html字符串创建一个HtmlPage。&lt;/p&gt;
+&lt;p&gt; 通过Url获取一个page&lt;/p&gt;
+ &lt;figure class=&quot;highlight java&quot;&gt;&lt;ta
+    
+    </summary>
+    
+      <category term="技术" scheme="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/"/>
+    
+      <category term="htmlunit" scheme="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/htmlunit/"/>
+    
+    
+      <category term="htmlunit" scheme="http://blog.seoui.com/tags/htmlunit/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>使用jenv管理java库 国内版本</title>
+    <link href="http://blog.seoui.com/2017/05/08/jenvmanager/"/>
+    <id>http://blog.seoui.com/2017/05/08/jenvmanager/</id>
+    <published>2017-05-07T16:00:00.000Z</published>
+    <updated>2018-01-27T10:19:40.789Z</updated>
+    
+    <content type="html"><![CDATA[<p> <code>jenv</code>是一个并行版本管理的java开发包，注意是<code>国内的</code>，并不是<a href="https://github.com/gcuisinier/jenv" target="_blank" rel="external">https://github.com/gcuisinier/jenv</a>可以安装在<code>Linux</code> <code>Mac</code> <code>Windows</code>操作系统上，工具包为我们提供了常用的命令行接口 用户安装、删除、搜索、切换软件版本。</p>
+<h4 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h4> <figure class="highlight shell"><table><tr><td class="code"><pre><div class="line">curl -L -s get.jenv.io | bash</div></pre></td></tr></table></figure>
+<p> 下载完shell后需要重新进入一下终端 或者 <code>source $HOME/.jenv/bin/jenv-init.sh</code></p>
+<h4 id="命令解释"><a href="#命令解释" class="headerlink" title="命令解释"></a>命令解释</h4><p>jenv all  显示所有被管理着的软件包（candidate）</p>
+<p>jenv list candidate 列出candidate软件包的所有版本</p>
+<p>jenv install candidate version 安装指定版本的软件包</p>
+<p>jenv uninstall  candidate version 卸载指定版本的软件包</p>
+<p>jenv reinstall candidate version 重新安装软件包 如果不指定版本号 会删除以前旧的版本号 安装至最新版</p>
+<p>jenv use candidate version 使指定版本的软件包生效</p>
+<p>jenv default candidate version 默认使用指定版本的软件包</p>
+<p>jenv which candidate 列出当前用到的软件版本 及软件所在目录</p>
+<p>jenv cd candidate 进入指定软件包默认的版本的安装目录</p>
+<p>另外作者的源码托管地址在:<a href="https://github.com/linux-china/jenv" target="_blank" rel="external">https://github.com/linux-china/jenv</a></p>
+<h4 id="示例"><a href="#示例" class="headerlink" title="示例"></a>示例</h4><p>安装java1.8</p>
+ <figure class="highlight shell"><table><tr><td class="code"><pre><div class="line">jenv install java 1.8.0_77</div></pre></td></tr></table></figure>
+<p>卸载java1.8 </p>
+ <figure class="highlight shell"><table><tr><td class="code"><pre><div class="line">jenv uninstall java 1.8.0_77</div></pre></td></tr></table></figure>
+<p>进入安装目录 </p>
+ <figure class="highlight shell"><table><tr><td class="code"><pre><div class="line">jenv cd java</div></pre></td></tr></table></figure>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt; &lt;code&gt;jenv&lt;/code&gt;是一个并行版本管理的java开发包，注意是&lt;code&gt;国内的&lt;/code&gt;，并不是&lt;a href=&quot;https://github.com/gcuisinier/jenv&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;ht
+    
+    </summary>
+    
+      <category term="技术" scheme="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/"/>
+    
+      <category term="jenv" scheme="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/jenv/"/>
+    
+    
+      <category term="jenv" scheme="http://blog.seoui.com/tags/jenv/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>常用的XPath语法说明</title>
+    <link href="http://blog.seoui.com/2017/04/27/xpathstudy/"/>
+    <id>http://blog.seoui.com/2017/04/27/xpathstudy/</id>
+    <published>2017-04-26T16:00:00.000Z</published>
+    <updated>2018-01-27T10:19:40.788Z</updated>
+    
+    <content type="html"><![CDATA[<p> <code>XPath</code>在选取<code>XML</code>文档中有着非常方便的功能，下面介绍一些常用的表达式语法。</p>
+<p> 假设如下XML<br> <figure class="highlight html"><table><tr><td class="code"><pre><div class="line">&lt;?xml version="1.0" encoding="ISO-8859-1"?&gt;</div><div class="line"><span class="tag">&lt;<span class="name">bookstore</span>&gt;</span></div><div class="line">	<span class="tag">&lt;<span class="name">book</span>&gt;</span></div><div class="line">	  <span class="tag">&lt;<span class="name">title</span> <span class="attr">lang</span>=<span class="string">"en"</span>&gt;</span>测试<span class="tag">&lt;/<span class="name">title</span>&gt;</span></div><div class="line">	  <span class="tag">&lt;<span class="name">author</span> <span class="attr">sex</span>=<span class="string">"女"</span>&gt;</span>笑笑笑<span class="tag">&lt;/<span class="name">author</span>&gt;</span> </div><div class="line">	  <span class="tag">&lt;<span class="name">year</span>&gt;</span>2017<span class="tag">&lt;/<span class="name">year</span>&gt;</span></div><div class="line">	  <span class="tag">&lt;<span class="name">price</span>&gt;</span>888<span class="tag">&lt;/<span class="name">price</span>&gt;</span></div><div class="line">	<span class="tag">&lt;/<span class="name">book</span>&gt;</span></div><div class="line">	<span class="tag">&lt;<span class="name">book</span>&gt;</span></div><div class="line">	  <span class="tag">&lt;<span class="name">title</span> <span class="attr">lang</span>=<span class="string">"en"</span>&gt;</span>测试1<span class="tag">&lt;/<span class="name">title</span>&gt;</span></div><div class="line">	  <span class="tag">&lt;<span class="name">author</span> <span class="attr">sex</span>=<span class="string">"女"</span> <span class="attr">age</span>=<span class="string">"18"</span>&gt;</span>笑笑笑1<span class="tag">&lt;/<span class="name">author</span>&gt;</span> </div><div class="line">	  <span class="tag">&lt;<span class="name">year</span>&gt;</span>2018<span class="tag">&lt;/<span class="name">year</span>&gt;</span></div><div class="line">	  <span class="tag">&lt;<span class="name">price</span>&gt;</span>889<span class="tag">&lt;/<span class="name">price</span>&gt;</span></div><div class="line">	<span class="tag">&lt;/<span class="name">book</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">bookstore</span>&gt;</span></div></pre></td></tr></table></figure></p>
+<h4 id="基础表达式"><a href="#基础表达式" class="headerlink" title="基础表达式"></a>基础表达式</h4><p> 选取节点基础表达式 摘自<code>w3c</code></p>
+<table>
+<thead>
+<tr>
+<th>属性</th>
+<th style="text-align:center">含义</th>
+<th>example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>nodename</td>
+<td style="text-align:center">选取此节点的所有子节点</td>
+<td>bookstore</td>
+</tr>
+<tr>
+<td>*</td>
+<td style="text-align:center">任何元素</td>
+<td></td>
+</tr>
+<tr>
+<td>@*</td>
+<td style="text-align:center">任何属性的节点</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td style="text-align:center">任何属性的节点</td>
+<td></td>
+</tr>
+<tr>
+<td>/</td>
+<td style="text-align:center">从根节点选取。</td>
+<td>/bookstore</td>
+</tr>
+<tr>
+<td>//</td>
+<td style="text-align:center">从匹配选择的当前节点选择文档中的节点，而不考虑它们的位置</td>
+<td>//title</td>
+</tr>
+<tr>
+<td>.</td>
+<td style="text-align:center">选取当前节点。</td>
+<td>./title 选取当前节点下的title</td>
+</tr>
+<tr>
+<td>..</td>
+<td style="text-align:center">选取当前节点的父节点。</td>
+<td></td>
+</tr>
+<tr>
+<td>@</td>
+<td style="text-align:center">选取属性</td>
+<td>//title[@lang=’en’]</td>
+</tr>
+</tbody>
+</table>
+<p>一些定位的示例</p>
+<figure class="highlight html"><table><tr><td class="code"><pre><div class="line">获取所有的author节点</div><div class="line">//author</div><div class="line">获取第一个author节点 需要注意的是索引是从1开始的</div><div class="line">//author[1]</div><div class="line">获取拥有age属性的任何元素</div><div class="line">//*[@age]</div><div class="line"> 获取author节点的age属性=18的所有author节点</div><div class="line">//author[@age='18']</div></pre></td></tr></table></figure>
+<h4 id="轴"><a href="#轴" class="headerlink" title="轴"></a>轴</h4><p>稍微麻烦强大一点的定位<code>XPath Axes</code></p>
+<p>获取文本包含2018的所有父Book节点<br><figure class="highlight html"><table><tr><td class="code"><pre><div class="line">//*[contains(text(),'2018')]/ancestor::book</div></pre></td></tr></table></figure></p>
+<p>还有一个<code>ancestor-or-self</code>选取的父节点包含自身</p>
+<p>选取bookstore所有的子book节点<br><figure class="highlight html"><table><tr><td class="code"><pre><div class="line">//bookstore/child::book</div></pre></td></tr></table></figure></p>
+<p>选取当前节点的所有 book 后代。</p>
+<figure class="highlight html"><table><tr><td class="code"><pre><div class="line">descendant::book</div></pre></td></tr></table></figure>
+<p>获取当前节点的父节点div<br><figure class="highlight html"><table><tr><td class="code"><pre><div class="line">./parent::div</div></pre></td></tr></table></figure></p>
+<p>获取当前节点之后兄弟节点div<br><figure class="highlight html"><table><tr><td class="code"><pre><div class="line">./following-sibling::div</div></pre></td></tr></table></figure></p>
+<p>获取当前节点之前兄弟节点div<br><figure class="highlight html"><table><tr><td class="code"><pre><div class="line">./preceding-sibling::div</div></pre></td></tr></table></figure></p>
+<h4 id="运算符"><a href="#运算符" class="headerlink" title="运算符"></a>运算符</h4><p>在前面其实已经使用到运算符 例如age=18 </p>
+<p>参考自 <a href="http://www.w3school.com.cn/xpath/xpath_operators.asp" target="_blank" rel="external">http://www.w3school.com.cn/xpath/xpath_operators.asp</a> 不在此说明</p>
+<h4 id="函数"><a href="#函数" class="headerlink" title="函数"></a>函数</h4><p>函数的使用方法在前面也使用到过 例如 <code>contains(text(),&#39;2018&#39;)</code><br>参考自 <a href="http://www.w3school.com.cn/xpath/xpath_functions.asp" target="_blank" rel="external">http://www.w3school.com.cn/xpath/xpath_functions.asp</a> 不在此说明</p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt; &lt;code&gt;XPath&lt;/code&gt;在选取&lt;code&gt;XML&lt;/code&gt;文档中有着非常方便的功能，下面介绍一些常用的表达式语法。&lt;/p&gt;
+&lt;p&gt; 假设如下XML&lt;br&gt; &lt;figure class=&quot;highlight html&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td clas
+    
+    </summary>
+    
+      <category term="技术" scheme="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/"/>
+    
+      <category term="XPath" scheme="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/XPath/"/>
+    
+    
+      <category term="XPath" scheme="http://blog.seoui.com/tags/XPath/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Mesos环境搭建</title>
+    <link href="http://blog.seoui.com/2017/04/18/mesosinstall/"/>
+    <id>http://blog.seoui.com/2017/04/18/mesosinstall/</id>
+    <published>2017-04-17T16:00:00.000Z</published>
+    <updated>2018-01-27T10:19:40.787Z</updated>
+    
+    <content type="html"><![CDATA[<p>  最近有一个实时的采集系统需求，目前的实现方式是用分布式定时任务来处理这一采集请求,希望有更多资源能够为任务分担压力，支持动态添加或者移除任务资源 从而达到提高采集效率，所以准备采用<code>Mesos</code>来做资源调度的工作。</p>
+<p>  因为自己硬件设备不够好的原因导致安装Mesos的时候出现了一个未知的问题 记录一下，以下是参考官方Getting Started的示例。</p>
+<h4 id="获取源码"><a href="#获取源码" class="headerlink" title="获取源码"></a>获取源码</h4><figure class="highlight shell"><table><tr><td class="code"><pre><div class="line"></div><div class="line">wget http://www.apache.org/dist/mesos/1.2.0/mesos-1.2.0.tar.gz</div><div class="line"></div><div class="line">tar -zxf mesos-1.2.0.tar.gz</div></pre></td></tr></table></figure>
+<h4 id="安装所需依赖"><a href="#安装所需依赖" class="headerlink" title="安装所需依赖"></a>安装所需依赖</h4><p> 由于本机是Ubuntu 14.04 如果是其他的系统请参考 <a href="http://mesos.apache.org/gettingstarted/" target="_blank" rel="external">http://mesos.apache.org/gettingstarted/</a></p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><div class="line"> </div><div class="line">apt-get update</div><div class="line"> </div><div class="line">apt-get install -y tar wget git</div><div class="line"></div><div class="line">apt-get install -y openjdk-7-jdk</div><div class="line"></div><div class="line">apt-get install -y autoconf libtool</div><div class="line"></div><div class="line">apt-get -y install build-essential python-dev python-virtualenv libcurl4-nss-dev  libsasl2-dev libsasl2-modules maven libapr1-dev libsvn-dev</div></pre></td></tr></table></figure>
+<h4 id="编译源码"><a href="#编译源码" class="headerlink" title="编译源码"></a>编译源码</h4><figure class="highlight shell"><table><tr><td class="code"><pre><div class="line"></div><div class="line">cd mesos-1.2.0</div><div class="line"></div><div class="line">./bootstrap</div><div class="line"></div><div class="line">mkdir build</div><div class="line"></div><div class="line">cd build</div><div class="line"></div><div class="line">../configure</div><div class="line"></div><div class="line">make -j3</div></pre></td></tr></table></figure>
+<h4 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h4><figure class="highlight shell"><table><tr><td class="code"><pre><div class="line"></div><div class="line">make check</div><div class="line"></div><div class="line">make install</div></pre></td></tr></table></figure>
+<h4 id="测试例子"><a href="#测试例子" class="headerlink" title="测试例子"></a>测试例子</h4><p>从官方示例复制 可以运行<br>指定IP的时候 如果需要外网访问可以设置具体的IP, 设置为127.0.0.1 只能用127.0.0.1的IP访问。</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><div class="line"><span class="meta"></span></div><div class="line"># Start Mesos master (ensure work directory exists and has proper permissions).</div><div class="line"><span class="meta">$</span> ./bin/mesos-master.sh --ip=127.0.0.1 --work_dir=/var/lib/mesos</div><div class="line"><span class="meta"></span></div><div class="line"># Start Mesos agent (ensure work directory exists and has proper permissions).</div><div class="line"><span class="meta">$</span> ./bin/mesos-agent.sh --master=127.0.0.1:5050 --work_dir=/var/lib/mesos</div><div class="line"><span class="meta"></span></div><div class="line"># Visit the Mesos web page.</div><div class="line"><span class="meta">$</span> http://127.0.0.1:5050</div><div class="line"><span class="meta"></span></div><div class="line"># Run C++ framework (exits after successfully running some tasks).</div><div class="line"><span class="meta">$</span> ./src/test-framework --master=127.0.0.1:5050</div><div class="line"><span class="meta"></span></div><div class="line"># Run Java framework (exits after successfully running some tasks).</div><div class="line"><span class="meta">$</span> ./src/examples/java/test-framework 127.0.0.1:5050</div><div class="line"><span class="meta"></span></div><div class="line"># Run Python framework (exits after successfully running some tasks).</div><div class="line"><span class="meta">$</span> ./src/examples/python/test-framework 127.0.0.1:5050</div></pre></td></tr></table></figure>
+<p><code>需要注意的是</code> 安装之前要保证差不多2-4个GB的内存，不然在编译的时候总是报一些莫名奇妙的错误。还要保证安装之前要把依赖库安装好。</p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;  最近有一个实时的采集系统需求，目前的实现方式是用分布式定时任务来处理这一采集请求,希望有更多资源能够为任务分担压力，支持动态添加或者移除任务资源 从而达到提高采集效率，所以准备采用&lt;code&gt;Mesos&lt;/code&gt;来做资源调度的工作。&lt;/p&gt;
+&lt;p&gt;  因为自己硬件设
+    
+    </summary>
+    
+      <category term="技术" scheme="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/"/>
+    
+      <category term="Mesos" scheme="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/Mesos/"/>
+    
+    
+      <category term="技术栈" scheme="http://blog.seoui.com/tags/%E6%8A%80%E6%9C%AF%E6%A0%88/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>我的2017技术栈</title>
+    <link href="http://blog.seoui.com/2017/03/06/2017-target/"/>
+    <id>http://blog.seoui.com/2017/03/06/2017-target/</id>
+    <published>2017-03-05T16:00:00.000Z</published>
+    <updated>2018-01-27T10:19:40.787Z</updated>
+    
+    <content type="html"><![CDATA[<p>  2017年已经过了差不多六分之一 为了给自己制定了一个技术计划(算是小目标吧)，所以在这里引导一下，<br>  当迷茫的时候可以look look!!!</p>
+<h3 id="后端"><a href="#后端" class="headerlink" title="后端"></a>后端</h3><ul>
+<li><p>搜索相关</p>
+<p> 1、elasticsearch </p>
+<p> 2、lucene </p>
+<p> 3、solr</p>
+</li>
+<li><p>大数据相关</p>
+<p> 1、Hadoop</p>
+<p> 2、Spark</p>
+<p> 3、Storm 如果时间够多也研究一下</p>
+</li>
+<li><p>远程调用/网络相关</p>
+<p>  1、mina</p>
+<p>  2、netty</p>
+<p>  3、dubbo 尽量根据现有业务做一些扩展和调整</p>
+<p>  4、thrift</p>
+<p>  5、grpc</p>
+</li>
+<li><p>基础相关</p>
+<p> 1、提升算法能力等。</p>
+<h3 id="前端"><a href="#前端" class="headerlink" title="前端"></a>前端</h3><p>因为平时工作大部分时间都是在折腾后端的东西 前端逐渐遗忘了，所以打算从新好好学习一下。</p>
+<p>HTML5/CSS3 、ES6、requirejs、bootstarap、seajs、以及响应式应用等。</p>
+<h3 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h3><p>尽量能用docker带来的便捷使用各种dev环境，在语言方面准备学习NodeJS 、Groovy、<br>Scala 、Python。<br>包管理工具gradle以及持续集成相关的技术。</p>
+<p>另外在性能测试方面入手学习JMeter，移动相关学习一下混合开发。</p>
+<p>要领悟的东西远远不止于这些 慢慢来 我不急…</p>
+</li>
+</ul>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;  2017年已经过了差不多六分之一 为了给自己制定了一个技术计划(算是小目标吧)，所以在这里引导一下，&lt;br&gt;  当迷茫的时候可以look look!!!&lt;/p&gt;
+&lt;h3 id=&quot;后端&quot;&gt;&lt;a href=&quot;#后端&quot; class=&quot;headerlink&quot; title=&quot;后端
+    
+    </summary>
+    
+      <category term="技术" scheme="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/"/>
+    
+      <category term="技术栈" scheme="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/%E6%8A%80%E6%9C%AF%E6%A0%88/"/>
+    
+    
+      <category term="技术栈" scheme="http://blog.seoui.com/tags/%E6%8A%80%E6%9C%AF%E6%A0%88/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>MongoDB搭建ReplSet复制集群</title>
+    <link href="http://blog.seoui.com/2017/01/11/mongodb-rs/"/>
+    <id>http://blog.seoui.com/2017/01/11/mongodb-rs/</id>
+    <published>2017-01-10T16:00:00.000Z</published>
+    <updated>2018-01-27T10:19:40.787Z</updated>
+    
+    <content type="html"><![CDATA[<p> MongoDB的复制集是一个主从复制模式 又具有故障转移的集群，任何成员都有可能是<code>master</code>，<br> 当master挂掉用会很快的重新选举一个节点来充当master。</p>
+<p> 复制集中的组成主要成员</p>
+<ul>
+<li>Primary<br> <code>数据读写 master节点</code></li>
+<li>Secondary<br> <code>备份Primary的数据 默认设置下 不可读 不可写</code></li>
+<li>arbiter<br> <code>投票节点 此节点不会存数据 只参与投票 ，当primary节点出现异常挂掉之后 arbiter节点负责从secondary
+  节点中选举一个节点升级为Primary节点</code></li>
+</ul>
+<p>其中可以设置Secondary节点可读，让Primary节点负责写，这些就实现了一个高效简单的读写分离。<br><a id="more"></a></p>
+<h4 id="环境搭建"><a href="#环境搭建" class="headerlink" title="环境搭建"></a>环境搭建</h4><p>以3个实例来演示一下复制集群的搭建过程 分别为:127.0.0.1:12345,127.0.0.1:12346,127.0.0.1:12347。<br>需要预先创建好各目录的文件夹 不然启动的时候会报错，这里还有一个坑是 pidfilepath配置项必须是绝对路径，<br>否则也会报错，replSet在同一个复制集中也需要具有一致的名称。</p>
+<p>注意在旧版本中是使用的是master slave模式 目前使用的是3.4官方不支持使用这种方式，<br>官方希望使用replset代替master slave。所以当你配置master或者slave的时候就会报错。</p>
+<p>127.0.0.1:12345配置</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><div class="line">port=12345</div><div class="line">fork=true</div><div class="line">dbpath=data/12345</div><div class="line">logpath=log/12345/mongod.log</div><div class="line">httpinterface=true</div><div class="line">rest=true</div><div class="line">logappend=true</div><div class="line">pidfilepath=/home/collect/mongodb-linux-x86_64-rhel70-3.4.1/log/12345/12345.pid</div><div class="line">replSet=mydbCenter</div><div class="line">oplogSize=512</div></pre></td></tr></table></figure>
+<p>127.0.0.1:12346配置</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><div class="line">port=12346</div><div class="line">fork=true</div><div class="line">dbpath=data/12346</div><div class="line">logpath=log/12346/mongod.log</div><div class="line">httpinterface=true</div><div class="line">rest=true</div><div class="line">logappend=true</div><div class="line">pidfilepath=/home/collect/mongodb-linux-x86_64-rhel70-3.4.1/log/12346/12346.pid</div><div class="line">replSet=mydbCenter</div><div class="line">oplogSize=512</div></pre></td></tr></table></figure>
+<p>127.0.0.1:12346配置</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><div class="line">port=12347</div><div class="line">fork=true</div><div class="line">dbpath=data/12347</div><div class="line">logpath=log/12347/mongod.log</div><div class="line">httpinterface=true</div><div class="line">rest=true</div><div class="line">logappend=true</div><div class="line">pidfilepath=/home/collect/mongodb-linux-x86_64-rhel70-3.4.1/log/12347/12347.pid</div><div class="line">replSet=mydbCenter</div><div class="line">oplogSize=512</div></pre></td></tr></table></figure>
+<p>分别启动好3个实例之后，随便进入一个实例 </p>
+<h4 id="初始化复制集群"><a href="#初始化复制集群" class="headerlink" title="初始化复制集群"></a>初始化复制集群</h4><p>首先创建1个配置对象 在js中就是一个简单的对象 、json串</p>
+<pre><code class="shell">var rs_conf={
+        &quot;_id&quot; : &quot;mydbCenter&quot;,
+        &quot;members&quot; : [
+                {
+                        &quot;_id&quot; : 0,
+                        &quot;host&quot; : &quot;127.0.0.1:12345&quot;
+                },
+                {
+                        &quot;_id&quot; : 1,
+                        &quot;host&quot; : &quot;127.0.0.1:12346&quot;
+                },
+                {
+                        &quot;_id&quot; : 2,
+                        &quot;host&quot; : &quot;127.0.0.1:12347&quot;
+                }
+        ]
+}
+</code></pre>
+<p>把配置应用到集群</p>
+<pre><code class="shell">rs.initiate(rs_conf)
+</code></pre>
+<p>这里有一个限制就是需要集群的节点中不能有数据 需要先清空一下 不然<code>initiate</code>的时候会出错。<br>配置成功后使用<code>rs.status()</code>命令查看各节点状态，一些正常 就能看到各节点的状态信息</p>
+<pre><code class="shell">rs.status()
+</code></pre>
+<p>搭建好复制集群之后命令行的标识符会变为相应的成员类型如</p>
+<pre><code class="shell">mydbCenter:PRIMARY&gt; 
+mydbCenter:SECONDARY&gt;
+</code></pre>
+<p>这也是检验集群是否搭建的成功的一个小标识。  </p>
+<p>接着可以尝试一下在Primary中写入一条数据。这条数据会立即同步到各个Secondary节点中。<br>当然前面也说过默认情况的Secondary不可读 会报下面的错误。</p>
+<pre><code class="shell">{
+        &quot;ok&quot; : 0,
+        &quot;errmsg&quot; : &quot;not master and slaveOk=false&quot;,
+        &quot;code&quot; : 13435,
+        &quot;codeName&quot; : &quot;NotMasterNoSlaveOk&quot;
+}
+</code></pre>
+<p>所以需要在Secondary中执行</p>
+<pre><code class="shell">db.getMongo().setSlaveOk()
+</code></pre>
+<p>在网络上看到有很多帖子说只要在Primary节点中执行 db.getMongo().setSlaveOk()<br>就能在Secondary节点中读取数据，但是在3.4版本试了一下是不行的。需要在Secondary中执行一下<br><code>db.getMongo().setSlaveOk()</code>让Secondary可读。</p>
+<h4 id="添加节点"><a href="#添加节点" class="headerlink" title="添加节点"></a>添加节点</h4><p>如果现在已经有搭建好一个复制集群了 老板想多加一台备份机器进去 怎么办？<br>只需要启动好新机器的实例后 在Primary中调用rs.add() 方法即可</p>
+<pre><code class="shell">rs.add({"host" : "127.0.0.1:12348"})
+</code></pre>
+<p>添加投票节点调用<code>rs.addArb()</code>方法。</p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt; MongoDB的复制集是一个主从复制模式 又具有故障转移的集群，任何成员都有可能是&lt;code&gt;master&lt;/code&gt;，&lt;br&gt; 当master挂掉用会很快的重新选举一个节点来充当master。&lt;/p&gt;
+&lt;p&gt; 复制集中的组成主要成员&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Primary&lt;br&gt; &lt;code&gt;数据读写 master节点&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;Secondary&lt;br&gt; &lt;code&gt;备份Primary的数据 默认设置下 不可读 不可写&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;arbiter&lt;br&gt; &lt;code&gt;投票节点 此节点不会存数据 只参与投票 ，当primary节点出现异常挂掉之后 arbiter节点负责从secondary
+  节点中选举一个节点升级为Primary节点&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;其中可以设置Secondary节点可读，让Primary节点负责写，这些就实现了一个高效简单的读写分离。&lt;br&gt;
+    
+    </summary>
+    
+      <category term="技术" scheme="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/"/>
+    
+      <category term="MongoDB" scheme="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/MongoDB/"/>
+    
+    
+      <category term="MongoDB" scheme="http://blog.seoui.com/tags/MongoDB/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>jdk1.7 Fork/Join并行框架学习</title>
+    <link href="http://blog.seoui.com/2017/01/09/jdk7-forkjoin/"/>
+    <id>http://blog.seoui.com/2017/01/09/jdk7-forkjoin/</id>
+    <published>2017-01-08T16:00:00.000Z</published>
+    <updated>2018-01-27T10:19:40.786Z</updated>
+    
+    <content type="html"><![CDATA[<p> 首先看一下ForkJoin相关的几个API </p>
+<ul>
+<li>ForkJoinPool<br> <code>实现了forkjoin的线程池</code></li>
+<li>ForkJoinWorkerThread<br> <code>forkjoin的线程</code></li>
+<li>ForkJoinTask<br>  <code>forkjoin任务的父类 这是一个抽象类</code></li>
+<li>RecursiveAction<br>  <code>无返回结果的任务接口</code></li>
+<li>RecursiveTask<br>  <code>有返回结果的任务接口</code><a id="more"></a>
+</li>
+</ul>
+<p>ForkJoinPool继承自AbstractExecutorService类 说明了 ForkJoinPool和ThreadPoolExecutor<br>差不多是同父的兄弟类 ，因为ThreadPoolExecutor也继承自AbstractExecutorService类。</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><div class="line"><span class="meta">@sun</span>.misc.Contended</div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ForkJoinPool</span> <span class="keyword">extends</span> <span class="title">AbstractExecutorService</span></span></div></pre></td></tr></table></figure>
+<p> 下面以一个简单的例子来说明一下使用方法</p>
+<p> 定义一个task实现类</p>
+ <figure class="highlight java"><table><tr><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Calculator</span> <span class="keyword">extends</span> <span class="title">RecursiveTask</span>&lt;<span class="title">Integer</span>&gt; </span>&#123;</div><div class="line"> </div><div class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> THRESHOLD = <span class="number">10</span>;</div><div class="line">    <span class="keyword">private</span> <span class="keyword">int</span> start;</div><div class="line">    <span class="keyword">private</span> <span class="keyword">int</span> end;</div><div class="line"> </div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Calculator</span><span class="params">(<span class="keyword">int</span> start, <span class="keyword">int</span> end)</span> </span>&#123;</div><div class="line">        <span class="keyword">this</span>.start = start;</div><div class="line">        <span class="keyword">this</span>.end = end;</div><div class="line">    &#125;</div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">protected</span> Integer <span class="title">compute</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">int</span> sum = <span class="number">0</span>;</div><div class="line">        <span class="keyword">if</span>((end - start) &lt; THRESHOLD)&#123;</div><div class="line">            sum=calSingle();</div><div class="line">        &#125;<span class="keyword">else</span>&#123;</div><div class="line">            <span class="keyword">int</span> middle = (start + end) /<span class="number">2</span>;</div><div class="line">            Calculator task1 = <span class="keyword">new</span> Calculator(start, middle);</div><div class="line">            Calculator task2 = <span class="keyword">new</span> Calculator(middle + <span class="number">1</span>, end);</div><div class="line">            <span class="comment">//首先拆分任务</span></div><div class="line">            task2.fork();</div><div class="line">            <span class="keyword">int</span> i=task2.join();</div><div class="line">            <span class="keyword">int</span> i2=task1.invoke();</div><div class="line"> <span class="comment">//           invokeAll(task1,task2);</span></div><div class="line"><span class="comment">//            int i=task1.getRawResult();</span></div><div class="line"><span class="comment">//            int i2=task2.getRawResult();</span></div><div class="line">            <span class="comment">//聚合</span></div><div class="line">            sum=i+i2;</div><div class="line">        &#125;</div><div class="line">        <span class="keyword">return</span> sum;</div><div class="line">    &#125;</div><div class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">int</span> <span class="title">calSingle</span><span class="params">()</span></span>&#123;</div><div class="line">        <span class="keyword">int</span> sum=<span class="number">0</span>;</div><div class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = start; i&lt;= end;i++)&#123;</div><div class="line">            sum += i;</div><div class="line">        &#125;</div><div class="line">        <span class="keyword">return</span> sum;</div><div class="line">    &#125;</div><div class="line"> </div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>测试main函数类</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TestMain</span> </span>&#123;</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> ExecutionException, InterruptedException </span>&#123;</div><div class="line"></div><div class="line">        Calculator calculator=<span class="keyword">new</span> Calculator(<span class="number">0</span>,<span class="number">500</span>);</div><div class="line"></div><div class="line">        ForkJoinPool pool = <span class="keyword">new</span> ForkJoinPool();</div><div class="line">        ForkJoinTask&lt;Integer&gt; f=pool.submit(calculator);</div><div class="line"></div><div class="line">        <span class="keyword">long</span> start=System.currentTimeMillis();</div><div class="line"></div><div class="line">        System.out.println(System.currentTimeMillis()-start+<span class="string">"MS"</span>);</div><div class="line">        <span class="keyword">do</span>&#123;</div><div class="line">            <span class="keyword">if</span>(calculator.isCompletedNormally()) &#123;</div><div class="line">            System.out.println(<span class="string">"计算完成 正在关闭Fork/Join池..."</span>);</div><div class="line">            pool.shutdown();</div><div class="line">        &#125;</div><div class="line">        &#125;<span class="keyword">while</span>(!calculator.isDone());</div><div class="line">        System.out.println(<span class="string">"计算结果为："</span>+f.get());</div><div class="line">        System.out.println(<span class="string">"线程已经从另一个线程偷取到的时间数:"</span>+pool.getStealCount());</div><div class="line">        System.out.println(<span class="string">"是否已经完成执行:"</span>+pool.isTerminated());</div><div class="line">        System.out.println(<span class="string">"并行的级别："</span>+pool.getParallelism());</div><div class="line">        System.out.println(<span class="string">"线程池的worker线程的数量："</span>+pool.getPoolSize());</div><div class="line"></div><div class="line">        System.out.println(<span class="string">"执行的任务数："</span>+pool.getQueuedTaskCount());</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>需要注意的是Fork/Join的为了充分减少等待时间 默认使用的是LIFO策略，所以我们在执行第一个任务的<br>时候尽量不要fork。具体原因还不是很理解，因为在invokeAll方法中也是这样子处理的。invokeAll源码如下<br><figure class="highlight java"><table><tr><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">invokeAll</span><span class="params">(ForkJoinTask&lt;?&gt; t1, ForkJoinTask&lt;?&gt; t2)</span> </span>&#123;</div><div class="line">    <span class="keyword">int</span> s1, s2;</div><div class="line">    t2.fork();</div><div class="line">    <span class="keyword">if</span> ((s1 = t1.doInvoke() &amp; DONE_MASK) != NORMAL)</div><div class="line">        t1.reportException(s1);</div><div class="line">    <span class="keyword">if</span> ((s2 = t2.doJoin() &amp; DONE_MASK) != NORMAL)</div><div class="line">        t2.reportException(s2);</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>首先Fork第二个任务。然后在执行第一个任务,其次是join第二个任务。</p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt; 首先看一下ForkJoin相关的几个API &lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;ForkJoinPool&lt;br&gt; &lt;code&gt;实现了forkjoin的线程池&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;ForkJoinWorkerThread&lt;br&gt; &lt;code&gt;forkjoin的线程&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;ForkJoinTask&lt;br&gt;  &lt;code&gt;forkjoin任务的父类 这是一个抽象类&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;RecursiveAction&lt;br&gt;  &lt;code&gt;无返回结果的任务接口&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;RecursiveTask&lt;br&gt;  &lt;code&gt;有返回结果的任务接口&lt;/code&gt;
+    
+    </summary>
+    
+      <category term="技术" scheme="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/"/>
+    
+      <category term="Fork/Join" scheme="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/Fork-Join/"/>
+    
+    
+      <category term="Fork/Join" scheme="http://blog.seoui.com/tags/Fork-Join/"/>
+    
+  </entry>
+  
+</feed>
