@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://blog.seoui.com/"/>
-  <updated>2018-05-09T10:56:05.167Z</updated>
+  <updated>2018-06-22T12:23:03.550Z</updated>
   <id>http://blog.seoui.com/</id>
   
   <author>
@@ -16,11 +16,115 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
+    <title>nexus3.X环境搭建</title>
+    <link href="http://blog.seoui.com/2018/06/22/nexusinstall/"/>
+    <id>http://blog.seoui.com/2018/06/22/nexusinstall/</id>
+    <published>2018-06-21T16:00:00.000Z</published>
+    <updated>2018-06-22T12:23:03.550Z</updated>
+    
+    <content type="html"><![CDATA[<p>nexus3比以前的版本相比 多支持了管理不同的格式 比如<code>Docker</code> <code>npm</code> <code>NuGet</code> <code>maven</code> …等</p>
+<h4 id="下载编译好的二进制安装"><a href="#下载编译好的二进制安装" class="headerlink" title="下载编译好的二进制安装"></a>下载编译好的二进制安装</h4> <figure class="highlight bash"><table><tr><td class="code"><pre><div class="line">wget https://sonatype-download.global.ssl.fastly.net/repository/repositoryManager/3/nexus-3.12.1-01-unix.tar.gz</div><div class="line">   </div><div class="line">   tar -zxf nexus-3.12.1-01-unix.tar.gz </div><div class="line"></div><div class="line">   <span class="built_in">cd</span> nexus-3.12.1-01/</div><div class="line">   bin/nexus start</div></pre></td></tr></table></figure>
+<p> 默认的端口号为<code>8081</code> nexus3.x和以前的版本界面都有很大的改变 需要注意一下。<br> 其他默认配置在文件<code>etc/nexus-default.properties</code>中 需要修改的关注一下。</p>
+<p>参考</p>
+<p><a href="https://www.sonatype.com/" target="_blank" rel="external">https://www.sonatype.com/</a></p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;nexus3比以前的版本相比 多支持了管理不同的格式 比如&lt;code&gt;Docker&lt;/code&gt; &lt;code&gt;npm&lt;/code&gt; &lt;code&gt;NuGet&lt;/code&gt; &lt;code&gt;maven&lt;/code&gt; …等&lt;/p&gt;
+&lt;h4 id=&quot;下载编译好的二进制安装&quot;&gt;&lt;a hr
+    
+    </summary>
+    
+      <category term="技术" scheme="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/"/>
+    
+      <category term="nexus3" scheme="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/nexus3/"/>
+    
+    
+      <category term="nexus3" scheme="http://blog.seoui.com/tags/nexus3/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>gitlab环境搭建</title>
+    <link href="http://blog.seoui.com/2018/06/22/gitlabinstall/"/>
+    <id>http://blog.seoui.com/2018/06/22/gitlabinstall/</id>
+    <published>2018-06-21T16:00:00.000Z</published>
+    <updated>2018-06-22T12:23:03.550Z</updated>
+    
+    <content type="html"><![CDATA[<p>操作系统：<code>centos7</code><br>gitlab： <code>gitlab-ee</code></p>
+<p>如果是其他环境 安装过程类似</p>
+<h4 id="安装必要依赖"><a href="#安装必要依赖" class="headerlink" title="安装必要依赖"></a>安装必要依赖</h4> <figure class="highlight bash"><table><tr><td class="code"><pre><div class="line">sudo yum install -y curl policycoreutils-python openssh-server</div><div class="line">sudo systemctl <span class="built_in">enable</span> sshd</div><div class="line">sudo systemctl start sshd</div><div class="line">sudo firewall-cmd --permanent --add-service=http</div><div class="line">sudo systemctl reload firewalld</div></pre></td></tr></table></figure>
+<p> 安装<code>postfix</code>依赖 用来发送邮件 不需要可以省略</p>
+ <figure class="highlight bash"><table><tr><td class="code"><pre><div class="line">sudo yum install postfix</div><div class="line">sudo systemctl <span class="built_in">enable</span> postfix</div><div class="line">sudo systemctl start postfix</div></pre></td></tr></table></figure>
+<h4 id="获取并安装GitLab包"><a href="#获取并安装GitLab包" class="headerlink" title="获取并安装GitLab包"></a>获取并安装GitLab包</h4><p>  添加package</p>
+ <figure class="highlight bash"><table><tr><td class="code"><pre><div class="line">curl https://packages.gitlab.com/install/repositories/gitlab/gitlab-ee/script.rpm.sh | sudo bash</div></pre></td></tr></table></figure>
+<p>  执行安装操作</p>
+<p>  <em>设置一个EXTERNAL_URL表示安装后的gitlab地址,如果需要HTTPS 那么需求安装好之后额外配置</em></p>
+ <figure class="highlight bash"><table><tr><td class="code"><pre><div class="line">sudo EXTERNAL_URL=<span class="string">"http://172.30.34.6/"</span> yum install -y gitlab-ee</div></pre></td></tr></table></figure>
+<p>  如果没有报错信息 就可以使用前面配置的<code>EXTERNAL_URL</code>参数在浏览器上打开GITLAB了，当前配置的URL为:<code>http://172.30.34.6/</code></p>
+<h4 id="安装之后首次访问设置"><a href="#安装之后首次访问设置" class="headerlink" title="安装之后首次访问设置"></a>安装之后首次访问设置</h4><p>  安装好之后默认需要使用<code>root</code>账户登录，这个时候浏览器会重定向到为<code>root</code>设置初次密码的页面，跟着操作做就对了。</p>
+<p><code>Gitlab</code>安装好之后提供了一系列的命令工具如：<code>gitlab-ctl</code>等等。</p>
+<p>  更多设置请参考官方文档</p>
+<p>参考</p>
+<p><a href="https://about.gitlab.com/installation/#centos-7" target="_blank" rel="external">https://about.gitlab.com/installation/#centos-7</a></p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;操作系统：&lt;code&gt;centos7&lt;/code&gt;&lt;br&gt;gitlab： &lt;code&gt;gitlab-ee&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;如果是其他环境 安装过程类似&lt;/p&gt;
+&lt;h4 id=&quot;安装必要依赖&quot;&gt;&lt;a href=&quot;#安装必要依赖&quot; class=&quot;headerlink
+    
+    </summary>
+    
+      <category term="技术" scheme="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/"/>
+    
+      <category term="gitlab" scheme="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/gitlab/"/>
+    
+    
+      <category term="gitlab" scheme="http://blog.seoui.com/tags/gitlab/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>jenkins环境搭建</title>
+    <link href="http://blog.seoui.com/2018/06/22/jenkinsinstall/"/>
+    <id>http://blog.seoui.com/2018/06/22/jenkinsinstall/</id>
+    <published>2018-06-21T16:00:00.000Z</published>
+    <updated>2018-06-22T12:28:02.364Z</updated>
+    
+    <content type="html"><![CDATA[<p><code>Jenkins</code>是基于<code>JVM</code>开发的，所以安装之前需要先确保装好<code>JVM</code>的运行环境<code>JRE</code></p>
+<p> 这里采用<code>TOMCAT</code>的部署方式安装。</p>
+<h4 id="下载WAR"><a href="#下载WAR" class="headerlink" title="下载WAR"></a>下载WAR</h4> <figure class="highlight bash"><table><tr><td class="code"><pre><div class="line">wget http://mirrors.jenkins.io/war-stable/2.121.1/jenkins.war</div></pre></td></tr></table></figure>
+<p> 然后复制到<code>tomcat</code>的webapps目录中 执行<code>bin/startup.sh</code>启动 ，<code>bin/shutdown.sh</code> 关闭。</p>
+<p> 首次启动访问的时候会提示你安装插件 选中推荐的一些插件就基本够用了。也可以在系统设置-&gt;插件管理中手动安装。</p>
+<p>参考</p>
+<p><a href="https://jenkins.io/doc/" target="_blank" rel="external">https://jenkins.io/doc/</a></p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;&lt;code&gt;Jenkins&lt;/code&gt;是基于&lt;code&gt;JVM&lt;/code&gt;开发的，所以安装之前需要先确保装好&lt;code&gt;JVM&lt;/code&gt;的运行环境&lt;code&gt;JRE&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt; 这里采用&lt;code&gt;TOMCAT&lt;/code&gt;的部署方式安装。&lt;/p&gt;
+    
+    </summary>
+    
+      <category term="技术" scheme="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/"/>
+    
+      <category term="jenkins" scheme="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/jenkins/"/>
+    
+    
+      <category term="jenkins" scheme="http://blog.seoui.com/tags/jenkins/"/>
+    
+  </entry>
+  
+  <entry>
     <title>base64文件大小计算</title>
     <link href="http://blog.seoui.com/2018/05/09/base64_file_size/"/>
     <id>http://blog.seoui.com/2018/05/09/base64_file_size/</id>
     <published>2018-05-08T16:00:00.000Z</published>
-    <updated>2018-05-09T10:56:05.167Z</updated>
+    <updated>2018-06-22T12:23:03.550Z</updated>
     
     <content type="html"><![CDATA[<p>有时候图片被<code>base64</code>之后需要计算图片大小，因为被编码后全是字符，计算文件大小可以反序列化成文件之后再获取大小，但是会比较麻烦。简单介绍一种利用<code>base64</code>编码原理计算大小的方法。</p>
 <h4 id="编码原理"><a href="#编码原理" class="headerlink" title="编码原理"></a>编码原理</h4><p>要求把<code>3</code>个<code>8</code>位字节<code>（3*8=24）</code>转化为<code>4</code>个<code>6</code>位的字节<code>（4*6=24）</code>，之后在6位的前面补两个0，形成8位一个字节的形式。 如果剩下的字符不足<code>3</code>个字节，用<code>0</code>填充，输出字符使用<code>’=’</code>，因此编码后输出的文本末尾可能会出现<code>1</code>或<code>2</code>个<code>’=’</code></p>
@@ -56,7 +160,7 @@
     <link href="http://blog.seoui.com/2018/04/18/jvmremote-debug/"/>
     <id>http://blog.seoui.com/2018/04/18/jvmremote-debug/</id>
     <published>2018-04-17T16:00:00.000Z</published>
-    <updated>2018-04-18T10:37:36.797Z</updated>
+    <updated>2018-06-22T12:23:03.550Z</updated>
     
     <content type="html"><![CDATA[<p>有时候想调试线上的程序 可以启用远程调试功能 在本地调试远程代码。</p>
 <h4 id="远程JVM启用调试模式"><a href="#远程JVM启用调试模式" class="headerlink" title="远程JVM启用调试模式"></a>远程JVM启用调试模式</h4> <figure class="highlight lua"><table><tr><td class="code"><pre><div class="line">/usr/<span class="keyword">local</span>/jdk/bin/java -server -Xms256m -Xmx256m -XX:PermSize=<span class="number">64</span>m -XX:MaxPermSize=<span class="number">128</span>m -Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=<span class="number">1506</span> -jar /home/web/api<span class="number">-1.0</span>-SNAPSHOT/lib/api<span class="number">-1.0</span>-SNAPSHOT.jar <span class="comment">--spring.config.location=file:/home/web/api-1.0-SNAPSHOT/conf/</span></div></pre></td></tr></table></figure>
@@ -90,7 +194,7 @@
     <link href="http://blog.seoui.com/2018/01/27/redis-lua/"/>
     <id>http://blog.seoui.com/2018/01/27/redis-lua/</id>
     <published>2018-01-26T16:00:00.000Z</published>
-    <updated>2018-01-27T10:11:19.261Z</updated>
+    <updated>2018-06-22T12:23:03.535Z</updated>
     
     <content type="html"><![CDATA[<p><code>redis</code>从2.6版本开始内置支持<code>Lua</code>解释器，解释器提供了3个函数来处理<code>redis</code>的命令<code>redis.call()</code> <code>redis.pcall()</code>和 <code>redis.log</code>,同时<code>redis</code> 也保证脚本会以原子性的方式执行。这是一个很重要的因素。</p>
 <p>本文涉及到的命令有 <code>EVAL</code>  <code>EVALSHA</code> <code>SCRIPT LOAD</code> <code>SCRIPT FLUSH</code> <code>SCRIPT EXISTS</code> <code>SCRIPT KILL</code></p>
@@ -150,7 +254,7 @@
     <link href="http://blog.seoui.com/2018/01/02/think2017/"/>
     <id>http://blog.seoui.com/2018/01/02/think2017/</id>
     <published>2018-01-01T16:00:00.000Z</published>
-    <updated>2018-01-27T10:19:40.792Z</updated>
+    <updated>2018-01-07T09:35:19.658Z</updated>
     
     <content type="html"><![CDATA[<pre><code>时光匆匆而去 好像2017年才刚刚开始就结束了，时间留下的仅有一些残留的记忆罢了。
 </code></pre><h4 id="无趣的时间轴"><a href="#无趣的时间轴" class="headerlink" title="无趣的时间轴"></a>无趣的时间轴</h4><ul>
@@ -186,7 +290,7 @@
     <link href="http://blog.seoui.com/2017/11/20/nginx-concat/"/>
     <id>http://blog.seoui.com/2017/11/20/nginx-concat/</id>
     <published>2017-11-19T16:00:00.000Z</published>
-    <updated>2018-01-27T10:19:40.792Z</updated>
+    <updated>2017-11-21T13:50:31.873Z</updated>
     
     <content type="html"><![CDATA[<p> 网页中引入多个CSS和JS的时候，浏览器会发出很多(css个数+js个数)次网络请求，甚至有的网页中有数十个以上的CSS或JS文件，用户体验特别不好，正好可以利用<code>nginx-http-concat</code> nginx模块简单的把这个问题解决好。</p>
 <h4 id="安装模块"><a href="#安装模块" class="headerlink" title="安装模块"></a>安装模块</h4><p>首先去拉取<code>nginx</code>源码 并解压 </p>
@@ -288,7 +392,7 @@ concat_types text/css application/javascript;
     <link href="http://blog.seoui.com/2017/10/30/nfs-config/"/>
     <id>http://blog.seoui.com/2017/10/30/nfs-config/</id>
     <published>2017-10-29T16:00:00.000Z</published>
-    <updated>2018-01-27T10:19:40.791Z</updated>
+    <updated>2017-11-21T13:50:31.873Z</updated>
     
     <content type="html"><![CDATA[<p> <code>NFS</code>通常用于网络中的多台计算机实现共享存储。</p>
 <p> 由于测试环境没有购买阿里云的NFS，所以自己搭建一个NFS文件系统，实现一些比如上传图片，静态资源等同享功能。</p>
@@ -330,7 +434,7 @@ concat_types text/css application/javascript;
     <link href="http://blog.seoui.com/2017/10/23/nexus3-uploadfile/"/>
     <id>http://blog.seoui.com/2017/10/23/nexus3-uploadfile/</id>
     <published>2017-10-22T16:00:00.000Z</published>
-    <updated>2018-01-27T10:19:40.791Z</updated>
+    <updated>2017-11-21T13:50:31.873Z</updated>
     
     <content type="html"><![CDATA[<p>因为nexus3和nexus2手动上传第三方jar有点区别 故记录一下。</p>
 <p>如上传京东 open-api-sdk-2.0.jar </p>
@@ -367,7 +471,7 @@ concat_types text/css application/javascript;
     <link href="http://blog.seoui.com/2017/10/11/nginxpass/"/>
     <id>http://blog.seoui.com/2017/10/11/nginxpass/</id>
     <published>2017-10-10T16:00:00.000Z</published>
-    <updated>2018-01-27T10:19:40.791Z</updated>
+    <updated>2017-10-13T14:11:38.587Z</updated>
     
     <content type="html"><![CDATA[<p>假设访问路径的 /pss/bill.html </p>
 <h5 id="加-斜线的情况"><a href="#加-斜线的情况" class="headerlink" title="加/斜线的情况"></a>加/斜线的情况</h5><figure class="highlight lua"><table><tr><td class="code"><pre><div class="line">location  /pss/ &#123;</div><div class="line">  proxy_pass http://<span class="number">127.0</span><span class="number">.0</span><span class="number">.1</span>:<span class="number">18081</span>/;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
@@ -395,7 +499,7 @@ concat_types text/css application/javascript;
     <link href="http://blog.seoui.com/2017/09/17/searcheng/"/>
     <id>http://blog.seoui.com/2017/09/17/searcheng/</id>
     <published>2017-09-16T16:00:00.000Z</published>
-    <updated>2018-01-27T10:19:40.791Z</updated>
+    <updated>2017-09-17T10:50:48.757Z</updated>
     
     <content type="html"><![CDATA[<p>在这个互联网资源繁多的情况下，想在网上找点东西，第一时刻想到的就是google一下、百度一下，<br>但是从海量数据里更精准的找到你想要的内容的确需要一点小技巧。</p>
 <h5 id="双引号搜索"><a href="#双引号搜索" class="headerlink" title="双引号搜索"></a>双引号搜索</h5><p>  带了双引号的搜索都是精准搜索 简单理解就是不分词。</p>
@@ -496,7 +600,7 @@ concat_types text/css application/javascript;
     <link href="http://blog.seoui.com/2017/09/05/breakpoint-download/"/>
     <id>http://blog.seoui.com/2017/09/05/breakpoint-download/</id>
     <published>2017-09-04T16:00:00.000Z</published>
-    <updated>2018-01-27T10:19:40.790Z</updated>
+    <updated>2017-09-17T07:15:35.511Z</updated>
     
     <content type="html"><![CDATA[<h4 id="需求背景"><a href="#需求背景" class="headerlink" title="需求背景"></a>需求背景</h4><ul>
 <li>动态创建的文件下载的时候希望浏览器显示下载进度</li>
@@ -555,7 +659,7 @@ concat_types text/css application/javascript;
     <link href="http://blog.seoui.com/2017/08/19/delayqueue/"/>
     <id>http://blog.seoui.com/2017/08/19/delayqueue/</id>
     <published>2017-08-18T16:00:00.000Z</published>
-    <updated>2018-01-27T10:19:40.790Z</updated>
+    <updated>2017-08-22T13:30:31.903Z</updated>
     
     <content type="html"><![CDATA[<h4 id="需求背景"><a href="#需求背景" class="headerlink" title="需求背景"></a>需求背景</h4><ul>
 <li>用户下订单成功之后隔20分钟给用户发送上门服务通知短信</li>
@@ -649,7 +753,7 @@ concat_types text/css application/javascript;
     <link href="http://blog.seoui.com/2017/07/02/mysql5_7install/"/>
     <id>http://blog.seoui.com/2017/07/02/mysql5_7install/</id>
     <published>2017-07-01T16:00:00.000Z</published>
-    <updated>2018-01-27T10:19:40.790Z</updated>
+    <updated>2017-07-02T07:11:02.696Z</updated>
     
     <content type="html"><![CDATA[<h4 id="下载"><a href="#下载" class="headerlink" title="下载"></a>下载</h4><p> 下载mysql5.7地址:<code>wget https://cdn.mysql.com//Downloads/MySQL-5.7/mysql-5.7.18-1.el6.x86_64.rpm-bundle.tar</code></p>
 <p> 另外分享一个百度云盘的下载链接 <code>http://pan.baidu.com/s/1qYAuYBi</code></p>
@@ -764,7 +868,7 @@ concat_types text/css application/javascript;
     <link href="http://blog.seoui.com/2017/06/18/objenesis/"/>
     <id>http://blog.seoui.com/2017/06/18/objenesis/</id>
     <published>2017-06-17T16:00:00.000Z</published>
-    <updated>2018-01-27T10:19:40.789Z</updated>
+    <updated>2017-06-19T13:07:40.043Z</updated>
     
     <content type="html"><![CDATA[<p><code>Objenesis</code>是一个用于实例化java类的小型Java库。</p>
 <p> 主要对于用户推荐使用以下3个API</p>
@@ -828,7 +932,7 @@ System.out.println(<span class="string">"example4:"</span>+example4+<span class=
     <link href="http://blog.seoui.com/2017/06/03/htmlunitstringtopage/"/>
     <id>http://blog.seoui.com/2017/06/03/htmlunitstringtopage/</id>
     <published>2017-06-02T16:00:00.000Z</published>
-    <updated>2018-01-27T10:19:40.789Z</updated>
+    <updated>2017-06-03T15:48:17.409Z</updated>
     
     <content type="html"><![CDATA[<p> 在<code>htmlunit</code>中可以通过URL轻松获取一个HtmlPage,但是却没有提供根据Html字符串创建一个HtmlPage。</p>
 <p> 通过Url获取一个page</p>
@@ -862,7 +966,7 @@ System.out.println(<span class="string">"example4:"</span>+example4+<span class=
     <link href="http://blog.seoui.com/2017/05/08/jenvmanager/"/>
     <id>http://blog.seoui.com/2017/05/08/jenvmanager/</id>
     <published>2017-05-07T16:00:00.000Z</published>
-    <updated>2018-01-27T10:19:40.789Z</updated>
+    <updated>2017-06-03T15:09:01.637Z</updated>
     
     <content type="html"><![CDATA[<p> <code>jenv</code>是一个并行版本管理的java开发包，注意是<code>国内的</code>，并不是<a href="https://github.com/gcuisinier/jenv" target="_blank" rel="external">https://github.com/gcuisinier/jenv</a>可以安装在<code>Linux</code> <code>Mac</code> <code>Windows</code>操作系统上，工具包为我们提供了常用的命令行接口 用户安装、删除、搜索、切换软件版本。</p>
 <h4 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h4> <figure class="highlight shell"><table><tr><td class="code"><pre><div class="line">curl -L -s get.jenv.io | bash</div></pre></td></tr></table></figure>
@@ -905,7 +1009,7 @@ System.out.println(<span class="string">"example4:"</span>+example4+<span class=
     <link href="http://blog.seoui.com/2017/04/27/xpathstudy/"/>
     <id>http://blog.seoui.com/2017/04/27/xpathstudy/</id>
     <published>2017-04-26T16:00:00.000Z</published>
-    <updated>2018-01-27T10:19:40.788Z</updated>
+    <updated>2017-06-03T15:09:01.637Z</updated>
     
     <content type="html"><![CDATA[<p> <code>XPath</code>在选取<code>XML</code>文档中有着非常方便的功能，下面介绍一些常用的表达式语法。</p>
 <p> 假设如下XML<br> <figure class="highlight html"><table><tr><td class="code"><pre><div class="line">&lt;?xml version="1.0" encoding="ISO-8859-1"?&gt;</div><div class="line"><span class="tag">&lt;<span class="name">bookstore</span>&gt;</span></div><div class="line">	<span class="tag">&lt;<span class="name">book</span>&gt;</span></div><div class="line">	  <span class="tag">&lt;<span class="name">title</span> <span class="attr">lang</span>=<span class="string">"en"</span>&gt;</span>测试<span class="tag">&lt;/<span class="name">title</span>&gt;</span></div><div class="line">	  <span class="tag">&lt;<span class="name">author</span> <span class="attr">sex</span>=<span class="string">"女"</span>&gt;</span>笑笑笑<span class="tag">&lt;/<span class="name">author</span>&gt;</span> </div><div class="line">	  <span class="tag">&lt;<span class="name">year</span>&gt;</span>2017<span class="tag">&lt;/<span class="name">year</span>&gt;</span></div><div class="line">	  <span class="tag">&lt;<span class="name">price</span>&gt;</span>888<span class="tag">&lt;/<span class="name">price</span>&gt;</span></div><div class="line">	<span class="tag">&lt;/<span class="name">book</span>&gt;</span></div><div class="line">	<span class="tag">&lt;<span class="name">book</span>&gt;</span></div><div class="line">	  <span class="tag">&lt;<span class="name">title</span> <span class="attr">lang</span>=<span class="string">"en"</span>&gt;</span>测试1<span class="tag">&lt;/<span class="name">title</span>&gt;</span></div><div class="line">	  <span class="tag">&lt;<span class="name">author</span> <span class="attr">sex</span>=<span class="string">"女"</span> <span class="attr">age</span>=<span class="string">"18"</span>&gt;</span>笑笑笑1<span class="tag">&lt;/<span class="name">author</span>&gt;</span> </div><div class="line">	  <span class="tag">&lt;<span class="name">year</span>&gt;</span>2018<span class="tag">&lt;/<span class="name">year</span>&gt;</span></div><div class="line">	  <span class="tag">&lt;<span class="name">price</span>&gt;</span>889<span class="tag">&lt;/<span class="name">price</span>&gt;</span></div><div class="line">	<span class="tag">&lt;/<span class="name">book</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">bookstore</span>&gt;</span></div></pre></td></tr></table></figure></p>
@@ -1003,7 +1107,7 @@ System.out.println(<span class="string">"example4:"</span>+example4+<span class=
     <link href="http://blog.seoui.com/2017/04/18/mesosinstall/"/>
     <id>http://blog.seoui.com/2017/04/18/mesosinstall/</id>
     <published>2017-04-17T16:00:00.000Z</published>
-    <updated>2018-01-27T10:19:40.787Z</updated>
+    <updated>2017-06-03T15:09:01.637Z</updated>
     
     <content type="html"><![CDATA[<p>  最近有一个实时的采集系统需求，目前的实现方式是用分布式定时任务来处理这一采集请求,希望有更多资源能够为任务分担压力，支持动态添加或者移除任务资源 从而达到提高采集效率，所以准备采用<code>Mesos</code>来做资源调度的工作。</p>
 <p>  因为自己硬件设备不够好的原因导致安装Mesos的时候出现了一个未知的问题 记录一下，以下是参考官方Getting Started的示例。</p>
@@ -1030,203 +1134,6 @@ System.out.println(<span class="string">"example4:"</span>+example4+<span class=
     
     
       <category term="技术栈" scheme="http://blog.seoui.com/tags/%E6%8A%80%E6%9C%AF%E6%A0%88/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>我的2017技术栈</title>
-    <link href="http://blog.seoui.com/2017/03/06/2017-target/"/>
-    <id>http://blog.seoui.com/2017/03/06/2017-target/</id>
-    <published>2017-03-05T16:00:00.000Z</published>
-    <updated>2018-01-27T10:19:40.787Z</updated>
-    
-    <content type="html"><![CDATA[<p>  2017年已经过了差不多六分之一 为了给自己制定了一个技术计划(算是小目标吧)，所以在这里引导一下，<br>  当迷茫的时候可以look look!!!</p>
-<h3 id="后端"><a href="#后端" class="headerlink" title="后端"></a>后端</h3><ul>
-<li><p>搜索相关</p>
-<p> 1、elasticsearch </p>
-<p> 2、lucene </p>
-<p> 3、solr</p>
-</li>
-<li><p>大数据相关</p>
-<p> 1、Hadoop</p>
-<p> 2、Spark</p>
-<p> 3、Storm 如果时间够多也研究一下</p>
-</li>
-<li><p>远程调用/网络相关</p>
-<p>  1、mina</p>
-<p>  2、netty</p>
-<p>  3、dubbo 尽量根据现有业务做一些扩展和调整</p>
-<p>  4、thrift</p>
-<p>  5、grpc</p>
-</li>
-<li><p>基础相关</p>
-<p> 1、提升算法能力等。</p>
-<h3 id="前端"><a href="#前端" class="headerlink" title="前端"></a>前端</h3><p>因为平时工作大部分时间都是在折腾后端的东西 前端逐渐遗忘了，所以打算从新好好学习一下。</p>
-<p>HTML5/CSS3 、ES6、requirejs、bootstarap、seajs、以及响应式应用等。</p>
-<h3 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h3><p>尽量能用docker带来的便捷使用各种dev环境，在语言方面准备学习NodeJS 、Groovy、<br>Scala 、Python。<br>包管理工具gradle以及持续集成相关的技术。</p>
-<p>另外在性能测试方面入手学习JMeter，移动相关学习一下混合开发。</p>
-<p>要领悟的东西远远不止于这些 慢慢来 我不急…</p>
-</li>
-</ul>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;p&gt;  2017年已经过了差不多六分之一 为了给自己制定了一个技术计划(算是小目标吧)，所以在这里引导一下，&lt;br&gt;  当迷茫的时候可以look look!!!&lt;/p&gt;
-&lt;h3 id=&quot;后端&quot;&gt;&lt;a href=&quot;#后端&quot; class=&quot;headerlink&quot; title=&quot;后端
-    
-    </summary>
-    
-      <category term="技术" scheme="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/"/>
-    
-      <category term="技术栈" scheme="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/%E6%8A%80%E6%9C%AF%E6%A0%88/"/>
-    
-    
-      <category term="技术栈" scheme="http://blog.seoui.com/tags/%E6%8A%80%E6%9C%AF%E6%A0%88/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>MongoDB搭建ReplSet复制集群</title>
-    <link href="http://blog.seoui.com/2017/01/11/mongodb-rs/"/>
-    <id>http://blog.seoui.com/2017/01/11/mongodb-rs/</id>
-    <published>2017-01-10T16:00:00.000Z</published>
-    <updated>2018-01-27T10:19:40.787Z</updated>
-    
-    <content type="html"><![CDATA[<p> MongoDB的复制集是一个主从复制模式 又具有故障转移的集群，任何成员都有可能是<code>master</code>，<br> 当master挂掉用会很快的重新选举一个节点来充当master。</p>
-<p> 复制集中的组成主要成员</p>
-<ul>
-<li>Primary<br> <code>数据读写 master节点</code></li>
-<li>Secondary<br> <code>备份Primary的数据 默认设置下 不可读 不可写</code></li>
-<li>arbiter<br> <code>投票节点 此节点不会存数据 只参与投票 ，当primary节点出现异常挂掉之后 arbiter节点负责从secondary
-  节点中选举一个节点升级为Primary节点</code></li>
-</ul>
-<p>其中可以设置Secondary节点可读，让Primary节点负责写，这些就实现了一个高效简单的读写分离。<br><a id="more"></a></p>
-<h4 id="环境搭建"><a href="#环境搭建" class="headerlink" title="环境搭建"></a>环境搭建</h4><p>以3个实例来演示一下复制集群的搭建过程 分别为:127.0.0.1:12345,127.0.0.1:12346,127.0.0.1:12347。<br>需要预先创建好各目录的文件夹 不然启动的时候会报错，这里还有一个坑是 pidfilepath配置项必须是绝对路径，<br>否则也会报错，replSet在同一个复制集中也需要具有一致的名称。</p>
-<p>注意在旧版本中是使用的是master slave模式 目前使用的是3.4官方不支持使用这种方式，<br>官方希望使用replset代替master slave。所以当你配置master或者slave的时候就会报错。</p>
-<p>127.0.0.1:12345配置</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><div class="line">port=12345</div><div class="line">fork=true</div><div class="line">dbpath=data/12345</div><div class="line">logpath=log/12345/mongod.log</div><div class="line">httpinterface=true</div><div class="line">rest=true</div><div class="line">logappend=true</div><div class="line">pidfilepath=/home/collect/mongodb-linux-x86_64-rhel70-3.4.1/log/12345/12345.pid</div><div class="line">replSet=mydbCenter</div><div class="line">oplogSize=512</div></pre></td></tr></table></figure>
-<p>127.0.0.1:12346配置</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><div class="line">port=12346</div><div class="line">fork=true</div><div class="line">dbpath=data/12346</div><div class="line">logpath=log/12346/mongod.log</div><div class="line">httpinterface=true</div><div class="line">rest=true</div><div class="line">logappend=true</div><div class="line">pidfilepath=/home/collect/mongodb-linux-x86_64-rhel70-3.4.1/log/12346/12346.pid</div><div class="line">replSet=mydbCenter</div><div class="line">oplogSize=512</div></pre></td></tr></table></figure>
-<p>127.0.0.1:12346配置</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><div class="line">port=12347</div><div class="line">fork=true</div><div class="line">dbpath=data/12347</div><div class="line">logpath=log/12347/mongod.log</div><div class="line">httpinterface=true</div><div class="line">rest=true</div><div class="line">logappend=true</div><div class="line">pidfilepath=/home/collect/mongodb-linux-x86_64-rhel70-3.4.1/log/12347/12347.pid</div><div class="line">replSet=mydbCenter</div><div class="line">oplogSize=512</div></pre></td></tr></table></figure>
-<p>分别启动好3个实例之后，随便进入一个实例 </p>
-<h4 id="初始化复制集群"><a href="#初始化复制集群" class="headerlink" title="初始化复制集群"></a>初始化复制集群</h4><p>首先创建1个配置对象 在js中就是一个简单的对象 、json串</p>
-<pre><code class="shell">var rs_conf={
-        &quot;_id&quot; : &quot;mydbCenter&quot;,
-        &quot;members&quot; : [
-                {
-                        &quot;_id&quot; : 0,
-                        &quot;host&quot; : &quot;127.0.0.1:12345&quot;
-                },
-                {
-                        &quot;_id&quot; : 1,
-                        &quot;host&quot; : &quot;127.0.0.1:12346&quot;
-                },
-                {
-                        &quot;_id&quot; : 2,
-                        &quot;host&quot; : &quot;127.0.0.1:12347&quot;
-                }
-        ]
-}
-</code></pre>
-<p>把配置应用到集群</p>
-<pre><code class="shell">rs.initiate(rs_conf)
-</code></pre>
-<p>这里有一个限制就是需要集群的节点中不能有数据 需要先清空一下 不然<code>initiate</code>的时候会出错。<br>配置成功后使用<code>rs.status()</code>命令查看各节点状态，一些正常 就能看到各节点的状态信息</p>
-<pre><code class="shell">rs.status()
-</code></pre>
-<p>搭建好复制集群之后命令行的标识符会变为相应的成员类型如</p>
-<pre><code class="shell">mydbCenter:PRIMARY&gt; 
-mydbCenter:SECONDARY&gt;
-</code></pre>
-<p>这也是检验集群是否搭建的成功的一个小标识。  </p>
-<p>接着可以尝试一下在Primary中写入一条数据。这条数据会立即同步到各个Secondary节点中。<br>当然前面也说过默认情况的Secondary不可读 会报下面的错误。</p>
-<pre><code class="shell">{
-        &quot;ok&quot; : 0,
-        &quot;errmsg&quot; : &quot;not master and slaveOk=false&quot;,
-        &quot;code&quot; : 13435,
-        &quot;codeName&quot; : &quot;NotMasterNoSlaveOk&quot;
-}
-</code></pre>
-<p>所以需要在Secondary中执行</p>
-<pre><code class="shell">db.getMongo().setSlaveOk()
-</code></pre>
-<p>在网络上看到有很多帖子说只要在Primary节点中执行 db.getMongo().setSlaveOk()<br>就能在Secondary节点中读取数据，但是在3.4版本试了一下是不行的。需要在Secondary中执行一下<br><code>db.getMongo().setSlaveOk()</code>让Secondary可读。</p>
-<h4 id="添加节点"><a href="#添加节点" class="headerlink" title="添加节点"></a>添加节点</h4><p>如果现在已经有搭建好一个复制集群了 老板想多加一台备份机器进去 怎么办？<br>只需要启动好新机器的实例后 在Primary中调用rs.add() 方法即可</p>
-<pre><code class="shell">rs.add({"host" : "127.0.0.1:12348"})
-</code></pre>
-<p>添加投票节点调用<code>rs.addArb()</code>方法。</p>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;p&gt; MongoDB的复制集是一个主从复制模式 又具有故障转移的集群，任何成员都有可能是&lt;code&gt;master&lt;/code&gt;，&lt;br&gt; 当master挂掉用会很快的重新选举一个节点来充当master。&lt;/p&gt;
-&lt;p&gt; 复制集中的组成主要成员&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;Primary&lt;br&gt; &lt;code&gt;数据读写 master节点&lt;/code&gt;&lt;/li&gt;
-&lt;li&gt;Secondary&lt;br&gt; &lt;code&gt;备份Primary的数据 默认设置下 不可读 不可写&lt;/code&gt;&lt;/li&gt;
-&lt;li&gt;arbiter&lt;br&gt; &lt;code&gt;投票节点 此节点不会存数据 只参与投票 ，当primary节点出现异常挂掉之后 arbiter节点负责从secondary
-  节点中选举一个节点升级为Primary节点&lt;/code&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;其中可以设置Secondary节点可读，让Primary节点负责写，这些就实现了一个高效简单的读写分离。&lt;br&gt;
-    
-    </summary>
-    
-      <category term="技术" scheme="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/"/>
-    
-      <category term="MongoDB" scheme="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/MongoDB/"/>
-    
-    
-      <category term="MongoDB" scheme="http://blog.seoui.com/tags/MongoDB/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>jdk1.7 Fork/Join并行框架学习</title>
-    <link href="http://blog.seoui.com/2017/01/09/jdk7-forkjoin/"/>
-    <id>http://blog.seoui.com/2017/01/09/jdk7-forkjoin/</id>
-    <published>2017-01-08T16:00:00.000Z</published>
-    <updated>2018-01-27T10:19:40.786Z</updated>
-    
-    <content type="html"><![CDATA[<p> 首先看一下ForkJoin相关的几个API </p>
-<ul>
-<li>ForkJoinPool<br> <code>实现了forkjoin的线程池</code></li>
-<li>ForkJoinWorkerThread<br> <code>forkjoin的线程</code></li>
-<li>ForkJoinTask<br>  <code>forkjoin任务的父类 这是一个抽象类</code></li>
-<li>RecursiveAction<br>  <code>无返回结果的任务接口</code></li>
-<li>RecursiveTask<br>  <code>有返回结果的任务接口</code><a id="more"></a>
-</li>
-</ul>
-<p>ForkJoinPool继承自AbstractExecutorService类 说明了 ForkJoinPool和ThreadPoolExecutor<br>差不多是同父的兄弟类 ，因为ThreadPoolExecutor也继承自AbstractExecutorService类。</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><div class="line"><span class="meta">@sun</span>.misc.Contended</div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ForkJoinPool</span> <span class="keyword">extends</span> <span class="title">AbstractExecutorService</span></span></div></pre></td></tr></table></figure>
-<p> 下面以一个简单的例子来说明一下使用方法</p>
-<p> 定义一个task实现类</p>
- <figure class="highlight java"><table><tr><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Calculator</span> <span class="keyword">extends</span> <span class="title">RecursiveTask</span>&lt;<span class="title">Integer</span>&gt; </span>&#123;</div><div class="line"> </div><div class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> THRESHOLD = <span class="number">10</span>;</div><div class="line">    <span class="keyword">private</span> <span class="keyword">int</span> start;</div><div class="line">    <span class="keyword">private</span> <span class="keyword">int</span> end;</div><div class="line"> </div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Calculator</span><span class="params">(<span class="keyword">int</span> start, <span class="keyword">int</span> end)</span> </span>&#123;</div><div class="line">        <span class="keyword">this</span>.start = start;</div><div class="line">        <span class="keyword">this</span>.end = end;</div><div class="line">    &#125;</div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">protected</span> Integer <span class="title">compute</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">int</span> sum = <span class="number">0</span>;</div><div class="line">        <span class="keyword">if</span>((end - start) &lt; THRESHOLD)&#123;</div><div class="line">            sum=calSingle();</div><div class="line">        &#125;<span class="keyword">else</span>&#123;</div><div class="line">            <span class="keyword">int</span> middle = (start + end) /<span class="number">2</span>;</div><div class="line">            Calculator task1 = <span class="keyword">new</span> Calculator(start, middle);</div><div class="line">            Calculator task2 = <span class="keyword">new</span> Calculator(middle + <span class="number">1</span>, end);</div><div class="line">            <span class="comment">//首先拆分任务</span></div><div class="line">            task2.fork();</div><div class="line">            <span class="keyword">int</span> i=task2.join();</div><div class="line">            <span class="keyword">int</span> i2=task1.invoke();</div><div class="line"> <span class="comment">//           invokeAll(task1,task2);</span></div><div class="line"><span class="comment">//            int i=task1.getRawResult();</span></div><div class="line"><span class="comment">//            int i2=task2.getRawResult();</span></div><div class="line">            <span class="comment">//聚合</span></div><div class="line">            sum=i+i2;</div><div class="line">        &#125;</div><div class="line">        <span class="keyword">return</span> sum;</div><div class="line">    &#125;</div><div class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">int</span> <span class="title">calSingle</span><span class="params">()</span></span>&#123;</div><div class="line">        <span class="keyword">int</span> sum=<span class="number">0</span>;</div><div class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = start; i&lt;= end;i++)&#123;</div><div class="line">            sum += i;</div><div class="line">        &#125;</div><div class="line">        <span class="keyword">return</span> sum;</div><div class="line">    &#125;</div><div class="line"> </div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>测试main函数类</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TestMain</span> </span>&#123;</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> ExecutionException, InterruptedException </span>&#123;</div><div class="line"></div><div class="line">        Calculator calculator=<span class="keyword">new</span> Calculator(<span class="number">0</span>,<span class="number">500</span>);</div><div class="line"></div><div class="line">        ForkJoinPool pool = <span class="keyword">new</span> ForkJoinPool();</div><div class="line">        ForkJoinTask&lt;Integer&gt; f=pool.submit(calculator);</div><div class="line"></div><div class="line">        <span class="keyword">long</span> start=System.currentTimeMillis();</div><div class="line"></div><div class="line">        System.out.println(System.currentTimeMillis()-start+<span class="string">"MS"</span>);</div><div class="line">        <span class="keyword">do</span>&#123;</div><div class="line">            <span class="keyword">if</span>(calculator.isCompletedNormally()) &#123;</div><div class="line">            System.out.println(<span class="string">"计算完成 正在关闭Fork/Join池..."</span>);</div><div class="line">            pool.shutdown();</div><div class="line">        &#125;</div><div class="line">        &#125;<span class="keyword">while</span>(!calculator.isDone());</div><div class="line">        System.out.println(<span class="string">"计算结果为："</span>+f.get());</div><div class="line">        System.out.println(<span class="string">"线程已经从另一个线程偷取到的时间数:"</span>+pool.getStealCount());</div><div class="line">        System.out.println(<span class="string">"是否已经完成执行:"</span>+pool.isTerminated());</div><div class="line">        System.out.println(<span class="string">"并行的级别："</span>+pool.getParallelism());</div><div class="line">        System.out.println(<span class="string">"线程池的worker线程的数量："</span>+pool.getPoolSize());</div><div class="line"></div><div class="line">        System.out.println(<span class="string">"执行的任务数："</span>+pool.getQueuedTaskCount());</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>需要注意的是Fork/Join的为了充分减少等待时间 默认使用的是LIFO策略，所以我们在执行第一个任务的<br>时候尽量不要fork。具体原因还不是很理解，因为在invokeAll方法中也是这样子处理的。invokeAll源码如下<br><figure class="highlight java"><table><tr><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">invokeAll</span><span class="params">(ForkJoinTask&lt;?&gt; t1, ForkJoinTask&lt;?&gt; t2)</span> </span>&#123;</div><div class="line">    <span class="keyword">int</span> s1, s2;</div><div class="line">    t2.fork();</div><div class="line">    <span class="keyword">if</span> ((s1 = t1.doInvoke() &amp; DONE_MASK) != NORMAL)</div><div class="line">        t1.reportException(s1);</div><div class="line">    <span class="keyword">if</span> ((s2 = t2.doJoin() &amp; DONE_MASK) != NORMAL)</div><div class="line">        t2.reportException(s2);</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
-<p>首先Fork第二个任务。然后在执行第一个任务,其次是join第二个任务。</p>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;p&gt; 首先看一下ForkJoin相关的几个API &lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;ForkJoinPool&lt;br&gt; &lt;code&gt;实现了forkjoin的线程池&lt;/code&gt;&lt;/li&gt;
-&lt;li&gt;ForkJoinWorkerThread&lt;br&gt; &lt;code&gt;forkjoin的线程&lt;/code&gt;&lt;/li&gt;
-&lt;li&gt;ForkJoinTask&lt;br&gt;  &lt;code&gt;forkjoin任务的父类 这是一个抽象类&lt;/code&gt;&lt;/li&gt;
-&lt;li&gt;RecursiveAction&lt;br&gt;  &lt;code&gt;无返回结果的任务接口&lt;/code&gt;&lt;/li&gt;
-&lt;li&gt;RecursiveTask&lt;br&gt;  &lt;code&gt;有返回结果的任务接口&lt;/code&gt;
-    
-    </summary>
-    
-      <category term="技术" scheme="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/"/>
-    
-      <category term="Fork/Join" scheme="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/Fork-Join/"/>
-    
-    
-      <category term="Fork/Join" scheme="http://blog.seoui.com/tags/Fork-Join/"/>
     
   </entry>
   
