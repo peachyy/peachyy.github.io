@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://blog.seoui.com/"/>
-  <updated>2018-07-24T06:32:25.402Z</updated>
+  <updated>2018-07-24T07:08:49.427Z</updated>
   <id>http://blog.seoui.com/</id>
   
   <author>
@@ -16,13 +16,234 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
+    <title>rocketmq简单消息发送</title>
+    <link href="http://blog.seoui.com/2018/07/24/rocketmq_simple_message/"/>
+    <id>http://blog.seoui.com/2018/07/24/rocketmq_simple_message/</id>
+    <published>2018-07-23T16:00:00.000Z</published>
+    <updated>2018-07-24T07:08:49.427Z</updated>
+    
+    <content type="html"><![CDATA[<p>有以下3种方式发送RocketMQ消息 </p>
+<ul>
+<li>可靠同步发送 reliable synchronous</li>
+<li>可靠异步发送 reliable asynchronous</li>
+<li>单向发送 one-way transmission</li>
+</ul>
+<h4 id="可靠同步发送"><a href="#可靠同步发送" class="headerlink" title="可靠同步发送"></a>可靠同步发送</h4><p> 主要运用在比较重要一点消息传递/通知等业务</p>
+ <figure class="highlight java"><table><tr><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SyncProducer</span> </span>&#123;</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> Exception </span>&#123;</div><div class="line">        DefaultMQProducer producer = <span class="keyword">new</span></div><div class="line">            DefaultMQProducer(<span class="string">"test"</span>);</div><div class="line">        producer.start();</div><div class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">100</span>; i++) &#123;</div><div class="line">            Message msg = <span class="keyword">new</span> Message(<span class="string">"TopicTest"</span> <span class="comment">/* Topic */</span>,</div><div class="line">                <span class="string">"TagA"</span> <span class="comment">/* Tag */</span>,</div><div class="line">                (<span class="string">"Hello RocketMQ "</span> +</div><div class="line">                    i).getBytes(RemotingHelper.DEFAULT_CHARSET) <span class="comment">/* Message body */</span></div><div class="line">            );</div><div class="line">            <span class="comment">//Call send message to deliver message to one of brokers.</span></div><div class="line">            SendResult sendResult = producer.send(msg);</div><div class="line">            System.out.printf(<span class="string">"%s%n"</span>, sendResult);</div><div class="line">        &#125;</div><div class="line">        <span class="comment">//Shut down once the producer instance is not longer in use.</span></div><div class="line">        producer.shutdown();</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h4 id="可靠异步发送"><a href="#可靠异步发送" class="headerlink" title="可靠异步发送"></a>可靠异步发送</h4><p>  通常用于对发送消息响应时间要求更高/更快的场景</p>
+<pre><code class="java"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">AsyncProducer</span> </span>{
+    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(
+        String[] args)</span> <span class="keyword">throws</span> MQClientException, InterruptedException, UnsupportedEncodingException </span>{
+        DefaultMQProducer producer = <span class="keyword">new</span> DefaultMQProducer(<span class="string">"Jodie_Daily_test"</span>);
+        producer.start();
+        producer.setRetryTimesWhenSendAsyncFailed(<span class="number">0</span>);
+
+        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">10000000</span>; i++) {
+            <span class="keyword">try</span> {
+                <span class="keyword">final</span> <span class="keyword">int</span> index = i;
+                Message msg = <span class="keyword">new</span> Message(<span class="string">"Jodie_topic_1023"</span>,
+                    <span class="string">"TagA"</span>,
+                    <span class="string">"OrderID188"</span>,
+                    <span class="string">"Hello world"</span>.getBytes(RemotingHelper.DEFAULT_CHARSET));
+                    <span class="comment">//重点在这里 异步发送回调</span>
+                producer.send(msg, <span class="keyword">new</span> SendCallback() {
+                    <span class="meta">@Override</span>
+                    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onSuccess</span><span class="params">(SendResult sendResult)</span> </span>{
+                        System.out.printf(<span class="string">"%-10d OK %s %n"</span>, index, sendResult.getMsgId());
+                    }
+
+                    <span class="meta">@Override</span>
+                    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onException</span><span class="params">(Throwable e)</span> </span>{
+                        System.out.printf(<span class="string">"%-10d Exception %s %n"</span>, index, e);
+                        e.printStackTrace();
+                    }
+                });
+            } <span class="keyword">catch</span> (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        producer.shutdown();
+    }
+}
+</code></pre>
+<h4 id="单向发送"><a href="#单向发送" class="headerlink" title="单向发送"></a>单向发送</h4><p>适用于某些耗时非常短，但对可靠性要求并不高的场景，例如日志收集。</p>
+<p><em>只发送消息，不等待服务器响应，只发送请求不等待应答。此方式发送消息的过程耗时非常短，一般在微秒级别。</em></p>
+<pre><code class="java"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">OnewayProducer</span> </span>{
+    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> Exception</span>{
+        DefaultMQProducer producer = <span class="keyword">new</span> DefaultMQProducer(<span class="string">"Test"</span>);
+        producer.start();
+        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">100</span>; i++) {
+            <span class="comment">//Create a message instance, specifying topic, tag and message body.</span>
+            Message msg = <span class="keyword">new</span> Message(<span class="string">"TopicTest"</span> <span class="comment">/* Topic */</span>,
+                <span class="string">"TagA"</span> <span class="comment">/* Tag */</span>,
+                (<span class="string">"Hello RocketMQ "</span> +
+                    i).getBytes(RemotingHelper.DEFAULT_CHARSET) <span class="comment">/* Message body */</span>
+            );
+            <span class="comment">//Call send message to deliver message to one of brokers.</span>
+            producer.sendOneway(msg);
+
+        }
+        <span class="comment">//Shut down once the producer instance is not longer in use.</span>
+        producer.shutdown();
+    }
+}
+</code></pre>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;有以下3种方式发送RocketMQ消息 &lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;可靠同步发送 reliable synchronous&lt;/li&gt;
+&lt;li&gt;可靠异步发送 reliable asynchronous&lt;/li&gt;
+&lt;li&gt;单向发送 one-way transmission&lt;/l
+    
+    </summary>
+    
+      <category term="技术" scheme="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/"/>
+    
+      <category term="rocketmq" scheme="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/rocketmq/"/>
+    
+    
+      <category term="rocketmq" scheme="http://blog.seoui.com/tags/rocketmq/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>rocketmq有序消息</title>
+    <link href="http://blog.seoui.com/2018/07/24/rocketmq_ordered_message/"/>
+    <id>http://blog.seoui.com/2018/07/24/rocketmq_ordered_message/</id>
+    <published>2018-07-23T16:00:00.000Z</published>
+    <updated>2018-07-24T07:14:19.535Z</updated>
+    
+    <content type="html"><![CDATA[<p>RocketMQ提供的顺序消费消息实现是使用的FIFO 先进先出算法</p>
+<h4 id="Producer消息发送"><a href="#Producer消息发送" class="headerlink" title="Producer消息发送"></a>Producer消息发送</h4> <figure class="highlight java"><table><tr><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Producer</span> </span>&#123;</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> UnsupportedEncodingException </span>&#123;</div><div class="line">        <span class="keyword">try</span> &#123;</div><div class="line">            MQProducer producer = <span class="keyword">new</span> DefaultMQProducer(<span class="string">"please_rename_unique_group_name"</span>);</div><div class="line">            producer.start();</div><div class="line"></div><div class="line">            String[] tags = <span class="keyword">new</span> String[] &#123;<span class="string">"TagA"</span>, <span class="string">"TagB"</span>, <span class="string">"TagC"</span>, <span class="string">"TagD"</span>, <span class="string">"TagE"</span>&#125;;</div><div class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">100</span>; i++) &#123;</div><div class="line">                <span class="keyword">int</span> orderId = i % <span class="number">10</span>;</div><div class="line">                Message msg =</div><div class="line">                    <span class="keyword">new</span> Message(<span class="string">"TopicTestjjj"</span>, tags[i % tags.length], <span class="string">"KEY"</span> + i,</div><div class="line">                        (<span class="string">"Hello RocketMQ "</span> + i).getBytes(RemotingHelper.DEFAULT_CHARSET));</div><div class="line">                SendResult sendResult = producer.send(msg, <span class="keyword">new</span> MessageQueueSelector() &#123;</div><div class="line">                    <span class="meta">@Override</span></div><div class="line">                    <span class="function"><span class="keyword">public</span> MessageQueue <span class="title">select</span><span class="params">(List&lt;MessageQueue&gt; mqs, Message msg, Object arg)</span> </span>&#123;</div><div class="line">                        Integer id = (Integer) arg;</div><div class="line">                        <span class="keyword">int</span> index = id % mqs.size();</div><div class="line">                        <span class="keyword">return</span> mqs.get(index);</div><div class="line">                    &#125;</div><div class="line">                &#125;, orderId);</div><div class="line"></div><div class="line">                System.out.printf(<span class="string">"%s%n"</span>, sendResult);</div><div class="line">            &#125;</div><div class="line"></div><div class="line">            producer.shutdown();</div><div class="line">        &#125; <span class="keyword">catch</span> (MQClientException | RemotingException | MQBrokerException | InterruptedException e) &#123;</div><div class="line">            e.printStackTrace();</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h4 id="Consumer消息消费"><a href="#Consumer消息消费" class="headerlink" title="Consumer消息消费"></a>Consumer消息消费</h4><pre><code class="java"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Consumer</span> </span>{
+
+    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> MQClientException </span>{
+        DefaultMQPushConsumer consumer = <span class="keyword">new</span> DefaultMQPushConsumer(<span class="string">"please_rename_unique_group_name_3"</span>);
+
+        consumer.setConsumeFromWhere(ConsumeFromWhere.CONSUME_FROM_FIRST_OFFSET);
+
+        consumer.subscribe(<span class="string">"TopicTest"</span>, <span class="string">"TagA || TagC || TagD"</span>);
+
+        consumer.registerMessageListener(<span class="keyword">new</span> MessageListenerOrderly() {
+            AtomicLong consumeTimes = <span class="keyword">new</span> AtomicLong(<span class="number">0</span>);
+
+            <span class="meta">@Override</span>
+            <span class="function"><span class="keyword">public</span> ConsumeOrderlyStatus <span class="title">consumeMessage</span><span class="params">(List&lt;MessageExt&gt; msgs, ConsumeOrderlyContext context)</span> </span>{
+                context.setAutoCommit(<span class="keyword">false</span>);
+                System.out.printf(<span class="string">"%s Receive New Messages: %s %n"</span>, Thread.currentThread().getName(), msgs);
+                <span class="keyword">this</span>.consumeTimes.incrementAndGet();
+                <span class="keyword">if</span> ((<span class="keyword">this</span>.consumeTimes.get() % <span class="number">2</span>) == <span class="number">0</span>) {
+                    <span class="keyword">return</span> ConsumeOrderlyStatus.SUCCESS;
+                } <span class="keyword">else</span> <span class="keyword">if</span> ((<span class="keyword">this</span>.consumeTimes.get() % <span class="number">3</span>) == <span class="number">0</span>) {
+                    <span class="keyword">return</span> ConsumeOrderlyStatus.ROLLBACK;
+                } <span class="keyword">else</span> <span class="keyword">if</span> ((<span class="keyword">this</span>.consumeTimes.get() % <span class="number">4</span>) == <span class="number">0</span>) {
+                    <span class="keyword">return</span> ConsumeOrderlyStatus.COMMIT;
+                } <span class="keyword">else</span> <span class="keyword">if</span> ((<span class="keyword">this</span>.consumeTimes.get() % <span class="number">5</span>) == <span class="number">0</span>) {
+                    context.setSuspendCurrentQueueTimeMillis(<span class="number">3000</span>);
+                    <span class="keyword">return</span> ConsumeOrderlyStatus.SUSPEND_CURRENT_QUEUE_A_MOMENT;
+                }
+
+                <span class="keyword">return</span> ConsumeOrderlyStatus.SUCCESS;
+            }
+        });
+
+        consumer.start();
+        System.out.printf(<span class="string">"Consumer Started.%n"</span>);
+    }
+
+}
+</code></pre>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;RocketMQ提供的顺序消费消息实现是使用的FIFO 先进先出算法&lt;/p&gt;
+&lt;h4 id=&quot;Producer消息发送&quot;&gt;&lt;a href=&quot;#Producer消息发送&quot; class=&quot;headerlink&quot; title=&quot;Producer消息发送&quot;&gt;&lt;/a&gt;Producer
+    
+    </summary>
+    
+      <category term="技术" scheme="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/"/>
+    
+      <category term="rocketmq" scheme="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/rocketmq/"/>
+    
+    
+      <category term="rocketmq" scheme="http://blog.seoui.com/tags/rocketmq/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>rocketmq广播消息</title>
+    <link href="http://blog.seoui.com/2018/07/24/rocketmq_broadcast_message/"/>
+    <id>http://blog.seoui.com/2018/07/24/rocketmq_broadcast_message/</id>
+    <published>2018-07-23T16:00:00.000Z</published>
+    <updated>2018-07-24T07:19:57.499Z</updated>
+    
+    <content type="html"><![CDATA[<p>发布与模式实现。广播就是向一个主题的所有订阅者发送同一条消息。</p>
+<p>在发送消息的时候和普通的消息并与不同之处，只是在消费端做一些配置即可。</p>
+<h4 id="Consumer消息消费"><a href="#Consumer消息消费" class="headerlink" title="Consumer消息消费"></a>Consumer消息消费</h4><pre><code class="java"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">BroadcastConsumer</span> </span>{
+
+    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> MQClientException </span>{
+        DefaultMQPushConsumer consumer = <span class="keyword">new</span> DefaultMQPushConsumer(<span class="string">"please_rename_unique_group_name_3"</span>);
+
+        consumer.setConsumeFromWhere(ConsumeFromWhere.CONSUME_FROM_FIRST_OFFSET);
+        <span class="comment">//设置为广播模式 默认为CLUSTERING模式</span>
+        consumer.setMessageModel(MessageModel.BROADCASTING);
+
+        consumer.subscribe(<span class="string">"TopicTest"</span>, <span class="string">"TagA || TagC || TagD"</span>);
+
+        consumer.registerMessageListener(<span class="keyword">new</span> MessageListenerOrderly() {
+            AtomicLong consumeTimes = <span class="keyword">new</span> AtomicLong(<span class="number">0</span>);
+
+            <span class="meta">@Override</span>
+            <span class="function"><span class="keyword">public</span> ConsumeOrderlyStatus <span class="title">consumeMessage</span><span class="params">(List&lt;MessageExt&gt; msgs, ConsumeOrderlyContext context)</span> </span>{
+                context.setAutoCommit(<span class="keyword">false</span>);
+                System.out.printf(<span class="string">"%s Receive New Messages: %s %n"</span>, Thread.currentThread().getName(), msgs);
+                <span class="keyword">return</span> ConsumeOrderlyStatus.SUCCESS;
+            }
+        });
+
+        consumer.start();
+        System.out.printf(<span class="string">"Consumer Started.%n"</span>);
+    }
+
+}
+</code></pre>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;发布与模式实现。广播就是向一个主题的所有订阅者发送同一条消息。&lt;/p&gt;
+&lt;p&gt;在发送消息的时候和普通的消息并与不同之处，只是在消费端做一些配置即可。&lt;/p&gt;
+&lt;h4 id=&quot;Consumer消息消费&quot;&gt;&lt;a href=&quot;#Consumer消息消费&quot; class=&quot;heade
+    
+    </summary>
+    
+      <category term="技术" scheme="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/"/>
+    
+      <category term="rocketmq" scheme="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/rocketmq/"/>
+    
+    
+      <category term="rocketmq" scheme="http://blog.seoui.com/tags/rocketmq/"/>
+    
+  </entry>
+  
+  <entry>
     <title>rocketmq4.x快速入门指南</title>
     <link href="http://blog.seoui.com/2018/07/24/rocketmqinstall/"/>
     <id>http://blog.seoui.com/2018/07/24/rocketmqinstall/</id>
     <published>2018-07-23T16:00:00.000Z</published>
-    <updated>2018-07-24T06:32:25.402Z</updated>
+    <updated>2018-07-24T07:23:53.111Z</updated>
     
-    <content type="html"><![CDATA[<p>采用的是<code>apache rocketmq 4.2.0</code>版本</p>
+    <content type="html"><![CDATA[<p>以下采用的是<code>apache rocketmq 4.2.0</code>版本 相关文档如下</p>
+<ul>
+<li>快速安装体验： <a href="http://blog.seoui.com/2018/07/24/rocketmqinstall/">http://blog.seoui.com/2018/07/24/rocketmqinstall/</a></li>
+<li>rocketmq简单消息发送： <a href="http://blog.seoui.com/2018/07/24/rocketmq_simple_message/">http://blog.seoui.com/2018/07/24/rocketmq_simple_message/</a></li>
+<li>rocketmq有序消息： <a href="http://blog.seoui.com/2018/07/24/rocketmq_ordered_message/">http://blog.seoui.com/2018/07/24/rocketmq_ordered_message/</a></li>
+<li>rocketmq广播消息： <a href="http://blog.seoui.com/2018/07/24/rocketmq_broadcast_message/">http://blog.seoui.com/2018/07/24/rocketmq_broadcast_message/</a></li>
+</ul>
 <h4 id="下载源码并编译"><a href="#下载源码并编译" class="headerlink" title="下载源码并编译"></a>下载源码并编译</h4><figure class="highlight bash"><table><tr><td class="code"><pre><div class="line"><span class="comment">#download</span></div><div class="line">wget http://mirrors.hust.edu.cn/apache/rocketmq/4.2.0/rocketmq-all-4.2.0-source-release.zip   </div><div class="line">unzip rocketmq-all-4.2.0-source-release.zip</div><div class="line"><span class="built_in">cd</span> rocketmq-all-4.2.0/</div><div class="line">mvn -Prelease-all -DskipTests clean install -U</div><div class="line"><span class="built_in">cd</span> distribution/target/apache-rocketmq</div></pre></td></tr></table></figure>
 <p>目录 <code>distribution/target/apache-rocketmq</code> 是编译后的产出 可复制这个目录安装MQ的机器上,这里复制到<code>/usr/local/</code></p>
 <p>共享一份编译后的文件方便以后再次使用 </p>
@@ -46,8 +267,9 @@
     
     <summary type="html">
     
-      &lt;p&gt;采用的是&lt;code&gt;apache rocketmq 4.2.0&lt;/code&gt;版本&lt;/p&gt;
-&lt;h4 id=&quot;下载源码并编译&quot;&gt;&lt;a href=&quot;#下载源码并编译&quot; class=&quot;headerlink&quot; title=&quot;下载源码并编译&quot;&gt;&lt;/a&gt;下载源码并编译&lt;/h4&gt;&lt;figu
+      &lt;p&gt;以下采用的是&lt;code&gt;apache rocketmq 4.2.0&lt;/code&gt;版本 相关文档如下&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;快速安装体验： &lt;a href=&quot;http://blog.seoui.com/2018/07/24/rocketmqinstall/&quot;&gt;http:/
     
     </summary>
     
@@ -103,36 +325,6 @@
   </entry>
   
   <entry>
-    <title>nexus3.X环境搭建</title>
-    <link href="http://blog.seoui.com/2018/06/22/nexusinstall/"/>
-    <id>http://blog.seoui.com/2018/06/22/nexusinstall/</id>
-    <published>2018-06-21T16:00:00.000Z</published>
-    <updated>2018-06-22T12:30:44.130Z</updated>
-    
-    <content type="html"><![CDATA[<p>nexus3比以前的版本相比 多支持了管理不同的格式 比如<code>Docker</code> <code>npm</code> <code>NuGet</code> <code>maven</code> …等</p>
-<h4 id="下载编译好的二进制安装"><a href="#下载编译好的二进制安装" class="headerlink" title="下载编译好的二进制安装"></a>下载编译好的二进制安装</h4> <figure class="highlight bash"><table><tr><td class="code"><pre><div class="line">wget https://sonatype-download.global.ssl.fastly.net/repository/repositoryManager/3/nexus-3.12.1-01-unix.tar.gz</div><div class="line">  </div><div class="line">  tar -zxf nexus-3.12.1-01-unix.tar.gz </div><div class="line"> </div><div class="line">  <span class="built_in">cd</span> nexus-3.12.1-01/</div><div class="line">  bin/nexus start</div></pre></td></tr></table></figure>
-<p> 默认的端口号为<code>8081</code> nexus3.x和以前的版本界面都有很大的改变 需要注意一下。<br> 其他默认配置在文件<code>etc/nexus-default.properties</code>中 需要修改的关注一下。</p>
-<p>参考</p>
-<p><a href="https://www.sonatype.com/" target="_blank" rel="external">https://www.sonatype.com/</a></p>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;p&gt;nexus3比以前的版本相比 多支持了管理不同的格式 比如&lt;code&gt;Docker&lt;/code&gt; &lt;code&gt;npm&lt;/code&gt; &lt;code&gt;NuGet&lt;/code&gt; &lt;code&gt;maven&lt;/code&gt; …等&lt;/p&gt;
-&lt;h4 id=&quot;下载编译好的二进制安装&quot;&gt;&lt;a hr
-    
-    </summary>
-    
-      <category term="技术" scheme="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/"/>
-    
-      <category term="nexus3" scheme="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/nexus3/"/>
-    
-    
-      <category term="nexus3" scheme="http://blog.seoui.com/tags/nexus3/"/>
-    
-  </entry>
-  
-  <entry>
     <title>jenkins环境搭建</title>
     <link href="http://blog.seoui.com/2018/06/22/jenkinsinstall/"/>
     <id>http://blog.seoui.com/2018/06/22/jenkinsinstall/</id>
@@ -161,6 +353,36 @@
     
     
       <category term="jenkins" scheme="http://blog.seoui.com/tags/jenkins/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>nexus3.X环境搭建</title>
+    <link href="http://blog.seoui.com/2018/06/22/nexusinstall/"/>
+    <id>http://blog.seoui.com/2018/06/22/nexusinstall/</id>
+    <published>2018-06-21T16:00:00.000Z</published>
+    <updated>2018-06-22T12:30:44.130Z</updated>
+    
+    <content type="html"><![CDATA[<p>nexus3比以前的版本相比 多支持了管理不同的格式 比如<code>Docker</code> <code>npm</code> <code>NuGet</code> <code>maven</code> …等</p>
+<h4 id="下载编译好的二进制安装"><a href="#下载编译好的二进制安装" class="headerlink" title="下载编译好的二进制安装"></a>下载编译好的二进制安装</h4> <figure class="highlight bash"><table><tr><td class="code"><pre><div class="line">wget https://sonatype-download.global.ssl.fastly.net/repository/repositoryManager/3/nexus-3.12.1-01-unix.tar.gz</div><div class="line">  </div><div class="line">  tar -zxf nexus-3.12.1-01-unix.tar.gz </div><div class="line"> </div><div class="line">  <span class="built_in">cd</span> nexus-3.12.1-01/</div><div class="line">  bin/nexus start</div></pre></td></tr></table></figure>
+<p> 默认的端口号为<code>8081</code> nexus3.x和以前的版本界面都有很大的改变 需要注意一下。<br> 其他默认配置在文件<code>etc/nexus-default.properties</code>中 需要修改的关注一下。</p>
+<p>参考</p>
+<p><a href="https://www.sonatype.com/" target="_blank" rel="external">https://www.sonatype.com/</a></p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;nexus3比以前的版本相比 多支持了管理不同的格式 比如&lt;code&gt;Docker&lt;/code&gt; &lt;code&gt;npm&lt;/code&gt; &lt;code&gt;NuGet&lt;/code&gt; &lt;code&gt;maven&lt;/code&gt; …等&lt;/p&gt;
+&lt;h4 id=&quot;下载编译好的二进制安装&quot;&gt;&lt;a hr
+    
+    </summary>
+    
+      <category term="技术" scheme="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/"/>
+    
+      <category term="nexus3" scheme="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/nexus3/"/>
+    
+    
+      <category term="nexus3" scheme="http://blog.seoui.com/tags/nexus3/"/>
     
   </entry>
   
@@ -969,181 +1191,6 @@ System.out.println(<span class="string">"example4:"</span>+example4+<span class=
     
     
       <category term="Objenesis" scheme="http://blog.seoui.com/tags/Objenesis/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>htmlUnit根据html创建htmlPage</title>
-    <link href="http://blog.seoui.com/2017/06/03/htmlunitstringtopage/"/>
-    <id>http://blog.seoui.com/2017/06/03/htmlunitstringtopage/</id>
-    <published>2017-06-02T16:00:00.000Z</published>
-    <updated>2017-06-03T15:48:17.409Z</updated>
-    
-    <content type="html"><![CDATA[<p> 在<code>htmlunit</code>中可以通过URL轻松获取一个HtmlPage,但是却没有提供根据Html字符串创建一个HtmlPage。</p>
-<p> 通过Url获取一个page</p>
- <figure class="highlight java"><table><tr><td class="code"><pre><div class="line"> </div><div class="line">HtmlPage page = webClient.getPage(<span class="string">"http://www.baidu.com/"</span>);</div></pre></td></tr></table></figure>
-<p> 但是源码包里面有通过<code>URL</code>下载网页源码，并通过<code>StringWebResponse</code>构建一个<code>HtmlPage</code>对象,<br> 所以利用这一个机制我们便可以利用<code>StringWebResponse</code> 手动构建一个HtmlPage对象。</p>
-<p> 实现方式如下</p>
- <figure class="highlight java"><table><tr><td class="code"><pre><div class="line"></div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> HtmlPage <span class="title">getPage</span><span class="params">(WebClient client, String html, String url, WebWindow window)</span> </span>&#123;</div><div class="line">	<span class="keyword">try</span> &#123;</div><div class="line">		URL u = <span class="keyword">new</span> URL(StringUtils.isBlank(url) ? <span class="string">"http://www.idea.com"</span> : url);</div><div class="line">		StringWebResponse response = <span class="keyword">new</span> StringWebResponse(html, u);</div><div class="line">		HtmlPage page = HTMLParser.parseHtml(response, window != <span class="keyword">null</span> ? window : client.getCurrentWindow());</div><div class="line">		<span class="keyword">return</span> page;</div><div class="line">	&#125; <span class="keyword">catch</span> (Exception e) &#123;</div><div class="line">		<span class="keyword">throw</span> <span class="keyword">new</span> RuntimeException(<span class="string">"字符串转换为htmlPage出错"</span>, e);</div><div class="line">	&#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> HtmlPage <span class="title">getPage</span><span class="params">(String html)</span> </span>&#123;</div><div class="line">       <span class="keyword">return</span> getPage(<span class="keyword">new</span> WebClient(), html, <span class="keyword">null</span>,<span class="keyword">null</span>);</div><div class="line">   &#125;</div></pre></td></tr></table></figure>
-<p> 接下来调用<code>getPage</code>方法 并传入Html字符串就可以返回一个HtmlPage对象了。</p>
-<p> 本文参考 <a href="https://stackoverflow.com/questions/6136435/how-to-create-htmlunit-htmlpage-object-from-string" target="_blank" rel="external">https://stackoverflow.com/questions/6136435/how-to-create-htmlunit-htmlpage-object-from-string</a></p>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;p&gt; 在&lt;code&gt;htmlunit&lt;/code&gt;中可以通过URL轻松获取一个HtmlPage,但是却没有提供根据Html字符串创建一个HtmlPage。&lt;/p&gt;
-&lt;p&gt; 通过Url获取一个page&lt;/p&gt;
- &lt;figure class=&quot;highlight java&quot;&gt;&lt;ta
-    
-    </summary>
-    
-      <category term="技术" scheme="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/"/>
-    
-      <category term="htmlunit" scheme="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/htmlunit/"/>
-    
-    
-      <category term="htmlunit" scheme="http://blog.seoui.com/tags/htmlunit/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>使用jenv管理java库 国内版本</title>
-    <link href="http://blog.seoui.com/2017/05/08/jenvmanager/"/>
-    <id>http://blog.seoui.com/2017/05/08/jenvmanager/</id>
-    <published>2017-05-07T16:00:00.000Z</published>
-    <updated>2017-06-03T15:09:01.637Z</updated>
-    
-    <content type="html"><![CDATA[<p> <code>jenv</code>是一个并行版本管理的java开发包，注意是<code>国内的</code>，并不是<a href="https://github.com/gcuisinier/jenv" target="_blank" rel="external">https://github.com/gcuisinier/jenv</a>可以安装在<code>Linux</code> <code>Mac</code> <code>Windows</code>操作系统上，工具包为我们提供了常用的命令行接口 用户安装、删除、搜索、切换软件版本。</p>
-<h4 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h4> <figure class="highlight shell"><table><tr><td class="code"><pre><div class="line">curl -L -s get.jenv.io | bash</div></pre></td></tr></table></figure>
-<p> 下载完shell后需要重新进入一下终端 或者 <code>source $HOME/.jenv/bin/jenv-init.sh</code></p>
-<h4 id="命令解释"><a href="#命令解释" class="headerlink" title="命令解释"></a>命令解释</h4><p>jenv all  显示所有被管理着的软件包（candidate）</p>
-<p>jenv list candidate 列出candidate软件包的所有版本</p>
-<p>jenv install candidate version 安装指定版本的软件包</p>
-<p>jenv uninstall  candidate version 卸载指定版本的软件包</p>
-<p>jenv reinstall candidate version 重新安装软件包 如果不指定版本号 会删除以前旧的版本号 安装至最新版</p>
-<p>jenv use candidate version 使指定版本的软件包生效</p>
-<p>jenv default candidate version 默认使用指定版本的软件包</p>
-<p>jenv which candidate 列出当前用到的软件版本 及软件所在目录</p>
-<p>jenv cd candidate 进入指定软件包默认的版本的安装目录</p>
-<p>另外作者的源码托管地址在:<a href="https://github.com/linux-china/jenv" target="_blank" rel="external">https://github.com/linux-china/jenv</a></p>
-<h4 id="示例"><a href="#示例" class="headerlink" title="示例"></a>示例</h4><p>安装java1.8</p>
- <figure class="highlight shell"><table><tr><td class="code"><pre><div class="line">jenv install java 1.8.0_77</div></pre></td></tr></table></figure>
-<p>卸载java1.8 </p>
- <figure class="highlight shell"><table><tr><td class="code"><pre><div class="line">jenv uninstall java 1.8.0_77</div></pre></td></tr></table></figure>
-<p>进入安装目录 </p>
- <figure class="highlight shell"><table><tr><td class="code"><pre><div class="line">jenv cd java</div></pre></td></tr></table></figure>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;p&gt; &lt;code&gt;jenv&lt;/code&gt;是一个并行版本管理的java开发包，注意是&lt;code&gt;国内的&lt;/code&gt;，并不是&lt;a href=&quot;https://github.com/gcuisinier/jenv&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;ht
-    
-    </summary>
-    
-      <category term="技术" scheme="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/"/>
-    
-      <category term="jenv" scheme="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/jenv/"/>
-    
-    
-      <category term="jenv" scheme="http://blog.seoui.com/tags/jenv/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>常用的XPath语法说明</title>
-    <link href="http://blog.seoui.com/2017/04/27/xpathstudy/"/>
-    <id>http://blog.seoui.com/2017/04/27/xpathstudy/</id>
-    <published>2017-04-26T16:00:00.000Z</published>
-    <updated>2017-06-03T15:09:01.637Z</updated>
-    
-    <content type="html"><![CDATA[<p> <code>XPath</code>在选取<code>XML</code>文档中有着非常方便的功能，下面介绍一些常用的表达式语法。</p>
-<p> 假设如下XML<br> <figure class="highlight html"><table><tr><td class="code"><pre><div class="line">&lt;?xml version="1.0" encoding="ISO-8859-1"?&gt;</div><div class="line"><span class="tag">&lt;<span class="name">bookstore</span>&gt;</span></div><div class="line">	<span class="tag">&lt;<span class="name">book</span>&gt;</span></div><div class="line">	  <span class="tag">&lt;<span class="name">title</span> <span class="attr">lang</span>=<span class="string">"en"</span>&gt;</span>测试<span class="tag">&lt;/<span class="name">title</span>&gt;</span></div><div class="line">	  <span class="tag">&lt;<span class="name">author</span> <span class="attr">sex</span>=<span class="string">"女"</span>&gt;</span>笑笑笑<span class="tag">&lt;/<span class="name">author</span>&gt;</span> </div><div class="line">	  <span class="tag">&lt;<span class="name">year</span>&gt;</span>2017<span class="tag">&lt;/<span class="name">year</span>&gt;</span></div><div class="line">	  <span class="tag">&lt;<span class="name">price</span>&gt;</span>888<span class="tag">&lt;/<span class="name">price</span>&gt;</span></div><div class="line">	<span class="tag">&lt;/<span class="name">book</span>&gt;</span></div><div class="line">	<span class="tag">&lt;<span class="name">book</span>&gt;</span></div><div class="line">	  <span class="tag">&lt;<span class="name">title</span> <span class="attr">lang</span>=<span class="string">"en"</span>&gt;</span>测试1<span class="tag">&lt;/<span class="name">title</span>&gt;</span></div><div class="line">	  <span class="tag">&lt;<span class="name">author</span> <span class="attr">sex</span>=<span class="string">"女"</span> <span class="attr">age</span>=<span class="string">"18"</span>&gt;</span>笑笑笑1<span class="tag">&lt;/<span class="name">author</span>&gt;</span> </div><div class="line">	  <span class="tag">&lt;<span class="name">year</span>&gt;</span>2018<span class="tag">&lt;/<span class="name">year</span>&gt;</span></div><div class="line">	  <span class="tag">&lt;<span class="name">price</span>&gt;</span>889<span class="tag">&lt;/<span class="name">price</span>&gt;</span></div><div class="line">	<span class="tag">&lt;/<span class="name">book</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">bookstore</span>&gt;</span></div></pre></td></tr></table></figure></p>
-<h4 id="基础表达式"><a href="#基础表达式" class="headerlink" title="基础表达式"></a>基础表达式</h4><p> 选取节点基础表达式 摘自<code>w3c</code></p>
-<table>
-<thead>
-<tr>
-<th>属性</th>
-<th style="text-align:center">含义</th>
-<th>example</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>nodename</td>
-<td style="text-align:center">选取此节点的所有子节点</td>
-<td>bookstore</td>
-</tr>
-<tr>
-<td>*</td>
-<td style="text-align:center">任何元素</td>
-<td></td>
-</tr>
-<tr>
-<td>@*</td>
-<td style="text-align:center">任何属性的节点</td>
-<td></td>
-</tr>
-<tr>
-<td></td>
-<td style="text-align:center">任何属性的节点</td>
-<td></td>
-</tr>
-<tr>
-<td>/</td>
-<td style="text-align:center">从根节点选取。</td>
-<td>/bookstore</td>
-</tr>
-<tr>
-<td>//</td>
-<td style="text-align:center">从匹配选择的当前节点选择文档中的节点，而不考虑它们的位置</td>
-<td>//title</td>
-</tr>
-<tr>
-<td>.</td>
-<td style="text-align:center">选取当前节点。</td>
-<td>./title 选取当前节点下的title</td>
-</tr>
-<tr>
-<td>..</td>
-<td style="text-align:center">选取当前节点的父节点。</td>
-<td></td>
-</tr>
-<tr>
-<td>@</td>
-<td style="text-align:center">选取属性</td>
-<td>//title[@lang=’en’]</td>
-</tr>
-</tbody>
-</table>
-<p>一些定位的示例</p>
-<figure class="highlight html"><table><tr><td class="code"><pre><div class="line">获取所有的author节点</div><div class="line">//author</div><div class="line">获取第一个author节点 需要注意的是索引是从1开始的</div><div class="line">//author[1]</div><div class="line">获取拥有age属性的任何元素</div><div class="line">//*[@age]</div><div class="line"> 获取author节点的age属性=18的所有author节点</div><div class="line">//author[@age='18']</div></pre></td></tr></table></figure>
-<h4 id="轴"><a href="#轴" class="headerlink" title="轴"></a>轴</h4><p>稍微麻烦强大一点的定位<code>XPath Axes</code></p>
-<p>获取文本包含2018的所有父Book节点<br><figure class="highlight html"><table><tr><td class="code"><pre><div class="line">//*[contains(text(),'2018')]/ancestor::book</div></pre></td></tr></table></figure></p>
-<p>还有一个<code>ancestor-or-self</code>选取的父节点包含自身</p>
-<p>选取bookstore所有的子book节点<br><figure class="highlight html"><table><tr><td class="code"><pre><div class="line">//bookstore/child::book</div></pre></td></tr></table></figure></p>
-<p>选取当前节点的所有 book 后代。</p>
-<figure class="highlight html"><table><tr><td class="code"><pre><div class="line">descendant::book</div></pre></td></tr></table></figure>
-<p>获取当前节点的父节点div<br><figure class="highlight html"><table><tr><td class="code"><pre><div class="line">./parent::div</div></pre></td></tr></table></figure></p>
-<p>获取当前节点之后兄弟节点div<br><figure class="highlight html"><table><tr><td class="code"><pre><div class="line">./following-sibling::div</div></pre></td></tr></table></figure></p>
-<p>获取当前节点之前兄弟节点div<br><figure class="highlight html"><table><tr><td class="code"><pre><div class="line">./preceding-sibling::div</div></pre></td></tr></table></figure></p>
-<h4 id="运算符"><a href="#运算符" class="headerlink" title="运算符"></a>运算符</h4><p>在前面其实已经使用到运算符 例如age=18 </p>
-<p>参考自 <a href="http://www.w3school.com.cn/xpath/xpath_operators.asp" target="_blank" rel="external">http://www.w3school.com.cn/xpath/xpath_operators.asp</a> 不在此说明</p>
-<h4 id="函数"><a href="#函数" class="headerlink" title="函数"></a>函数</h4><p>函数的使用方法在前面也使用到过 例如 <code>contains(text(),&#39;2018&#39;)</code><br>参考自 <a href="http://www.w3school.com.cn/xpath/xpath_functions.asp" target="_blank" rel="external">http://www.w3school.com.cn/xpath/xpath_functions.asp</a> 不在此说明</p>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;p&gt; &lt;code&gt;XPath&lt;/code&gt;在选取&lt;code&gt;XML&lt;/code&gt;文档中有着非常方便的功能，下面介绍一些常用的表达式语法。&lt;/p&gt;
-&lt;p&gt; 假设如下XML&lt;br&gt; &lt;figure class=&quot;highlight html&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td clas
-    
-    </summary>
-    
-      <category term="技术" scheme="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/"/>
-    
-      <category term="XPath" scheme="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/XPath/"/>
-    
-    
-      <category term="XPath" scheme="http://blog.seoui.com/tags/XPath/"/>
     
   </entry>
   
