@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://blog.seoui.com/"/>
-  <updated>2018-06-22T12:23:03.550Z</updated>
+  <updated>2018-07-24T06:32:25.402Z</updated>
   <id>http://blog.seoui.com/</id>
   
   <author>
@@ -16,32 +16,47 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
-    <title>nexus3.X环境搭建</title>
-    <link href="http://blog.seoui.com/2018/06/22/nexusinstall/"/>
-    <id>http://blog.seoui.com/2018/06/22/nexusinstall/</id>
-    <published>2018-06-21T16:00:00.000Z</published>
-    <updated>2018-06-22T12:23:03.550Z</updated>
+    <title>rocketmq4.x快速入门指南</title>
+    <link href="http://blog.seoui.com/2018/07/24/rocketmqinstall/"/>
+    <id>http://blog.seoui.com/2018/07/24/rocketmqinstall/</id>
+    <published>2018-07-23T16:00:00.000Z</published>
+    <updated>2018-07-24T06:32:25.402Z</updated>
     
-    <content type="html"><![CDATA[<p>nexus3比以前的版本相比 多支持了管理不同的格式 比如<code>Docker</code> <code>npm</code> <code>NuGet</code> <code>maven</code> …等</p>
-<h4 id="下载编译好的二进制安装"><a href="#下载编译好的二进制安装" class="headerlink" title="下载编译好的二进制安装"></a>下载编译好的二进制安装</h4> <figure class="highlight bash"><table><tr><td class="code"><pre><div class="line">wget https://sonatype-download.global.ssl.fastly.net/repository/repositoryManager/3/nexus-3.12.1-01-unix.tar.gz</div><div class="line">   </div><div class="line">   tar -zxf nexus-3.12.1-01-unix.tar.gz </div><div class="line"></div><div class="line">   <span class="built_in">cd</span> nexus-3.12.1-01/</div><div class="line">   bin/nexus start</div></pre></td></tr></table></figure>
-<p> 默认的端口号为<code>8081</code> nexus3.x和以前的版本界面都有很大的改变 需要注意一下。<br> 其他默认配置在文件<code>etc/nexus-default.properties</code>中 需要修改的关注一下。</p>
-<p>参考</p>
-<p><a href="https://www.sonatype.com/" target="_blank" rel="external">https://www.sonatype.com/</a></p>
+    <content type="html"><![CDATA[<p>采用的是<code>apache rocketmq 4.2.0</code>版本</p>
+<h4 id="下载源码并编译"><a href="#下载源码并编译" class="headerlink" title="下载源码并编译"></a>下载源码并编译</h4><figure class="highlight bash"><table><tr><td class="code"><pre><div class="line"><span class="comment">#download</span></div><div class="line">wget http://mirrors.hust.edu.cn/apache/rocketmq/4.2.0/rocketmq-all-4.2.0-source-release.zip   </div><div class="line">unzip rocketmq-all-4.2.0-source-release.zip</div><div class="line"><span class="built_in">cd</span> rocketmq-all-4.2.0/</div><div class="line">mvn -Prelease-all -DskipTests clean install -U</div><div class="line"><span class="built_in">cd</span> distribution/target/apache-rocketmq</div></pre></td></tr></table></figure>
+<p>目录 <code>distribution/target/apache-rocketmq</code> 是编译后的产出 可复制这个目录安装MQ的机器上,这里复制到<code>/usr/local/</code></p>
+<p>共享一份编译后的文件方便以后再次使用 </p>
+<p><a href="https://pan.baidu.com/s/1ZyUOKFm-t8cJDQuH68QydQ" target="_blank" rel="external">https://pan.baidu.com/s/1ZyUOKFm-t8cJDQuH68QydQ</a></p>
+<h4 id="启动NameServer"><a href="#启动NameServer" class="headerlink" title="启动NameServer"></a>启动NameServer</h4><figure class="highlight bash"><table><tr><td class="code"><pre><div class="line"><span class="built_in">cd</span> /usr/<span class="built_in">local</span>/apache-rocketmq</div><div class="line">nohup sh bin/mqnamesrv &amp;</div></pre></td></tr></table></figure>
+<p> 查看日志<code>tail -f ~/logs/rocketmqlogs/namesrv.log</code> 启动成功后打印The Name Server boot success…</p>
+<h4 id="启动Broker"><a href="#启动Broker" class="headerlink" title="启动Broker"></a>启动Broker</h4><p>这里需要注意一下就是 如果当前机器上有多张网卡的情况,最好指定一个<code>IP</code>, 有可能客户端正好就和MQ选择的网卡不通</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><div class="line"><span class="built_in">echo</span> <span class="string">"192.168.1.2"</span>&gt;config/broker.properties</div></pre></td></tr></table></figure>
+<p>启动broker</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><div class="line">nohup sh bin/mqbroker -n localhost:9876 -c config/broker.properties &amp;</div></pre></td></tr></table></figure>
+<p>查看一下集群列表</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><div class="line">sh bin/mqadmin clusterList -n  localhost:9876</div></pre></td></tr></table></figure>
+<h4 id="发送-接收消息"><a href="#发送-接收消息" class="headerlink" title="发送/接收消息"></a>发送/接收消息</h4><p>Producer</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><div class="line"> </div><div class="line"><span class="built_in">export</span> NAMESRV_ADDR=localhost:9876</div><div class="line">sh bin/tools.sh org.apache.rocketmq.example.quickstart.Producer</div></pre></td></tr></table></figure>
+<p>能发送表示OK</p>
+<p>Consumer</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><div class="line"> </div><div class="line"><span class="built_in">export</span> NAMESRV_ADDR=localhost:9876</div><div class="line">sh bin/tools.sh org.apache.rocketmq.example.quickstart.Consumer</div></pre></td></tr></table></figure>
+<p>能接收到之前发送的消息表示OK</p>
+<h4 id="关闭MQ"><a href="#关闭MQ" class="headerlink" title="关闭MQ"></a>关闭MQ</h4><figure class="highlight bash"><table><tr><td class="code"><pre><div class="line"> </div><div class="line">sh bin/mqshutdown broker</div><div class="line"></div><div class="line">sh bin/mqshutdown namesrv</div></pre></td></tr></table></figure>
 ]]></content>
     
     <summary type="html">
     
-      &lt;p&gt;nexus3比以前的版本相比 多支持了管理不同的格式 比如&lt;code&gt;Docker&lt;/code&gt; &lt;code&gt;npm&lt;/code&gt; &lt;code&gt;NuGet&lt;/code&gt; &lt;code&gt;maven&lt;/code&gt; …等&lt;/p&gt;
-&lt;h4 id=&quot;下载编译好的二进制安装&quot;&gt;&lt;a hr
+      &lt;p&gt;采用的是&lt;code&gt;apache rocketmq 4.2.0&lt;/code&gt;版本&lt;/p&gt;
+&lt;h4 id=&quot;下载源码并编译&quot;&gt;&lt;a href=&quot;#下载源码并编译&quot; class=&quot;headerlink&quot; title=&quot;下载源码并编译&quot;&gt;&lt;/a&gt;下载源码并编译&lt;/h4&gt;&lt;figu
     
     </summary>
     
       <category term="技术" scheme="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/"/>
     
-      <category term="nexus3" scheme="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/nexus3/"/>
+      <category term="rocketmq" scheme="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/rocketmq/"/>
     
     
-      <category term="nexus3" scheme="http://blog.seoui.com/tags/nexus3/"/>
+      <category term="rocketmq" scheme="http://blog.seoui.com/tags/rocketmq/"/>
     
   </entry>
   
@@ -84,6 +99,36 @@
     
     
       <category term="gitlab" scheme="http://blog.seoui.com/tags/gitlab/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>nexus3.X环境搭建</title>
+    <link href="http://blog.seoui.com/2018/06/22/nexusinstall/"/>
+    <id>http://blog.seoui.com/2018/06/22/nexusinstall/</id>
+    <published>2018-06-21T16:00:00.000Z</published>
+    <updated>2018-06-22T12:30:44.130Z</updated>
+    
+    <content type="html"><![CDATA[<p>nexus3比以前的版本相比 多支持了管理不同的格式 比如<code>Docker</code> <code>npm</code> <code>NuGet</code> <code>maven</code> …等</p>
+<h4 id="下载编译好的二进制安装"><a href="#下载编译好的二进制安装" class="headerlink" title="下载编译好的二进制安装"></a>下载编译好的二进制安装</h4> <figure class="highlight bash"><table><tr><td class="code"><pre><div class="line">wget https://sonatype-download.global.ssl.fastly.net/repository/repositoryManager/3/nexus-3.12.1-01-unix.tar.gz</div><div class="line">  </div><div class="line">  tar -zxf nexus-3.12.1-01-unix.tar.gz </div><div class="line"> </div><div class="line">  <span class="built_in">cd</span> nexus-3.12.1-01/</div><div class="line">  bin/nexus start</div></pre></td></tr></table></figure>
+<p> 默认的端口号为<code>8081</code> nexus3.x和以前的版本界面都有很大的改变 需要注意一下。<br> 其他默认配置在文件<code>etc/nexus-default.properties</code>中 需要修改的关注一下。</p>
+<p>参考</p>
+<p><a href="https://www.sonatype.com/" target="_blank" rel="external">https://www.sonatype.com/</a></p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;nexus3比以前的版本相比 多支持了管理不同的格式 比如&lt;code&gt;Docker&lt;/code&gt; &lt;code&gt;npm&lt;/code&gt; &lt;code&gt;NuGet&lt;/code&gt; &lt;code&gt;maven&lt;/code&gt; …等&lt;/p&gt;
+&lt;h4 id=&quot;下载编译好的二进制安装&quot;&gt;&lt;a hr
+    
+    </summary>
+    
+      <category term="技术" scheme="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/"/>
+    
+      <category term="nexus3" scheme="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/nexus3/"/>
+    
+    
+      <category term="nexus3" scheme="http://blog.seoui.com/tags/nexus3/"/>
     
   </entry>
   
@@ -1099,41 +1144,6 @@ System.out.println(<span class="string">"example4:"</span>+example4+<span class=
     
     
       <category term="XPath" scheme="http://blog.seoui.com/tags/XPath/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Mesos环境搭建</title>
-    <link href="http://blog.seoui.com/2017/04/18/mesosinstall/"/>
-    <id>http://blog.seoui.com/2017/04/18/mesosinstall/</id>
-    <published>2017-04-17T16:00:00.000Z</published>
-    <updated>2017-06-03T15:09:01.637Z</updated>
-    
-    <content type="html"><![CDATA[<p>  最近有一个实时的采集系统需求，目前的实现方式是用分布式定时任务来处理这一采集请求,希望有更多资源能够为任务分担压力，支持动态添加或者移除任务资源 从而达到提高采集效率，所以准备采用<code>Mesos</code>来做资源调度的工作。</p>
-<p>  因为自己硬件设备不够好的原因导致安装Mesos的时候出现了一个未知的问题 记录一下，以下是参考官方Getting Started的示例。</p>
-<h4 id="获取源码"><a href="#获取源码" class="headerlink" title="获取源码"></a>获取源码</h4><figure class="highlight shell"><table><tr><td class="code"><pre><div class="line"></div><div class="line">wget http://www.apache.org/dist/mesos/1.2.0/mesos-1.2.0.tar.gz</div><div class="line"></div><div class="line">tar -zxf mesos-1.2.0.tar.gz</div></pre></td></tr></table></figure>
-<h4 id="安装所需依赖"><a href="#安装所需依赖" class="headerlink" title="安装所需依赖"></a>安装所需依赖</h4><p> 由于本机是Ubuntu 14.04 如果是其他的系统请参考 <a href="http://mesos.apache.org/gettingstarted/" target="_blank" rel="external">http://mesos.apache.org/gettingstarted/</a></p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><div class="line"> </div><div class="line">apt-get update</div><div class="line"> </div><div class="line">apt-get install -y tar wget git</div><div class="line"></div><div class="line">apt-get install -y openjdk-7-jdk</div><div class="line"></div><div class="line">apt-get install -y autoconf libtool</div><div class="line"></div><div class="line">apt-get -y install build-essential python-dev python-virtualenv libcurl4-nss-dev  libsasl2-dev libsasl2-modules maven libapr1-dev libsvn-dev</div></pre></td></tr></table></figure>
-<h4 id="编译源码"><a href="#编译源码" class="headerlink" title="编译源码"></a>编译源码</h4><figure class="highlight shell"><table><tr><td class="code"><pre><div class="line"></div><div class="line">cd mesos-1.2.0</div><div class="line"></div><div class="line">./bootstrap</div><div class="line"></div><div class="line">mkdir build</div><div class="line"></div><div class="line">cd build</div><div class="line"></div><div class="line">../configure</div><div class="line"></div><div class="line">make -j3</div></pre></td></tr></table></figure>
-<h4 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h4><figure class="highlight shell"><table><tr><td class="code"><pre><div class="line"></div><div class="line">make check</div><div class="line"></div><div class="line">make install</div></pre></td></tr></table></figure>
-<h4 id="测试例子"><a href="#测试例子" class="headerlink" title="测试例子"></a>测试例子</h4><p>从官方示例复制 可以运行<br>指定IP的时候 如果需要外网访问可以设置具体的IP, 设置为127.0.0.1 只能用127.0.0.1的IP访问。</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><div class="line"><span class="meta"></span></div><div class="line"># Start Mesos master (ensure work directory exists and has proper permissions).</div><div class="line"><span class="meta">$</span> ./bin/mesos-master.sh --ip=127.0.0.1 --work_dir=/var/lib/mesos</div><div class="line"><span class="meta"></span></div><div class="line"># Start Mesos agent (ensure work directory exists and has proper permissions).</div><div class="line"><span class="meta">$</span> ./bin/mesos-agent.sh --master=127.0.0.1:5050 --work_dir=/var/lib/mesos</div><div class="line"><span class="meta"></span></div><div class="line"># Visit the Mesos web page.</div><div class="line"><span class="meta">$</span> http://127.0.0.1:5050</div><div class="line"><span class="meta"></span></div><div class="line"># Run C++ framework (exits after successfully running some tasks).</div><div class="line"><span class="meta">$</span> ./src/test-framework --master=127.0.0.1:5050</div><div class="line"><span class="meta"></span></div><div class="line"># Run Java framework (exits after successfully running some tasks).</div><div class="line"><span class="meta">$</span> ./src/examples/java/test-framework 127.0.0.1:5050</div><div class="line"><span class="meta"></span></div><div class="line"># Run Python framework (exits after successfully running some tasks).</div><div class="line"><span class="meta">$</span> ./src/examples/python/test-framework 127.0.0.1:5050</div></pre></td></tr></table></figure>
-<p><code>需要注意的是</code> 安装之前要保证差不多2-4个GB的内存，不然在编译的时候总是报一些莫名奇妙的错误。还要保证安装之前要把依赖库安装好。</p>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;p&gt;  最近有一个实时的采集系统需求，目前的实现方式是用分布式定时任务来处理这一采集请求,希望有更多资源能够为任务分担压力，支持动态添加或者移除任务资源 从而达到提高采集效率，所以准备采用&lt;code&gt;Mesos&lt;/code&gt;来做资源调度的工作。&lt;/p&gt;
-&lt;p&gt;  因为自己硬件设
-    
-    </summary>
-    
-      <category term="技术" scheme="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/"/>
-    
-      <category term="Mesos" scheme="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/Mesos/"/>
-    
-    
-      <category term="技术栈" scheme="http://blog.seoui.com/tags/%E6%8A%80%E6%9C%AF%E6%A0%88/"/>
     
   </entry>
   
