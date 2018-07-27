@@ -284,48 +284,6 @@
   </entry>
   
   <entry>
-    <title>gitlab环境搭建</title>
-    <link href="http://blog.seoui.com/2018/06/22/gitlabinstall/"/>
-    <id>http://blog.seoui.com/2018/06/22/gitlabinstall/</id>
-    <published>2018-06-21T16:00:00.000Z</published>
-    <updated>2018-06-22T12:23:03.550Z</updated>
-    
-    <content type="html"><![CDATA[<p>操作系统：<code>centos7</code><br>gitlab： <code>gitlab-ee</code></p>
-<p>如果是其他环境 安装过程类似</p>
-<h4 id="安装必要依赖"><a href="#安装必要依赖" class="headerlink" title="安装必要依赖"></a>安装必要依赖</h4> <figure class="highlight bash"><table><tr><td class="code"><pre><div class="line">sudo yum install -y curl policycoreutils-python openssh-server</div><div class="line">sudo systemctl <span class="built_in">enable</span> sshd</div><div class="line">sudo systemctl start sshd</div><div class="line">sudo firewall-cmd --permanent --add-service=http</div><div class="line">sudo systemctl reload firewalld</div></pre></td></tr></table></figure>
-<p> 安装<code>postfix</code>依赖 用来发送邮件 不需要可以省略</p>
- <figure class="highlight bash"><table><tr><td class="code"><pre><div class="line">sudo yum install postfix</div><div class="line">sudo systemctl <span class="built_in">enable</span> postfix</div><div class="line">sudo systemctl start postfix</div></pre></td></tr></table></figure>
-<h4 id="获取并安装GitLab包"><a href="#获取并安装GitLab包" class="headerlink" title="获取并安装GitLab包"></a>获取并安装GitLab包</h4><p>  添加package</p>
- <figure class="highlight bash"><table><tr><td class="code"><pre><div class="line">curl https://packages.gitlab.com/install/repositories/gitlab/gitlab-ee/script.rpm.sh | sudo bash</div></pre></td></tr></table></figure>
-<p>  执行安装操作</p>
-<p>  <em>设置一个EXTERNAL_URL表示安装后的gitlab地址,如果需要HTTPS 那么需求安装好之后额外配置</em></p>
- <figure class="highlight bash"><table><tr><td class="code"><pre><div class="line">sudo EXTERNAL_URL=<span class="string">"http://172.30.34.6/"</span> yum install -y gitlab-ee</div></pre></td></tr></table></figure>
-<p>  如果没有报错信息 就可以使用前面配置的<code>EXTERNAL_URL</code>参数在浏览器上打开GITLAB了，当前配置的URL为:<code>http://172.30.34.6/</code></p>
-<h4 id="安装之后首次访问设置"><a href="#安装之后首次访问设置" class="headerlink" title="安装之后首次访问设置"></a>安装之后首次访问设置</h4><p>  安装好之后默认需要使用<code>root</code>账户登录，这个时候浏览器会重定向到为<code>root</code>设置初次密码的页面，跟着操作做就对了。</p>
-<p><code>Gitlab</code>安装好之后提供了一系列的命令工具如：<code>gitlab-ctl</code>等等。</p>
-<p>  更多设置请参考官方文档</p>
-<p>参考</p>
-<p><a href="https://about.gitlab.com/installation/#centos-7" target="_blank" rel="external">https://about.gitlab.com/installation/#centos-7</a></p>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;p&gt;操作系统：&lt;code&gt;centos7&lt;/code&gt;&lt;br&gt;gitlab： &lt;code&gt;gitlab-ee&lt;/code&gt;&lt;/p&gt;
-&lt;p&gt;如果是其他环境 安装过程类似&lt;/p&gt;
-&lt;h4 id=&quot;安装必要依赖&quot;&gt;&lt;a href=&quot;#安装必要依赖&quot; class=&quot;headerlink
-    
-    </summary>
-    
-      <category term="技术" scheme="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/"/>
-    
-      <category term="gitlab" scheme="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/gitlab/"/>
-    
-    
-      <category term="gitlab" scheme="http://blog.seoui.com/tags/gitlab/"/>
-    
-  </entry>
-  
-  <entry>
     <title>nexus3.X环境搭建</title>
     <link href="http://blog.seoui.com/2018/06/22/nexusinstall/"/>
     <id>http://blog.seoui.com/2018/06/22/nexusinstall/</id>
@@ -384,6 +342,48 @@
     
     
       <category term="jenkins" scheme="http://blog.seoui.com/tags/jenkins/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>gitlab环境搭建</title>
+    <link href="http://blog.seoui.com/2018/06/22/gitlabinstall/"/>
+    <id>http://blog.seoui.com/2018/06/22/gitlabinstall/</id>
+    <published>2018-06-21T16:00:00.000Z</published>
+    <updated>2018-06-22T12:23:03.550Z</updated>
+    
+    <content type="html"><![CDATA[<p>操作系统：<code>centos7</code><br>gitlab： <code>gitlab-ee</code></p>
+<p>如果是其他环境 安装过程类似</p>
+<h4 id="安装必要依赖"><a href="#安装必要依赖" class="headerlink" title="安装必要依赖"></a>安装必要依赖</h4> <figure class="highlight bash"><table><tr><td class="code"><pre><div class="line">sudo yum install -y curl policycoreutils-python openssh-server</div><div class="line">sudo systemctl <span class="built_in">enable</span> sshd</div><div class="line">sudo systemctl start sshd</div><div class="line">sudo firewall-cmd --permanent --add-service=http</div><div class="line">sudo systemctl reload firewalld</div></pre></td></tr></table></figure>
+<p> 安装<code>postfix</code>依赖 用来发送邮件 不需要可以省略</p>
+ <figure class="highlight bash"><table><tr><td class="code"><pre><div class="line">sudo yum install postfix</div><div class="line">sudo systemctl <span class="built_in">enable</span> postfix</div><div class="line">sudo systemctl start postfix</div></pre></td></tr></table></figure>
+<h4 id="获取并安装GitLab包"><a href="#获取并安装GitLab包" class="headerlink" title="获取并安装GitLab包"></a>获取并安装GitLab包</h4><p>  添加package</p>
+ <figure class="highlight bash"><table><tr><td class="code"><pre><div class="line">curl https://packages.gitlab.com/install/repositories/gitlab/gitlab-ee/script.rpm.sh | sudo bash</div></pre></td></tr></table></figure>
+<p>  执行安装操作</p>
+<p>  <em>设置一个EXTERNAL_URL表示安装后的gitlab地址,如果需要HTTPS 那么需求安装好之后额外配置</em></p>
+ <figure class="highlight bash"><table><tr><td class="code"><pre><div class="line">sudo EXTERNAL_URL=<span class="string">"http://172.30.34.6/"</span> yum install -y gitlab-ee</div></pre></td></tr></table></figure>
+<p>  如果没有报错信息 就可以使用前面配置的<code>EXTERNAL_URL</code>参数在浏览器上打开GITLAB了，当前配置的URL为:<code>http://172.30.34.6/</code></p>
+<h4 id="安装之后首次访问设置"><a href="#安装之后首次访问设置" class="headerlink" title="安装之后首次访问设置"></a>安装之后首次访问设置</h4><p>  安装好之后默认需要使用<code>root</code>账户登录，这个时候浏览器会重定向到为<code>root</code>设置初次密码的页面，跟着操作做就对了。</p>
+<p><code>Gitlab</code>安装好之后提供了一系列的命令工具如：<code>gitlab-ctl</code>等等。</p>
+<p>  更多设置请参考官方文档</p>
+<p>参考</p>
+<p><a href="https://about.gitlab.com/installation/#centos-7" target="_blank" rel="external">https://about.gitlab.com/installation/#centos-7</a></p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;操作系统：&lt;code&gt;centos7&lt;/code&gt;&lt;br&gt;gitlab： &lt;code&gt;gitlab-ee&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;如果是其他环境 安装过程类似&lt;/p&gt;
+&lt;h4 id=&quot;安装必要依赖&quot;&gt;&lt;a href=&quot;#安装必要依赖&quot; class=&quot;headerlink
+    
+    </summary>
+    
+      <category term="技术" scheme="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/"/>
+    
+      <category term="gitlab" scheme="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/gitlab/"/>
+    
+    
+      <category term="gitlab" scheme="http://blog.seoui.com/tags/gitlab/"/>
     
   </entry>
   
