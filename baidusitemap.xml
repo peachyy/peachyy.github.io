@@ -3,11 +3,32 @@
 
 
     
-    
+  <url>
+    <loc>http://blog.seoui.com/2018/08/02/rocketmq_batch_message/</loc>
+    <lastmod>2018-08-02T02:14:05.753Z</lastmod>
+    <data>
+        <display>
+        <title>rocketmq4.x批量消息投递</title>
+        <pubTime>2018-08-01T16:00:00.000Z</pubTime>
+        
+        <tag>rocketmq</tag>
+         
+         
+           
+             
+              <breadCrumb title="技术" url="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/"/>
+          
+             
+              <breadCrumb title="rocketmq" url="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/rocketmq/"/>
+          
+        </display>
+    </data>
+    </url>
+
     
   <url>
     <loc>http://blog.seoui.com/2018/07/24/rocketmqinstall/</loc>
-    <lastmod>2018-07-25T01:41:02.502Z</lastmod>
+    <lastmod>2018-08-02T02:12:36.457Z</lastmod>
     <data>
         <display>
         <title>rocketmq4.x快速入门指南</title>
@@ -27,6 +48,31 @@
     </data>
     </url>
 
+    
+  <url>
+    <loc>http://blog.seoui.com/2018/08/01/rocketmq_delay_message/</loc>
+    <lastmod>2018-08-02T01:54:02.569Z</lastmod>
+    <data>
+        <display>
+        <title>rocketmq4.x延时消息</title>
+        <pubTime>2018-07-31T16:00:00.000Z</pubTime>
+        
+        <tag>rocketmq</tag>
+         
+         
+           
+             
+              <breadCrumb title="技术" url="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/"/>
+          
+             
+              <breadCrumb title="rocketmq" url="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/rocketmq/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+    
     
   <url>
     <loc>http://blog.seoui.com/2018/07/24/rocketmq_broadcast_message/</loc>
@@ -144,14 +190,14 @@
 
     
   <url>
-    <loc>http://blog.seoui.com/2018/06/22/gitlabinstall/</loc>
+    <loc>http://blog.seoui.com/2018/05/09/base64_file_size/</loc>
     <lastmod>2018-06-22T12:23:03.550Z</lastmod>
     <data>
         <display>
-        <title>gitlab环境搭建</title>
-        <pubTime>2018-06-21T16:00:00.000Z</pubTime>
+        <title>base64文件大小计算</title>
+        <pubTime>2018-05-08T16:00:00.000Z</pubTime>
         
-        <tag>gitlab</tag>
+        <tag>base64</tag>
          
          
            
@@ -159,7 +205,7 @@
               <breadCrumb title="技术" url="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/"/>
           
              
-              <breadCrumb title="gitlab" url="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/gitlab/"/>
+              <breadCrumb title="base64" url="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/base64/"/>
           
         </display>
     </data>
@@ -192,14 +238,14 @@
 
     
   <url>
-    <loc>http://blog.seoui.com/2018/05/09/base64_file_size/</loc>
+    <loc>http://blog.seoui.com/2018/06/22/gitlabinstall/</loc>
     <lastmod>2018-06-22T12:23:03.550Z</lastmod>
     <data>
         <display>
-        <title>base64文件大小计算</title>
-        <pubTime>2018-05-08T16:00:00.000Z</pubTime>
+        <title>gitlab环境搭建</title>
+        <pubTime>2018-06-21T16:00:00.000Z</pubTime>
         
-        <tag>base64</tag>
+        <tag>gitlab</tag>
          
          
            
@@ -207,7 +253,7 @@
               <breadCrumb title="技术" url="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/"/>
           
              
-              <breadCrumb title="base64" url="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/base64/"/>
+              <breadCrumb title="gitlab" url="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/gitlab/"/>
           
         </display>
     </data>
@@ -261,6 +307,26 @@
     
     
   <url>
+    <loc>http://blog.seoui.com/2017/10/23/nexus3-uploadfile/</loc>
+    <lastmod>2017-11-21T13:50:31.873Z</lastmod>
+    <data>
+        <display>
+        <title>nexus3 添加第三方本地文件jar到仓库</title>
+        <pubTime>2017-10-22T16:00:00.000Z</pubTime>
+        
+        <tag>nexus3</tag>
+         
+         
+           
+             
+              <breadCrumb title="技术" url="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://blog.seoui.com/2017/11/20/nginx-concat/</loc>
     <lastmod>2017-11-21T13:50:31.873Z</lastmod>
     <data>
@@ -289,26 +355,6 @@
         <pubTime>2017-10-29T16:00:00.000Z</pubTime>
         
         <tag>NFS</tag>
-         
-         
-           
-             
-              <breadCrumb title="技术" url="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://blog.seoui.com/2017/10/23/nexus3-uploadfile/</loc>
-    <lastmod>2017-11-21T13:50:31.873Z</lastmod>
-    <data>
-        <display>
-        <title>nexus3 添加第三方本地文件jar到仓库</title>
-        <pubTime>2017-10-22T16:00:00.000Z</pubTime>
-        
-        <tag>nexus3</tag>
          
          
            
@@ -868,14 +914,14 @@
 
     
   <url>
-    <loc>http://blog.seoui.com/2016/03/16/svganimate-ie-support/</loc>
+    <loc>http://blog.seoui.com/2016/05/24/html-form-enterevent/</loc>
     <lastmod>2017-06-03T15:09:01.633Z</lastmod>
     <data>
         <display>
-        <title>让IE浏览器支持SVG动画</title>
-        <pubTime>2016-03-15T16:00:00.000Z</pubTime>
+        <title>form表单默认回车事件的问题</title>
+        <pubTime>2016-05-23T16:00:00.000Z</pubTime>
         
-        <tag>svg</tag>
+        <tag>from</tag>
          
          
            
@@ -914,14 +960,14 @@
 
     
   <url>
-    <loc>http://blog.seoui.com/2016/05/24/html-form-enterevent/</loc>
+    <loc>http://blog.seoui.com/2016/03/16/svganimate-ie-support/</loc>
     <lastmod>2017-06-03T15:09:01.633Z</lastmod>
     <data>
         <display>
-        <title>form表单默认回车事件的问题</title>
-        <pubTime>2016-05-23T16:00:00.000Z</pubTime>
+        <title>让IE浏览器支持SVG动画</title>
+        <pubTime>2016-03-15T16:00:00.000Z</pubTime>
         
-        <tag>from</tag>
+        <tag>svg</tag>
          
          
            
@@ -952,6 +998,28 @@
           
              
               <breadCrumb title="springmvc" url="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/springmvc/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://blog.seoui.com/2016/01/25/share-chrome-plugin/</loc>
+    <lastmod>2017-06-03T15:09:01.632Z</lastmod>
+    <data>
+        <display>
+        <title>分享几个常用的Google Chrome插件</title>
+        <pubTime>2016-01-24T16:00:00.000Z</pubTime>
+        
+        <tag>googleChrome</tag>
+         
+        <tag>chrome</tag>
+         
+         
+           
+             
+              <breadCrumb title="google chrome" url="http://blog.seoui.com/categories/google-chrome/"/>
           
         </display>
     </data>
@@ -999,28 +1067,6 @@
           
              
               <breadCrumb title="java" url="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/java/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://blog.seoui.com/2016/01/25/share-chrome-plugin/</loc>
-    <lastmod>2017-06-03T15:09:01.632Z</lastmod>
-    <data>
-        <display>
-        <title>分享几个常用的Google Chrome插件</title>
-        <pubTime>2016-01-24T16:00:00.000Z</pubTime>
-        
-        <tag>googleChrome</tag>
-         
-        <tag>chrome</tag>
-         
-         
-           
-             
-              <breadCrumb title="google chrome" url="http://blog.seoui.com/categories/google-chrome/"/>
           
         </display>
     </data>
@@ -1103,6 +1149,26 @@
 
     
   <url>
+    <loc>http://blog.seoui.com/2015/09/09/js.with/</loc>
+    <lastmod>2017-06-03T15:09:01.630Z</lastmod>
+    <data>
+        <display>
+        <title>javascript中with的用法</title>
+        <pubTime>2015-09-08T16:00:00.000Z</pubTime>
+        
+        <tag>javascript</tag>
+         
+         
+           
+             
+              <breadCrumb title="技术" url="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://blog.seoui.com/2015/09/11/linux.VIEditor/</loc>
     <lastmod>2017-06-03T15:09:01.630Z</lastmod>
     <data>
@@ -1119,26 +1185,6 @@
           
              
               <breadCrumb title="linux" url="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/linux/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://blog.seoui.com/2015/09/09/js.with/</loc>
-    <lastmod>2017-06-03T15:09:01.630Z</lastmod>
-    <data>
-        <display>
-        <title>javascript中with的用法</title>
-        <pubTime>2015-09-08T16:00:00.000Z</pubTime>
-        
-        <tag>javascript</tag>
-         
-         
-           
-             
-              <breadCrumb title="技术" url="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/"/>
           
         </display>
     </data>
@@ -1278,29 +1324,6 @@
 
     
   <url>
-    <loc>http://blog.seoui.com/2015/08/29/linux.general.command/</loc>
-    <lastmod>2017-06-03T15:09:01.627Z</lastmod>
-    <data>
-        <display>
-        <title>Linux常用命令</title>
-        <pubTime>2015-08-28T16:00:00.000Z</pubTime>
-        
-        <tag>linux</tag>
-         
-         
-           
-             
-              <breadCrumb title="技术" url="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/"/>
-          
-             
-              <breadCrumb title="linux" url="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/linux/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
     <loc>http://blog.seoui.com/2015/08/19/httpinfolist/</loc>
     <lastmod>2017-06-03T15:09:01.627Z</lastmod>
     <data>
@@ -1317,6 +1340,29 @@
           
              
               <breadCrumb title="HTTP" url="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/HTTP/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://blog.seoui.com/2015/08/29/linux.general.command/</loc>
+    <lastmod>2017-06-03T15:09:01.627Z</lastmod>
+    <data>
+        <display>
+        <title>Linux常用命令</title>
+        <pubTime>2015-08-28T16:00:00.000Z</pubTime>
+        
+        <tag>linux</tag>
+         
+         
+           
+             
+              <breadCrumb title="技术" url="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/"/>
+          
+             
+              <breadCrumb title="linux" url="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/linux/"/>
           
         </display>
     </data>
@@ -1916,6 +1962,26 @@
 
     
   <url>
+    <loc>http://blog.seoui.com/2015/03/13/test/</loc>
+    <lastmod>2017-06-03T15:09:01.618Z</lastmod>
+    <data>
+        <display>
+        <title>测试一下</title>
+        <pubTime>2015-03-12T16:00:00.000Z</pubTime>
+        
+        <tag>测试</tag>
+         
+         
+           
+             
+              <breadCrumb title="test" url="http://blog.seoui.com/categories/test/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://blog.seoui.com/2015/03/17/quit-job-idea/</loc>
     <lastmod>2017-06-03T15:09:01.618Z</lastmod>
     <data>
@@ -1952,26 +2018,6 @@
           
              
               <breadCrumb title="技术" url="http://blog.seoui.com/categories/github-pages/%E6%8A%80%E6%9C%AF/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://blog.seoui.com/2015/03/13/test/</loc>
-    <lastmod>2017-06-03T15:09:01.618Z</lastmod>
-    <data>
-        <display>
-        <title>测试一下</title>
-        <pubTime>2015-03-12T16:00:00.000Z</pubTime>
-        
-        <tag>测试</tag>
-         
-         
-           
-             
-              <breadCrumb title="test" url="http://blog.seoui.com/categories/test/"/>
           
         </display>
     </data>

@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://blog.seoui.com/"/>
-  <updated>2018-07-25T01:41:02.502Z</updated>
+  <updated>2018-08-02T02:14:05.753Z</updated>
   <id>http://blog.seoui.com/</id>
   
   <author>
@@ -16,46 +16,63 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
-    <title>rocketmq4.x快速入门指南</title>
-    <link href="http://blog.seoui.com/2018/07/24/rocketmqinstall/"/>
-    <id>http://blog.seoui.com/2018/07/24/rocketmqinstall/</id>
-    <published>2018-07-23T16:00:00.000Z</published>
-    <updated>2018-07-25T01:41:02.502Z</updated>
+    <title>rocketmq4.x批量消息投递</title>
+    <link href="http://blog.seoui.com/2018/08/02/rocketmq_batch_message/"/>
+    <id>http://blog.seoui.com/2018/08/02/rocketmq_batch_message/</id>
+    <published>2018-08-01T16:00:00.000Z</published>
+    <updated>2018-08-02T02:14:05.753Z</updated>
     
-    <content type="html"><![CDATA[<p>以下采用的是<code>apache rocketmq 4.2.0</code>版本 相关文档如下</p>
+    <content type="html"><![CDATA[<p> 批量发送消息可提高传递小消息的性能。同时也需要满足以下特征</p>
 <ul>
-<li>快速安装体验： <a href="http://blog.seoui.com/2018/07/24/rocketmqinstall/">http://blog.seoui.com/2018/07/24/rocketmqinstall/</a></li>
-<li>rocketmq简单消息发送： <a href="http://blog.seoui.com/2018/07/24/rocketmq_simple_message/">http://blog.seoui.com/2018/07/24/rocketmq_simple_message/</a></li>
-<li>rocketmq有序消息： <a href="http://blog.seoui.com/2018/07/24/rocketmq_ordered_message/">http://blog.seoui.com/2018/07/24/rocketmq_ordered_message/</a></li>
-<li>rocketmq广播消息： <a href="http://blog.seoui.com/2018/07/24/rocketmq_broadcast_message/">http://blog.seoui.com/2018/07/24/rocketmq_broadcast_message/</a></li>
+<li>批量消息要求必要具有同一<code>topic</code>、相同消息配置</li>
+<li><code>不支持延时消息</code></li>
+<li>建议一个批量消息最好不要超过1MB大小<a id="more"></a>
+<h4 id="示例"><a href="#示例" class="headerlink" title="示例"></a>示例</h4></li>
 </ul>
-<h4 id="下载源码并编译"><a href="#下载源码并编译" class="headerlink" title="下载源码并编译"></a>下载源码并编译</h4><figure class="highlight bash"><table><tr><td class="code"><pre><div class="line"><span class="comment">#download</span></div><div class="line">wget http://mirrors.hust.edu.cn/apache/rocketmq/4.2.0/rocketmq-all-4.2.0-source-release.zip   </div><div class="line">unzip rocketmq-all-4.2.0-source-release.zip</div><div class="line"><span class="built_in">cd</span> rocketmq-all-4.2.0/</div><div class="line">mvn -Prelease-all -DskipTests clean install -U</div><div class="line"><span class="built_in">cd</span> distribution/target/apache-rocketmq</div></pre></td></tr></table></figure>
-<p>目录 <code>distribution/target/apache-rocketmq</code> 是编译后的产出 可复制这个目录安装MQ的机器上,这里复制到<code>/usr/local/</code></p>
-<p>共享一份编译后的文件方便以后再次使用 </p>
-<p><a href="https://pan.baidu.com/s/1ZyUOKFm-t8cJDQuH68QydQ" target="_blank" rel="external">https://pan.baidu.com/s/1ZyUOKFm-t8cJDQuH68QydQ</a></p>
-<h4 id="启动NameServer"><a href="#启动NameServer" class="headerlink" title="启动NameServer"></a>启动NameServer</h4><figure class="highlight bash"><table><tr><td class="code"><pre><div class="line"><span class="built_in">cd</span> /usr/<span class="built_in">local</span>/apache-rocketmq</div><div class="line">nohup sh bin/mqnamesrv &amp;</div></pre></td></tr></table></figure>
-<p> 查看日志<code>tail -f ~/logs/rocketmqlogs/namesrv.log</code> 启动成功后打印The Name Server boot success…</p>
-<h4 id="启动Broker"><a href="#启动Broker" class="headerlink" title="启动Broker"></a>启动Broker</h4><p>这里需要注意一下就是 如果当前机器上有多张网卡的情况,最好指定一个<code>IP</code>, 有可能消费端正好就和MQ选择的网卡不通</p>
-<p><code>vim  conf/broker.conf</code> 指定IP 访问多网卡的情况 并配置好nameserver的地址  也可以使用mqbroker启动参数<code>-n</code>指定nameserver地址</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><div class="line">brokerIP1=192.168.1.2</div><div class="line">namesrvAddr=192.168.1.3:9876</div></pre></td></tr></table></figure>
-<p>启动broker <code>-c</code>参数指定配置文件</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><div class="line">nohup sh bin/mqbroker -c config/broker.properties &amp;</div></pre></td></tr></table></figure>
-<p>查看一下集群列表</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><div class="line">sh bin/mqadmin clusterList -n  localhost:9876</div></pre></td></tr></table></figure>
-<h4 id="发送-接收消息"><a href="#发送-接收消息" class="headerlink" title="发送/接收消息"></a>发送/接收消息</h4><p>Producer</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><div class="line"> </div><div class="line"><span class="built_in">export</span> NAMESRV_ADDR=localhost:9876</div><div class="line">sh bin/tools.sh org.apache.rocketmq.example.quickstart.Producer</div></pre></td></tr></table></figure>
-<p>能发送表示OK</p>
-<p>Consumer</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><div class="line"> </div><div class="line"><span class="built_in">export</span> NAMESRV_ADDR=localhost:9876</div><div class="line">sh bin/tools.sh org.apache.rocketmq.example.quickstart.Consumer</div></pre></td></tr></table></figure>
-<p>能接收到之前发送的消息表示OK</p>
-<h4 id="关闭MQ"><a href="#关闭MQ" class="headerlink" title="关闭MQ"></a>关闭MQ</h4><figure class="highlight bash"><table><tr><td class="code"><pre><div class="line"> </div><div class="line">sh bin/mqshutdown broker</div><div class="line"></div><div class="line">sh bin/mqshutdown namesrv</div></pre></td></tr></table></figure>
+<p>小于1MB</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><div class="line">String topic = <span class="string">"BatchTest"</span>;</div><div class="line">List&lt;Message&gt; messages = <span class="keyword">new</span> ArrayList&lt;&gt;();</div><div class="line">messages.add(<span class="keyword">new</span> Message(topic, <span class="string">"TagA"</span>, <span class="string">"Order1"</span>, <span class="string">"Hello world 0"</span>.getBytes()));</div><div class="line">messages.add(<span class="keyword">new</span> Message(topic, <span class="string">"TagA"</span>, <span class="string">"Order2"</span>, <span class="string">"Hello world 1"</span>.getBytes()));</div><div class="line">messages.add(<span class="keyword">new</span> Message(topic, <span class="string">"TagA"</span>, <span class="string">"Order3"</span>, <span class="string">"Hello world 2"</span>.getBytes()));</div><div class="line"><span class="keyword">try</span> &#123;</div><div class="line">	producer.send(messages);</div><div class="line">&#125; <span class="keyword">catch</span> (Exception e) &#123;</div><div class="line">	e.printStackTrace();</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>大于1MB也可以使用分割消息的方式进行多次批量发送。</p>
 ]]></content>
     
     <summary type="html">
     
-      &lt;p&gt;以下采用的是&lt;code&gt;apache rocketmq 4.2.0&lt;/code&gt;版本 相关文档如下&lt;/p&gt;
+      &lt;p&gt; 批量发送消息可提高传递小消息的性能。同时也需要满足以下特征&lt;/p&gt;
 &lt;ul&gt;
-&lt;li&gt;快速安装体验： &lt;a href=&quot;http://blog.seoui.com/2018/07/24/rocketmqinstall/&quot;&gt;http:/
+&lt;li&gt;批量消息要求必要具有同一&lt;code&gt;topic&lt;/code&gt;、相同消息配置&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;不支持延时消息&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;建议一个批量消息最好不要超过1MB大小
+    
+    </summary>
+    
+      <category term="技术" scheme="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/"/>
+    
+      <category term="rocketmq" scheme="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/rocketmq/"/>
+    
+    
+      <category term="rocketmq" scheme="http://blog.seoui.com/tags/rocketmq/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>rocketmq4.x延时消息</title>
+    <link href="http://blog.seoui.com/2018/08/01/rocketmq_delay_message/"/>
+    <id>http://blog.seoui.com/2018/08/01/rocketmq_delay_message/</id>
+    <published>2018-07-31T16:00:00.000Z</published>
+    <updated>2018-08-02T01:54:02.569Z</updated>
+    
+    <content type="html"><![CDATA[<p><code>rocketmq</code>提供一种延时消息的解决方案，就是在特定的时间到了，消息才会被投递出去供<code>consumer</code>消费。<br><a id="more"></a><br><em>总体来是简单的场景是满足了，但是需要注意的是延时的时间是需要按照默认配置的延时级别去配置的，而不是随意设置消息的延时时间。</em></p>
+<p>如果想不受延时级别的约束 可以参考之前的一遍文章<a href="http://blog.seoui.com/2017/08/19/delayqueue/">http://blog.seoui.com/2017/08/19/delayqueue/</a></p>
+<p>默认的延迟级别</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><div class="line">messageDelayLevel=<span class="number">1</span>s <span class="number">5</span>s <span class="number">10</span>s <span class="number">30</span>s <span class="number">1</span>m <span class="number">2</span>m <span class="number">3</span>m <span class="number">4</span>m <span class="number">5</span>m <span class="number">6</span>m <span class="number">7</span>m <span class="number">8</span>m <span class="number">9</span>m <span class="number">10</span>m <span class="number">20</span>m <span class="number">30</span>m <span class="number">1</span>h <span class="number">2</span>h</div></pre></td></tr></table></figure>
+<p>这个配置下标从1开始 比如级别2是延时5秒、级别5是延时1分钟。默认配置在不满足需求的情况下，可以在<code>broker</code>配置文件加入<code>messageDelayLevel</code>参数覆盖默认的延时级别配置。</p>
+<h4 id="示例"><a href="#示例" class="headerlink" title="示例"></a>示例</h4><p>和普通的消息不同之处在于<code>Producer</code>在发送消息的时候 需要设置<code>message.setDelayTimeLevel();</code>延迟级别方法。其他参数和消费端的写法并与不同之处。</p>
+<h5 id="Producer"><a href="#Producer" class="headerlink" title="Producer"></a>Producer</h5><figure class="highlight java"><table><tr><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ScheduledMessageProducer</span> </span>&#123;</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> Exception </span>&#123;</div><div class="line">        DefaultMQProducer producer = </div><div class="line">		<span class="keyword">new</span> DefaultMQProducer(<span class="string">"ExampleProducerGroup"</span>);</div><div class="line">        producer.start();</div><div class="line">        <span class="keyword">int</span> totalMessagesToSend = <span class="number">100</span>;</div><div class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; totalMessagesToSend; i++) &#123;</div><div class="line">            Message message = <span class="keyword">new</span> Message(<span class="string">"TestTopic"</span>,</div><div class="line">			(<span class="string">"Hello scheduled message "</span> + i).getBytes());</div><div class="line">		 <span class="comment">//延时的级别为3 对应的时间为10s 就是发送后延时10S在把消息投递出去</span></div><div class="line">            message.setDelayTimeLevel(<span class="number">3</span>);</div><div class="line">            producer.send(message);</div><div class="line">        &#125;</div><div class="line">        producer.shutdown();</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h5 id="Consumer"><a href="#Consumer" class="headerlink" title="Consumer"></a>Consumer</h5><figure class="highlight java"><table><tr><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ScheduledMessageConsumer</span> </span>&#123;</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> Exception </span>&#123;</div><div class="line">        DefaultMQPushConsumer consumer = </div><div class="line">		<span class="keyword">new</span> DefaultMQPushConsumer(<span class="string">"ExampleConsumer"</span>);</div><div class="line">        consumer.subscribe(<span class="string">"TestTopic"</span>, <span class="string">"*"</span>);</div><div class="line">        consumer.registerMessageListener(<span class="keyword">new</span> MessageListenerConcurrently() &#123;</div><div class="line">            <span class="meta">@Override</span></div><div class="line">            <span class="function"><span class="keyword">public</span> ConsumeConcurrentlyStatus <span class="title">consumeMessage</span><span class="params">(List&lt;MessageExt&gt; messages,</span></span></div><div class="line">		 ConsumeConcurrentlyContext context) &#123;</div><div class="line">                <span class="keyword">for</span> (MessageExt message : messages) &#123;</div><div class="line">                    System.out.println(<span class="string">"ok!"</span>);</div><div class="line">                &#125;</div><div class="line">                <span class="keyword">return</span> ConsumeConcurrentlyStatus.CONSUME_SUCCESS;</div><div class="line">            &#125;</div><div class="line">        &#125;);</div><div class="line">        consumer.start();</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;&lt;code&gt;rocketmq&lt;/code&gt;提供一种延时消息的解决方案，就是在特定的时间到了，消息才会被投递出去供&lt;code&gt;consumer&lt;/code&gt;消费。&lt;br&gt;
     
     </summary>
     
@@ -219,6 +236,61 @@
   </entry>
   
   <entry>
+    <title>rocketmq4.x快速入门指南</title>
+    <link href="http://blog.seoui.com/2018/07/24/rocketmqinstall/"/>
+    <id>http://blog.seoui.com/2018/07/24/rocketmqinstall/</id>
+    <published>2018-07-23T16:00:00.000Z</published>
+    <updated>2018-08-02T02:12:36.457Z</updated>
+    
+    <content type="html"><![CDATA[<p>以下采用的是<code>apache rocketmq 4.2.0</code>版本 相关文档如下</p>
+<ul>
+<li>快速体验： <a href="//blog.seoui.com/2018/07/24/rocketmqinstall/">http://blog.seoui.com/2018/07/24/rocketmqinstall/</a> </li>
+<li>rocketmq简单消息发送： <a href="//blog.seoui.com/2018/07/24/rocketmq_simple_message/">http://blog.seoui.com/2018/07/24/rocketmq_simple_message/</a> </li>
+<li>rocketmq有序消息： <a href="//blog.seoui.com/2018/07/24/rocketmq_ordered_message/">http://blog.seoui.com/2018/07/24/rocketmq_ordered_message/</a> </li>
+<li>rocketmq广播消息： <a href="//blog.seoui.com/2018/07/24/rocketmq_broadcast_message/">http://blog.seoui.com/2018/07/24/rocketmq_broadcast_message/</a> </li>
+<li>rocketmq延时消息： <a href="//blog.seoui.com/2018/08/01/rocketmq_delay_message/">http://blog.seoui.com/2018/08/01/rocketmq_delay_message/</a></li>
+<li>rocketmq批量消息： <a href="//blog.seoui.com/2018/08/02/rocketmq_batch_message/">http://blog.seoui.com/2018/08/02/rocketmq_batch_message/</a><h4 id="下载源码并编译"><a href="#下载源码并编译" class="headerlink" title="下载源码并编译"></a>下载源码并编译</h4></li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="code"><pre><div class="line"><span class="comment">#download</span></div><div class="line">wget http://mirrors.hust.edu.cn/apache/rocketmq/4.2.0/rocketmq-all-4.2.0-source-release.zip   </div><div class="line">unzip rocketmq-all-4.2.0-source-release.zip</div><div class="line"><span class="built_in">cd</span> rocketmq-all-4.2.0/</div><div class="line">mvn -Prelease-all -DskipTests clean install -U</div><div class="line"><span class="built_in">cd</span> distribution/target/apache-rocketmq</div></pre></td></tr></table></figure>
+<p>目录 <code>distribution/target/apache-rocketmq</code> 是编译后的产出 可复制这个目录安装MQ的机器上,这里复制到<code>/usr/local/</code></p>
+<p>共享一份编译后的文件方便以后再次使用 </p>
+<p><a href="https://pan.baidu.com/s/1ZyUOKFm-t8cJDQuH68QydQ" target="_blank" rel="external">https://pan.baidu.com/s/1ZyUOKFm-t8cJDQuH68QydQ</a></p>
+<h4 id="启动NameServer"><a href="#启动NameServer" class="headerlink" title="启动NameServer"></a>启动NameServer</h4><figure class="highlight bash"><table><tr><td class="code"><pre><div class="line"><span class="built_in">cd</span> /usr/<span class="built_in">local</span>/apache-rocketmq</div><div class="line">nohup sh bin/mqnamesrv &amp;</div></pre></td></tr></table></figure>
+<p> 查看日志<code>tail -f ~/logs/rocketmqlogs/namesrv.log</code> 启动成功后打印The Name Server boot success…</p>
+<h4 id="启动Broker"><a href="#启动Broker" class="headerlink" title="启动Broker"></a>启动Broker</h4><p>这里需要注意一下就是 如果当前机器上有多张网卡的情况,最好指定一个<code>IP</code>, 有可能消费端正好就和MQ选择的网卡不通</p>
+<p><code>vim  conf/broker.conf</code> 指定IP 访问多网卡的情况 并配置好nameserver的地址  也可以使用mqbroker启动参数<code>-n</code>指定nameserver地址</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><div class="line">brokerIP1=192.168.1.2</div><div class="line">namesrvAddr=192.168.1.3:9876</div></pre></td></tr></table></figure>
+<p>启动broker <code>-c</code>参数指定配置文件</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><div class="line">nohup sh bin/mqbroker -c config/broker.properties &amp;</div></pre></td></tr></table></figure>
+<p>查看一下集群列表</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><div class="line">sh bin/mqadmin clusterList -n  localhost:9876</div></pre></td></tr></table></figure>
+<h4 id="发送-接收消息"><a href="#发送-接收消息" class="headerlink" title="发送/接收消息"></a>发送/接收消息</h4><p>Producer</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><div class="line"> </div><div class="line"><span class="built_in">export</span> NAMESRV_ADDR=localhost:9876</div><div class="line">sh bin/tools.sh org.apache.rocketmq.example.quickstart.Producer</div></pre></td></tr></table></figure>
+<p>能发送表示OK</p>
+<p>Consumer</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><div class="line"> </div><div class="line"><span class="built_in">export</span> NAMESRV_ADDR=localhost:9876</div><div class="line">sh bin/tools.sh org.apache.rocketmq.example.quickstart.Consumer</div></pre></td></tr></table></figure>
+<p>能接收到之前发送的消息表示OK</p>
+<h4 id="关闭MQ"><a href="#关闭MQ" class="headerlink" title="关闭MQ"></a>关闭MQ</h4><figure class="highlight bash"><table><tr><td class="code"><pre><div class="line"> </div><div class="line">sh bin/mqshutdown broker</div><div class="line"></div><div class="line">sh bin/mqshutdown namesrv</div></pre></td></tr></table></figure>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;以下采用的是&lt;code&gt;apache rocketmq 4.2.0&lt;/code&gt;版本 相关文档如下&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;快速体验： &lt;a href=&quot;//blog.seoui.com/2018/07/24/rocketmqinstall/&quot;&gt;http://blog.s
+    
+    </summary>
+    
+      <category term="技术" scheme="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/"/>
+    
+      <category term="rocketmq" scheme="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/rocketmq/"/>
+    
+    
+      <category term="rocketmq" scheme="http://blog.seoui.com/tags/rocketmq/"/>
+    
+  </entry>
+  
+  <entry>
     <title>rocketmq有序消息</title>
     <link href="http://blog.seoui.com/2018/07/24/rocketmq_ordered_message/"/>
     <id>http://blog.seoui.com/2018/07/24/rocketmq_ordered_message/</id>
@@ -284,6 +356,36 @@
   </entry>
   
   <entry>
+    <title>nexus3.X环境搭建</title>
+    <link href="http://blog.seoui.com/2018/06/22/nexusinstall/"/>
+    <id>http://blog.seoui.com/2018/06/22/nexusinstall/</id>
+    <published>2018-06-21T16:00:00.000Z</published>
+    <updated>2018-06-22T12:30:44.130Z</updated>
+    
+    <content type="html"><![CDATA[<p>nexus3比以前的版本相比 多支持了管理不同的格式 比如<code>Docker</code> <code>npm</code> <code>NuGet</code> <code>maven</code> …等</p>
+<h4 id="下载编译好的二进制安装"><a href="#下载编译好的二进制安装" class="headerlink" title="下载编译好的二进制安装"></a>下载编译好的二进制安装</h4> <figure class="highlight bash"><table><tr><td class="code"><pre><div class="line">wget https://sonatype-download.global.ssl.fastly.net/repository/repositoryManager/3/nexus-3.12.1-01-unix.tar.gz</div><div class="line">  </div><div class="line">  tar -zxf nexus-3.12.1-01-unix.tar.gz </div><div class="line"> </div><div class="line">  <span class="built_in">cd</span> nexus-3.12.1-01/</div><div class="line">  bin/nexus start</div></pre></td></tr></table></figure>
+<p> 默认的端口号为<code>8081</code> nexus3.x和以前的版本界面都有很大的改变 需要注意一下。<br> 其他默认配置在文件<code>etc/nexus-default.properties</code>中 需要修改的关注一下。</p>
+<p>参考</p>
+<p><a href="https://www.sonatype.com/" target="_blank" rel="external">https://www.sonatype.com/</a></p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;nexus3比以前的版本相比 多支持了管理不同的格式 比如&lt;code&gt;Docker&lt;/code&gt; &lt;code&gt;npm&lt;/code&gt; &lt;code&gt;NuGet&lt;/code&gt; &lt;code&gt;maven&lt;/code&gt; …等&lt;/p&gt;
+&lt;h4 id=&quot;下载编译好的二进制安装&quot;&gt;&lt;a hr
+    
+    </summary>
+    
+      <category term="技术" scheme="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/"/>
+    
+      <category term="nexus3" scheme="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/nexus3/"/>
+    
+    
+      <category term="nexus3" scheme="http://blog.seoui.com/tags/nexus3/"/>
+    
+  </entry>
+  
+  <entry>
     <title>jenkins环境搭建</title>
     <link href="http://blog.seoui.com/2018/06/22/jenkinsinstall/"/>
     <id>http://blog.seoui.com/2018/06/22/jenkinsinstall/</id>
@@ -312,36 +414,6 @@
     
     
       <category term="jenkins" scheme="http://blog.seoui.com/tags/jenkins/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>nexus3.X环境搭建</title>
-    <link href="http://blog.seoui.com/2018/06/22/nexusinstall/"/>
-    <id>http://blog.seoui.com/2018/06/22/nexusinstall/</id>
-    <published>2018-06-21T16:00:00.000Z</published>
-    <updated>2018-06-22T12:30:44.130Z</updated>
-    
-    <content type="html"><![CDATA[<p>nexus3比以前的版本相比 多支持了管理不同的格式 比如<code>Docker</code> <code>npm</code> <code>NuGet</code> <code>maven</code> …等</p>
-<h4 id="下载编译好的二进制安装"><a href="#下载编译好的二进制安装" class="headerlink" title="下载编译好的二进制安装"></a>下载编译好的二进制安装</h4> <figure class="highlight bash"><table><tr><td class="code"><pre><div class="line">wget https://sonatype-download.global.ssl.fastly.net/repository/repositoryManager/3/nexus-3.12.1-01-unix.tar.gz</div><div class="line">  </div><div class="line">  tar -zxf nexus-3.12.1-01-unix.tar.gz </div><div class="line"> </div><div class="line">  <span class="built_in">cd</span> nexus-3.12.1-01/</div><div class="line">  bin/nexus start</div></pre></td></tr></table></figure>
-<p> 默认的端口号为<code>8081</code> nexus3.x和以前的版本界面都有很大的改变 需要注意一下。<br> 其他默认配置在文件<code>etc/nexus-default.properties</code>中 需要修改的关注一下。</p>
-<p>参考</p>
-<p><a href="https://www.sonatype.com/" target="_blank" rel="external">https://www.sonatype.com/</a></p>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;p&gt;nexus3比以前的版本相比 多支持了管理不同的格式 比如&lt;code&gt;Docker&lt;/code&gt; &lt;code&gt;npm&lt;/code&gt; &lt;code&gt;NuGet&lt;/code&gt; &lt;code&gt;maven&lt;/code&gt; …等&lt;/p&gt;
-&lt;h4 id=&quot;下载编译好的二进制安装&quot;&gt;&lt;a hr
-    
-    </summary>
-    
-      <category term="技术" scheme="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/"/>
-    
-      <category term="nexus3" scheme="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/nexus3/"/>
-    
-    
-      <category term="nexus3" scheme="http://blog.seoui.com/tags/nexus3/"/>
     
   </entry>
   
@@ -1013,185 +1085,6 @@ concat_types text/css application/javascript;
       <category term="redis" scheme="http://blog.seoui.com/tags/redis/"/>
     
       <category term="延迟消息" scheme="http://blog.seoui.com/tags/%E5%BB%B6%E8%BF%9F%E6%B6%88%E6%81%AF/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>记一次Mysql5.7安装</title>
-    <link href="http://blog.seoui.com/2017/07/02/mysql5_7install/"/>
-    <id>http://blog.seoui.com/2017/07/02/mysql5_7install/</id>
-    <published>2017-07-01T16:00:00.000Z</published>
-    <updated>2017-07-02T07:11:02.696Z</updated>
-    
-    <content type="html"><![CDATA[<h4 id="下载"><a href="#下载" class="headerlink" title="下载"></a>下载</h4><p> 下载mysql5.7地址:<code>wget https://cdn.mysql.com//Downloads/MySQL-5.7/mysql-5.7.18-1.el6.x86_64.rpm-bundle.tar</code></p>
-<p> 另外分享一个百度云盘的下载链接 <code>http://pan.baidu.com/s/1qYAuYBi</code></p>
-<p> 下载下来之后 得到一个mysql-5.7.18-1.el6.x86_64.rpm-bundle.tar</p>
-<p> 解压 得到以下rpm包</p>
- <figure class="highlight bash"><table><tr><td class="code"><pre><div class="line">  tar -vxf mysql-5.7.18-1.el6.x86_64.rpm-bundle.tar </div><div class="line"> </div><div class="line">-rw-r--r-- 1 root root  470507520 Jul  1 23:05 mysql-5.7.18-1.el6.x86_64.rpm-bundle.tar</div><div class="line">-rw-r--r-- 1 7155 31415  23618836 Mar 20 02:40 mysql-community-client-5.7.18-1.el6.x86_64.rpm</div><div class="line">-rw-r--r-- 1 7155 31415    335496 Mar 20 02:40 mysql-community-common-5.7.18-1.el6.x86_64.rpm</div><div class="line">-rw-r--r-- 1 7155 31415   3747352 Mar 20 02:40 mysql-community-devel-5.7.18-1.el6.x86_64.rpm</div><div class="line">-rw-r--r-- 1 7155 31415  39086508 Mar 20 02:40 mysql-community-embedded-5.7.18-1.el6.x86_64.rpm</div><div class="line">-rw-r--r-- 1 7155 31415 135869292 Mar 20 02:40 mysql-community-embedded-devel-5.7.18-1.el6.x86_64.rpm</div><div class="line">-rw-r--r-- 1 7155 31415   2177064 Mar 20 02:40 mysql-community-libs-5.7.18-1.el6.x86_64.rpm</div><div class="line">-rw-r--r-- 1 7155 31415   1723180 Mar 20 02:40 mysql-community-libs-compat-5.7.18-1.el6.x86_64.rpm</div><div class="line">-rw-r--r-- 1 7155 31415 159060212 Mar 20 02:41 mysql-community-server-5.7.18-1.el6.x86_64.rpm</div><div class="line">-rw-r--r-- 1 7155 31415 104881084 Mar 20 02:41 mysql-community-test-5.7.18-1.el6.x86_64.rpm</div></pre></td></tr></table></figure>
-<h4 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h4><p> 这里主要安装 server 和client<br> <figure class="highlight bash"><table><tr><td class="code"><pre><div class="line">yum install libaio  <span class="comment">#首先安装软件包的依赖</span></div><div class="line"><span class="comment">#依次安装</span></div><div class="line">rpm -ivh mysql-community-common-5.7.18-1.el6.x86_64.rpm</div><div class="line">rpm -ivh mysql-community-libs-5.7.18-1.el6.x86_64.rpm</div><div class="line">rpm -ivh mysql-community-client-5.7.18-1.el6.x86_64.rpm</div><div class="line">rpm -ivh mysql-community-server-5.7.18-1.el6.x86_64.rpm</div></pre></td></tr></table></figure></p>
-<p> 另外附上安装之后的一些参数默认值</p>
-<table>
-<thead>
-<tr>
-<th>Files or Resources</th>
-<th style="text-align:center">Location</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Client programs and scripts</td>
-<td style="text-align:center">/usr/bin</td>
-</tr>
-<tr>
-<td>mysqld server</td>
-<td style="text-align:center">/usr/sbin</td>
-</tr>
-<tr>
-<td>Configuration file</td>
-<td style="text-align:center">/etc/my.cnf</td>
-</tr>
-<tr>
-<td>Data directory</td>
-<td style="text-align:center">/var/lib/mysql</td>
-</tr>
-<tr>
-<td>Error log file</td>
-<td style="text-align:center">For RHEL, Oracle Linux, CentOS or Fedora platforms: /var/log/mysqld.log For SLES: /var/log/mysql/mysqld.log</td>
-</tr>
-<tr>
-<td>Value of secure_file_priv</td>
-<td style="text-align:center">/var/lib/mysql-files</td>
-</tr>
-<tr>
-<td>System V init script</td>
-<td style="text-align:center">For RHEL, Oracle Linux, CentOS or Fedora platforms: /etc/init.d/mysqld For SLES: /etc/init.d/mysql For SLES: /etc/init.d/mysql</td>
-</tr>
-<tr>
-<td>Systemd service</td>
-<td style="text-align:center">For RHEL, Oracle Linux, CentOS or Fedora platforms: mysqld For SLES: mysql</td>
-</tr>
-<tr>
-<td>Pid file</td>
-<td style="text-align:center">/var/run/mysql/mysqld.pid</td>
-</tr>
-<tr>
-<td>Socket</td>
-<td style="text-align:center">/var/lib/mysql/mysql.sock</td>
-</tr>
-<tr>
-<td>Keyring directory</td>
-<td style="text-align:center">/var/lib/mysql-keyring</td>
-</tr>
-<tr>
-<td>Unix manual pages</td>
-<td style="text-align:center">/usr/share/man</td>
-</tr>
-<tr>
-<td>Include (header) files</td>
-<td style="text-align:center">/usr/include/mysql</td>
-</tr>
-<tr>
-<td>Libraries</td>
-<td style="text-align:center">/usr/lib/mysql</td>
-</tr>
-<tr>
-<td>Miscellaneous support files (for example, error messages, and character set files)</td>
-<td style="text-align:center">/usr/share/mysql</td>
-</tr>
-</tbody>
-</table>
-<p> 安装完成之后还会创建一个名为mysql的用户和一个mysql用户组在系统上。</p>
-<p> <em>需要注意的是在旧版本的mysql中配置文件的路径在 /usr/my.cnf ，强烈建议您把/usr/my.cnf这个配置迁移到/etc/my.cnf。然后删除/usr/my.cnf</em></p>
-<h4 id="启动"><a href="#启动" class="headerlink" title="启动"></a>启动</h4> <figure class="highlight bash"><table><tr><td class="code"><pre><div class="line">sudo service mysqld start</div></pre></td></tr></table></figure>
-<p> 启动完成之后 会把root超级用户的密码自动生成 在日志中可以看到生成的密码，而且需要用户强制修改 不得不说这个版本对安全性提高了不少,在修改密码的时候还定义了密码的策略 如 安装密码长度、密码的复杂度等。</p>
-<p> 查看密码</p>
- <figure class="highlight bash"><table><tr><td class="code"><pre><div class="line"> sudo grep <span class="string">'temporary password'</span> /var/<span class="built_in">log</span>/mysqld.log</div><div class="line"></div><div class="line">[root@localhost ~]<span class="comment"># sudo grep 'temporary password' /var/log/mysqld.log</span></div><div class="line">2017-07-02T06:05:16.890856Z 1 [Note] A temporary password is generated <span class="keyword">for</span> root@localhost: cfDZrTud2L(j</div></pre></td></tr></table></figure>
-<h4 id="修改密码"><a href="#修改密码" class="headerlink" title="修改密码"></a>修改密码</h4> <figure class="highlight bash"><table><tr><td class="code"><pre><div class="line">mysql -u root -p</div><div class="line"><span class="comment">#输入日志中的密码</span></div><div class="line"></div><div class="line">ALTER USER <span class="string">'root'</span>@<span class="string">'localhost'</span> IDENTIFIED BY <span class="string">'root'</span>;</div></pre></td></tr></table></figure>
-<p> 报错了 <code>ERROR 1819 (HY000): Your password does not satisfy the current policy requirements</code></p>
-<p> 在5.7版本中会报错 就是前面说到的提供了默认的<code>validate_password</code>密码安全策略，这是一个插件 只不过在5.7版本中默认被安装了</p>
-<p> 由于我这里是本机，    密码设置简单点不会被忘记，所以我们修改一下密码的安全策略</p>
- <figure class="highlight html"><table><tr><td class="code"><pre><div class="line">set global validate_password_policy=0;#使用只按照密码长度验证 也就是策略中的第0个密码策略方式</div><div class="line">set global validate_password_length=2;#密码的长度要求</div><div class="line">ALTER USER 'root'@'localhost' IDENTIFIED BY 'root'; #这个时候才执行这个语句就没有报错了</div></pre></td></tr></table></figure>
-<p> 参考文档  <a href="https://dev.mysql.com/doc/refman/5.7/en/linux-installation-rpm.html" target="_blank" rel="external">https://dev.mysql.com/doc/refman/5.7/en/linux-installation-rpm.html</a></p>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;h4 id=&quot;下载&quot;&gt;&lt;a href=&quot;#下载&quot; class=&quot;headerlink&quot; title=&quot;下载&quot;&gt;&lt;/a&gt;下载&lt;/h4&gt;&lt;p&gt; 下载mysql5.7地址:&lt;code&gt;wget https://cdn.mysql.com//Downloads/MySQL-5.7/my
-    
-    </summary>
-    
-      <category term="技术" scheme="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/"/>
-    
-      <category term="Mysql" scheme="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/Mysql/"/>
-    
-    
-      <category term="mysql" scheme="http://blog.seoui.com/tags/mysql/"/>
-    
-      <category term="mysql5.7" scheme="http://blog.seoui.com/tags/mysql5-7/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Objenesis轻松实现为无参构造的类实例化</title>
-    <link href="http://blog.seoui.com/2017/06/18/objenesis/"/>
-    <id>http://blog.seoui.com/2017/06/18/objenesis/</id>
-    <published>2017-06-17T16:00:00.000Z</published>
-    <updated>2017-06-19T13:07:40.043Z</updated>
-    
-    <content type="html"><![CDATA[<p><code>Objenesis</code>是一个用于实例化java类的小型Java库。</p>
-<p> 主要对于用户推荐使用以下3个API</p>
-<ul>
-<li>Objenesis </li>
-<li>ObjectInstantiator</li>
-<li>InstantiatorStrategy</li>
-</ul>
-<p> 首先得创建一个没有无参构建器的java类<code>Example.java</code></p>
- <figure class="highlight java"><table><tr><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Example</span>  </span>&#123;</div><div class="line">	<span class="comment">//为属性设置一个默认值</span></div><div class="line">    <span class="keyword">private</span> String name=<span class="string">"没有无参构造函数"</span>;</div><div class="line"><span class="comment">//    public Example()&#123;&#125;</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Example</span><span class="params">(String name)</span></span>&#123;</div><div class="line">        System.out.println(<span class="string">"创建了---"</span>+Example.class.getName());</div><div class="line">        <span class="keyword">this</span>.name=name;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getName</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> <span class="keyword">this</span>.name;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>正常情况下这个类在外部情况 如果不调用<code>Example(name)</code>这个构建方法 是没有办法实例化的，如果你正好有这个需求</p>
-<p>这个时候<code>Objenesis</code>就有用武之地了</p>
-<h4 id="方法一"><a href="#方法一" class="headerlink" title="方法一"></a>方法一</h4><pre><code class="java">Objenesis objenesis = <span class="keyword">new</span> ObjenesisStd(<span class="keyword">true</span>);
-ObjectInstantiator thingyInstantiator = objenesis.getInstantiatorOf(Example.class);
-
-Example example1 = (Example)thingyInstantiator.newInstance();
-System.out.println(<span class="string">"example1:"</span>+example1+<span class="string">"---"</span>+example1.getName());
-Example example2 = (Example)thingyInstantiator.newInstance();
-System.out.println(<span class="string">"example2:"</span>+example2+<span class="string">"---"</span>+example2.getName());
-Example example3 = (Example)thingyInstantiator.newInstance();
-System.out.println(<span class="string">"example3:"</span>+example3+<span class="string">"---"</span>+example3.getName());
-</code></pre>
-<p>运行结果 发现属性name原本我们是设置一个默认值的，利用<code>Objenesis</code>实例化后默认值为<code>null</code>了。</p>
-<pre><code class="html">
-example1:Example@38cccef---null
-example2:Example@5679c6c6---null
-example3:Example@27ddd392---null
-</code></pre>
-<h4 id="方法二"><a href="#方法二" class="headerlink" title="方法二"></a>方法二</h4><pre><code class="java">
-Example example4 =objenesis.newInstance(Example.class);
-System.out.println(<span class="string">"example4:"</span>+example4+<span class="string">"----"</span>+example4.getName());
-</code></pre>
-<p> 同样也能够创建成功。</p>
-<p> 区别在与 如果想批量实例化多个对象 那么方法一的效率会更高 。</p>
-<p>另外<code>Objenesis</code>在spring4.0+版本中也有用到 不再强制要求写一个无参构造器了。<code>kryo</code>序列化中也有用到。</p>
-<p>测试代码:<a href="https://github.com/peachyy/objenesis-example" target="_blank" rel="external">https://github.com/peachyy/objenesis-example</a></p>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;p&gt;&lt;code&gt;Objenesis&lt;/code&gt;是一个用于实例化java类的小型Java库。&lt;/p&gt;
-&lt;p&gt; 主要对于用户推荐使用以下3个API&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;Objenesis &lt;/li&gt;
-&lt;li&gt;ObjectInstantiator&lt;/li&gt;
-&lt;li&gt;Insta
-    
-    </summary>
-    
-      <category term="技术" scheme="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/"/>
-    
-      <category term="Objenesis" scheme="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/Objenesis/"/>
-    
-    
-      <category term="Objenesis" scheme="http://blog.seoui.com/tags/Objenesis/"/>
     
   </entry>
   
