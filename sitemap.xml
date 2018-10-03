@@ -2,6 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://blog.seoui.com/love/index.html</loc>
+    
+    <lastmod>2018-10-03T04:35:37.038Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://blog.seoui.com/2018/09/30/springcloud-feign/</loc>
     
     <lastmod>2018-09-30T03:06:58.586Z</lastmod>
