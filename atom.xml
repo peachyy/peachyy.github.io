@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://blog.seoui.com/"/>
-  <updated>2018-09-30T03:06:58.586Z</updated>
+  <updated>2018-10-22T03:55:31.052Z</updated>
   <id>http://blog.seoui.com/</id>
   
   <author>
@@ -15,6 +15,39 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>让mysql支持emoji表情</title>
+    <link href="http://blog.seoui.com/2018/10/22/mysql_emoji_support/"/>
+    <id>http://blog.seoui.com/2018/10/22/mysql_emoji_support/</id>
+    <published>2018-10-21T16:00:00.000Z</published>
+    <updated>2018-10-22T03:55:31.052Z</updated>
+    
+    <content type="html"><![CDATA[<h4 id="什么是emoji"><a href="#什么是emoji" class="headerlink" title="什么是emoji"></a>什么是emoji</h4><p>  emoji就是表情符号 emoji的创造者是日本人栗田穰崇(Shigetaka Kurita)</p><p>在数据库的编码不为<code>utf8mb4</code>，利用java mysql驱动保存含有表情符号的数据会出现异常<code>java.sql.SQLException: Incorrect string value: &#39;\xF0\x9F\x94\xA5&#39; for column</code></p><h4 id="mysql中存储emoji表情符号"><a href="#mysql中存储emoji表情符号" class="headerlink" title="mysql中存储emoji表情符号"></a>mysql中存储emoji表情符号</h4><p>  以前做应用软件的时候 通常把<code>mysql</code>的字符编码设置为<code>utf-8</code>，但是这个编码却不支持<code>emoji</code>表情 是因为<code>utf-8</code>编码的一个字符最多只能存储3个字节，但一个emoji表情为4个字节，所以utf8不支持存储emoji表情。</p><p>  mysql中的<code>utf8mb4</code>却能支持<code>emoji</code>表情符号 所以我们只需要更改mysql的数据库编码格式为<code>utf8mb4</code>就能支持了。<em>当然了表和字段也需要是这个编码的，在不手动设置表/字段编码的情况下，会默认继承数据库的编码格式</em>。如果手动修改为字段或者表的编码 也需要手动把表和字段修改为<code>utf8mb4</code></p><h4 id="物理机安装的数据库数据字符编码修改方式"><a href="#物理机安装的数据库数据字符编码修改方式" class="headerlink" title="物理机安装的数据库数据字符编码修改方式"></a>物理机安装的数据库数据字符编码修改方式</h4><p>修改<code>mysql</code>的配置文件<code>/etc/mysql/my.cnf</code> 并重启数据库  如果是编译安装 有可能不是这个目录噢~</p><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line">[mysql]</span><br><span class="line">default-character-set=utf8mb4</span><br></pre></td></tr></table></figure><h4 id="云数据库-如阿里云的RDS-修改数据库编码方式"><a href="#云数据库-如阿里云的RDS-修改数据库编码方式" class="headerlink" title="云数据库 如阿里云的RDS 修改数据库编码方式"></a>云数据库 如阿里云的RDS 修改数据库编码方式</h4><p> 找到指定库的参数设置中找到<code>character_set_server</code>修改为<code>utf8mb4</code>并重启数据库</p><h4 id="客户端驱动连接的URL"><a href="#客户端驱动连接的URL" class="headerlink" title="客户端驱动连接的URL"></a>客户端驱动连接的URL</h4><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">jdbc:mysql://rr-xxxxx40.mysql.rds.aliyuncs.com:3306/db_test?useUnicode=true&amp;zeroDateTimeBehavior=convertToNull&amp;characterEncoding=utf-8</span><br></pre></td></tr></table></figure><p>这样就能在<code>mysql</code>中存储<code>emoji</code>表情符号了</p><p>当前测试的数据版本为RDS mysql 5.6.16<br>JAVA驱动版本为5.1.30</p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h4 id=&quot;什么是emoji&quot;&gt;&lt;a href=&quot;#什么是emoji&quot; class=&quot;headerlink&quot; title=&quot;什么是emoji&quot;&gt;&lt;/a&gt;什么是emoji&lt;/h4&gt;&lt;p&gt;  emoji就是表情符号 emoji的创造者是日本人栗田穰崇(Shigetaka Kuri
+      
+    
+    </summary>
+    
+      <category term="技术" scheme="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/"/>
+    
+      <category term="emoji" scheme="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/emoji/"/>
+    
+      <category term="mysql" scheme="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/emoji/mysql/"/>
+    
+    
+      <category term="mysql" scheme="http://blog.seoui.com/tags/mysql/"/>
+    
+      <category term="emoji" scheme="http://blog.seoui.com/tags/emoji/"/>
+    
+      <category term="mysql支持emoji表情" scheme="http://blog.seoui.com/tags/mysql%E6%94%AF%E6%8C%81emoji%E8%A1%A8%E6%83%85/"/>
+    
+  </entry>
   
   <entry>
     <title>springCloud feign使用/优化总结</title>
@@ -101,35 +134,6 @@
   </entry>
   
   <entry>
-    <title>rocketmq广播消息</title>
-    <link href="http://blog.seoui.com/2018/07/24/rocketmq_broadcast_message/"/>
-    <id>http://blog.seoui.com/2018/07/24/rocketmq_broadcast_message/</id>
-    <published>2018-07-23T16:00:00.000Z</published>
-    <updated>2018-09-06T06:21:47.879Z</updated>
-    
-    <content type="html"><![CDATA[<p>发布与模式实现。广播就是向一个主题的所有订阅者发送同一条消息。</p><p>在发送消息的时候和普通的消息并与不同之处，只是在消费端做一些配置即可。</p><h4 id="Consumer消息消费"><a href="#Consumer消息消费" class="headerlink" title="Consumer消息消费"></a>Consumer消息消费</h4><pre><code class="java"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">BroadcastConsumer</span> </span>{    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> MQClientException </span>{        DefaultMQPushConsumer consumer = <span class="keyword">new</span> DefaultMQPushConsumer(<span class="string">"please_rename_unique_group_name_3"</span>);        consumer.setConsumeFromWhere(ConsumeFromWhere.CONSUME_FROM_FIRST_OFFSET);        <span class="comment">//设置为广播模式 默认为CLUSTERING模式</span>        consumer.setMessageModel(MessageModel.BROADCASTING);        consumer.subscribe(<span class="string">"TopicTest"</span>, <span class="string">"TagA || TagC || TagD"</span>);        consumer.registerMessageListener(<span class="keyword">new</span> MessageListenerOrderly() {            AtomicLong consumeTimes = <span class="keyword">new</span> AtomicLong(<span class="number">0</span>);            <span class="meta">@Override</span>            <span class="function"><span class="keyword">public</span> ConsumeOrderlyStatus <span class="title">consumeMessage</span><span class="params">(List&lt;MessageExt&gt; msgs, ConsumeOrderlyContext context)</span> </span>{                context.setAutoCommit(<span class="keyword">false</span>);                System.out.printf(<span class="string">"%s Receive New Messages: %s %n"</span>, Thread.currentThread().getName(), msgs);                <span class="keyword">return</span> ConsumeOrderlyStatus.SUCCESS;            }        });        consumer.start();        System.out.printf(<span class="string">"Consumer Started.%n"</span>);    }}</code></pre>]]></content>
-    
-    <summary type="html">
-    
-      
-      
-        &lt;p&gt;发布与模式实现。广播就是向一个主题的所有订阅者发送同一条消息。&lt;/p&gt;
-&lt;p&gt;在发送消息的时候和普通的消息并与不同之处，只是在消费端做一些配置即可。&lt;/p&gt;
-&lt;h4 id=&quot;Consumer消息消费&quot;&gt;&lt;a href=&quot;#Consumer消息消费&quot; class=&quot;heade
-      
-    
-    </summary>
-    
-      <category term="技术" scheme="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/"/>
-    
-      <category term="rocketmq" scheme="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/rocketmq/"/>
-    
-    
-      <category term="rocketmq" scheme="http://blog.seoui.com/tags/rocketmq/"/>
-    
-  </entry>
-  
-  <entry>
     <title>rocketmq简单消息发送</title>
     <link href="http://blog.seoui.com/2018/07/24/rocketmq_simple_message/"/>
     <id>http://blog.seoui.com/2018/07/24/rocketmq_simple_message/</id>
@@ -147,6 +151,35 @@
 &lt;li&gt;可靠同步发送 reliable synchronous&lt;/li&gt;
 &lt;li&gt;可靠异步发送 reliable asynchronous&lt;/li&gt;
 &lt;li&gt;单向发送 one-way transmission&lt;/l
+      
+    
+    </summary>
+    
+      <category term="技术" scheme="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/"/>
+    
+      <category term="rocketmq" scheme="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/rocketmq/"/>
+    
+    
+      <category term="rocketmq" scheme="http://blog.seoui.com/tags/rocketmq/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>rocketmq广播消息</title>
+    <link href="http://blog.seoui.com/2018/07/24/rocketmq_broadcast_message/"/>
+    <id>http://blog.seoui.com/2018/07/24/rocketmq_broadcast_message/</id>
+    <published>2018-07-23T16:00:00.000Z</published>
+    <updated>2018-09-06T06:21:47.879Z</updated>
+    
+    <content type="html"><![CDATA[<p>发布与模式实现。广播就是向一个主题的所有订阅者发送同一条消息。</p><p>在发送消息的时候和普通的消息并与不同之处，只是在消费端做一些配置即可。</p><h4 id="Consumer消息消费"><a href="#Consumer消息消费" class="headerlink" title="Consumer消息消费"></a>Consumer消息消费</h4><pre><code class="java"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">BroadcastConsumer</span> </span>{    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> MQClientException </span>{        DefaultMQPushConsumer consumer = <span class="keyword">new</span> DefaultMQPushConsumer(<span class="string">"please_rename_unique_group_name_3"</span>);        consumer.setConsumeFromWhere(ConsumeFromWhere.CONSUME_FROM_FIRST_OFFSET);        <span class="comment">//设置为广播模式 默认为CLUSTERING模式</span>        consumer.setMessageModel(MessageModel.BROADCASTING);        consumer.subscribe(<span class="string">"TopicTest"</span>, <span class="string">"TagA || TagC || TagD"</span>);        consumer.registerMessageListener(<span class="keyword">new</span> MessageListenerOrderly() {            AtomicLong consumeTimes = <span class="keyword">new</span> AtomicLong(<span class="number">0</span>);            <span class="meta">@Override</span>            <span class="function"><span class="keyword">public</span> ConsumeOrderlyStatus <span class="title">consumeMessage</span><span class="params">(List&lt;MessageExt&gt; msgs, ConsumeOrderlyContext context)</span> </span>{                context.setAutoCommit(<span class="keyword">false</span>);                System.out.printf(<span class="string">"%s Receive New Messages: %s %n"</span>, Thread.currentThread().getName(), msgs);                <span class="keyword">return</span> ConsumeOrderlyStatus.SUCCESS;            }        });        consumer.start();        System.out.printf(<span class="string">"Consumer Started.%n"</span>);    }}</code></pre>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;p&gt;发布与模式实现。广播就是向一个主题的所有订阅者发送同一条消息。&lt;/p&gt;
+&lt;p&gt;在发送消息的时候和普通的消息并与不同之处，只是在消费端做一些配置即可。&lt;/p&gt;
+&lt;h4 id=&quot;Consumer消息消费&quot;&gt;&lt;a href=&quot;#Consumer消息消费&quot; class=&quot;heade
       
     
     </summary>
@@ -218,34 +251,6 @@
   </entry>
   
   <entry>
-    <title>jenkins环境搭建</title>
-    <link href="http://blog.seoui.com/2018/06/22/jenkinsinstall/"/>
-    <id>http://blog.seoui.com/2018/06/22/jenkinsinstall/</id>
-    <published>2018-06-21T16:00:00.000Z</published>
-    <updated>2018-09-06T06:21:47.875Z</updated>
-    
-    <content type="html"><![CDATA[<p><code>Jenkins</code>是基于<code>JVM</code>开发的，所以安装之前需要先确保装好<code>JVM</code>的运行环境<code>JRE</code></p><p> 这里采用<code>TOMCAT</code>的部署方式安装。</p><h4 id="下载WAR"><a href="#下载WAR" class="headerlink" title="下载WAR"></a>下载WAR</h4> <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">wget http://mirrors.jenkins.io/war-stable/2.121.1/jenkins.war</span><br></pre></td></tr></table></figure><p> 然后复制到<code>tomcat</code>的webapps目录中 执行<code>bin/startup.sh</code>启动 ，<code>bin/shutdown.sh</code> 关闭。</p><p> 首次启动访问的时候会提示你安装插件 选中推荐的一些插件就基本够用了。也可以在系统设置-&gt;插件管理中手动安装。</p><p>参考</p><p><a href="https://jenkins.io/doc/" target="_blank" rel="noopener">https://jenkins.io/doc/</a></p>]]></content>
-    
-    <summary type="html">
-    
-      
-      
-        &lt;p&gt;&lt;code&gt;Jenkins&lt;/code&gt;是基于&lt;code&gt;JVM&lt;/code&gt;开发的，所以安装之前需要先确保装好&lt;code&gt;JVM&lt;/code&gt;的运行环境&lt;code&gt;JRE&lt;/code&gt;&lt;/p&gt;
-&lt;p&gt; 这里采用&lt;code&gt;TOMCAT&lt;/code&gt;的部署方式安装。&lt;/p&gt;
-      
-    
-    </summary>
-    
-      <category term="技术" scheme="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/"/>
-    
-      <category term="jenkins" scheme="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/jenkins/"/>
-    
-    
-      <category term="jenkins" scheme="http://blog.seoui.com/tags/jenkins/"/>
-    
-  </entry>
-  
-  <entry>
     <title>nexus3.X环境搭建</title>
     <link href="http://blog.seoui.com/2018/06/22/nexusinstall/"/>
     <id>http://blog.seoui.com/2018/06/22/nexusinstall/</id>
@@ -270,6 +275,34 @@
     
     
       <category term="nexus3" scheme="http://blog.seoui.com/tags/nexus3/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>jenkins环境搭建</title>
+    <link href="http://blog.seoui.com/2018/06/22/jenkinsinstall/"/>
+    <id>http://blog.seoui.com/2018/06/22/jenkinsinstall/</id>
+    <published>2018-06-21T16:00:00.000Z</published>
+    <updated>2018-09-06T06:21:47.875Z</updated>
+    
+    <content type="html"><![CDATA[<p><code>Jenkins</code>是基于<code>JVM</code>开发的，所以安装之前需要先确保装好<code>JVM</code>的运行环境<code>JRE</code></p><p> 这里采用<code>TOMCAT</code>的部署方式安装。</p><h4 id="下载WAR"><a href="#下载WAR" class="headerlink" title="下载WAR"></a>下载WAR</h4> <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">wget http://mirrors.jenkins.io/war-stable/2.121.1/jenkins.war</span><br></pre></td></tr></table></figure><p> 然后复制到<code>tomcat</code>的webapps目录中 执行<code>bin/startup.sh</code>启动 ，<code>bin/shutdown.sh</code> 关闭。</p><p> 首次启动访问的时候会提示你安装插件 选中推荐的一些插件就基本够用了。也可以在系统设置-&gt;插件管理中手动安装。</p><p>参考</p><p><a href="https://jenkins.io/doc/" target="_blank" rel="noopener">https://jenkins.io/doc/</a></p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;p&gt;&lt;code&gt;Jenkins&lt;/code&gt;是基于&lt;code&gt;JVM&lt;/code&gt;开发的，所以安装之前需要先确保装好&lt;code&gt;JVM&lt;/code&gt;的运行环境&lt;code&gt;JRE&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt; 这里采用&lt;code&gt;TOMCAT&lt;/code&gt;的部署方式安装。&lt;/p&gt;
+      
+    
+    </summary>
+    
+      <category term="技术" scheme="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/"/>
+    
+      <category term="jenkins" scheme="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/jenkins/"/>
+    
+    
+      <category term="jenkins" scheme="http://blog.seoui.com/tags/jenkins/"/>
     
   </entry>
   
@@ -547,38 +580,6 @@
     
     
       <category term="搜索引擎" scheme="http://blog.seoui.com/tags/%E6%90%9C%E7%B4%A2%E5%BC%95%E6%93%8E/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>断点续传下载原理实现</title>
-    <link href="http://blog.seoui.com/2017/09/05/breakpoint-download/"/>
-    <id>http://blog.seoui.com/2017/09/05/breakpoint-download/</id>
-    <published>2017-09-04T16:00:00.000Z</published>
-    <updated>2018-09-06T06:21:47.844Z</updated>
-    
-    <content type="html"><![CDATA[<h4 id="需求背景"><a href="#需求背景" class="headerlink" title="需求背景"></a>需求背景</h4><ul><li>动态创建的文件下载的时候希望浏览器显示下载进度</li><li>动态创建的文件希望能够分段下载</li></ul><h4 id="HTTP断点续传报文"><a href="#HTTP断点续传报文" class="headerlink" title="HTTP断点续传报文"></a>HTTP断点续传报文</h4><p> 要实现<code>HTTP</code>断点续传必须要简单了解以下几个报文。</p><ul><li>Accept-Ranges  告诉客户端(浏览器..)服务器端支持断点续传 <code>服务器端返回</code></li><li>Range          客户端告诉服务器端从指定的的位置/范围(这里值字节数)下载资源  <code>客户端发出</code></li><li>Content-Range  服务器端告诉客户端响应的数据信息，在整个返回体中本部分的字节位置 <code>服务器端返回</code></li><li>ETag           资源标识   <code>非必须</code> <code>服务器端返回</code></li><li>Last-Modified  资源最后一次更新的时间 <code>非必须</code> <code>服务器端返回</code></li></ul><p><code>Range</code> 的范围格式</p><ol><li>表示0-499个字节范围：Range: bytes=0-499</li><li>表示最后500个字节范围：Range: bytes=-500</li><li>表示500字节开始到结束范围：Range: bytes=500-</li><li>表示第一个和最后一个字节：Range: bytes=0-0,-1</li><li>表示同时指定几个范围：Range: bytes=500-600,601-999</li></ol><p><code>Content-Range</code> 的数据格式    </p><p>Content-Range: bytes 0-499/22036 ：表示返回0-499字节范围数据 资源一共22036个字节</p><p>原理</p><ol><li>客户端发起请求 设置<code>Range</code>指定开始字节数或结束字节数 如果是从0开始也可以不用设置。</li><li>服务器端检查到客户端<code>Range</code>头 解析开始字节数以及结束字节数 并返回报文头 <code>Accept-Ranges</code>表示支持断点续传，<code>Content-Range</code>记录该次向客户端写入流的位置信息，然后再写入流到客户端。</li><li>服务端可以使用<code>ETag</code> <code>Last-Modified</code> 标记一下资源是否被修改。作一些验证工作，如果验证不通过则返回错误，非必须项。</li></ol><h4 id="java实现"><a href="#java实现" class="headerlink" title="java实现"></a>java实现</h4><figure class="highlight java"><table><tr><td class="code"><pre><span class="line">   OutputStream os=<span class="keyword">null</span>;</span><br><span class="line">    InputStream inputStream =<span class="keyword">null</span>;</span><br><span class="line">    File zipFile=<span class="keyword">null</span>;</span><br><span class="line">    <span class="keyword">try</span>&#123;</span><br><span class="line">        <span class="keyword">long</span> zipStart=System.currentTimeMillis();</span><br><span class="line">        zipFile=createFile();<span class="comment">//动态根据业务创建文件</span></span><br><span class="line">        <span class="keyword">if</span>(logger.isInfoEnabled())&#123;</span><br><span class="line">            logger.info(String.format(<span class="string">"压缩ZIP 花费时间 %s(s) "</span>,</span><br><span class="line">(System.currentTimeMillis()-zipStart)/<span class="number">1000</span>));</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> (zipFile.exists()) &#123;</span><br><span class="line">            <span class="keyword">long</span> downloadStart=System.currentTimeMillis();</span><br><span class="line">            inputStream= <span class="keyword">new</span> BufferedInputStream(<span class="keyword">new</span> FileInputStream(zipFile));</span><br><span class="line">            response.reset();</span><br><span class="line">            os=<span class="keyword">new</span> BufferedOutputStream(response.getOutputStream());</span><br><span class="line">            String userAgent = request.getHeader(<span class="string">"USER-AGENT"</span>);</span><br><span class="line">            String fileName=zipFile.getName();</span><br><span class="line">            <span class="keyword">if</span> (<span class="keyword">null</span> != userAgent &amp;&amp; -<span class="number">1</span> != userAgent.indexOf(<span class="string">"MSIE"</span>)) &#123;</span><br><span class="line">                fileName = URLEncoder.encode(fileName, <span class="string">"UTF8"</span>);</span><br><span class="line">            &#125; <span class="keyword">else</span> <span class="keyword">if</span> (<span class="keyword">null</span> != userAgent &amp;&amp; -<span class="number">1</span> != userAgent.indexOf(<span class="string">"Mozilla"</span>)) &#123;</span><br><span class="line">                fileName = <span class="keyword">new</span> String(fileName.getBytes(<span class="string">"utf-8"</span>), <span class="string">"ISO-8859-1"</span>);</span><br><span class="line">            &#125;</span><br><span class="line">            response.setHeader(<span class="string">"Accept-Ranges"</span>, <span class="string">"bytes"</span>);</span><br><span class="line">            response.setHeader(<span class="string">"Content-Disposition"</span>, </span><br><span class="line"><span class="string">"attachment;filename="</span>+ fileName);</span><br><span class="line">            response.setContentType(MediaType.APPLICATION_OCTET_STREAM_VALUE);</span><br><span class="line">            <span class="keyword">long</span> pos = <span class="number">0</span>, fileSize=zipFile.length(),</span><br><span class="line">last=fileSize-<span class="number">1</span>;</span><br><span class="line">            response.setHeader(<span class="string">"ETag"</span>,zipFile.getName().</span><br><span class="line"> concat(Objects.toString(fileSize))</span><br><span class="line">                    .concat(<span class="string">"_"</span>).concat(Objects.toString(zipFile.lastModified())));</span><br><span class="line">            response.setDateHeader(<span class="string">"Last-Modified"</span>,zipFile.lastModified());</span><br><span class="line">            response.setDateHeader(<span class="string">"Expires"</span>,</span><br><span class="line">System.currentTimeMillis()+<span class="number">1000</span>*<span class="number">60</span>*<span class="number">60</span>*<span class="number">24</span>);</span><br><span class="line">            <span class="keyword">if</span> (<span class="keyword">null</span> != request.getHeader(<span class="string">"Range"</span>)) &#123;</span><br><span class="line">                response.setStatus(HttpServletResponse.SC_PARTIAL_CONTENT);</span><br><span class="line">                <span class="keyword">try</span> &#123;</span><br><span class="line">                    <span class="comment">// 暂时只处理这2种range格式 1、RANGE: bytes=111- 2、Range: bytes=0-499</span></span><br><span class="line">                    String numRang = request.getHeader(<span class="string">"Range"</span>)</span><br><span class="line">.replaceAll(<span class="string">"bytes="</span>, <span class="string">""</span>);</span><br><span class="line">                    String[] strRange = numRang.split(<span class="string">"-"</span>);</span><br><span class="line">                    <span class="keyword">if</span> (strRange.length == <span class="number">2</span>) &#123;</span><br><span class="line">                        pos = Long.parseLong(strRange[<span class="number">0</span>].trim());</span><br><span class="line">                        last = Long.parseLong(strRange[<span class="number">1</span>].trim());</span><br><span class="line">                    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                        pos = Long.parseLong(numRang.replaceAll(<span class="string">"-"</span>, <span class="string">""</span>).trim());</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125; <span class="keyword">catch</span> (NumberFormatException e) &#123;</span><br><span class="line">                    logger.error(request.getHeader(<span class="string">"Range"</span>) + <span class="string">" error"</span>);</span><br><span class="line">                    pos = <span class="number">0</span>;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">long</span> rangLength = last - pos + <span class="number">1</span>;</span><br><span class="line">            String contentRange = <span class="keyword">new</span> StringBuffer(<span class="string">"bytes "</span>).</span><br><span class="line">append(String.valueOf(pos)).</span><br><span class="line">append(<span class="string">"-"</span>).append(last).append(<span class="string">"/"</span>).</span><br><span class="line">append(String.valueOf(fileSize)).toString();</span><br><span class="line">            response.setHeader(<span class="string">"Content-Range"</span>, contentRange);</span><br><span class="line">            response.addHeader(<span class="string">"Content-Length"</span>,Objects.toString(rangLength));</span><br><span class="line">            <span class="keyword">if</span>(pos&gt;<span class="number">0</span>)&#123;</span><br><span class="line">                inputStream.skip(pos);</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">byte</span>[] buffer = <span class="keyword">new</span> <span class="keyword">byte</span>[<span class="number">1024</span>*<span class="number">512</span>];<span class="comment">//每次以512KB 0.5MB的流量下载</span></span><br><span class="line">            <span class="keyword">int</span> length = <span class="number">0</span>,sendTotal=<span class="number">0</span>;</span><br><span class="line">            <span class="keyword">while</span> (sendTotal &lt; rangLength &amp;&amp; length!=-<span class="number">1</span>) &#123;</span><br><span class="line">                length = inputStream.read(buffer, <span class="number">0</span>,</span><br><span class="line">((rangLength - sendTotal) &lt;= buffer.length ?</span><br><span class="line">                        ((<span class="keyword">int</span>) (rangLength - sendTotal)) : buffer.length));</span><br><span class="line">                sendTotal = sendTotal + length;</span><br><span class="line">                os.write(buffer, <span class="number">0</span>, length);</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">if</span>(os!=<span class="keyword">null</span>)&#123;</span><br><span class="line">                os.flush();</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">if</span>(logger.isInfoEnabled())&#123;</span><br><span class="line">                logger.info(String.format(<span class="string">"下载 花费时间 %s(s) "</span>,</span><br><span class="line">(System.currentTimeMillis()-downloadStart)/<span class="number">1000</span>));</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">    &#125;<span class="keyword">catch</span> (Exception e)&#123;</span><br><span class="line">        <span class="keyword">if</span>(StringUtils.endsWithIgnoreCase(e.getMessage(),<span class="string">"Broken pipe"</span>))&#123;</span><br><span class="line">            logger.error(<span class="string">"用户取消下载"</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        logger.error(e.getMessage(),e);</span><br><span class="line">    &#125;<span class="keyword">finally</span> &#123;</span><br><span class="line">        <span class="keyword">if</span>(os!=<span class="keyword">null</span>)&#123;</span><br><span class="line">            <span class="keyword">try</span>&#123;</span><br><span class="line">                os.close();</span><br><span class="line">            &#125;<span class="keyword">catch</span> (Exception e)&#123;&#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span>(inputStream!=<span class="keyword">null</span>)&#123;</span><br><span class="line">            <span class="keyword">try</span>&#123;</span><br><span class="line">                IOUtils.closeQuietly(inputStream);</span><br><span class="line">            &#125;<span class="keyword">catch</span> (Exception e)&#123;&#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><p>比如<code>google</code>浏览器下载的时候就能看到下载进度以及暂停下载和恢复下载操作，也可以设置<code>Range</code>测试分段下载。</p>]]></content>
-    
-    <summary type="html">
-    
-      
-      
-        &lt;h4 id=&quot;需求背景&quot;&gt;&lt;a href=&quot;#需求背景&quot; class=&quot;headerlink&quot; title=&quot;需求背景&quot;&gt;&lt;/a&gt;需求背景&lt;/h4&gt;&lt;ul&gt;
-&lt;li&gt;动态创建的文件下载的时候希望浏览器显示下载进度&lt;/li&gt;
-&lt;li&gt;动态创建的文件希望能够分段下载&lt;/li&gt;
-&lt;/
-      
-    
-    </summary>
-    
-      <category term="技术" scheme="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/"/>
-    
-      <category term="HTTP" scheme="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/HTTP/"/>
-    
-    
-      <category term="断点续传" scheme="http://blog.seoui.com/tags/%E6%96%AD%E7%82%B9%E7%BB%AD%E4%BC%A0/"/>
-    
-      <category term="http" scheme="http://blog.seoui.com/tags/http/"/>
     
   </entry>
   
