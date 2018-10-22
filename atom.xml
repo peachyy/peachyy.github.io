@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://blog.seoui.com/"/>
-  <updated>2018-10-22T04:17:26.845Z</updated>
+  <updated>2018-10-22T04:30:08.532Z</updated>
   <id>http://blog.seoui.com/</id>
   
   <author>
@@ -21,7 +21,7 @@
     <link href="http://blog.seoui.com/2018/10/22/mysql_emoji_support/"/>
     <id>http://blog.seoui.com/2018/10/22/mysql_emoji_support/</id>
     <published>2018-10-21T16:00:00.000Z</published>
-    <updated>2018-10-22T04:17:26.845Z</updated>
+    <updated>2018-10-22T04:30:08.532Z</updated>
     
     <content type="html"><![CDATA[<h4 id="什么是emoji"><a href="#什么是emoji" class="headerlink" title="什么是emoji"></a>什么是emoji</h4><p>  emoji就是表情符号 emoji的创造者是日本人栗田穰崇(Shigetaka Kurita)</p><p>在数据库的编码不为<code>utf8mb4</code>，利用java mysql驱动保存含有表情符号的数据会出现异常<code>java.sql.SQLException: Incorrect string value: &#39;\xF0\x9F\x94\xA5&#39; for column</code></p><h4 id="mysql中存储emoji表情符号"><a href="#mysql中存储emoji表情符号" class="headerlink" title="mysql中存储emoji表情符号"></a>mysql中存储emoji表情符号</h4><p>  以前做应用软件的时候 通常把<code>mysql</code>的字符编码设置为<code>utf-8</code>，但是这个编码却不支持<code>emoji</code>表情 是因为<code>utf-8</code>编码的一个字符最多只能存储3个字节，但一个emoji表情为4个字节，所以utf8不支持存储emoji表情。</p><p>  mysql中的<code>utf8mb4</code>却能支持<code>emoji</code>表情符号 所以我们只需要更改mysql的数据库编码格式为<code>utf8mb4</code>就能支持了。<em>当然了表和字段也需要是这个编码的，在不手动设置表/字段编码的情况下，会默认继承数据库的编码格式</em>。如果手动修改为字段或者表的编码 也需要手动把表和字段修改为<code>utf8mb4</code></p><h4 id="物理机安装的数据库数据字符编码修改方式"><a href="#物理机安装的数据库数据字符编码修改方式" class="headerlink" title="物理机安装的数据库数据字符编码修改方式"></a>物理机安装的数据库数据字符编码修改方式</h4><p>修改<code>mysql</code>的配置文件<code>/etc/mysql/my.cnf</code> 并重启数据库  如果是编译安装 有可能不是这个目录噢~</p><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line">[mysql]</span><br><span class="line">default-character-set=utf8mb4</span><br></pre></td></tr></table></figure><h4 id="云数据库-如阿里云的RDS-修改数据库编码方式"><a href="#云数据库-如阿里云的RDS-修改数据库编码方式" class="headerlink" title="云数据库 如阿里云的RDS 修改数据库编码方式"></a>云数据库 如阿里云的RDS 修改数据库编码方式</h4><p> 找到指定库的参数设置中找到<code>character_set_server</code>修改为<code>utf8mb4</code>并重启数据库</p><h4 id="客户端驱动连接的URL"><a href="#客户端驱动连接的URL" class="headerlink" title="客户端驱动连接的URL"></a>客户端驱动连接的URL</h4><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">jdbc:mysql://rr-xxxxx40.mysql.rds.aliyuncs.com:3306/db_test?useUnicode=true&amp;zeroDateTimeBehavior=convertToNull&amp;characterEncoding=utf-8</span><br></pre></td></tr></table></figure><p>这样就能在<code>mysql</code>中存储<code>emoji</code>表情符号了,<code>utf8mb4</code>是<code>utf-8</code>的超集 意味着反正<code>utf8mb4</code>也能兼容<code>utf-8</code> 在不考虑存储大小的情况下 可以直接把库设置为<code>utf8mb4</code>以免后续烦恼。</p><p>当前测试的数据版本为RDS mysql 5.6.16<br>JAVA驱动版本为5.1.30</p>]]></content>
     
@@ -134,21 +134,20 @@
   </entry>
   
   <entry>
-    <title>rocketmq广播消息</title>
-    <link href="http://blog.seoui.com/2018/07/24/rocketmq_broadcast_message/"/>
-    <id>http://blog.seoui.com/2018/07/24/rocketmq_broadcast_message/</id>
+    <title>rocketmq有序消息</title>
+    <link href="http://blog.seoui.com/2018/07/24/rocketmq_ordered_message/"/>
+    <id>http://blog.seoui.com/2018/07/24/rocketmq_ordered_message/</id>
     <published>2018-07-23T16:00:00.000Z</published>
-    <updated>2018-09-06T06:21:47.879Z</updated>
+    <updated>2018-09-06T06:21:47.882Z</updated>
     
-    <content type="html"><![CDATA[<p>发布与模式实现。广播就是向一个主题的所有订阅者发送同一条消息。</p><p>在发送消息的时候和普通的消息并与不同之处，只是在消费端做一些配置即可。</p><h4 id="Consumer消息消费"><a href="#Consumer消息消费" class="headerlink" title="Consumer消息消费"></a>Consumer消息消费</h4><pre><code class="java"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">BroadcastConsumer</span> </span>{    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> MQClientException </span>{        DefaultMQPushConsumer consumer = <span class="keyword">new</span> DefaultMQPushConsumer(<span class="string">"please_rename_unique_group_name_3"</span>);        consumer.setConsumeFromWhere(ConsumeFromWhere.CONSUME_FROM_FIRST_OFFSET);        <span class="comment">//设置为广播模式 默认为CLUSTERING模式</span>        consumer.setMessageModel(MessageModel.BROADCASTING);        consumer.subscribe(<span class="string">"TopicTest"</span>, <span class="string">"TagA || TagC || TagD"</span>);        consumer.registerMessageListener(<span class="keyword">new</span> MessageListenerOrderly() {            AtomicLong consumeTimes = <span class="keyword">new</span> AtomicLong(<span class="number">0</span>);            <span class="meta">@Override</span>            <span class="function"><span class="keyword">public</span> ConsumeOrderlyStatus <span class="title">consumeMessage</span><span class="params">(List&lt;MessageExt&gt; msgs, ConsumeOrderlyContext context)</span> </span>{                context.setAutoCommit(<span class="keyword">false</span>);                System.out.printf(<span class="string">"%s Receive New Messages: %s %n"</span>, Thread.currentThread().getName(), msgs);                <span class="keyword">return</span> ConsumeOrderlyStatus.SUCCESS;            }        });        consumer.start();        System.out.printf(<span class="string">"Consumer Started.%n"</span>);    }}</code></pre>]]></content>
+    <content type="html"><![CDATA[<p>RocketMQ提供的顺序消费消息实现是使用的FIFO 先进先出算法</p><h4 id="Producer消息发送"><a href="#Producer消息发送" class="headerlink" title="Producer消息发送"></a>Producer消息发送</h4> <figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Producer</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> UnsupportedEncodingException </span>&#123;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            MQProducer producer = <span class="keyword">new</span> DefaultMQProducer(<span class="string">"please_rename_unique_group_name"</span>);</span><br><span class="line">            producer.start();</span><br><span class="line"></span><br><span class="line">            String[] tags = <span class="keyword">new</span> String[] &#123;<span class="string">"TagA"</span>, <span class="string">"TagB"</span>, <span class="string">"TagC"</span>, <span class="string">"TagD"</span>, <span class="string">"TagE"</span>&#125;;</span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">100</span>; i++) &#123;</span><br><span class="line">                <span class="keyword">int</span> orderId = i % <span class="number">10</span>;</span><br><span class="line">                Message msg =</span><br><span class="line">                    <span class="keyword">new</span> Message(<span class="string">"TopicTestjjj"</span>, tags[i % tags.length], <span class="string">"KEY"</span> + i,</span><br><span class="line">                        (<span class="string">"Hello RocketMQ "</span> + i).getBytes(RemotingHelper.DEFAULT_CHARSET));</span><br><span class="line">                SendResult sendResult = producer.send(msg, <span class="keyword">new</span> MessageQueueSelector() &#123;</span><br><span class="line">                    <span class="meta">@Override</span></span><br><span class="line">                    <span class="function"><span class="keyword">public</span> MessageQueue <span class="title">select</span><span class="params">(List&lt;MessageQueue&gt; mqs, Message msg, Object arg)</span> </span>&#123;</span><br><span class="line">                        Integer id = (Integer) arg;</span><br><span class="line">                        <span class="keyword">int</span> index = id % mqs.size();</span><br><span class="line">                        <span class="keyword">return</span> mqs.get(index);</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;, orderId);</span><br><span class="line"></span><br><span class="line">                System.out.printf(<span class="string">"%s%n"</span>, sendResult);</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            producer.shutdown();</span><br><span class="line">        &#125; <span class="keyword">catch</span> (MQClientException | RemotingException | MQBrokerException | InterruptedException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><h4 id="Consumer消息消费"><a href="#Consumer消息消费" class="headerlink" title="Consumer消息消费"></a>Consumer消息消费</h4><pre><code class="java"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Consumer</span> </span>{    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> MQClientException </span>{        DefaultMQPushConsumer consumer = <span class="keyword">new</span> DefaultMQPushConsumer(<span class="string">"please_rename_unique_group_name_3"</span>);        consumer.setConsumeFromWhere(ConsumeFromWhere.CONSUME_FROM_FIRST_OFFSET);        consumer.subscribe(<span class="string">"TopicTest"</span>, <span class="string">"TagA || TagC || TagD"</span>);        consumer.registerMessageListener(<span class="keyword">new</span> MessageListenerOrderly() {            AtomicLong consumeTimes = <span class="keyword">new</span> AtomicLong(<span class="number">0</span>);            <span class="meta">@Override</span>            <span class="function"><span class="keyword">public</span> ConsumeOrderlyStatus <span class="title">consumeMessage</span><span class="params">(List&lt;MessageExt&gt; msgs, ConsumeOrderlyContext context)</span> </span>{                context.setAutoCommit(<span class="keyword">false</span>);                System.out.printf(<span class="string">"%s Receive New Messages: %s %n"</span>, Thread.currentThread().getName(), msgs);                <span class="keyword">this</span>.consumeTimes.incrementAndGet();                <span class="keyword">if</span> ((<span class="keyword">this</span>.consumeTimes.get() % <span class="number">2</span>) == <span class="number">0</span>) {                    <span class="keyword">return</span> ConsumeOrderlyStatus.SUCCESS;                } <span class="keyword">else</span> <span class="keyword">if</span> ((<span class="keyword">this</span>.consumeTimes.get() % <span class="number">3</span>) == <span class="number">0</span>) {                    <span class="keyword">return</span> ConsumeOrderlyStatus.ROLLBACK;                } <span class="keyword">else</span> <span class="keyword">if</span> ((<span class="keyword">this</span>.consumeTimes.get() % <span class="number">4</span>) == <span class="number">0</span>) {                    <span class="keyword">return</span> ConsumeOrderlyStatus.COMMIT;                } <span class="keyword">else</span> <span class="keyword">if</span> ((<span class="keyword">this</span>.consumeTimes.get() % <span class="number">5</span>) == <span class="number">0</span>) {                    context.setSuspendCurrentQueueTimeMillis(<span class="number">3000</span>);                    <span class="keyword">return</span> ConsumeOrderlyStatus.SUSPEND_CURRENT_QUEUE_A_MOMENT;                }                <span class="keyword">return</span> ConsumeOrderlyStatus.SUCCESS;            }        });        consumer.start();        System.out.printf(<span class="string">"Consumer Started.%n"</span>);    }}</code></pre>]]></content>
     
     <summary type="html">
     
       
       
-        &lt;p&gt;发布与模式实现。广播就是向一个主题的所有订阅者发送同一条消息。&lt;/p&gt;
-&lt;p&gt;在发送消息的时候和普通的消息并与不同之处，只是在消费端做一些配置即可。&lt;/p&gt;
-&lt;h4 id=&quot;Consumer消息消费&quot;&gt;&lt;a href=&quot;#Consumer消息消费&quot; class=&quot;heade
+        &lt;p&gt;RocketMQ提供的顺序消费消息实现是使用的FIFO 先进先出算法&lt;/p&gt;
+&lt;h4 id=&quot;Producer消息发送&quot;&gt;&lt;a href=&quot;#Producer消息发送&quot; class=&quot;headerlink&quot; title=&quot;Producer消息发送&quot;&gt;&lt;/a&gt;Producer
       
     
     </summary>
@@ -194,20 +193,21 @@
   </entry>
   
   <entry>
-    <title>rocketmq有序消息</title>
-    <link href="http://blog.seoui.com/2018/07/24/rocketmq_ordered_message/"/>
-    <id>http://blog.seoui.com/2018/07/24/rocketmq_ordered_message/</id>
+    <title>rocketmq广播消息</title>
+    <link href="http://blog.seoui.com/2018/07/24/rocketmq_broadcast_message/"/>
+    <id>http://blog.seoui.com/2018/07/24/rocketmq_broadcast_message/</id>
     <published>2018-07-23T16:00:00.000Z</published>
-    <updated>2018-09-06T06:21:47.882Z</updated>
+    <updated>2018-09-06T06:21:47.879Z</updated>
     
-    <content type="html"><![CDATA[<p>RocketMQ提供的顺序消费消息实现是使用的FIFO 先进先出算法</p><h4 id="Producer消息发送"><a href="#Producer消息发送" class="headerlink" title="Producer消息发送"></a>Producer消息发送</h4> <figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Producer</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> UnsupportedEncodingException </span>&#123;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            MQProducer producer = <span class="keyword">new</span> DefaultMQProducer(<span class="string">"please_rename_unique_group_name"</span>);</span><br><span class="line">            producer.start();</span><br><span class="line"></span><br><span class="line">            String[] tags = <span class="keyword">new</span> String[] &#123;<span class="string">"TagA"</span>, <span class="string">"TagB"</span>, <span class="string">"TagC"</span>, <span class="string">"TagD"</span>, <span class="string">"TagE"</span>&#125;;</span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">100</span>; i++) &#123;</span><br><span class="line">                <span class="keyword">int</span> orderId = i % <span class="number">10</span>;</span><br><span class="line">                Message msg =</span><br><span class="line">                    <span class="keyword">new</span> Message(<span class="string">"TopicTestjjj"</span>, tags[i % tags.length], <span class="string">"KEY"</span> + i,</span><br><span class="line">                        (<span class="string">"Hello RocketMQ "</span> + i).getBytes(RemotingHelper.DEFAULT_CHARSET));</span><br><span class="line">                SendResult sendResult = producer.send(msg, <span class="keyword">new</span> MessageQueueSelector() &#123;</span><br><span class="line">                    <span class="meta">@Override</span></span><br><span class="line">                    <span class="function"><span class="keyword">public</span> MessageQueue <span class="title">select</span><span class="params">(List&lt;MessageQueue&gt; mqs, Message msg, Object arg)</span> </span>&#123;</span><br><span class="line">                        Integer id = (Integer) arg;</span><br><span class="line">                        <span class="keyword">int</span> index = id % mqs.size();</span><br><span class="line">                        <span class="keyword">return</span> mqs.get(index);</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;, orderId);</span><br><span class="line"></span><br><span class="line">                System.out.printf(<span class="string">"%s%n"</span>, sendResult);</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            producer.shutdown();</span><br><span class="line">        &#125; <span class="keyword">catch</span> (MQClientException | RemotingException | MQBrokerException | InterruptedException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><h4 id="Consumer消息消费"><a href="#Consumer消息消费" class="headerlink" title="Consumer消息消费"></a>Consumer消息消费</h4><pre><code class="java"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Consumer</span> </span>{    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> MQClientException </span>{        DefaultMQPushConsumer consumer = <span class="keyword">new</span> DefaultMQPushConsumer(<span class="string">"please_rename_unique_group_name_3"</span>);        consumer.setConsumeFromWhere(ConsumeFromWhere.CONSUME_FROM_FIRST_OFFSET);        consumer.subscribe(<span class="string">"TopicTest"</span>, <span class="string">"TagA || TagC || TagD"</span>);        consumer.registerMessageListener(<span class="keyword">new</span> MessageListenerOrderly() {            AtomicLong consumeTimes = <span class="keyword">new</span> AtomicLong(<span class="number">0</span>);            <span class="meta">@Override</span>            <span class="function"><span class="keyword">public</span> ConsumeOrderlyStatus <span class="title">consumeMessage</span><span class="params">(List&lt;MessageExt&gt; msgs, ConsumeOrderlyContext context)</span> </span>{                context.setAutoCommit(<span class="keyword">false</span>);                System.out.printf(<span class="string">"%s Receive New Messages: %s %n"</span>, Thread.currentThread().getName(), msgs);                <span class="keyword">this</span>.consumeTimes.incrementAndGet();                <span class="keyword">if</span> ((<span class="keyword">this</span>.consumeTimes.get() % <span class="number">2</span>) == <span class="number">0</span>) {                    <span class="keyword">return</span> ConsumeOrderlyStatus.SUCCESS;                } <span class="keyword">else</span> <span class="keyword">if</span> ((<span class="keyword">this</span>.consumeTimes.get() % <span class="number">3</span>) == <span class="number">0</span>) {                    <span class="keyword">return</span> ConsumeOrderlyStatus.ROLLBACK;                } <span class="keyword">else</span> <span class="keyword">if</span> ((<span class="keyword">this</span>.consumeTimes.get() % <span class="number">4</span>) == <span class="number">0</span>) {                    <span class="keyword">return</span> ConsumeOrderlyStatus.COMMIT;                } <span class="keyword">else</span> <span class="keyword">if</span> ((<span class="keyword">this</span>.consumeTimes.get() % <span class="number">5</span>) == <span class="number">0</span>) {                    context.setSuspendCurrentQueueTimeMillis(<span class="number">3000</span>);                    <span class="keyword">return</span> ConsumeOrderlyStatus.SUSPEND_CURRENT_QUEUE_A_MOMENT;                }                <span class="keyword">return</span> ConsumeOrderlyStatus.SUCCESS;            }        });        consumer.start();        System.out.printf(<span class="string">"Consumer Started.%n"</span>);    }}</code></pre>]]></content>
+    <content type="html"><![CDATA[<p>发布与模式实现。广播就是向一个主题的所有订阅者发送同一条消息。</p><p>在发送消息的时候和普通的消息并与不同之处，只是在消费端做一些配置即可。</p><h4 id="Consumer消息消费"><a href="#Consumer消息消费" class="headerlink" title="Consumer消息消费"></a>Consumer消息消费</h4><pre><code class="java"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">BroadcastConsumer</span> </span>{    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> MQClientException </span>{        DefaultMQPushConsumer consumer = <span class="keyword">new</span> DefaultMQPushConsumer(<span class="string">"please_rename_unique_group_name_3"</span>);        consumer.setConsumeFromWhere(ConsumeFromWhere.CONSUME_FROM_FIRST_OFFSET);        <span class="comment">//设置为广播模式 默认为CLUSTERING模式</span>        consumer.setMessageModel(MessageModel.BROADCASTING);        consumer.subscribe(<span class="string">"TopicTest"</span>, <span class="string">"TagA || TagC || TagD"</span>);        consumer.registerMessageListener(<span class="keyword">new</span> MessageListenerOrderly() {            AtomicLong consumeTimes = <span class="keyword">new</span> AtomicLong(<span class="number">0</span>);            <span class="meta">@Override</span>            <span class="function"><span class="keyword">public</span> ConsumeOrderlyStatus <span class="title">consumeMessage</span><span class="params">(List&lt;MessageExt&gt; msgs, ConsumeOrderlyContext context)</span> </span>{                context.setAutoCommit(<span class="keyword">false</span>);                System.out.printf(<span class="string">"%s Receive New Messages: %s %n"</span>, Thread.currentThread().getName(), msgs);                <span class="keyword">return</span> ConsumeOrderlyStatus.SUCCESS;            }        });        consumer.start();        System.out.printf(<span class="string">"Consumer Started.%n"</span>);    }}</code></pre>]]></content>
     
     <summary type="html">
     
       
       
-        &lt;p&gt;RocketMQ提供的顺序消费消息实现是使用的FIFO 先进先出算法&lt;/p&gt;
-&lt;h4 id=&quot;Producer消息发送&quot;&gt;&lt;a href=&quot;#Producer消息发送&quot; class=&quot;headerlink&quot; title=&quot;Producer消息发送&quot;&gt;&lt;/a&gt;Producer
+        &lt;p&gt;发布与模式实现。广播就是向一个主题的所有订阅者发送同一条消息。&lt;/p&gt;
+&lt;p&gt;在发送消息的时候和普通的消息并与不同之处，只是在消费端做一些配置即可。&lt;/p&gt;
+&lt;h4 id=&quot;Consumer消息消费&quot;&gt;&lt;a href=&quot;#Consumer消息消费&quot; class=&quot;heade
       
     
     </summary>
@@ -247,6 +247,34 @@
     
     
       <category term="rocketmq" scheme="http://blog.seoui.com/tags/rocketmq/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>nexus3.X环境搭建</title>
+    <link href="http://blog.seoui.com/2018/06/22/nexusinstall/"/>
+    <id>http://blog.seoui.com/2018/06/22/nexusinstall/</id>
+    <published>2018-06-21T16:00:00.000Z</published>
+    <updated>2018-09-06T06:21:47.877Z</updated>
+    
+    <content type="html"><![CDATA[<p>nexus3比以前的版本相比 多支持了管理不同的格式 比如<code>Docker</code> <code>npm</code> <code>NuGet</code> <code>maven</code> …等</p><h4 id="下载编译好的二进制安装"><a href="#下载编译好的二进制安装" class="headerlink" title="下载编译好的二进制安装"></a>下载编译好的二进制安装</h4> <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">wget https://sonatype-download.global.ssl.fastly.net/repository/repositoryManager/3/nexus-3.12.1-01-unix.tar.gz</span><br><span class="line">  </span><br><span class="line">  tar -zxf nexus-3.12.1-01-unix.tar.gz </span><br><span class="line"> </span><br><span class="line">  <span class="built_in">cd</span> nexus-3.12.1-01/</span><br><span class="line">  bin/nexus start</span><br></pre></td></tr></table></figure><p> 默认的端口号为<code>8081</code> nexus3.x和以前的版本界面都有很大的改变 需要注意一下。<br> 其他默认配置在文件<code>etc/nexus-default.properties</code>中 需要修改的关注一下。</p><p>参考</p><p><a href="https://www.sonatype.com/" target="_blank" rel="noopener">https://www.sonatype.com/</a></p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;p&gt;nexus3比以前的版本相比 多支持了管理不同的格式 比如&lt;code&gt;Docker&lt;/code&gt; &lt;code&gt;npm&lt;/code&gt; &lt;code&gt;NuGet&lt;/code&gt; &lt;code&gt;maven&lt;/code&gt; …等&lt;/p&gt;
+&lt;h4 id=&quot;下载编译好的二进制安装&quot;&gt;&lt;a hr
+      
+    
+    </summary>
+    
+      <category term="技术" scheme="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/"/>
+    
+      <category term="nexus3" scheme="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/nexus3/"/>
+    
+    
+      <category term="nexus3" scheme="http://blog.seoui.com/tags/nexus3/"/>
     
   </entry>
   
@@ -304,34 +332,6 @@
     
     
       <category term="gitlab" scheme="http://blog.seoui.com/tags/gitlab/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>nexus3.X环境搭建</title>
-    <link href="http://blog.seoui.com/2018/06/22/nexusinstall/"/>
-    <id>http://blog.seoui.com/2018/06/22/nexusinstall/</id>
-    <published>2018-06-21T16:00:00.000Z</published>
-    <updated>2018-09-06T06:21:47.877Z</updated>
-    
-    <content type="html"><![CDATA[<p>nexus3比以前的版本相比 多支持了管理不同的格式 比如<code>Docker</code> <code>npm</code> <code>NuGet</code> <code>maven</code> …等</p><h4 id="下载编译好的二进制安装"><a href="#下载编译好的二进制安装" class="headerlink" title="下载编译好的二进制安装"></a>下载编译好的二进制安装</h4> <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">wget https://sonatype-download.global.ssl.fastly.net/repository/repositoryManager/3/nexus-3.12.1-01-unix.tar.gz</span><br><span class="line">  </span><br><span class="line">  tar -zxf nexus-3.12.1-01-unix.tar.gz </span><br><span class="line"> </span><br><span class="line">  <span class="built_in">cd</span> nexus-3.12.1-01/</span><br><span class="line">  bin/nexus start</span><br></pre></td></tr></table></figure><p> 默认的端口号为<code>8081</code> nexus3.x和以前的版本界面都有很大的改变 需要注意一下。<br> 其他默认配置在文件<code>etc/nexus-default.properties</code>中 需要修改的关注一下。</p><p>参考</p><p><a href="https://www.sonatype.com/" target="_blank" rel="noopener">https://www.sonatype.com/</a></p>]]></content>
-    
-    <summary type="html">
-    
-      
-      
-        &lt;p&gt;nexus3比以前的版本相比 多支持了管理不同的格式 比如&lt;code&gt;Docker&lt;/code&gt; &lt;code&gt;npm&lt;/code&gt; &lt;code&gt;NuGet&lt;/code&gt; &lt;code&gt;maven&lt;/code&gt; …等&lt;/p&gt;
-&lt;h4 id=&quot;下载编译好的二进制安装&quot;&gt;&lt;a hr
-      
-    
-    </summary>
-    
-      <category term="技术" scheme="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/"/>
-    
-      <category term="nexus3" scheme="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/nexus3/"/>
-    
-    
-      <category term="nexus3" scheme="http://blog.seoui.com/tags/nexus3/"/>
     
   </entry>
   
