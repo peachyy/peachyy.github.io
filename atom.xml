@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
   <title>笑松小站</title>
+  
   <subtitle>写我喜欢 读我所爱</subtitle>
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://blog.seoui.com/"/>
-  <updated>2018-10-22T13:35:17.616Z</updated>
+  <updated>2018-11-27T08:46:45.113Z</updated>
   <id>http://blog.seoui.com/</id>
   
   <author>
@@ -16,27 +17,51 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
+    <title>svn版本控制迁移到git</title>
+    <link href="http://blog.seoui.com/2018/11/27/svnToGit/"/>
+    <id>http://blog.seoui.com/2018/11/27/svnToGit/</id>
+    <published>2018-11-26T16:00:00.000Z</published>
+    <updated>2018-11-27T08:46:45.113Z</updated>
+    
+    <content type="html"><![CDATA[<h4 id="获得原-SVN-仓库使用的作者名字列表"><a href="#获得原-SVN-仓库使用的作者名字列表" class="headerlink" title="获得原 SVN 仓库使用的作者名字列表"></a>获得原 SVN 仓库使用的作者名字列表</h4><p> 因为导入到git需要配置原作者(svn提交人)和git账户的映射关系 其格式为：</p><p> <code>vim authors-transform.txt</code></p> <figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">taoxs = xsTao &lt;xsTao@xxx.com&gt;</span><br><span class="line">lh1 = lh1 &lt;lhl@xxx.com&gt;</span><br></pre></td></tr></table></figure><h4 id="利用-git-svn-克隆-SVN-仓库"><a href="#利用-git-svn-克隆-SVN-仓库" class="headerlink" title="利用 git svn 克隆 SVN 仓库"></a>利用 git svn 克隆 SVN 仓库</h4><p> 新建一个目录作为 Git 项目的根目标，并进入到该目录中，把前面创建的<code>authors-transform.txt</code>用户映射关系复制到这个目录中，执行下面的命令：</p> <figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">git svn clone $&#123;SVN REP URL &#125; --no-metadata -A authors-transform.txt</span><br></pre></td></tr></table></figure><p>如果SVN的体积/文件有点大得话，那么该过程会持续较长时间。耐心等待</p><p>执行完成后基本上就OK了，把SVN版本库搬到git上来了，但是这个时候还需要提交到远程仓库</p><h4 id="提交GIT版本库到远程仓库"><a href="#提交GIT版本库到远程仓库" class="headerlink" title="提交GIT版本库到远程仓库"></a>提交GIT版本库到远程仓库</h4><p>进入刚刚生成的版本库中 用下面的命令查看分支列表 有不需要的可以删除</p><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">git show-ref</span><br></pre></td></tr></table></figure><p>将refs/remotes 下剩余的引用移动为本地分支</p><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">cp -Rf .git/refs/remotes/* .git/refs/heads/</span><br><span class="line">rm -Rf .git/refs/remotes</span><br></pre></td></tr></table></figure><p>为本地仓库添加远程仓库地址 就可以comment/push了</p><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">git remote add origin ''http://192.168.1.3:8090/osTeam/test.git'</span><br></pre></td></tr></table></figure><p>现在就完美从SVN迁移到GIT了 并保留了原SVN的提交版本记录信息。</p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h4 id=&quot;获得原-SVN-仓库使用的作者名字列表&quot;&gt;&lt;a href=&quot;#获得原-SVN-仓库使用的作者名字列表&quot; class=&quot;headerlink&quot; title=&quot;获得原 SVN 仓库使用的作者名字列表&quot;&gt;&lt;/a&gt;获得原 SVN 仓库使用的作者名字列表&lt;/h4&gt;&lt;p&gt; 因
+      
+    
+    </summary>
+    
+      <category term="技术" scheme="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/"/>
+    
+      <category term="svn" scheme="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/svn/"/>
+    
+      <category term="git" scheme="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/svn/git/"/>
+    
+    
+      <category term="svn" scheme="http://blog.seoui.com/tags/svn/"/>
+    
+      <category term="git" scheme="http://blog.seoui.com/tags/git/"/>
+    
+  </entry>
+  
+  <entry>
     <title>让mysql支持emoji表情</title>
     <link href="http://blog.seoui.com/2018/10/22/mysql_emoji_support/"/>
     <id>http://blog.seoui.com/2018/10/22/mysql_emoji_support/</id>
     <published>2018-10-21T16:00:00.000Z</published>
-    <updated>2018-10-22T13:35:17.616Z</updated>
+    <updated>2018-10-22T04:40:13.613Z</updated>
     
-    <content type="html"><![CDATA[<h4 id="什么是emoji"><a href="#什么是emoji" class="headerlink" title="什么是emoji"></a>什么是emoji</h4><p>  emoji就是表情符号 emoji的创造者是日本人栗田穰崇(Shigetaka Kurita)</p>
-<p>在数据库的编码不为<code>utf8mb4</code>，利用java mysql驱动保存含有表情符号的数据会出现异常<code>java.sql.SQLException: Incorrect string value: &#39;\xF0\x9F\x94\xA5&#39; for column</code></p>
-<h4 id="mysql中存储emoji表情符号"><a href="#mysql中存储emoji表情符号" class="headerlink" title="mysql中存储emoji表情符号"></a>mysql中存储emoji表情符号</h4><p>  以前做应用软件的时候 通常把<code>mysql</code>的字符编码设置为<code>utf-8</code>，但是这个编码却不支持<code>emoji</code>表情 是因为<code>utf-8</code>编码的一个字符最多只能存储3个字节，但一个emoji表情为4个字节，所以utf8不支持存储emoji表情。</p>
-<p>  mysql中的<code>utf8mb4</code>却能支持<code>emoji</code>表情符号 所以我们只需要更改mysql的数据库编码格式为<code>utf8mb4</code>就能支持了。<em>当然了表和字段也需要是这个编码的，在不手动设置表/字段编码的情况下，会默认继承数据库的编码格式</em>。如果手动修改为字段或者表的编码 也需要手动把表和字段修改为<code>utf8mb4</code></p>
-<h4 id="物理机安装的数据库数据字符编码修改方式"><a href="#物理机安装的数据库数据字符编码修改方式" class="headerlink" title="物理机安装的数据库数据字符编码修改方式"></a>物理机安装的数据库数据字符编码修改方式</h4><p>修改<code>mysql</code>的配置文件<code>/etc/mysql/my.cnf</code> 并重启数据库  如果是编译安装 有可能不是这个目录噢~</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><div class="line"></div><div class="line">[mysql]</div><div class="line">default-character-set=utf8mb4</div></pre></td></tr></table></figure>
-<h4 id="云数据库-如阿里云的RDS-修改数据库编码方式"><a href="#云数据库-如阿里云的RDS-修改数据库编码方式" class="headerlink" title="云数据库 如阿里云的RDS 修改数据库编码方式"></a>云数据库 如阿里云的RDS 修改数据库编码方式</h4><p> 找到指定库的参数设置中找到<code>character_set_server</code>修改为<code>utf8mb4</code>并重启数据库</p>
-<h4 id="客户端驱动连接的URL"><a href="#客户端驱动连接的URL" class="headerlink" title="客户端驱动连接的URL"></a>客户端驱动连接的URL</h4><figure class="highlight shell"><table><tr><td class="code"><pre><div class="line">jdbc:mysql://rr-xxxxx40.mysql.rds.aliyuncs.com:3306/db_test?useUnicode=true&amp;zeroDateTimeBehavior=convertToNull&amp;characterEncoding=utf-8</div></pre></td></tr></table></figure>
-<p>这样就能在<code>mysql</code>中存储<code>emoji</code>表情符号了,<code>utf8mb4</code>是<code>utf-8</code>的超集 意味着反正<code>utf8mb4</code>也能兼容<code>utf-8</code> 在不考虑存储大小的情况下 可以直接把库设置为<code>utf8mb4</code>以免后续烦恼。</p>
-<p>当前测试的数据版本为RDS mysql 5.6.16<br>JAVA驱动版本为5.1.30</p>
-]]></content>
+    <content type="html"><![CDATA[<h4 id="什么是emoji"><a href="#什么是emoji" class="headerlink" title="什么是emoji"></a>什么是emoji</h4><p>  emoji就是表情符号 emoji的创造者是日本人栗田穰崇(Shigetaka Kurita)</p><p>在数据库的编码不为<code>utf8mb4</code>，利用java mysql驱动保存含有表情符号的数据会出现异常<code>java.sql.SQLException: Incorrect string value: &#39;\xF0\x9F\x94\xA5&#39; for column</code></p><h4 id="mysql中存储emoji表情符号"><a href="#mysql中存储emoji表情符号" class="headerlink" title="mysql中存储emoji表情符号"></a>mysql中存储emoji表情符号</h4><p>  以前做应用软件的时候 通常把<code>mysql</code>的字符编码设置为<code>utf-8</code>，但是这个编码却不支持<code>emoji</code>表情 是因为<code>utf-8</code>编码的一个字符最多只能存储3个字节，但一个emoji表情为4个字节，所以utf8不支持存储emoji表情。</p><p>  mysql中的<code>utf8mb4</code>却能支持<code>emoji</code>表情符号 所以我们只需要更改mysql的数据库编码格式为<code>utf8mb4</code>就能支持了。<em>当然了表和字段也需要是这个编码的，在不手动设置表/字段编码的情况下，会默认继承数据库的编码格式</em>。如果手动修改为字段或者表的编码 也需要手动把表和字段修改为<code>utf8mb4</code></p><h4 id="物理机安装的数据库数据字符编码修改方式"><a href="#物理机安装的数据库数据字符编码修改方式" class="headerlink" title="物理机安装的数据库数据字符编码修改方式"></a>物理机安装的数据库数据字符编码修改方式</h4><p>修改<code>mysql</code>的配置文件<code>/etc/mysql/my.cnf</code> 并重启数据库  如果是编译安装 有可能不是这个目录噢~</p><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line">[mysql]</span><br><span class="line">default-character-set=utf8mb4</span><br></pre></td></tr></table></figure><h4 id="云数据库-如阿里云的RDS-修改数据库编码方式"><a href="#云数据库-如阿里云的RDS-修改数据库编码方式" class="headerlink" title="云数据库 如阿里云的RDS 修改数据库编码方式"></a>云数据库 如阿里云的RDS 修改数据库编码方式</h4><p> 找到指定库的参数设置中找到<code>character_set_server</code>修改为<code>utf8mb4</code>并重启数据库</p><h4 id="客户端驱动连接的URL"><a href="#客户端驱动连接的URL" class="headerlink" title="客户端驱动连接的URL"></a>客户端驱动连接的URL</h4><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">jdbc:mysql://rr-xxxxx40.mysql.rds.aliyuncs.com:3306/db_test?useUnicode=true&amp;zeroDateTimeBehavior=convertToNull&amp;characterEncoding=utf-8</span><br></pre></td></tr></table></figure><p>这样就能在<code>mysql</code>中存储<code>emoji</code>表情符号了,<code>utf8mb4</code>是<code>utf-8</code>的超集 意味着反正<code>utf8mb4</code>也能兼容<code>utf-8</code> 在不考虑存储大小的情况下 可以直接把库设置为<code>utf8mb4</code>以免后续烦恼。</p><p>当前测试的数据版本为RDS mysql 5.6.16<br>JAVA驱动版本为5.1.30</p>]]></content>
     
     <summary type="html">
     
-      &lt;h4 id=&quot;什么是emoji&quot;&gt;&lt;a href=&quot;#什么是emoji&quot; class=&quot;headerlink&quot; title=&quot;什么是emoji&quot;&gt;&lt;/a&gt;什么是emoji&lt;/h4&gt;&lt;p&gt;  emoji就是表情符号 emoji的创造者是日本人栗田穰崇(Shigetaka Kuri
+      
+      
+        &lt;h4 id=&quot;什么是emoji&quot;&gt;&lt;a href=&quot;#什么是emoji&quot; class=&quot;headerlink&quot; title=&quot;什么是emoji&quot;&gt;&lt;/a&gt;什么是emoji&lt;/h4&gt;&lt;p&gt;  emoji就是表情符号 emoji的创造者是日本人栗田穰崇(Shigetaka Kuri
+      
     
     </summary>
     
@@ -60,24 +85,17 @@
     <link href="http://blog.seoui.com/2018/09/30/springcloud-feign/"/>
     <id>http://blog.seoui.com/2018/09/30/springcloud-feign/</id>
     <published>2018-09-29T16:00:00.000Z</published>
-    <updated>2018-10-22T13:35:17.600Z</updated>
+    <updated>2018-09-30T03:06:58.586Z</updated>
     
-    <content type="html"><![CDATA[<p>基于springCloud Dalston.SR3版本</p>
-<h4 id="1-当接口参数是多个的时候-需要指定-RequestParam-中的value来明确一下。"><a href="#1-当接口参数是多个的时候-需要指定-RequestParam-中的value来明确一下。" class="headerlink" title="1.当接口参数是多个的时候 需要指定@RequestParam 中的value来明确一下。"></a>1.当接口参数是多个的时候 需要指定@RequestParam 中的value来明确一下。</h4><figure class="highlight java"><table><tr><td class="code"><pre><div class="line"></div><div class="line"><span class="comment">/**</span></div><div class="line"> * 用户互扫</div><div class="line"> * <span class="doctag">@param</span> uid 被扫人ID</div><div class="line"> * <span class="doctag">@param</span> userId 当前用户ID</div><div class="line"> * <span class="doctag">@return</span></div><div class="line"> */</div><div class="line"><span class="meta">@PostMapping</span>(REQ_URL_PRE + <span class="string">"/qrCodeReturnUser"</span>)</div><div class="line"><span class="function">UserQrCode <span class="title">qrCodeReturnUser</span><span class="params">(@RequestParam(<span class="string">"uid"</span>)</span> String uid,@<span class="title">RequestParam</span><span class="params">(<span class="string">"userId"</span>)</span> Integer userId)</span>;</div></pre></td></tr></table></figure>
-<h4 id="2-接口参数为对象的时候-需要使用-RequestBody注解-并采用POST方式。"><a href="#2-接口参数为对象的时候-需要使用-RequestBody注解-并采用POST方式。" class="headerlink" title="2.接口参数为对象的时候 需要使用@RequestBody注解 并采用POST方式。"></a>2.接口参数为对象的时候 需要使用@RequestBody注解 并采用POST方式。</h4><h4 id="3-如果接口是简单的数组-列表参数-这里需要使用Get请求才行"><a href="#3-如果接口是简单的数组-列表参数-这里需要使用Get请求才行" class="headerlink" title="3.如果接口是简单的数组/列表参数 这里需要使用Get请求才行"></a>3.如果接口是简单的数组/列表参数 这里需要使用Get请求才行</h4><figure class="highlight java"><table><tr><td class="code"><pre><div class="line"><span class="meta">@GetMapping</span>(REQ_URL_PRE + <span class="string">"/getUserLevels"</span>)</div><div class="line"><span class="function">Map&lt;Integer, UserLevel&gt; <span class="title">getUserLevels</span><span class="params">(@RequestParam(<span class="string">"userIds"</span>)</span> List&lt;Integer&gt; userIds)</span>;</div></pre></td></tr></table></figure>
-<h4 id="4-直接可以在-FeignClient中配置降级处理方式-对于一些不重要的业务-自定义处理很有帮助"><a href="#4-直接可以在-FeignClient中配置降级处理方式-对于一些不重要的业务-自定义处理很有帮助" class="headerlink" title="4.直接可以在@FeignClient中配置降级处理方式 对于一些不重要的业务 自定义处理很有帮助"></a>4.直接可以在<code>@FeignClient</code>中配置降级处理方式 对于一些不重要的业务 自定义处理很有帮助</h4><figure class="highlight java"><table><tr><td class="code"><pre><div class="line"><span class="meta">@FeignClient</span>(value = <span class="string">"cloud-user"</span>, fallback = IUsers.UsersFallback.class)</div></pre></td></tr></table></figure>
-<h4 id="5-feign默认只有HystrixBadRequestException异常不会走熔断，其它任何异常都会进入熔断，需要重新实现一下ErrorDecoder包装业务异常"><a href="#5-feign默认只有HystrixBadRequestException异常不会走熔断，其它任何异常都会进入熔断，需要重新实现一下ErrorDecoder包装业务异常" class="headerlink" title="5.feign默认只有HystrixBadRequestException异常不会走熔断，其它任何异常都会进入熔断，需要重新实现一下ErrorDecoder包装业务异常"></a>5.<code>feign</code>默认只有<code>HystrixBadRequestException</code>异常不会走熔断，其它任何异常都会进入熔断，需要重新实现一下<code>ErrorDecoder</code>包装业务异常</h4><p>  示例：<a href="https://github.com/peachyy/feign-support" target="_blank" rel="external">https://github.com/peachyy/feign-support</a></p>
-<h4 id="6-feign-HTTP请求方式选择"><a href="#6-feign-HTTP请求方式选择" class="headerlink" title="6. feign HTTP请求方式选择"></a>6. feign HTTP请求方式选择</h4><p><code>feign</code>默认使用的是基于JDK提供的URLConnection调用HTTP接口，不具备连接池。所以资源开销上有点影响，经测试JDK的<code>URLConnection</code>比<code>Apache HttpClient</code>快很多倍。但是<code>Apache HttpClient</code>和<code>okhttp</code>都支持配置连接池功能。具体选择需要权衡</p>
-<h4 id="7-默认不启用hystrix-需要手动指定feign-hystrix-enabled-true-开启熔断"><a href="#7-默认不启用hystrix-需要手动指定feign-hystrix-enabled-true-开启熔断" class="headerlink" title="7.默认不启用hystrix 需要手动指定feign.hystrix.enabled=true 开启熔断"></a>7.默认不启用<code>hystrix</code> 需要手动指定<code>feign.hystrix.enabled=true</code> 开启熔断</h4><h4 id="8-启用压缩也是一种有效的优化方式"><a href="#8-启用压缩也是一种有效的优化方式" class="headerlink" title="8.启用压缩也是一种有效的优化方式"></a>8.启用压缩也是一种有效的优化方式</h4><figure class="highlight java"><table><tr><td class="code"><pre><div class="line">feign.compression.request.enabled=<span class="keyword">true</span></div><div class="line">feign.compression.response.enabled=<span class="keyword">true</span></div><div class="line">feign.compression.request.mime-types=text/xml,application/xml,application/json</div></pre></td></tr></table></figure>
-<h4 id="9-参数相关调优"><a href="#9-参数相关调优" class="headerlink" title="9.参数相关调优"></a>9.参数相关调优</h4><h5 id="hystrix线程数设置"><a href="#hystrix线程数设置" class="headerlink" title="hystrix线程数设置"></a>hystrix线程数设置</h5><p>设置参数<code>hystrix.threadpool.default.coreSize</code> 来指定熔断隔离的线程数 这个数需要调优，经测试 线程数我们设置为和提供方的容器线程差不多，吞吐量高许多。</p>
-<h5 id="第一次访问服务出错的问题"><a href="#第一次访问服务出错的问题" class="headerlink" title="第一次访问服务出错的问题"></a>第一次访问服务出错的问题</h5><p>启用<code>Hystrix</code>后，很多服务当第一次访问的时候都会失败 是因为初始化负载均衡一系列操作已经超出了超时时间了 默认的超时时间为<code>1S</code>，设置参数超时时间<code>hystrix.command.default.execution.isolation.thread.timeoutInMilliseconds=30000</code> 可解决这个问题。</p>
-<h5 id="负载均衡参数设置"><a href="#负载均衡参数设置" class="headerlink" title="负载均衡参数设置"></a>负载均衡参数设置</h5><p>设置了<code>Hystrix</code>的超时参数会 还需设置一下<code>ribbon</code>的相关参数  这些参数和<code>Hystrix</code>的超时参数有一定的逻辑关系<br>请求处理的超时时间 <code>ribbon.ReadTimeout=120000</code><br>请求连接的超时时间 <code>ribbon.ConnectTimeout=30000</code></p>
-]]></content>
+    <content type="html"><![CDATA[<p>基于springCloud Dalston.SR3版本</p><h4 id="1-当接口参数是多个的时候-需要指定-RequestParam-中的value来明确一下。"><a href="#1-当接口参数是多个的时候-需要指定-RequestParam-中的value来明确一下。" class="headerlink" title="1.当接口参数是多个的时候 需要指定@RequestParam 中的value来明确一下。"></a>1.当接口参数是多个的时候 需要指定@RequestParam 中的value来明确一下。</h4><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 用户互扫</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> uid 被扫人ID</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> userId 当前用户ID</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@return</span></span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">@PostMapping</span>(REQ_URL_PRE + <span class="string">"/qrCodeReturnUser"</span>)</span><br><span class="line"><span class="function">UserQrCode <span class="title">qrCodeReturnUser</span><span class="params">(@RequestParam(<span class="string">"uid"</span>)</span> String uid,@<span class="title">RequestParam</span><span class="params">(<span class="string">"userId"</span>)</span> Integer userId)</span>;</span><br></pre></td></tr></table></figure><h4 id="2-接口参数为对象的时候-需要使用-RequestBody注解-并采用POST方式。"><a href="#2-接口参数为对象的时候-需要使用-RequestBody注解-并采用POST方式。" class="headerlink" title="2.接口参数为对象的时候 需要使用@RequestBody注解 并采用POST方式。"></a>2.接口参数为对象的时候 需要使用@RequestBody注解 并采用POST方式。</h4><h4 id="3-如果接口是简单的数组-列表参数-这里需要使用Get请求才行"><a href="#3-如果接口是简单的数组-列表参数-这里需要使用Get请求才行" class="headerlink" title="3.如果接口是简单的数组/列表参数 这里需要使用Get请求才行"></a>3.如果接口是简单的数组/列表参数 这里需要使用Get请求才行</h4><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@GetMapping</span>(REQ_URL_PRE + <span class="string">"/getUserLevels"</span>)</span><br><span class="line"><span class="function">Map&lt;Integer, UserLevel&gt; <span class="title">getUserLevels</span><span class="params">(@RequestParam(<span class="string">"userIds"</span>)</span> List&lt;Integer&gt; userIds)</span>;</span><br></pre></td></tr></table></figure><h4 id="4-直接可以在-FeignClient中配置降级处理方式-对于一些不重要的业务-自定义处理很有帮助"><a href="#4-直接可以在-FeignClient中配置降级处理方式-对于一些不重要的业务-自定义处理很有帮助" class="headerlink" title="4.直接可以在@FeignClient中配置降级处理方式 对于一些不重要的业务 自定义处理很有帮助"></a>4.直接可以在<code>@FeignClient</code>中配置降级处理方式 对于一些不重要的业务 自定义处理很有帮助</h4><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@FeignClient</span>(value = <span class="string">"cloud-user"</span>, fallback = IUsers.UsersFallback.class)</span><br></pre></td></tr></table></figure><h4 id="5-feign默认只有HystrixBadRequestException异常不会走熔断，其它任何异常都会进入熔断，需要重新实现一下ErrorDecoder包装业务异常"><a href="#5-feign默认只有HystrixBadRequestException异常不会走熔断，其它任何异常都会进入熔断，需要重新实现一下ErrorDecoder包装业务异常" class="headerlink" title="5.feign默认只有HystrixBadRequestException异常不会走熔断，其它任何异常都会进入熔断，需要重新实现一下ErrorDecoder包装业务异常"></a>5.<code>feign</code>默认只有<code>HystrixBadRequestException</code>异常不会走熔断，其它任何异常都会进入熔断，需要重新实现一下<code>ErrorDecoder</code>包装业务异常</h4><p>  示例：<a href="https://github.com/peachyy/feign-support" target="_blank" rel="noopener">https://github.com/peachyy/feign-support</a></p><h4 id="6-feign-HTTP请求方式选择"><a href="#6-feign-HTTP请求方式选择" class="headerlink" title="6. feign HTTP请求方式选择"></a>6. feign HTTP请求方式选择</h4><p><code>feign</code>默认使用的是基于JDK提供的URLConnection调用HTTP接口，不具备连接池。所以资源开销上有点影响，经测试JDK的<code>URLConnection</code>比<code>Apache HttpClient</code>快很多倍。但是<code>Apache HttpClient</code>和<code>okhttp</code>都支持配置连接池功能。具体选择需要权衡</p><h4 id="7-默认不启用hystrix-需要手动指定feign-hystrix-enabled-true-开启熔断"><a href="#7-默认不启用hystrix-需要手动指定feign-hystrix-enabled-true-开启熔断" class="headerlink" title="7.默认不启用hystrix 需要手动指定feign.hystrix.enabled=true 开启熔断"></a>7.默认不启用<code>hystrix</code> 需要手动指定<code>feign.hystrix.enabled=true</code> 开启熔断</h4><h4 id="8-启用压缩也是一种有效的优化方式"><a href="#8-启用压缩也是一种有效的优化方式" class="headerlink" title="8.启用压缩也是一种有效的优化方式"></a>8.启用压缩也是一种有效的优化方式</h4><figure class="highlight java"><table><tr><td class="code"><pre><span class="line">feign.compression.request.enabled=<span class="keyword">true</span></span><br><span class="line">feign.compression.response.enabled=<span class="keyword">true</span></span><br><span class="line">feign.compression.request.mime-types=text/xml,application/xml,application/json</span><br></pre></td></tr></table></figure><h4 id="9-参数相关调优"><a href="#9-参数相关调优" class="headerlink" title="9.参数相关调优"></a>9.参数相关调优</h4><h5 id="hystrix线程数设置"><a href="#hystrix线程数设置" class="headerlink" title="hystrix线程数设置"></a>hystrix线程数设置</h5><p>设置参数<code>hystrix.threadpool.default.coreSize</code> 来指定熔断隔离的线程数 这个数需要调优，经测试 线程数我们设置为和提供方的容器线程差不多，吞吐量高许多。</p><h5 id="第一次访问服务出错的问题"><a href="#第一次访问服务出错的问题" class="headerlink" title="第一次访问服务出错的问题"></a>第一次访问服务出错的问题</h5><p>启用<code>Hystrix</code>后，很多服务当第一次访问的时候都会失败 是因为初始化负载均衡一系列操作已经超出了超时时间了 默认的超时时间为<code>1S</code>，设置参数超时时间<code>hystrix.command.default.execution.isolation.thread.timeoutInMilliseconds=30000</code> 可解决这个问题。</p><h5 id="负载均衡参数设置"><a href="#负载均衡参数设置" class="headerlink" title="负载均衡参数设置"></a>负载均衡参数设置</h5><p>设置了<code>Hystrix</code>的超时参数会 还需设置一下<code>ribbon</code>的相关参数  这些参数和<code>Hystrix</code>的超时参数有一定的逻辑关系<br>请求处理的超时时间 <code>ribbon.ReadTimeout=120000</code><br>请求连接的超时时间 <code>ribbon.ConnectTimeout=30000</code></p>]]></content>
     
     <summary type="html">
     
-      &lt;p&gt;基于springCloud Dalston.SR3版本&lt;/p&gt;
+      
+      
+        &lt;p&gt;基于springCloud Dalston.SR3版本&lt;/p&gt;
 &lt;h4 id=&quot;1-当接口参数是多个的时候-需要指定-RequestParam-中的value来明确一下。&quot;&gt;&lt;a href=&quot;#1-当接口参数是多个的时候-需要指定-RequestParam-中的value来
+      
     
     </summary>
     
@@ -99,19 +117,9 @@
     <link href="http://blog.seoui.com/2018/08/02/rocketmq_batch_message/"/>
     <id>http://blog.seoui.com/2018/08/02/rocketmq_batch_message/</id>
     <published>2018-08-01T16:00:00.000Z</published>
-    <updated>2018-08-02T02:14:05.753Z</updated>
+    <updated>2018-09-06T06:21:47.891Z</updated>
     
-    <content type="html"><![CDATA[<p> 批量发送消息可提高传递小消息的性能。同时也需要满足以下特征</p>
-<ul>
-<li>批量消息要求必要具有同一<code>topic</code>、相同消息配置</li>
-<li><code>不支持延时消息</code></li>
-<li>建议一个批量消息最好不要超过1MB大小<a id="more"></a>
-<h4 id="示例"><a href="#示例" class="headerlink" title="示例"></a>示例</h4></li>
-</ul>
-<p>小于1MB</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><div class="line">String topic = <span class="string">"BatchTest"</span>;</div><div class="line">List&lt;Message&gt; messages = <span class="keyword">new</span> ArrayList&lt;&gt;();</div><div class="line">messages.add(<span class="keyword">new</span> Message(topic, <span class="string">"TagA"</span>, <span class="string">"Order1"</span>, <span class="string">"Hello world 0"</span>.getBytes()));</div><div class="line">messages.add(<span class="keyword">new</span> Message(topic, <span class="string">"TagA"</span>, <span class="string">"Order2"</span>, <span class="string">"Hello world 1"</span>.getBytes()));</div><div class="line">messages.add(<span class="keyword">new</span> Message(topic, <span class="string">"TagA"</span>, <span class="string">"Order3"</span>, <span class="string">"Hello world 2"</span>.getBytes()));</div><div class="line"><span class="keyword">try</span> &#123;</div><div class="line">	producer.send(messages);</div><div class="line">&#125; <span class="keyword">catch</span> (Exception e) &#123;</div><div class="line">	e.printStackTrace();</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>大于1MB也可以使用分割消息的方式进行多次批量发送。</p>
-]]></content>
+    <content type="html"><![CDATA[<p> 批量发送消息可提高传递小消息的性能。同时也需要满足以下特征</p><ul><li>批量消息要求必要具有同一<code>topic</code>、相同消息配置</li><li><code>不支持延时消息</code></li><li>建议一个批量消息最好不要超过1MB大小<a id="more"></a><h4 id="示例"><a href="#示例" class="headerlink" title="示例"></a>示例</h4></li></ul><p>小于1MB</p><figure class="highlight java"><table><tr><td class="code"><pre><span class="line">String topic = <span class="string">"BatchTest"</span>;</span><br><span class="line">List&lt;Message&gt; messages = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line">messages.add(<span class="keyword">new</span> Message(topic, <span class="string">"TagA"</span>, <span class="string">"Order1"</span>, <span class="string">"Hello world 0"</span>.getBytes()));</span><br><span class="line">messages.add(<span class="keyword">new</span> Message(topic, <span class="string">"TagA"</span>, <span class="string">"Order2"</span>, <span class="string">"Hello world 1"</span>.getBytes()));</span><br><span class="line">messages.add(<span class="keyword">new</span> Message(topic, <span class="string">"TagA"</span>, <span class="string">"Order3"</span>, <span class="string">"Hello world 2"</span>.getBytes()));</span><br><span class="line"><span class="keyword">try</span> &#123;</span><br><span class="line">producer.send(messages);</span><br><span class="line">&#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">e.printStackTrace();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><p>大于1MB也可以使用分割消息的方式进行多次批量发送。</p>]]></content>
     
     <summary type="html">
     
@@ -137,17 +145,9 @@
     <link href="http://blog.seoui.com/2018/08/01/rocketmq_delay_message/"/>
     <id>http://blog.seoui.com/2018/08/01/rocketmq_delay_message/</id>
     <published>2018-07-31T16:00:00.000Z</published>
-    <updated>2018-08-02T01:54:02.569Z</updated>
+    <updated>2018-09-06T06:21:47.888Z</updated>
     
-    <content type="html"><![CDATA[<p><code>rocketmq</code>提供一种延时消息的解决方案，就是在特定的时间到了，消息才会被投递出去供<code>consumer</code>消费。<br><a id="more"></a><br><em>总体来是简单的场景是满足了，但是需要注意的是延时的时间是需要按照默认配置的延时级别去配置的，而不是随意设置消息的延时时间。</em></p>
-<p>如果想不受延时级别的约束 可以参考之前的一遍文章<a href="http://blog.seoui.com/2017/08/19/delayqueue/">http://blog.seoui.com/2017/08/19/delayqueue/</a></p>
-<p>默认的延迟级别</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><div class="line">messageDelayLevel=<span class="number">1</span>s <span class="number">5</span>s <span class="number">10</span>s <span class="number">30</span>s <span class="number">1</span>m <span class="number">2</span>m <span class="number">3</span>m <span class="number">4</span>m <span class="number">5</span>m <span class="number">6</span>m <span class="number">7</span>m <span class="number">8</span>m <span class="number">9</span>m <span class="number">10</span>m <span class="number">20</span>m <span class="number">30</span>m <span class="number">1</span>h <span class="number">2</span>h</div></pre></td></tr></table></figure>
-<p>这个配置下标从1开始 比如级别2是延时5秒、级别5是延时1分钟。默认配置在不满足需求的情况下，可以在<code>broker</code>配置文件加入<code>messageDelayLevel</code>参数覆盖默认的延时级别配置。</p>
-<h4 id="示例"><a href="#示例" class="headerlink" title="示例"></a>示例</h4><p>和普通的消息不同之处在于<code>Producer</code>在发送消息的时候 需要设置<code>message.setDelayTimeLevel();</code>延迟级别方法。其他参数和消费端的写法并与不同之处。</p>
-<h5 id="Producer"><a href="#Producer" class="headerlink" title="Producer"></a>Producer</h5><figure class="highlight java"><table><tr><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ScheduledMessageProducer</span> </span>&#123;</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> Exception </span>&#123;</div><div class="line">        DefaultMQProducer producer = </div><div class="line">		<span class="keyword">new</span> DefaultMQProducer(<span class="string">"ExampleProducerGroup"</span>);</div><div class="line">        producer.start();</div><div class="line">        <span class="keyword">int</span> totalMessagesToSend = <span class="number">100</span>;</div><div class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; totalMessagesToSend; i++) &#123;</div><div class="line">            Message message = <span class="keyword">new</span> Message(<span class="string">"TestTopic"</span>,</div><div class="line">			(<span class="string">"Hello scheduled message "</span> + i).getBytes());</div><div class="line">		 <span class="comment">//延时的级别为3 对应的时间为10s 就是发送后延时10S在把消息投递出去</span></div><div class="line">            message.setDelayTimeLevel(<span class="number">3</span>);</div><div class="line">            producer.send(message);</div><div class="line">        &#125;</div><div class="line">        producer.shutdown();</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<h5 id="Consumer"><a href="#Consumer" class="headerlink" title="Consumer"></a>Consumer</h5><figure class="highlight java"><table><tr><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ScheduledMessageConsumer</span> </span>&#123;</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> Exception </span>&#123;</div><div class="line">        DefaultMQPushConsumer consumer = </div><div class="line">		<span class="keyword">new</span> DefaultMQPushConsumer(<span class="string">"ExampleConsumer"</span>);</div><div class="line">        consumer.subscribe(<span class="string">"TestTopic"</span>, <span class="string">"*"</span>);</div><div class="line">        consumer.registerMessageListener(<span class="keyword">new</span> MessageListenerConcurrently() &#123;</div><div class="line">            <span class="meta">@Override</span></div><div class="line">            <span class="function"><span class="keyword">public</span> ConsumeConcurrentlyStatus <span class="title">consumeMessage</span><span class="params">(List&lt;MessageExt&gt; messages,</span></span></div><div class="line">		 ConsumeConcurrentlyContext context) &#123;</div><div class="line">                <span class="keyword">for</span> (MessageExt message : messages) &#123;</div><div class="line">                    System.out.println(<span class="string">"ok!"</span>);</div><div class="line">                &#125;</div><div class="line">                <span class="keyword">return</span> ConsumeConcurrentlyStatus.CONSUME_SUCCESS;</div><div class="line">            &#125;</div><div class="line">        &#125;);</div><div class="line">        consumer.start();</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-]]></content>
+    <content type="html"><![CDATA[<p><code>rocketmq</code>提供一种延时消息的解决方案，就是在特定的时间到了，消息才会被投递出去供<code>consumer</code>消费。<br><a id="more"></a><br><em>总体来是简单的场景是满足了，但是需要注意的是延时的时间是需要按照默认配置的延时级别去配置的，而不是随意设置消息的延时时间。</em></p><p>如果想不受延时级别的约束 可以参考之前的一遍文章<a href="http://blog.seoui.com/2017/08/19/delayqueue/">http://blog.seoui.com/2017/08/19/delayqueue/</a></p><p>默认的延迟级别</p><figure class="highlight java"><table><tr><td class="code"><pre><span class="line">messageDelayLevel=<span class="number">1</span>s <span class="number">5</span>s <span class="number">10</span>s <span class="number">30</span>s <span class="number">1</span>m <span class="number">2</span>m <span class="number">3</span>m <span class="number">4</span>m <span class="number">5</span>m <span class="number">6</span>m <span class="number">7</span>m <span class="number">8</span>m <span class="number">9</span>m <span class="number">10</span>m <span class="number">20</span>m <span class="number">30</span>m <span class="number">1</span>h <span class="number">2</span>h</span><br></pre></td></tr></table></figure><p>这个配置下标从1开始 比如级别2是延时5秒、级别5是延时1分钟。默认配置在不满足需求的情况下，可以在<code>broker</code>配置文件加入<code>messageDelayLevel</code>参数覆盖默认的延时级别配置。</p><h4 id="示例"><a href="#示例" class="headerlink" title="示例"></a>示例</h4><p>和普通的消息不同之处在于<code>Producer</code>在发送消息的时候 需要设置<code>message.setDelayTimeLevel();</code>延迟级别方法。其他参数和消费端的写法并与不同之处。</p><h5 id="Producer"><a href="#Producer" class="headerlink" title="Producer"></a>Producer</h5><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ScheduledMessageProducer</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        DefaultMQProducer producer = </span><br><span class="line"><span class="keyword">new</span> DefaultMQProducer(<span class="string">"ExampleProducerGroup"</span>);</span><br><span class="line">        producer.start();</span><br><span class="line">        <span class="keyword">int</span> totalMessagesToSend = <span class="number">100</span>;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; totalMessagesToSend; i++) &#123;</span><br><span class="line">            Message message = <span class="keyword">new</span> Message(<span class="string">"TestTopic"</span>,</span><br><span class="line">(<span class="string">"Hello scheduled message "</span> + i).getBytes());</span><br><span class="line"> <span class="comment">//延时的级别为3 对应的时间为10s 就是发送后延时10S在把消息投递出去</span></span><br><span class="line">            message.setDelayTimeLevel(<span class="number">3</span>);</span><br><span class="line">            producer.send(message);</span><br><span class="line">        &#125;</span><br><span class="line">        producer.shutdown();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><h5 id="Consumer"><a href="#Consumer" class="headerlink" title="Consumer"></a>Consumer</h5><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ScheduledMessageConsumer</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        DefaultMQPushConsumer consumer = </span><br><span class="line"><span class="keyword">new</span> DefaultMQPushConsumer(<span class="string">"ExampleConsumer"</span>);</span><br><span class="line">        consumer.subscribe(<span class="string">"TestTopic"</span>, <span class="string">"*"</span>);</span><br><span class="line">        consumer.registerMessageListener(<span class="keyword">new</span> MessageListenerConcurrently() &#123;</span><br><span class="line">            <span class="meta">@Override</span></span><br><span class="line">            <span class="function"><span class="keyword">public</span> ConsumeConcurrentlyStatus <span class="title">consumeMessage</span><span class="params">(List&lt;MessageExt&gt; messages,</span></span></span><br><span class="line"><span class="function"><span class="params"> ConsumeConcurrentlyContext context)</span> </span>&#123;</span><br><span class="line">                <span class="keyword">for</span> (MessageExt message : messages) &#123;</span><br><span class="line">                    System.out.println(<span class="string">"ok!"</span>);</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="keyword">return</span> ConsumeConcurrentlyStatus.CONSUME_SUCCESS;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;);</span><br><span class="line">        consumer.start();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>]]></content>
     
     <summary type="html">
     
@@ -165,49 +165,22 @@
   </entry>
   
   <entry>
-    <title>rocketmq广播消息</title>
-    <link href="http://blog.seoui.com/2018/07/24/rocketmq_broadcast_message/"/>
-    <id>http://blog.seoui.com/2018/07/24/rocketmq_broadcast_message/</id>
+    <title>rocketmq4.x快速入门指南</title>
+    <link href="http://blog.seoui.com/2018/07/24/rocketmqinstall/"/>
+    <id>http://blog.seoui.com/2018/07/24/rocketmqinstall/</id>
     <published>2018-07-23T16:00:00.000Z</published>
-    <updated>2018-07-24T07:19:57.499Z</updated>
+    <updated>2018-09-06T06:21:47.886Z</updated>
     
-    <content type="html"><![CDATA[<p>发布与模式实现。广播就是向一个主题的所有订阅者发送同一条消息。</p>
-<p>在发送消息的时候和普通的消息并与不同之处，只是在消费端做一些配置即可。</p>
-<h4 id="Consumer消息消费"><a href="#Consumer消息消费" class="headerlink" title="Consumer消息消费"></a>Consumer消息消费</h4><pre><code class="java"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">BroadcastConsumer</span> </span>{
-
-    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> MQClientException </span>{
-        DefaultMQPushConsumer consumer = <span class="keyword">new</span> DefaultMQPushConsumer(<span class="string">"please_rename_unique_group_name_3"</span>);
-
-        consumer.setConsumeFromWhere(ConsumeFromWhere.CONSUME_FROM_FIRST_OFFSET);
-        <span class="comment">//设置为广播模式 默认为CLUSTERING模式</span>
-        consumer.setMessageModel(MessageModel.BROADCASTING);
-
-        consumer.subscribe(<span class="string">"TopicTest"</span>, <span class="string">"TagA || TagC || TagD"</span>);
-
-        consumer.registerMessageListener(<span class="keyword">new</span> MessageListenerOrderly() {
-            AtomicLong consumeTimes = <span class="keyword">new</span> AtomicLong(<span class="number">0</span>);
-
-            <span class="meta">@Override</span>
-            <span class="function"><span class="keyword">public</span> ConsumeOrderlyStatus <span class="title">consumeMessage</span><span class="params">(List&lt;MessageExt&gt; msgs, ConsumeOrderlyContext context)</span> </span>{
-                context.setAutoCommit(<span class="keyword">false</span>);
-                System.out.printf(<span class="string">"%s Receive New Messages: %s %n"</span>, Thread.currentThread().getName(), msgs);
-                <span class="keyword">return</span> ConsumeOrderlyStatus.SUCCESS;
-            }
-        });
-
-        consumer.start();
-        System.out.printf(<span class="string">"Consumer Started.%n"</span>);
-    }
-
-}
-</code></pre>
-]]></content>
+    <content type="html"><![CDATA[<p>以下采用的是<code>apache rocketmq 4.2.0</code>版本 相关文档如下</p><ul><li>快速体验： <a href="//blog.seoui.com/2018/07/24/rocketmqinstall/">http://blog.seoui.com/2018/07/24/rocketmqinstall/</a> </li><li>rocketmq简单消息发送： <a href="//blog.seoui.com/2018/07/24/rocketmq_simple_message/">http://blog.seoui.com/2018/07/24/rocketmq_simple_message/</a> </li><li>rocketmq有序消息： <a href="//blog.seoui.com/2018/07/24/rocketmq_ordered_message/">http://blog.seoui.com/2018/07/24/rocketmq_ordered_message/</a> </li><li>rocketmq广播消息： <a href="//blog.seoui.com/2018/07/24/rocketmq_broadcast_message/">http://blog.seoui.com/2018/07/24/rocketmq_broadcast_message/</a> </li><li>rocketmq延时消息： <a href="//blog.seoui.com/2018/08/01/rocketmq_delay_message/">http://blog.seoui.com/2018/08/01/rocketmq_delay_message/</a></li><li>rocketmq批量消息： <a href="//blog.seoui.com/2018/08/02/rocketmq_batch_message/">http://blog.seoui.com/2018/08/02/rocketmq_batch_message/</a><h4 id="下载源码并编译"><a href="#下载源码并编译" class="headerlink" title="下载源码并编译"></a>下载源码并编译</h4></li></ul><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#download</span></span><br><span class="line">wget http://mirrors.hust.edu.cn/apache/rocketmq/4.2.0/rocketmq-all-4.2.0-source-release.zip   </span><br><span class="line">unzip rocketmq-all-4.2.0-source-release.zip</span><br><span class="line"><span class="built_in">cd</span> rocketmq-all-4.2.0/</span><br><span class="line">mvn -Prelease-all -DskipTests clean install -U</span><br><span class="line"><span class="built_in">cd</span> distribution/target/apache-rocketmq</span><br></pre></td></tr></table></figure><p>目录 <code>distribution/target/apache-rocketmq</code> 是编译后的产出 可复制这个目录安装MQ的机器上,这里复制到<code>/usr/local/</code></p><p>共享一份编译后的文件方便以后再次使用 </p><p><a href="https://pan.baidu.com/s/1ZyUOKFm-t8cJDQuH68QydQ" target="_blank" rel="noopener">https://pan.baidu.com/s/1ZyUOKFm-t8cJDQuH68QydQ</a></p><h4 id="启动NameServer"><a href="#启动NameServer" class="headerlink" title="启动NameServer"></a>启动NameServer</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">cd</span> /usr/<span class="built_in">local</span>/apache-rocketmq</span><br><span class="line">nohup sh bin/mqnamesrv &amp;</span><br></pre></td></tr></table></figure><p> 查看日志<code>tail -f ~/logs/rocketmqlogs/namesrv.log</code> 启动成功后打印The Name Server boot success…</p><h4 id="启动Broker"><a href="#启动Broker" class="headerlink" title="启动Broker"></a>启动Broker</h4><p>这里需要注意一下就是 如果当前机器上有多张网卡的情况,最好指定一个<code>IP</code>, 有可能消费端正好就和MQ选择的网卡不通</p><p><code>vim  conf/broker.conf</code> 指定IP 访问多网卡的情况 并配置好nameserver的地址  也可以使用mqbroker启动参数<code>-n</code>指定nameserver地址</p><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">brokerIP1=192.168.1.2</span><br><span class="line">namesrvAddr=192.168.1.3:9876</span><br></pre></td></tr></table></figure><p>启动broker <code>-c</code>参数指定配置文件</p><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">nohup sh bin/mqbroker -c config/broker.properties &amp;</span><br></pre></td></tr></table></figure><p>查看一下集群列表</p><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sh bin/mqadmin clusterList -n  localhost:9876</span><br></pre></td></tr></table></figure><h4 id="发送-接收消息"><a href="#发送-接收消息" class="headerlink" title="发送/接收消息"></a>发送/接收消息</h4><p>Producer</p><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"> </span><br><span class="line"><span class="built_in">export</span> NAMESRV_ADDR=localhost:9876</span><br><span class="line">sh bin/tools.sh org.apache.rocketmq.example.quickstart.Producer</span><br></pre></td></tr></table></figure><p>能发送表示OK</p><p>Consumer</p><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"> </span><br><span class="line"><span class="built_in">export</span> NAMESRV_ADDR=localhost:9876</span><br><span class="line">sh bin/tools.sh org.apache.rocketmq.example.quickstart.Consumer</span><br></pre></td></tr></table></figure><p>能接收到之前发送的消息表示OK</p><h4 id="关闭MQ"><a href="#关闭MQ" class="headerlink" title="关闭MQ"></a>关闭MQ</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"> </span><br><span class="line">sh bin/mqshutdown broker</span><br><span class="line"></span><br><span class="line">sh bin/mqshutdown namesrv</span><br></pre></td></tr></table></figure>]]></content>
     
     <summary type="html">
     
-      &lt;p&gt;发布与模式实现。广播就是向一个主题的所有订阅者发送同一条消息。&lt;/p&gt;
-&lt;p&gt;在发送消息的时候和普通的消息并与不同之处，只是在消费端做一些配置即可。&lt;/p&gt;
-&lt;h4 id=&quot;Consumer消息消费&quot;&gt;&lt;a href=&quot;#Consumer消息消费&quot; class=&quot;heade
+      
+      
+        &lt;p&gt;以下采用的是&lt;code&gt;apache rocketmq 4.2.0&lt;/code&gt;版本 相关文档如下&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;快速体验： &lt;a href=&quot;//blog.seoui.com/2018/07/24/rocketmqinstall/&quot;&gt;http://blog.s
+      
     
     </summary>
     
@@ -225,138 +198,20 @@
     <link href="http://blog.seoui.com/2018/07/24/rocketmq_simple_message/"/>
     <id>http://blog.seoui.com/2018/07/24/rocketmq_simple_message/</id>
     <published>2018-07-23T16:00:00.000Z</published>
-    <updated>2018-07-24T07:08:49.427Z</updated>
+    <updated>2018-09-06T06:21:47.884Z</updated>
     
-    <content type="html"><![CDATA[<p>有以下3种方式发送RocketMQ消息 </p>
-<ul>
-<li>可靠同步发送 reliable synchronous</li>
-<li>可靠异步发送 reliable asynchronous</li>
-<li>单向发送 one-way transmission</li>
-</ul>
-<h4 id="可靠同步发送"><a href="#可靠同步发送" class="headerlink" title="可靠同步发送"></a>可靠同步发送</h4><p> 主要运用在比较重要一点消息传递/通知等业务</p>
- <figure class="highlight java"><table><tr><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SyncProducer</span> </span>&#123;</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> Exception </span>&#123;</div><div class="line">        DefaultMQProducer producer = <span class="keyword">new</span></div><div class="line">            DefaultMQProducer(<span class="string">"test"</span>);</div><div class="line">        producer.start();</div><div class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">100</span>; i++) &#123;</div><div class="line">            Message msg = <span class="keyword">new</span> Message(<span class="string">"TopicTest"</span> <span class="comment">/* Topic */</span>,</div><div class="line">                <span class="string">"TagA"</span> <span class="comment">/* Tag */</span>,</div><div class="line">                (<span class="string">"Hello RocketMQ "</span> +</div><div class="line">                    i).getBytes(RemotingHelper.DEFAULT_CHARSET) <span class="comment">/* Message body */</span></div><div class="line">            );</div><div class="line">            <span class="comment">//Call send message to deliver message to one of brokers.</span></div><div class="line">            SendResult sendResult = producer.send(msg);</div><div class="line">            System.out.printf(<span class="string">"%s%n"</span>, sendResult);</div><div class="line">        &#125;</div><div class="line">        <span class="comment">//Shut down once the producer instance is not longer in use.</span></div><div class="line">        producer.shutdown();</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<h4 id="可靠异步发送"><a href="#可靠异步发送" class="headerlink" title="可靠异步发送"></a>可靠异步发送</h4><p>  通常用于对发送消息响应时间要求更高/更快的场景</p>
-<pre><code class="java"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">AsyncProducer</span> </span>{
-    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(
-        String[] args)</span> <span class="keyword">throws</span> MQClientException, InterruptedException, UnsupportedEncodingException </span>{
-        DefaultMQProducer producer = <span class="keyword">new</span> DefaultMQProducer(<span class="string">"Jodie_Daily_test"</span>);
-        producer.start();
-        producer.setRetryTimesWhenSendAsyncFailed(<span class="number">0</span>);
-
-        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">10000000</span>; i++) {
-            <span class="keyword">try</span> {
-                <span class="keyword">final</span> <span class="keyword">int</span> index = i;
-                Message msg = <span class="keyword">new</span> Message(<span class="string">"Jodie_topic_1023"</span>,
-                    <span class="string">"TagA"</span>,
-                    <span class="string">"OrderID188"</span>,
-                    <span class="string">"Hello world"</span>.getBytes(RemotingHelper.DEFAULT_CHARSET));
-                    <span class="comment">//重点在这里 异步发送回调</span>
-                producer.send(msg, <span class="keyword">new</span> SendCallback() {
-                    <span class="meta">@Override</span>
-                    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onSuccess</span><span class="params">(SendResult sendResult)</span> </span>{
-                        System.out.printf(<span class="string">"%-10d OK %s %n"</span>, index, sendResult.getMsgId());
-                    }
-
-                    <span class="meta">@Override</span>
-                    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onException</span><span class="params">(Throwable e)</span> </span>{
-                        System.out.printf(<span class="string">"%-10d Exception %s %n"</span>, index, e);
-                        e.printStackTrace();
-                    }
-                });
-            } <span class="keyword">catch</span> (Exception e) {
-                e.printStackTrace();
-            }
-        }
-        producer.shutdown();
-    }
-}
-</code></pre>
-<h4 id="单向发送"><a href="#单向发送" class="headerlink" title="单向发送"></a>单向发送</h4><p>适用于某些耗时非常短，但对可靠性要求并不高的场景，例如日志收集。</p>
-<p><em>只发送消息，不等待服务器响应，只发送请求不等待应答。此方式发送消息的过程耗时非常短，一般在微秒级别。</em></p>
-<pre><code class="java"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">OnewayProducer</span> </span>{
-    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> Exception</span>{
-        DefaultMQProducer producer = <span class="keyword">new</span> DefaultMQProducer(<span class="string">"Test"</span>);
-        producer.start();
-        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">100</span>; i++) {
-            <span class="comment">//Create a message instance, specifying topic, tag and message body.</span>
-            Message msg = <span class="keyword">new</span> Message(<span class="string">"TopicTest"</span> <span class="comment">/* Topic */</span>,
-                <span class="string">"TagA"</span> <span class="comment">/* Tag */</span>,
-                (<span class="string">"Hello RocketMQ "</span> +
-                    i).getBytes(RemotingHelper.DEFAULT_CHARSET) <span class="comment">/* Message body */</span>
-            );
-            <span class="comment">//Call send message to deliver message to one of brokers.</span>
-            producer.sendOneway(msg);
-
-        }
-        <span class="comment">//Shut down once the producer instance is not longer in use.</span>
-        producer.shutdown();
-    }
-}
-</code></pre>
-]]></content>
+    <content type="html"><![CDATA[<p>有以下3种方式发送RocketMQ消息 </p><ul><li>可靠同步发送 reliable synchronous</li><li>可靠异步发送 reliable asynchronous</li><li>单向发送 one-way transmission</li></ul><h4 id="可靠同步发送"><a href="#可靠同步发送" class="headerlink" title="可靠同步发送"></a>可靠同步发送</h4><p> 主要运用在比较重要一点消息传递/通知等业务</p> <figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SyncProducer</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        DefaultMQProducer producer = <span class="keyword">new</span></span><br><span class="line">            DefaultMQProducer(<span class="string">"test"</span>);</span><br><span class="line">        producer.start();</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">100</span>; i++) &#123;</span><br><span class="line">            Message msg = <span class="keyword">new</span> Message(<span class="string">"TopicTest"</span> <span class="comment">/* Topic */</span>,</span><br><span class="line">                <span class="string">"TagA"</span> <span class="comment">/* Tag */</span>,</span><br><span class="line">                (<span class="string">"Hello RocketMQ "</span> +</span><br><span class="line">                    i).getBytes(RemotingHelper.DEFAULT_CHARSET) <span class="comment">/* Message body */</span></span><br><span class="line">            );</span><br><span class="line">            <span class="comment">//Call send message to deliver message to one of brokers.</span></span><br><span class="line">            SendResult sendResult = producer.send(msg);</span><br><span class="line">            System.out.printf(<span class="string">"%s%n"</span>, sendResult);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">//Shut down once the producer instance is not longer in use.</span></span><br><span class="line">        producer.shutdown();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><h4 id="可靠异步发送"><a href="#可靠异步发送" class="headerlink" title="可靠异步发送"></a>可靠异步发送</h4><p>  通常用于对发送消息响应时间要求更高/更快的场景</p><pre><code class="java"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">AsyncProducer</span> </span>{    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(</span></span><span class="function"><span class="params">        String[] args)</span> <span class="keyword">throws</span> MQClientException, InterruptedException, UnsupportedEncodingException </span>{        DefaultMQProducer producer = <span class="keyword">new</span> DefaultMQProducer(<span class="string">"Jodie_Daily_test"</span>);        producer.start();        producer.setRetryTimesWhenSendAsyncFailed(<span class="number">0</span>);        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">10000000</span>; i++) {            <span class="keyword">try</span> {                <span class="keyword">final</span> <span class="keyword">int</span> index = i;                Message msg = <span class="keyword">new</span> Message(<span class="string">"Jodie_topic_1023"</span>,                    <span class="string">"TagA"</span>,                    <span class="string">"OrderID188"</span>,                    <span class="string">"Hello world"</span>.getBytes(RemotingHelper.DEFAULT_CHARSET));                    <span class="comment">//重点在这里 异步发送回调</span>                producer.send(msg, <span class="keyword">new</span> SendCallback() {                    <span class="meta">@Override</span>                    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onSuccess</span><span class="params">(SendResult sendResult)</span> </span>{                        System.out.printf(<span class="string">"%-10d OK %s %n"</span>, index, sendResult.getMsgId());                    }                    <span class="meta">@Override</span>                    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onException</span><span class="params">(Throwable e)</span> </span>{                        System.out.printf(<span class="string">"%-10d Exception %s %n"</span>, index, e);                        e.printStackTrace();                    }                });            } <span class="keyword">catch</span> (Exception e) {                e.printStackTrace();            }        }        producer.shutdown();    }}</code></pre><h4 id="单向发送"><a href="#单向发送" class="headerlink" title="单向发送"></a>单向发送</h4><p>适用于某些耗时非常短，但对可靠性要求并不高的场景，例如日志收集。</p><p><em>只发送消息，不等待服务器响应，只发送请求不等待应答。此方式发送消息的过程耗时非常短，一般在微秒级别。</em></p><pre><code class="java"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">OnewayProducer</span> </span>{    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> Exception</span>{        DefaultMQProducer producer = <span class="keyword">new</span> DefaultMQProducer(<span class="string">"Test"</span>);        producer.start();        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">100</span>; i++) {            <span class="comment">//Create a message instance, specifying topic, tag and message body.</span>            Message msg = <span class="keyword">new</span> Message(<span class="string">"TopicTest"</span> <span class="comment">/* Topic */</span>,                <span class="string">"TagA"</span> <span class="comment">/* Tag */</span>,                (<span class="string">"Hello RocketMQ "</span> +                    i).getBytes(RemotingHelper.DEFAULT_CHARSET) <span class="comment">/* Message body */</span>            );            <span class="comment">//Call send message to deliver message to one of brokers.</span>            producer.sendOneway(msg);        }        <span class="comment">//Shut down once the producer instance is not longer in use.</span>        producer.shutdown();    }}</code></pre>]]></content>
     
     <summary type="html">
     
-      &lt;p&gt;有以下3种方式发送RocketMQ消息 &lt;/p&gt;
+      
+      
+        &lt;p&gt;有以下3种方式发送RocketMQ消息 &lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;可靠同步发送 reliable synchronous&lt;/li&gt;
 &lt;li&gt;可靠异步发送 reliable asynchronous&lt;/li&gt;
 &lt;li&gt;单向发送 one-way transmission&lt;/l
-    
-    </summary>
-    
-      <category term="技术" scheme="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/"/>
-    
-      <category term="rocketmq" scheme="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/rocketmq/"/>
-    
-    
-      <category term="rocketmq" scheme="http://blog.seoui.com/tags/rocketmq/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>rocketmq4.x快速入门指南</title>
-    <link href="http://blog.seoui.com/2018/07/24/rocketmqinstall/"/>
-    <id>http://blog.seoui.com/2018/07/24/rocketmqinstall/</id>
-    <published>2018-07-23T16:00:00.000Z</published>
-    <updated>2018-08-02T02:12:36.457Z</updated>
-    
-    <content type="html"><![CDATA[<p>以下采用的是<code>apache rocketmq 4.2.0</code>版本 相关文档如下</p>
-<ul>
-<li>快速体验： <a href="//blog.seoui.com/2018/07/24/rocketmqinstall/">http://blog.seoui.com/2018/07/24/rocketmqinstall/</a> </li>
-<li>rocketmq简单消息发送： <a href="//blog.seoui.com/2018/07/24/rocketmq_simple_message/">http://blog.seoui.com/2018/07/24/rocketmq_simple_message/</a> </li>
-<li>rocketmq有序消息： <a href="//blog.seoui.com/2018/07/24/rocketmq_ordered_message/">http://blog.seoui.com/2018/07/24/rocketmq_ordered_message/</a> </li>
-<li>rocketmq广播消息： <a href="//blog.seoui.com/2018/07/24/rocketmq_broadcast_message/">http://blog.seoui.com/2018/07/24/rocketmq_broadcast_message/</a> </li>
-<li>rocketmq延时消息： <a href="//blog.seoui.com/2018/08/01/rocketmq_delay_message/">http://blog.seoui.com/2018/08/01/rocketmq_delay_message/</a></li>
-<li>rocketmq批量消息： <a href="//blog.seoui.com/2018/08/02/rocketmq_batch_message/">http://blog.seoui.com/2018/08/02/rocketmq_batch_message/</a><h4 id="下载源码并编译"><a href="#下载源码并编译" class="headerlink" title="下载源码并编译"></a>下载源码并编译</h4></li>
-</ul>
-<figure class="highlight bash"><table><tr><td class="code"><pre><div class="line"><span class="comment">#download</span></div><div class="line">wget http://mirrors.hust.edu.cn/apache/rocketmq/4.2.0/rocketmq-all-4.2.0-source-release.zip   </div><div class="line">unzip rocketmq-all-4.2.0-source-release.zip</div><div class="line"><span class="built_in">cd</span> rocketmq-all-4.2.0/</div><div class="line">mvn -Prelease-all -DskipTests clean install -U</div><div class="line"><span class="built_in">cd</span> distribution/target/apache-rocketmq</div></pre></td></tr></table></figure>
-<p>目录 <code>distribution/target/apache-rocketmq</code> 是编译后的产出 可复制这个目录安装MQ的机器上,这里复制到<code>/usr/local/</code></p>
-<p>共享一份编译后的文件方便以后再次使用 </p>
-<p><a href="https://pan.baidu.com/s/1ZyUOKFm-t8cJDQuH68QydQ" target="_blank" rel="external">https://pan.baidu.com/s/1ZyUOKFm-t8cJDQuH68QydQ</a></p>
-<h4 id="启动NameServer"><a href="#启动NameServer" class="headerlink" title="启动NameServer"></a>启动NameServer</h4><figure class="highlight bash"><table><tr><td class="code"><pre><div class="line"><span class="built_in">cd</span> /usr/<span class="built_in">local</span>/apache-rocketmq</div><div class="line">nohup sh bin/mqnamesrv &amp;</div></pre></td></tr></table></figure>
-<p> 查看日志<code>tail -f ~/logs/rocketmqlogs/namesrv.log</code> 启动成功后打印The Name Server boot success…</p>
-<h4 id="启动Broker"><a href="#启动Broker" class="headerlink" title="启动Broker"></a>启动Broker</h4><p>这里需要注意一下就是 如果当前机器上有多张网卡的情况,最好指定一个<code>IP</code>, 有可能消费端正好就和MQ选择的网卡不通</p>
-<p><code>vim  conf/broker.conf</code> 指定IP 访问多网卡的情况 并配置好nameserver的地址  也可以使用mqbroker启动参数<code>-n</code>指定nameserver地址</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><div class="line">brokerIP1=192.168.1.2</div><div class="line">namesrvAddr=192.168.1.3:9876</div></pre></td></tr></table></figure>
-<p>启动broker <code>-c</code>参数指定配置文件</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><div class="line">nohup sh bin/mqbroker -c config/broker.properties &amp;</div></pre></td></tr></table></figure>
-<p>查看一下集群列表</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><div class="line">sh bin/mqadmin clusterList -n  localhost:9876</div></pre></td></tr></table></figure>
-<h4 id="发送-接收消息"><a href="#发送-接收消息" class="headerlink" title="发送/接收消息"></a>发送/接收消息</h4><p>Producer</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><div class="line"> </div><div class="line"><span class="built_in">export</span> NAMESRV_ADDR=localhost:9876</div><div class="line">sh bin/tools.sh org.apache.rocketmq.example.quickstart.Producer</div></pre></td></tr></table></figure>
-<p>能发送表示OK</p>
-<p>Consumer</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><div class="line"> </div><div class="line"><span class="built_in">export</span> NAMESRV_ADDR=localhost:9876</div><div class="line">sh bin/tools.sh org.apache.rocketmq.example.quickstart.Consumer</div></pre></td></tr></table></figure>
-<p>能接收到之前发送的消息表示OK</p>
-<h4 id="关闭MQ"><a href="#关闭MQ" class="headerlink" title="关闭MQ"></a>关闭MQ</h4><figure class="highlight bash"><table><tr><td class="code"><pre><div class="line"> </div><div class="line">sh bin/mqshutdown broker</div><div class="line"></div><div class="line">sh bin/mqshutdown namesrv</div></pre></td></tr></table></figure>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;p&gt;以下采用的是&lt;code&gt;apache rocketmq 4.2.0&lt;/code&gt;版本 相关文档如下&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;快速体验： &lt;a href=&quot;//blog.seoui.com/2018/07/24/rocketmqinstall/&quot;&gt;http://blog.s
+      
     
     </summary>
     
@@ -374,54 +229,17 @@
     <link href="http://blog.seoui.com/2018/07/24/rocketmq_ordered_message/"/>
     <id>http://blog.seoui.com/2018/07/24/rocketmq_ordered_message/</id>
     <published>2018-07-23T16:00:00.000Z</published>
-    <updated>2018-07-24T07:14:19.535Z</updated>
+    <updated>2018-09-06T06:21:47.882Z</updated>
     
-    <content type="html"><![CDATA[<p>RocketMQ提供的顺序消费消息实现是使用的FIFO 先进先出算法</p>
-<h4 id="Producer消息发送"><a href="#Producer消息发送" class="headerlink" title="Producer消息发送"></a>Producer消息发送</h4> <figure class="highlight java"><table><tr><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Producer</span> </span>&#123;</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> UnsupportedEncodingException </span>&#123;</div><div class="line">        <span class="keyword">try</span> &#123;</div><div class="line">            MQProducer producer = <span class="keyword">new</span> DefaultMQProducer(<span class="string">"please_rename_unique_group_name"</span>);</div><div class="line">            producer.start();</div><div class="line"></div><div class="line">            String[] tags = <span class="keyword">new</span> String[] &#123;<span class="string">"TagA"</span>, <span class="string">"TagB"</span>, <span class="string">"TagC"</span>, <span class="string">"TagD"</span>, <span class="string">"TagE"</span>&#125;;</div><div class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">100</span>; i++) &#123;</div><div class="line">                <span class="keyword">int</span> orderId = i % <span class="number">10</span>;</div><div class="line">                Message msg =</div><div class="line">                    <span class="keyword">new</span> Message(<span class="string">"TopicTestjjj"</span>, tags[i % tags.length], <span class="string">"KEY"</span> + i,</div><div class="line">                        (<span class="string">"Hello RocketMQ "</span> + i).getBytes(RemotingHelper.DEFAULT_CHARSET));</div><div class="line">                SendResult sendResult = producer.send(msg, <span class="keyword">new</span> MessageQueueSelector() &#123;</div><div class="line">                    <span class="meta">@Override</span></div><div class="line">                    <span class="function"><span class="keyword">public</span> MessageQueue <span class="title">select</span><span class="params">(List&lt;MessageQueue&gt; mqs, Message msg, Object arg)</span> </span>&#123;</div><div class="line">                        Integer id = (Integer) arg;</div><div class="line">                        <span class="keyword">int</span> index = id % mqs.size();</div><div class="line">                        <span class="keyword">return</span> mqs.get(index);</div><div class="line">                    &#125;</div><div class="line">                &#125;, orderId);</div><div class="line"></div><div class="line">                System.out.printf(<span class="string">"%s%n"</span>, sendResult);</div><div class="line">            &#125;</div><div class="line"></div><div class="line">            producer.shutdown();</div><div class="line">        &#125; <span class="keyword">catch</span> (MQClientException | RemotingException | MQBrokerException | InterruptedException e) &#123;</div><div class="line">            e.printStackTrace();</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<h4 id="Consumer消息消费"><a href="#Consumer消息消费" class="headerlink" title="Consumer消息消费"></a>Consumer消息消费</h4><pre><code class="java"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Consumer</span> </span>{
-
-    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> MQClientException </span>{
-        DefaultMQPushConsumer consumer = <span class="keyword">new</span> DefaultMQPushConsumer(<span class="string">"please_rename_unique_group_name_3"</span>);
-
-        consumer.setConsumeFromWhere(ConsumeFromWhere.CONSUME_FROM_FIRST_OFFSET);
-
-        consumer.subscribe(<span class="string">"TopicTest"</span>, <span class="string">"TagA || TagC || TagD"</span>);
-
-        consumer.registerMessageListener(<span class="keyword">new</span> MessageListenerOrderly() {
-            AtomicLong consumeTimes = <span class="keyword">new</span> AtomicLong(<span class="number">0</span>);
-
-            <span class="meta">@Override</span>
-            <span class="function"><span class="keyword">public</span> ConsumeOrderlyStatus <span class="title">consumeMessage</span><span class="params">(List&lt;MessageExt&gt; msgs, ConsumeOrderlyContext context)</span> </span>{
-                context.setAutoCommit(<span class="keyword">false</span>);
-                System.out.printf(<span class="string">"%s Receive New Messages: %s %n"</span>, Thread.currentThread().getName(), msgs);
-                <span class="keyword">this</span>.consumeTimes.incrementAndGet();
-                <span class="keyword">if</span> ((<span class="keyword">this</span>.consumeTimes.get() % <span class="number">2</span>) == <span class="number">0</span>) {
-                    <span class="keyword">return</span> ConsumeOrderlyStatus.SUCCESS;
-                } <span class="keyword">else</span> <span class="keyword">if</span> ((<span class="keyword">this</span>.consumeTimes.get() % <span class="number">3</span>) == <span class="number">0</span>) {
-                    <span class="keyword">return</span> ConsumeOrderlyStatus.ROLLBACK;
-                } <span class="keyword">else</span> <span class="keyword">if</span> ((<span class="keyword">this</span>.consumeTimes.get() % <span class="number">4</span>) == <span class="number">0</span>) {
-                    <span class="keyword">return</span> ConsumeOrderlyStatus.COMMIT;
-                } <span class="keyword">else</span> <span class="keyword">if</span> ((<span class="keyword">this</span>.consumeTimes.get() % <span class="number">5</span>) == <span class="number">0</span>) {
-                    context.setSuspendCurrentQueueTimeMillis(<span class="number">3000</span>);
-                    <span class="keyword">return</span> ConsumeOrderlyStatus.SUSPEND_CURRENT_QUEUE_A_MOMENT;
-                }
-
-                <span class="keyword">return</span> ConsumeOrderlyStatus.SUCCESS;
-            }
-        });
-
-        consumer.start();
-        System.out.printf(<span class="string">"Consumer Started.%n"</span>);
-    }
-
-}
-</code></pre>
-]]></content>
+    <content type="html"><![CDATA[<p>RocketMQ提供的顺序消费消息实现是使用的FIFO 先进先出算法</p><h4 id="Producer消息发送"><a href="#Producer消息发送" class="headerlink" title="Producer消息发送"></a>Producer消息发送</h4> <figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Producer</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> UnsupportedEncodingException </span>&#123;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            MQProducer producer = <span class="keyword">new</span> DefaultMQProducer(<span class="string">"please_rename_unique_group_name"</span>);</span><br><span class="line">            producer.start();</span><br><span class="line"></span><br><span class="line">            String[] tags = <span class="keyword">new</span> String[] &#123;<span class="string">"TagA"</span>, <span class="string">"TagB"</span>, <span class="string">"TagC"</span>, <span class="string">"TagD"</span>, <span class="string">"TagE"</span>&#125;;</span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">100</span>; i++) &#123;</span><br><span class="line">                <span class="keyword">int</span> orderId = i % <span class="number">10</span>;</span><br><span class="line">                Message msg =</span><br><span class="line">                    <span class="keyword">new</span> Message(<span class="string">"TopicTestjjj"</span>, tags[i % tags.length], <span class="string">"KEY"</span> + i,</span><br><span class="line">                        (<span class="string">"Hello RocketMQ "</span> + i).getBytes(RemotingHelper.DEFAULT_CHARSET));</span><br><span class="line">                SendResult sendResult = producer.send(msg, <span class="keyword">new</span> MessageQueueSelector() &#123;</span><br><span class="line">                    <span class="meta">@Override</span></span><br><span class="line">                    <span class="function"><span class="keyword">public</span> MessageQueue <span class="title">select</span><span class="params">(List&lt;MessageQueue&gt; mqs, Message msg, Object arg)</span> </span>&#123;</span><br><span class="line">                        Integer id = (Integer) arg;</span><br><span class="line">                        <span class="keyword">int</span> index = id % mqs.size();</span><br><span class="line">                        <span class="keyword">return</span> mqs.get(index);</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;, orderId);</span><br><span class="line"></span><br><span class="line">                System.out.printf(<span class="string">"%s%n"</span>, sendResult);</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            producer.shutdown();</span><br><span class="line">        &#125; <span class="keyword">catch</span> (MQClientException | RemotingException | MQBrokerException | InterruptedException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><h4 id="Consumer消息消费"><a href="#Consumer消息消费" class="headerlink" title="Consumer消息消费"></a>Consumer消息消费</h4><pre><code class="java"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Consumer</span> </span>{    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> MQClientException </span>{        DefaultMQPushConsumer consumer = <span class="keyword">new</span> DefaultMQPushConsumer(<span class="string">"please_rename_unique_group_name_3"</span>);        consumer.setConsumeFromWhere(ConsumeFromWhere.CONSUME_FROM_FIRST_OFFSET);        consumer.subscribe(<span class="string">"TopicTest"</span>, <span class="string">"TagA || TagC || TagD"</span>);        consumer.registerMessageListener(<span class="keyword">new</span> MessageListenerOrderly() {            AtomicLong consumeTimes = <span class="keyword">new</span> AtomicLong(<span class="number">0</span>);            <span class="meta">@Override</span>            <span class="function"><span class="keyword">public</span> ConsumeOrderlyStatus <span class="title">consumeMessage</span><span class="params">(List&lt;MessageExt&gt; msgs, ConsumeOrderlyContext context)</span> </span>{                context.setAutoCommit(<span class="keyword">false</span>);                System.out.printf(<span class="string">"%s Receive New Messages: %s %n"</span>, Thread.currentThread().getName(), msgs);                <span class="keyword">this</span>.consumeTimes.incrementAndGet();                <span class="keyword">if</span> ((<span class="keyword">this</span>.consumeTimes.get() % <span class="number">2</span>) == <span class="number">0</span>) {                    <span class="keyword">return</span> ConsumeOrderlyStatus.SUCCESS;                } <span class="keyword">else</span> <span class="keyword">if</span> ((<span class="keyword">this</span>.consumeTimes.get() % <span class="number">3</span>) == <span class="number">0</span>) {                    <span class="keyword">return</span> ConsumeOrderlyStatus.ROLLBACK;                } <span class="keyword">else</span> <span class="keyword">if</span> ((<span class="keyword">this</span>.consumeTimes.get() % <span class="number">4</span>) == <span class="number">0</span>) {                    <span class="keyword">return</span> ConsumeOrderlyStatus.COMMIT;                } <span class="keyword">else</span> <span class="keyword">if</span> ((<span class="keyword">this</span>.consumeTimes.get() % <span class="number">5</span>) == <span class="number">0</span>) {                    context.setSuspendCurrentQueueTimeMillis(<span class="number">3000</span>);                    <span class="keyword">return</span> ConsumeOrderlyStatus.SUSPEND_CURRENT_QUEUE_A_MOMENT;                }                <span class="keyword">return</span> ConsumeOrderlyStatus.SUCCESS;            }        });        consumer.start();        System.out.printf(<span class="string">"Consumer Started.%n"</span>);    }}</code></pre>]]></content>
     
     <summary type="html">
     
-      &lt;p&gt;RocketMQ提供的顺序消费消息实现是使用的FIFO 先进先出算法&lt;/p&gt;
+      
+      
+        &lt;p&gt;RocketMQ提供的顺序消费消息实现是使用的FIFO 先进先出算法&lt;/p&gt;
 &lt;h4 id=&quot;Producer消息发送&quot;&gt;&lt;a href=&quot;#Producer消息发送&quot; class=&quot;headerlink&quot; title=&quot;Producer消息发送&quot;&gt;&lt;/a&gt;Producer
+      
     
     </summary>
     
@@ -435,23 +253,78 @@
   </entry>
   
   <entry>
+    <title>rocketmq广播消息</title>
+    <link href="http://blog.seoui.com/2018/07/24/rocketmq_broadcast_message/"/>
+    <id>http://blog.seoui.com/2018/07/24/rocketmq_broadcast_message/</id>
+    <published>2018-07-23T16:00:00.000Z</published>
+    <updated>2018-09-06T06:21:47.879Z</updated>
+    
+    <content type="html"><![CDATA[<p>发布与模式实现。广播就是向一个主题的所有订阅者发送同一条消息。</p><p>在发送消息的时候和普通的消息并与不同之处，只是在消费端做一些配置即可。</p><h4 id="Consumer消息消费"><a href="#Consumer消息消费" class="headerlink" title="Consumer消息消费"></a>Consumer消息消费</h4><pre><code class="java"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">BroadcastConsumer</span> </span>{    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> MQClientException </span>{        DefaultMQPushConsumer consumer = <span class="keyword">new</span> DefaultMQPushConsumer(<span class="string">"please_rename_unique_group_name_3"</span>);        consumer.setConsumeFromWhere(ConsumeFromWhere.CONSUME_FROM_FIRST_OFFSET);        <span class="comment">//设置为广播模式 默认为CLUSTERING模式</span>        consumer.setMessageModel(MessageModel.BROADCASTING);        consumer.subscribe(<span class="string">"TopicTest"</span>, <span class="string">"TagA || TagC || TagD"</span>);        consumer.registerMessageListener(<span class="keyword">new</span> MessageListenerOrderly() {            AtomicLong consumeTimes = <span class="keyword">new</span> AtomicLong(<span class="number">0</span>);            <span class="meta">@Override</span>            <span class="function"><span class="keyword">public</span> ConsumeOrderlyStatus <span class="title">consumeMessage</span><span class="params">(List&lt;MessageExt&gt; msgs, ConsumeOrderlyContext context)</span> </span>{                context.setAutoCommit(<span class="keyword">false</span>);                System.out.printf(<span class="string">"%s Receive New Messages: %s %n"</span>, Thread.currentThread().getName(), msgs);                <span class="keyword">return</span> ConsumeOrderlyStatus.SUCCESS;            }        });        consumer.start();        System.out.printf(<span class="string">"Consumer Started.%n"</span>);    }}</code></pre>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;p&gt;发布与模式实现。广播就是向一个主题的所有订阅者发送同一条消息。&lt;/p&gt;
+&lt;p&gt;在发送消息的时候和普通的消息并与不同之处，只是在消费端做一些配置即可。&lt;/p&gt;
+&lt;h4 id=&quot;Consumer消息消费&quot;&gt;&lt;a href=&quot;#Consumer消息消费&quot; class=&quot;heade
+      
+    
+    </summary>
+    
+      <category term="技术" scheme="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/"/>
+    
+      <category term="rocketmq" scheme="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/rocketmq/"/>
+    
+    
+      <category term="rocketmq" scheme="http://blog.seoui.com/tags/rocketmq/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>jenkins环境搭建</title>
+    <link href="http://blog.seoui.com/2018/06/22/jenkinsinstall/"/>
+    <id>http://blog.seoui.com/2018/06/22/jenkinsinstall/</id>
+    <published>2018-06-21T16:00:00.000Z</published>
+    <updated>2018-09-06T06:21:47.875Z</updated>
+    
+    <content type="html"><![CDATA[<p><code>Jenkins</code>是基于<code>JVM</code>开发的，所以安装之前需要先确保装好<code>JVM</code>的运行环境<code>JRE</code></p><p> 这里采用<code>TOMCAT</code>的部署方式安装。</p><h4 id="下载WAR"><a href="#下载WAR" class="headerlink" title="下载WAR"></a>下载WAR</h4> <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">wget http://mirrors.jenkins.io/war-stable/2.121.1/jenkins.war</span><br></pre></td></tr></table></figure><p> 然后复制到<code>tomcat</code>的webapps目录中 执行<code>bin/startup.sh</code>启动 ，<code>bin/shutdown.sh</code> 关闭。</p><p> 首次启动访问的时候会提示你安装插件 选中推荐的一些插件就基本够用了。也可以在系统设置-&gt;插件管理中手动安装。</p><p>参考</p><p><a href="https://jenkins.io/doc/" target="_blank" rel="noopener">https://jenkins.io/doc/</a></p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;p&gt;&lt;code&gt;Jenkins&lt;/code&gt;是基于&lt;code&gt;JVM&lt;/code&gt;开发的，所以安装之前需要先确保装好&lt;code&gt;JVM&lt;/code&gt;的运行环境&lt;code&gt;JRE&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt; 这里采用&lt;code&gt;TOMCAT&lt;/code&gt;的部署方式安装。&lt;/p&gt;
+      
+    
+    </summary>
+    
+      <category term="技术" scheme="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/"/>
+    
+      <category term="jenkins" scheme="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/jenkins/"/>
+    
+    
+      <category term="jenkins" scheme="http://blog.seoui.com/tags/jenkins/"/>
+    
+  </entry>
+  
+  <entry>
     <title>nexus3.X环境搭建</title>
     <link href="http://blog.seoui.com/2018/06/22/nexusinstall/"/>
     <id>http://blog.seoui.com/2018/06/22/nexusinstall/</id>
     <published>2018-06-21T16:00:00.000Z</published>
-    <updated>2018-06-22T12:30:44.130Z</updated>
+    <updated>2018-09-06T06:21:47.877Z</updated>
     
-    <content type="html"><![CDATA[<p>nexus3比以前的版本相比 多支持了管理不同的格式 比如<code>Docker</code> <code>npm</code> <code>NuGet</code> <code>maven</code> …等</p>
-<h4 id="下载编译好的二进制安装"><a href="#下载编译好的二进制安装" class="headerlink" title="下载编译好的二进制安装"></a>下载编译好的二进制安装</h4> <figure class="highlight bash"><table><tr><td class="code"><pre><div class="line">wget https://sonatype-download.global.ssl.fastly.net/repository/repositoryManager/3/nexus-3.12.1-01-unix.tar.gz</div><div class="line">  </div><div class="line">  tar -zxf nexus-3.12.1-01-unix.tar.gz </div><div class="line"> </div><div class="line">  <span class="built_in">cd</span> nexus-3.12.1-01/</div><div class="line">  bin/nexus start</div></pre></td></tr></table></figure>
-<p> 默认的端口号为<code>8081</code> nexus3.x和以前的版本界面都有很大的改变 需要注意一下。<br> 其他默认配置在文件<code>etc/nexus-default.properties</code>中 需要修改的关注一下。</p>
-<p>参考</p>
-<p><a href="https://www.sonatype.com/" target="_blank" rel="external">https://www.sonatype.com/</a></p>
-]]></content>
+    <content type="html"><![CDATA[<p>nexus3比以前的版本相比 多支持了管理不同的格式 比如<code>Docker</code> <code>npm</code> <code>NuGet</code> <code>maven</code> …等</p><h4 id="下载编译好的二进制安装"><a href="#下载编译好的二进制安装" class="headerlink" title="下载编译好的二进制安装"></a>下载编译好的二进制安装</h4> <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">wget https://sonatype-download.global.ssl.fastly.net/repository/repositoryManager/3/nexus-3.12.1-01-unix.tar.gz</span><br><span class="line">  </span><br><span class="line">  tar -zxf nexus-3.12.1-01-unix.tar.gz </span><br><span class="line"> </span><br><span class="line">  <span class="built_in">cd</span> nexus-3.12.1-01/</span><br><span class="line">  bin/nexus start</span><br></pre></td></tr></table></figure><p> 默认的端口号为<code>8081</code> nexus3.x和以前的版本界面都有很大的改变 需要注意一下。<br> 其他默认配置在文件<code>etc/nexus-default.properties</code>中 需要修改的关注一下。</p><p>参考</p><p><a href="https://www.sonatype.com/" target="_blank" rel="noopener">https://www.sonatype.com/</a></p>]]></content>
     
     <summary type="html">
     
-      &lt;p&gt;nexus3比以前的版本相比 多支持了管理不同的格式 比如&lt;code&gt;Docker&lt;/code&gt; &lt;code&gt;npm&lt;/code&gt; &lt;code&gt;NuGet&lt;/code&gt; &lt;code&gt;maven&lt;/code&gt; …等&lt;/p&gt;
+      
+      
+        &lt;p&gt;nexus3比以前的版本相比 多支持了管理不同的格式 比如&lt;code&gt;Docker&lt;/code&gt; &lt;code&gt;npm&lt;/code&gt; &lt;code&gt;NuGet&lt;/code&gt; &lt;code&gt;maven&lt;/code&gt; …等&lt;/p&gt;
 &lt;h4 id=&quot;下载编译好的二进制安装&quot;&gt;&lt;a hr
+      
     
     </summary>
     
@@ -469,31 +342,18 @@
     <link href="http://blog.seoui.com/2018/06/22/gitlabinstall/"/>
     <id>http://blog.seoui.com/2018/06/22/gitlabinstall/</id>
     <published>2018-06-21T16:00:00.000Z</published>
-    <updated>2018-06-22T12:23:03.550Z</updated>
+    <updated>2018-09-06T06:21:47.872Z</updated>
     
-    <content type="html"><![CDATA[<p>操作系统：<code>centos7</code><br>gitlab： <code>gitlab-ee</code></p>
-<p>如果是其他环境 安装过程类似</p>
-<h4 id="安装必要依赖"><a href="#安装必要依赖" class="headerlink" title="安装必要依赖"></a>安装必要依赖</h4> <figure class="highlight bash"><table><tr><td class="code"><pre><div class="line">sudo yum install -y curl policycoreutils-python openssh-server</div><div class="line">sudo systemctl <span class="built_in">enable</span> sshd</div><div class="line">sudo systemctl start sshd</div><div class="line">sudo firewall-cmd --permanent --add-service=http</div><div class="line">sudo systemctl reload firewalld</div></pre></td></tr></table></figure>
-<p> 安装<code>postfix</code>依赖 用来发送邮件 不需要可以省略</p>
- <figure class="highlight bash"><table><tr><td class="code"><pre><div class="line">sudo yum install postfix</div><div class="line">sudo systemctl <span class="built_in">enable</span> postfix</div><div class="line">sudo systemctl start postfix</div></pre></td></tr></table></figure>
-<h4 id="获取并安装GitLab包"><a href="#获取并安装GitLab包" class="headerlink" title="获取并安装GitLab包"></a>获取并安装GitLab包</h4><p>  添加package</p>
- <figure class="highlight bash"><table><tr><td class="code"><pre><div class="line">curl https://packages.gitlab.com/install/repositories/gitlab/gitlab-ee/script.rpm.sh | sudo bash</div></pre></td></tr></table></figure>
-<p>  执行安装操作</p>
-<p>  <em>设置一个EXTERNAL_URL表示安装后的gitlab地址,如果需要HTTPS 那么需求安装好之后额外配置</em></p>
- <figure class="highlight bash"><table><tr><td class="code"><pre><div class="line">sudo EXTERNAL_URL=<span class="string">"http://172.30.34.6/"</span> yum install -y gitlab-ee</div></pre></td></tr></table></figure>
-<p>  如果没有报错信息 就可以使用前面配置的<code>EXTERNAL_URL</code>参数在浏览器上打开GITLAB了，当前配置的URL为:<code>http://172.30.34.6/</code></p>
-<h4 id="安装之后首次访问设置"><a href="#安装之后首次访问设置" class="headerlink" title="安装之后首次访问设置"></a>安装之后首次访问设置</h4><p>  安装好之后默认需要使用<code>root</code>账户登录，这个时候浏览器会重定向到为<code>root</code>设置初次密码的页面，跟着操作做就对了。</p>
-<p><code>Gitlab</code>安装好之后提供了一系列的命令工具如：<code>gitlab-ctl</code>等等。</p>
-<p>  更多设置请参考官方文档</p>
-<p>参考</p>
-<p><a href="https://about.gitlab.com/installation/#centos-7" target="_blank" rel="external">https://about.gitlab.com/installation/#centos-7</a></p>
-]]></content>
+    <content type="html"><![CDATA[<p>操作系统：<code>centos7</code><br>gitlab： <code>gitlab-ee</code></p><p>如果是其他环境 安装过程类似</p><h4 id="安装必要依赖"><a href="#安装必要依赖" class="headerlink" title="安装必要依赖"></a>安装必要依赖</h4> <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo yum install -y curl policycoreutils-python openssh-server</span><br><span class="line">sudo systemctl <span class="built_in">enable</span> sshd</span><br><span class="line">sudo systemctl start sshd</span><br><span class="line">sudo firewall-cmd --permanent --add-service=http</span><br><span class="line">sudo systemctl reload firewalld</span><br></pre></td></tr></table></figure><p> 安装<code>postfix</code>依赖 用来发送邮件 不需要可以省略</p> <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo yum install postfix</span><br><span class="line">sudo systemctl <span class="built_in">enable</span> postfix</span><br><span class="line">sudo systemctl start postfix</span><br></pre></td></tr></table></figure><h4 id="获取并安装GitLab包"><a href="#获取并安装GitLab包" class="headerlink" title="获取并安装GitLab包"></a>获取并安装GitLab包</h4><p>  添加package</p> <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">curl https://packages.gitlab.com/install/repositories/gitlab/gitlab-ee/script.rpm.sh | sudo bash</span><br></pre></td></tr></table></figure><p>  执行安装操作</p><p>  <em>设置一个EXTERNAL_URL表示安装后的gitlab地址,如果需要HTTPS 那么需求安装好之后额外配置</em></p> <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo EXTERNAL_URL=<span class="string">"http://172.30.34.6/"</span> yum install -y gitlab-ee</span><br></pre></td></tr></table></figure><p>  如果没有报错信息 就可以使用前面配置的<code>EXTERNAL_URL</code>参数在浏览器上打开GITLAB了，当前配置的URL为:<code>http://172.30.34.6/</code></p><h4 id="安装之后首次访问设置"><a href="#安装之后首次访问设置" class="headerlink" title="安装之后首次访问设置"></a>安装之后首次访问设置</h4><p>  安装好之后默认需要使用<code>root</code>账户登录，这个时候浏览器会重定向到为<code>root</code>设置初次密码的页面，跟着操作做就对了。</p><p><code>Gitlab</code>安装好之后提供了一系列的命令工具如：<code>gitlab-ctl</code>等等。</p><p>  更多设置请参考官方文档</p><p>参考</p><p><a href="https://about.gitlab.com/installation/#centos-7" target="_blank" rel="noopener">https://about.gitlab.com/installation/#centos-7</a></p>]]></content>
     
     <summary type="html">
     
-      &lt;p&gt;操作系统：&lt;code&gt;centos7&lt;/code&gt;&lt;br&gt;gitlab： &lt;code&gt;gitlab-ee&lt;/code&gt;&lt;/p&gt;
+      
+      
+        &lt;p&gt;操作系统：&lt;code&gt;centos7&lt;/code&gt;&lt;br&gt;gitlab： &lt;code&gt;gitlab-ee&lt;/code&gt;&lt;/p&gt;
 &lt;p&gt;如果是其他环境 安装过程类似&lt;/p&gt;
 &lt;h4 id=&quot;安装必要依赖&quot;&gt;&lt;a href=&quot;#安装必要依赖&quot; class=&quot;headerlink
+      
     
     </summary>
     
@@ -507,61 +367,21 @@
   </entry>
   
   <entry>
-    <title>jenkins环境搭建</title>
-    <link href="http://blog.seoui.com/2018/06/22/jenkinsinstall/"/>
-    <id>http://blog.seoui.com/2018/06/22/jenkinsinstall/</id>
-    <published>2018-06-21T16:00:00.000Z</published>
-    <updated>2018-06-22T12:28:02.364Z</updated>
-    
-    <content type="html"><![CDATA[<p><code>Jenkins</code>是基于<code>JVM</code>开发的，所以安装之前需要先确保装好<code>JVM</code>的运行环境<code>JRE</code></p>
-<p> 这里采用<code>TOMCAT</code>的部署方式安装。</p>
-<h4 id="下载WAR"><a href="#下载WAR" class="headerlink" title="下载WAR"></a>下载WAR</h4> <figure class="highlight bash"><table><tr><td class="code"><pre><div class="line">wget http://mirrors.jenkins.io/war-stable/2.121.1/jenkins.war</div></pre></td></tr></table></figure>
-<p> 然后复制到<code>tomcat</code>的webapps目录中 执行<code>bin/startup.sh</code>启动 ，<code>bin/shutdown.sh</code> 关闭。</p>
-<p> 首次启动访问的时候会提示你安装插件 选中推荐的一些插件就基本够用了。也可以在系统设置-&gt;插件管理中手动安装。</p>
-<p>参考</p>
-<p><a href="https://jenkins.io/doc/" target="_blank" rel="external">https://jenkins.io/doc/</a></p>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;p&gt;&lt;code&gt;Jenkins&lt;/code&gt;是基于&lt;code&gt;JVM&lt;/code&gt;开发的，所以安装之前需要先确保装好&lt;code&gt;JVM&lt;/code&gt;的运行环境&lt;code&gt;JRE&lt;/code&gt;&lt;/p&gt;
-&lt;p&gt; 这里采用&lt;code&gt;TOMCAT&lt;/code&gt;的部署方式安装。&lt;/p&gt;
-    
-    </summary>
-    
-      <category term="技术" scheme="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/"/>
-    
-      <category term="jenkins" scheme="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/jenkins/"/>
-    
-    
-      <category term="jenkins" scheme="http://blog.seoui.com/tags/jenkins/"/>
-    
-  </entry>
-  
-  <entry>
     <title>base64文件大小计算</title>
     <link href="http://blog.seoui.com/2018/05/09/base64_file_size/"/>
     <id>http://blog.seoui.com/2018/05/09/base64_file_size/</id>
     <published>2018-05-08T16:00:00.000Z</published>
-    <updated>2018-06-22T12:23:03.550Z</updated>
+    <updated>2018-09-06T06:21:47.869Z</updated>
     
-    <content type="html"><![CDATA[<p>有时候图片被<code>base64</code>之后需要计算图片大小，因为被编码后全是字符，计算文件大小可以反序列化成文件之后再获取大小，但是会比较麻烦。简单介绍一种利用<code>base64</code>编码原理计算大小的方法。</p>
-<h4 id="编码原理"><a href="#编码原理" class="headerlink" title="编码原理"></a>编码原理</h4><p>要求把<code>3</code>个<code>8</code>位字节<code>（3*8=24）</code>转化为<code>4</code>个<code>6</code>位的字节<code>（4*6=24）</code>，之后在6位的前面补两个0，形成8位一个字节的形式。 如果剩下的字符不足<code>3</code>个字节，用<code>0</code>填充，输出字符使用<code>’=’</code>，因此编码后输出的文本末尾可能会出现<code>1</code>或<code>2</code>个<code>’=’</code></p>
-<h4 id="示例"><a href="#示例" class="headerlink" title="示例"></a>示例</h4><p>找一张图片文件<code>https://www.baidu.com/img/bd_logo1.png</code> 下载到本地<code>base64</code>编码之后的图片显示结果如下</p>
-<p><img id="imgcase" width="70px" height="0px" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAhwAAAECCAMAAACCFP44AAAACXBIWXMAAAsTAAALEwEAmpwYAAAKTWlDQ1BQaG90b3Nob3AgSUNDIHByb2ZpbGUAAHjanVN3WJP3Fj7f92UPVkLY8LGXbIEAIiOsCMgQWaIQkgBhhBASQMWFiApWFBURnEhVxILVCkidiOKgKLhnQYqIWotVXDjuH9yntX167+3t+9f7vOec5/zOec8PgBESJpHmomoAOVKFPDrYH49PSMTJvYACFUjgBCAQ5svCZwXFAADwA3l4fnSwP/wBr28AAgBw1S4kEsfh/4O6UCZXACCRAOAiEucLAZBSAMguVMgUAMgYALBTs2QKAJQAAGx5fEIiAKoNAOz0ST4FANipk9wXANiiHKkIAI0BAJkoRyQCQLsAYFWBUiwCwMIAoKxAIi4EwK4BgFm2MkcCgL0FAHaOWJAPQGAAgJlCLMwAIDgCAEMeE80DIEwDoDDSv+CpX3CFuEgBAMDLlc2XS9IzFLiV0Bp38vDg4iHiwmyxQmEXKRBmCeQinJebIxNI5wNMzgwAABr50cH+OD+Q5+bk4eZm52zv9MWi/mvwbyI+IfHf/ryMAgQAEE7P79pf5eXWA3DHAbB1v2upWwDaVgBo3/ldM9sJoFoK0Hr5i3k4/EAenqFQyDwdHAoLC+0lYqG9MOOLPv8z4W/gi372/EAe/tt68ABxmkCZrcCjg/1xYW52rlKO58sEQjFu9+cj/seFf/2OKdHiNLFcLBWK8ViJuFAiTcd5uVKRRCHJleIS6X8y8R+W/QmTdw0ArIZPwE62B7XLbMB+7gECiw5Y0nYAQH7zLYwaC5EAEGc0Mnn3AACTv/mPQCsBAM2XpOMAALzoGFyolBdMxggAAESggSqwQQcMwRSswA6cwR28wBcCYQZEQAwkwDwQQgbkgBwKoRiWQRlUwDrYBLWwAxqgEZrhELTBMTgN5+ASXIHrcBcGYBiewhi8hgkEQcgIE2EhOogRYo7YIs4IF5mOBCJhSDSSgKQg6YgUUSLFyHKkAqlCapFdSCPyLXIUOY1cQPqQ28ggMor8irxHMZSBslED1AJ1QLmoHxqKxqBz0XQ0D12AlqJr0Rq0Hj2AtqKn0UvodXQAfYqOY4DRMQ5mjNlhXIyHRWCJWBomxxZj5Vg1Vo81Yx1YN3YVG8CeYe8IJAKLgBPsCF6EEMJsgpCQR1hMWEOoJewjtBK6CFcJg4Qxwicik6hPtCV6EvnEeGI6sZBYRqwm7iEeIZ4lXicOE1+TSCQOyZLkTgohJZAySQtJa0jbSC2kU6Q+0hBpnEwm65Btyd7kCLKArCCXkbeQD5BPkvvJw+S3FDrFiOJMCaIkUqSUEko1ZT/lBKWfMkKZoKpRzame1AiqiDqfWkltoHZQL1OHqRM0dZolzZsWQ8ukLaPV0JppZ2n3aC/pdLoJ3YMeRZfQl9Jr6Afp5+mD9HcMDYYNg8dIYigZaxl7GacYtxkvmUymBdOXmchUMNcyG5lnmA+Yb1VYKvYqfBWRyhKVOpVWlX6V56pUVXNVP9V5qgtUq1UPq15WfaZGVbNQ46kJ1Bar1akdVbupNq7OUndSj1DPUV+jvl/9gvpjDbKGhUaghkijVGO3xhmNIRbGMmXxWELWclYD6yxrmE1iW7L57Ex2Bfsbdi97TFNDc6pmrGaRZp3mcc0BDsax4PA52ZxKziHODc57LQMtPy2x1mqtZq1+rTfaetq+2mLtcu0W7eva73VwnUCdLJ31Om0693UJuja6UbqFutt1z+o+02PreekJ9cr1Dund0Uf1bfSj9Rfq79bv0R83MDQINpAZbDE4Y/DMkGPoa5hpuNHwhOGoEctoupHEaKPRSaMnuCbuh2fjNXgXPmasbxxirDTeZdxrPGFiaTLbpMSkxeS+Kc2Ua5pmutG003TMzMgs3KzYrMnsjjnVnGueYb7ZvNv8jYWlRZzFSos2i8eW2pZ8ywWWTZb3rJhWPlZ5VvVW16xJ1lzrLOtt1ldsUBtXmwybOpvLtqitm63Edptt3xTiFI8p0in1U27aMez87ArsmuwG7Tn2YfYl9m32zx3MHBId1jt0O3xydHXMdmxwvOuk4TTDqcSpw+lXZxtnoXOd8zUXpkuQyxKXdpcXU22niqdun3rLleUa7rrStdP1o5u7m9yt2W3U3cw9xX2r+00umxvJXcM970H08PdY4nHM452nm6fC85DnL152Xlle+70eT7OcJp7WMG3I28Rb4L3Le2A6Pj1l+s7pAz7GPgKfep+Hvqa+It89viN+1n6Zfgf8nvs7+sv9j/i/4XnyFvFOBWABwQHlAb2BGoGzA2sDHwSZBKUHNQWNBbsGLww+FUIMCQ1ZH3KTb8AX8hv5YzPcZyya0RXKCJ0VWhv6MMwmTB7WEY6GzwjfEH5vpvlM6cy2CIjgR2yIuB9pGZkX+X0UKSoyqi7qUbRTdHF09yzWrORZ+2e9jvGPqYy5O9tqtnJ2Z6xqbFJsY+ybuIC4qriBeIf4RfGXEnQTJAntieTE2MQ9ieNzAudsmjOc5JpUlnRjruXcorkX5unOy553PFk1WZB8OIWYEpeyP+WDIEJQLxhP5aduTR0T8oSbhU9FvqKNolGxt7hKPJLmnVaV9jjdO31D+miGT0Z1xjMJT1IreZEZkrkj801WRNberM/ZcdktOZSclJyjUg1plrQr1zC3KLdPZisrkw3keeZtyhuTh8r35CP5c/PbFWyFTNGjtFKuUA4WTC+oK3hbGFt4uEi9SFrUM99m/ur5IwuCFny9kLBQuLCz2Lh4WfHgIr9FuxYji1MXdy4xXVK6ZHhp8NJ9y2jLspb9UOJYUlXyannc8o5Sg9KlpUMrglc0lamUycturvRauWMVYZVkVe9ql9VbVn8qF5VfrHCsqK74sEa45uJXTl/VfPV5bdra3kq3yu3rSOuk626s91m/r0q9akHV0IbwDa0b8Y3lG19tSt50oXpq9Y7NtM3KzQM1YTXtW8y2rNvyoTaj9nqdf13LVv2tq7e+2Sba1r/dd3vzDoMdFTve75TsvLUreFdrvUV99W7S7oLdjxpiG7q/5n7duEd3T8Wej3ulewf2Re/ranRvbNyvv7+yCW1SNo0eSDpw5ZuAb9qb7Zp3tXBaKg7CQeXBJ9+mfHvjUOihzsPcw83fmX+39QjrSHkr0jq/dawto22gPaG97+iMo50dXh1Hvrf/fu8x42N1xzWPV56gnSg98fnkgpPjp2Snnp1OPz3Umdx590z8mWtdUV29Z0PPnj8XdO5Mt1/3yfPe549d8Lxw9CL3Ytslt0utPa49R35w/eFIr1tv62X3y+1XPK509E3rO9Hv03/6asDVc9f41y5dn3m978bsG7duJt0cuCW69fh29u0XdwruTNxdeo94r/y+2v3qB/oP6n+0/rFlwG3g+GDAYM/DWQ/vDgmHnv6U/9OH4dJHzEfVI0YjjY+dHx8bDRq98mTOk+GnsqcTz8p+Vv9563Or59/94vtLz1j82PAL+YvPv655qfNy76uprzrHI8cfvM55PfGm/K3O233vuO+638e9H5ko/ED+UPPR+mPHp9BP9z7nfP78L/eE8/sl0p8zAAAAIGNIUk0AAHolAACAgwAA+f8AAIDpAAB1MAAA6mAAADqYAAAXb5JfxUYAAAMAUExURQAAAP///+EGASMZ3Pz7/vX0/fb1/fLx/fPy/fTz/TIo3kY94UxD4l9X5XJr6Hdw6Xhx6YR+64uF7JqV75uW75yX752Y76Sf8K+r8rGt87ay88fE9snG9s/M99DN99bU+NjW+drY+dza+eLg+uvq/Ozr/O3s/O7t/O/u/CQa3CYc3Cce3Sge3Ssh3Swi3Swj3i0k3i4l3i8m3jAn3jMq3zQr3zUs3zYt3zcu3zgv3zkw4Dkw3zox4Dsy4Dwz4D004D414D834UA44UI54UM64UQ74UU84UY+4khA4kpC4k1F409H41JK41JL5FNM5FZO5FlR5VtU5VxV5V9Y5mFa5mNc5mRd5mVe52Zf52dg52hh52li52pj52tl6G5n6G9o6HNt6XRu6Xlz6nt16n136n546n9664F764J864R/7IaB7IiD7IuG7Y2I7Y+K7ZGM7pCL7ZKN7pGM7ZOO7pSP7paR7piU75+b8KCc8KSg8aej8aik8auo8rKv87Sx87e09Lm29Lu49Ly59L+89cG+9cPB9sXD9svJ983L99DO+NPR+NTS+N7d+uDf+uPi++Tj++Xk++bl++fm++no/Ojn++rp/Ono+/Dw/fb2/vn5/vr6/vz8//7+//zo5/3r6uMTDuMUD+MVEOMWEeMXEuMYE+MaFfCFgvGHhPGJhvGOi/KRjvKUkfKWk/Shn/SmpPWpp/WsqvWurPa0sve5t/e6uPe9u/e/vffBv/rT0vrU0/rW1frY1/va2fvc2/vd3Pvg3/zj4vvi4fzl5Pzn5uEHAuEIA+EJBOEKBeILBuIMB+INCOIPCuIQC+QbF+QdGeQfG+QgHOUjH+UlIeUpJeUqJuYtKeYvK+YzL+c2Muc5Nec8OOg+OuhAPOlEQelGQ+lIRelKR+lMSepPTOtWU+tZVuteW+xiX+1mY+1qZ+1tau5wbu92dO99e/B/ffCAfvCCgPOZl/OenPjBwPjEw/jGxfnJyPnMy/nPzv3u7v3w8P719f729v75+f/7+//9/f///4DJalUAAAEAdFJOU////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////wBT9wclAAAP2klEQVR42uzdaXwURRoGcKsrJEAIi0G5A4RATEICaBQWMYiEXcGA4Y6yHIICcikKAlkuJYRICCLHLklmhMUgghwiiAguiC6IcsgRORRRdzlFFLwRE377wWRm+qjq7pnumeme5/mYeaeH6frT3dNVXXUTQRBGbsIuQIADAQ4EOBDgQIADAQ4EOBDgQIADAQ4EAQ4EOBDgQIADAQ4EOBDgQIADAQ4EOBAEOBDgQIADAQ4EOBDgQIADAQ4EOBDgQBDgQIADAQ4EOBDgQIADAQ4EOBDgQIADAQ4EAQ4EOBDgQIADAQ4EOBDgQIADAQ4EOBAEOBDgQIADAQ4EOBDgQIADAQ4EOBDgQBDgQIADAQ4EOBDgQIADAQ4EOBDgQIADAQ4EAQ4EOBDgQIADAQ4EOBDgQIADAQ4EOBAEOBDgQIADAQ4EOBDgQIADAQ4EOBDgQBDgQIADAQ4EOHzP0uyH7klO6TSofiEIAIcohU+0oRVpN8UBBMDhTuz91COZ/4QC4KhMo1QqSscCHqTJjw0Zk1MEHKGRxq2oJGmLWLUNe/5R0XZ8VeAIgcSnUVkylI8MCYPdJe1mAof98xBVyGilyvx7RDVjncBh88xUskGT5skrZ7eWFA0uBg5bJ6yLIg4aJavMSZYVPeQADjunHmUkRvWylVI6CjjsnO4sHDXFdYs7KFY9Bxz2TSzLBk2p5lnn6Klc1S4BOGybp5k4aH3PultYVcOBw7Z5kI3jEY+yuBRWVVIccNg0VZLYODp61A1gl40ADpsmj3IS7yqL4VTdEQ4c9kw2D0dDV9lAXlkD4LBnonmtPs31MzaJV/Yn4LBnhvJafUJl1TO8KpoOHPZMFq/VoyurunJxJBYBhy3Tl9fqlb9DFlN+CoDDlunPa/SbK4pmq+CYBxy2zEAtp5VsFRxNgcOWGcZr9Fsrip5UwbEI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"></p>
-<p> 去掉base64编码中的前缀 <code>data:image/png;base64,</code></p>
- <figure class="highlight javascript"><table><tr><td class="code"><pre><div class="line"><span class="keyword">var</span> baseStr=<span class="built_in">document</span>.getElementById(<span class="string">"imgcase"</span>).getAttribute(<span class="string">"src"</span>),tag=<span class="string">"base64,"</span>;</div><div class="line">baseStr=baseStr.substring(baseStr.indexOf(tag)+tag.length);</div></pre></td></tr></table></figure>
-<p> 去掉base64编码中的<code>=</code>号</p>
- <figure class="highlight javascript"><table><tr><td class="code"><pre><div class="line"><span class="keyword">var</span> eqTagIndex=baseStr.indexOf(<span class="string">"="</span>);</div><div class="line">baseStr=eqTagIndex!=<span class="number">-1</span>?baseStr.substring(<span class="number">0</span>,eqTagIndex):baseStr;</div></pre></td></tr></table></figure>
-<p> 计算文件流大小</p>
- <figure class="highlight javascript"><table><tr><td class="code"><pre><div class="line"><span class="keyword">var</span> strLen=baseStr.length;</div><div class="line"><span class="keyword">var</span> fileSize=strLen-(strLen/<span class="number">8</span>)*<span class="number">2</span></div><div class="line">alert(<span class="string">"文件大小:"</span>+fileSize);</div></pre></td></tr></table></figure>
-<p>完整代码：<a href="https://demohubs.github.io/frontendLab/baseimgfileSize.html" target="_blank" rel="external">https://demohubs.github.io/frontendLab/baseimgfileSize.html</a>  </p>
-]]></content>
+    <content type="html"><![CDATA[<p>有时候图片被<code>base64</code>之后需要计算图片大小，因为被编码后全是字符，计算文件大小可以反序列化成文件之后再获取大小，但是会比较麻烦。简单介绍一种利用<code>base64</code>编码原理计算大小的方法。</p><h4 id="编码原理"><a href="#编码原理" class="headerlink" title="编码原理"></a>编码原理</h4><p>要求把<code>3</code>个<code>8</code>位字节<code>（3*8=24）</code>转化为<code>4</code>个<code>6</code>位的字节<code>（4*6=24）</code>，之后在6位的前面补两个0，形成8位一个字节的形式。 如果剩下的字符不足<code>3</code>个字节，用<code>0</code>填充，输出字符使用<code>’=’</code>，因此编码后输出的文本末尾可能会出现<code>1</code>或<code>2</code>个<code>’=’</code></p><h4 id="示例"><a href="#示例" class="headerlink" title="示例"></a>示例</h4><p>找一张图片文件<code>https://www.baidu.com/img/bd_logo1.png</code> 下载到本地<code>base64</code>编码之后的图片显示结果如下</p><p><img id="imgcase" width="70px" height="0px" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAhwAAAECCAMAAACCFP44AAAACXBIWXMAAAsTAAALEwEAmpwYAAAKTWlDQ1BQaG90b3Nob3AgSUNDIHByb2ZpbGUAAHjanVN3WJP3Fj7f92UPVkLY8LGXbIEAIiOsCMgQWaIQkgBhhBASQMWFiApWFBURnEhVxILVCkidiOKgKLhnQYqIWotVXDjuH9yntX167+3t+9f7vOec5/zOec8PgBESJpHmomoAOVKFPDrYH49PSMTJvYACFUjgBCAQ5svCZwXFAADwA3l4fnSwP/wBr28AAgBw1S4kEsfh/4O6UCZXACCRAOAiEucLAZBSAMguVMgUAMgYALBTs2QKAJQAAGx5fEIiAKoNAOz0ST4FANipk9wXANiiHKkIAI0BAJkoRyQCQLsAYFWBUiwCwMIAoKxAIi4EwK4BgFm2MkcCgL0FAHaOWJAPQGAAgJlCLMwAIDgCAEMeE80DIEwDoDDSv+CpX3CFuEgBAMDLlc2XS9IzFLiV0Bp38vDg4iHiwmyxQmEXKRBmCeQinJebIxNI5wNMzgwAABr50cH+OD+Q5+bk4eZm52zv9MWi/mvwbyI+IfHf/ryMAgQAEE7P79pf5eXWA3DHAbB1v2upWwDaVgBo3/ldM9sJoFoK0Hr5i3k4/EAenqFQyDwdHAoLC+0lYqG9MOOLPv8z4W/gi372/EAe/tt68ABxmkCZrcCjg/1xYW52rlKO58sEQjFu9+cj/seFf/2OKdHiNLFcLBWK8ViJuFAiTcd5uVKRRCHJleIS6X8y8R+W/QmTdw0ArIZPwE62B7XLbMB+7gECiw5Y0nYAQH7zLYwaC5EAEGc0Mnn3AACTv/mPQCsBAM2XpOMAALzoGFyolBdMxggAAESggSqwQQcMwRSswA6cwR28wBcCYQZEQAwkwDwQQgbkgBwKoRiWQRlUwDrYBLWwAxqgEZrhELTBMTgN5+ASXIHrcBcGYBiewhi8hgkEQcgIE2EhOogRYo7YIs4IF5mOBCJhSDSSgKQg6YgUUSLFyHKkAqlCapFdSCPyLXIUOY1cQPqQ28ggMor8irxHMZSBslED1AJ1QLmoHxqKxqBz0XQ0D12AlqJr0Rq0Hj2AtqKn0UvodXQAfYqOY4DRMQ5mjNlhXIyHRWCJWBomxxZj5Vg1Vo81Yx1YN3YVG8CeYe8IJAKLgBPsCF6EEMJsgpCQR1hMWEOoJewjtBK6CFcJg4Qxwicik6hPtCV6EvnEeGI6sZBYRqwm7iEeIZ4lXicOE1+TSCQOyZLkTgohJZAySQtJa0jbSC2kU6Q+0hBpnEwm65Btyd7kCLKArCCXkbeQD5BPkvvJw+S3FDrFiOJMCaIkUqSUEko1ZT/lBKWfMkKZoKpRzame1AiqiDqfWkltoHZQL1OHqRM0dZolzZsWQ8ukLaPV0JppZ2n3aC/pdLoJ3YMeRZfQl9Jr6Afp5+mD9HcMDYYNg8dIYigZaxl7GacYtxkvmUymBdOXmchUMNcyG5lnmA+Yb1VYKvYqfBWRyhKVOpVWlX6V56pUVXNVP9V5qgtUq1UPq15WfaZGVbNQ46kJ1Bar1akdVbupNq7OUndSj1DPUV+jvl/9gvpjDbKGhUaghkijVGO3xhmNIRbGMmXxWELWclYD6yxrmE1iW7L57Ex2Bfsbdi97TFNDc6pmrGaRZp3mcc0BDsax4PA52ZxKziHODc57LQMtPy2x1mqtZq1+rTfaetq+2mLtcu0W7eva73VwnUCdLJ31Om0693UJuja6UbqFutt1z+o+02PreekJ9cr1Dund0Uf1bfSj9Rfq79bv0R83MDQINpAZbDE4Y/DMkGPoa5hpuNHwhOGoEctoupHEaKPRSaMnuCbuh2fjNXgXPmasbxxirDTeZdxrPGFiaTLbpMSkxeS+Kc2Ua5pmutG003TMzMgs3KzYrMnsjjnVnGueYb7ZvNv8jYWlRZzFSos2i8eW2pZ8ywWWTZb3rJhWPlZ5VvVW16xJ1lzrLOtt1ldsUBtXmwybOpvLtqitm63Edptt3xTiFI8p0in1U27aMez87ArsmuwG7Tn2YfYl9m32zx3MHBId1jt0O3xydHXMdmxwvOuk4TTDqcSpw+lXZxtnoXOd8zUXpkuQyxKXdpcXU22niqdun3rLleUa7rrStdP1o5u7m9yt2W3U3cw9xX2r+00umxvJXcM970H08PdY4nHM452nm6fC85DnL152Xlle+70eT7OcJp7WMG3I28Rb4L3Le2A6Pj1l+s7pAz7GPgKfep+Hvqa+It89viN+1n6Zfgf8nvs7+sv9j/i/4XnyFvFOBWABwQHlAb2BGoGzA2sDHwSZBKUHNQWNBbsGLww+FUIMCQ1ZH3KTb8AX8hv5YzPcZyya0RXKCJ0VWhv6MMwmTB7WEY6GzwjfEH5vpvlM6cy2CIjgR2yIuB9pGZkX+X0UKSoyqi7qUbRTdHF09yzWrORZ+2e9jvGPqYy5O9tqtnJ2Z6xqbFJsY+ybuIC4qriBeIf4RfGXEnQTJAntieTE2MQ9ieNzAudsmjOc5JpUlnRjruXcorkX5unOy553PFk1WZB8OIWYEpeyP+WDIEJQLxhP5aduTR0T8oSbhU9FvqKNolGxt7hKPJLmnVaV9jjdO31D+miGT0Z1xjMJT1IreZEZkrkj801WRNberM/ZcdktOZSclJyjUg1plrQr1zC3KLdPZisrkw3keeZtyhuTh8r35CP5c/PbFWyFTNGjtFKuUA4WTC+oK3hbGFt4uEi9SFrUM99m/ur5IwuCFny9kLBQuLCz2Lh4WfHgIr9FuxYji1MXdy4xXVK6ZHhp8NJ9y2jLspb9UOJYUlXyannc8o5Sg9KlpUMrglc0lamUycturvRauWMVYZVkVe9ql9VbVn8qF5VfrHCsqK74sEa45uJXTl/VfPV5bdra3kq3yu3rSOuk626s91m/r0q9akHV0IbwDa0b8Y3lG19tSt50oXpq9Y7NtM3KzQM1YTXtW8y2rNvyoTaj9nqdf13LVv2tq7e+2Sba1r/dd3vzDoMdFTve75TsvLUreFdrvUV99W7S7oLdjxpiG7q/5n7duEd3T8Wej3ulewf2Re/ranRvbNyvv7+yCW1SNo0eSDpw5ZuAb9qb7Zp3tXBaKg7CQeXBJ9+mfHvjUOihzsPcw83fmX+39QjrSHkr0jq/dawto22gPaG97+iMo50dXh1Hvrf/fu8x42N1xzWPV56gnSg98fnkgpPjp2Snnp1OPz3Umdx590z8mWtdUV29Z0PPnj8XdO5Mt1/3yfPe549d8Lxw9CL3Ytslt0utPa49R35w/eFIr1tv62X3y+1XPK509E3rO9Hv03/6asDVc9f41y5dn3m978bsG7duJt0cuCW69fh29u0XdwruTNxdeo94r/y+2v3qB/oP6n+0/rFlwG3g+GDAYM/DWQ/vDgmHnv6U/9OH4dJHzEfVI0YjjY+dHx8bDRq98mTOk+GnsqcTz8p+Vv9563Or59/94vtLz1j82PAL+YvPv655qfNy76uprzrHI8cfvM55PfGm/K3O233vuO+638e9H5ko/ED+UPPR+mPHp9BP9z7nfP78L/eE8/sl0p8zAAAAIGNIUk0AAHolAACAgwAA+f8AAIDpAAB1MAAA6mAAADqYAAAXb5JfxUYAAAMAUExURQAAAP///+EGASMZ3Pz7/vX0/fb1/fLx/fPy/fTz/TIo3kY94UxD4l9X5XJr6Hdw6Xhx6YR+64uF7JqV75uW75yX752Y76Sf8K+r8rGt87ay88fE9snG9s/M99DN99bU+NjW+drY+dza+eLg+uvq/Ozr/O3s/O7t/O/u/CQa3CYc3Cce3Sge3Ssh3Swi3Swj3i0k3i4l3i8m3jAn3jMq3zQr3zUs3zYt3zcu3zgv3zkw4Dkw3zox4Dsy4Dwz4D004D414D834UA44UI54UM64UQ74UU84UY+4khA4kpC4k1F409H41JK41JL5FNM5FZO5FlR5VtU5VxV5V9Y5mFa5mNc5mRd5mVe52Zf52dg52hh52li52pj52tl6G5n6G9o6HNt6XRu6Xlz6nt16n136n546n9664F764J864R/7IaB7IiD7IuG7Y2I7Y+K7ZGM7pCL7ZKN7pGM7ZOO7pSP7paR7piU75+b8KCc8KSg8aej8aik8auo8rKv87Sx87e09Lm29Lu49Ly59L+89cG+9cPB9sXD9svJ983L99DO+NPR+NTS+N7d+uDf+uPi++Tj++Xk++bl++fm++no/Ojn++rp/Ono+/Dw/fb2/vn5/vr6/vz8//7+//zo5/3r6uMTDuMUD+MVEOMWEeMXEuMYE+MaFfCFgvGHhPGJhvGOi/KRjvKUkfKWk/Shn/SmpPWpp/WsqvWurPa0sve5t/e6uPe9u/e/vffBv/rT0vrU0/rW1frY1/va2fvc2/vd3Pvg3/zj4vvi4fzl5Pzn5uEHAuEIA+EJBOEKBeILBuIMB+INCOIPCuIQC+QbF+QdGeQfG+QgHOUjH+UlIeUpJeUqJuYtKeYvK+YzL+c2Muc5Nec8OOg+OuhAPOlEQelGQ+lIRelKR+lMSepPTOtWU+tZVuteW+xiX+1mY+1qZ+1tau5wbu92dO99e/B/ffCAfvCCgPOZl/OenPjBwPjEw/jGxfnJyPnMy/nPzv3u7v3w8P719f729v75+f/7+//9/f///4DJalUAAAEAdFJOU////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////wBT9wclAAAP2klEQVR42uzdaXwURRoGcKsrJEAIi0G5A4RATEICaBQWMYiEXcGA4Y6yHIICcikKAlkuJYRICCLHLklmhMUgghwiiAguiC6IcsgRORRRdzlFFLwRE377wWRm+qjq7pnumeme5/mYeaeH6frT3dNVXXUTQRBGbsIuQIADAQ4EOBDgQIADAQ4EOBDgQIADAQ4EAQ4EOBDgQIADAQ4EOBDgQIADAQ4EOBAEOBDgQIADAQ4EOBDgQIADAQ4EOBDgQBDgQIADAQ4EOBDgQIADAQ4EOBDgQIADAQ4EAQ4EOBDgQIADAQ4EOBDgQIADAQ4EOBAEOBDgQIADAQ4EOBDgQIADAQ4EOBDgQBDgQIADAQ4EOBDgQIADAQ4EOBDgQIADAQ4EAQ4EOBDgQIADAQ4EOBDgQIADAQ4EOBAEOBDgQIADAQ4EOBDgQIADAQ4EOBDgQBDgQIADAQ4EOHzP0uyH7klO6TSofiEIAIcohU+0oRVpN8UBBMDhTuz91COZ/4QC4KhMo1QqSscCHqTJjw0Zk1MEHKGRxq2oJGmLWLUNe/5R0XZ8VeAIgcSnUVkylI8MCYPdJe1mAof98xBVyGilyvx7RDVjncBh88xUskGT5skrZ7eWFA0uBg5bJ6yLIg4aJavMSZYVPeQADjunHmUkRvWylVI6CjjsnO4sHDXFdYs7KFY9Bxz2TSzLBk2p5lnn6Klc1S4BOGybp5k4aH3PultYVcOBw7Z5kI3jEY+yuBRWVVIccNg0VZLYODp61A1gl40ADpsmj3IS7yqL4VTdEQ4c9kw2D0dDV9lAXlkD4LBnonmtPs31MzaJV/Yn4LBnhvJafUJl1TO8KpoOHPZMFq/VoyurunJxJBYBhy3Tl9fqlb9DFlN+CoDDlunPa/SbK4pmq+CYBxy2zEAtp5VsFRxNgcOWGcZr9Fsrip5UwbEI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"></p><p> 去掉base64编码中的前缀 <code>data:image/png;base64,</code></p> <figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> baseStr=<span class="built_in">document</span>.getElementById(<span class="string">"imgcase"</span>).getAttribute(<span class="string">"src"</span>),tag=<span class="string">"base64,"</span>;</span><br><span class="line">baseStr=baseStr.substring(baseStr.indexOf(tag)+tag.length);</span><br></pre></td></tr></table></figure><p> 去掉base64编码中的<code>=</code>号</p> <figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> eqTagIndex=baseStr.indexOf(<span class="string">"="</span>);</span><br><span class="line">baseStr=eqTagIndex!=<span class="number">-1</span>?baseStr.substring(<span class="number">0</span>,eqTagIndex):baseStr;</span><br></pre></td></tr></table></figure><p> 计算文件流大小</p> <figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> strLen=baseStr.length;</span><br><span class="line"><span class="keyword">var</span> fileSize=strLen-(strLen/<span class="number">8</span>)*<span class="number">2</span></span><br><span class="line">alert(<span class="string">"文件大小:"</span>+fileSize);</span><br></pre></td></tr></table></figure><p>完整代码：<a href="https://demohubs.github.io/frontendLab/baseimgfileSize.html" target="_blank" rel="noopener">https://demohubs.github.io/frontendLab/baseimgfileSize.html</a>  </p>]]></content>
     
     <summary type="html">
     
-      &lt;p&gt;有时候图片被&lt;code&gt;base64&lt;/code&gt;之后需要计算图片大小，因为被编码后全是字符，计算文件大小可以反序列化成文件之后再获取大小，但是会比较麻烦。简单介绍一种利用&lt;code&gt;base64&lt;/code&gt;编码原理计算大小的方法。&lt;/p&gt;
+      
+      
+        &lt;p&gt;有时候图片被&lt;code&gt;base64&lt;/code&gt;之后需要计算图片大小，因为被编码后全是字符，计算文件大小可以反序列化成文件之后再获取大小，但是会比较麻烦。简单介绍一种利用&lt;code&gt;base64&lt;/code&gt;编码原理计算大小的方法。&lt;/p&gt;
 &lt;h4 id=&quot;编码原理&quot;&gt;&lt;
+      
     
     </summary>
     
@@ -579,21 +399,17 @@
     <link href="http://blog.seoui.com/2018/04/18/jvmremote-debug/"/>
     <id>http://blog.seoui.com/2018/04/18/jvmremote-debug/</id>
     <published>2018-04-17T16:00:00.000Z</published>
-    <updated>2018-06-22T12:23:03.550Z</updated>
+    <updated>2018-09-06T06:21:47.867Z</updated>
     
-    <content type="html"><![CDATA[<p>有时候想调试线上的程序 可以启用远程调试功能 在本地调试远程代码。</p>
-<h4 id="远程JVM启用调试模式"><a href="#远程JVM启用调试模式" class="headerlink" title="远程JVM启用调试模式"></a>远程JVM启用调试模式</h4> <figure class="highlight lua"><table><tr><td class="code"><pre><div class="line">/usr/<span class="keyword">local</span>/jdk/bin/java -server -Xms256m -Xmx256m -XX:PermSize=<span class="number">64</span>m -XX:MaxPermSize=<span class="number">128</span>m -Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=<span class="number">1506</span> -jar /home/web/api<span class="number">-1.0</span>-SNAPSHOT/lib/api<span class="number">-1.0</span>-SNAPSHOT.jar <span class="comment">--spring.config.location=file:/home/web/api-1.0-SNAPSHOT/conf/</span></div></pre></td></tr></table></figure>
-<p><code>-XDebug</code> 表示虚拟机启用调试功能<br><code>-Xrunjdwp</code> 加载JDWP<br><code>transport</code>  调试程序JVM使用的进程之间通讯方式<br><code>dt_socket</code> socket通讯<br><code>server=y/n</code> JVM是否需要作为调试服务器执行<br><code>address</code> 调试服务器监听的端口号<br><code>suspend=y/n</code> 调试客户端建立连接之后启动虚拟机</p>
-<p>JVM启动之后用验证监听的端口号是否生效了 <code>netstat -anp | grep 1506</code></p>
- <figure class="highlight bash"><table><tr><td class="code"><pre><div class="line">tcp        0      0 0.0.0.0:1506                0.0.0.0:*                   LISTEN      4841/java</div></pre></td></tr></table></figure>
-<h4 id="本地调试配置"><a href="#本地调试配置" class="headerlink" title="本地调试配置"></a>本地调试配置</h4><p><img src="http://static.1.seoui.com/images/2018/04/18/jvmremote-debug.png" alt=""></p>
-<p>然后<code>debug</code>启动 访问远程服务器某个服务 在本地就支持打断点调试了。   </p>
-]]></content>
+    <content type="html"><![CDATA[<p>有时候想调试线上的程序 可以启用远程调试功能 在本地调试远程代码。</p><h4 id="远程JVM启用调试模式"><a href="#远程JVM启用调试模式" class="headerlink" title="远程JVM启用调试模式"></a>远程JVM启用调试模式</h4> <figure class="highlight lua"><table><tr><td class="code"><pre><span class="line">/usr/<span class="keyword">local</span>/jdk/bin/java -server -Xms256m -Xmx256m -XX:PermSize=<span class="number">64</span>m -XX:MaxPermSize=<span class="number">128</span>m -Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=<span class="number">1506</span> -jar /home/web/api<span class="number">-1.0</span>-SNAPSHOT/lib/api<span class="number">-1.0</span>-SNAPSHOT.jar <span class="comment">--spring.config.location=file:/home/web/api-1.0-SNAPSHOT/conf/</span></span><br></pre></td></tr></table></figure><p><code>-XDebug</code> 表示虚拟机启用调试功能<br><code>-Xrunjdwp</code> 加载JDWP<br><code>transport</code>  调试程序JVM使用的进程之间通讯方式<br><code>dt_socket</code> socket通讯<br><code>server=y/n</code> JVM是否需要作为调试服务器执行<br><code>address</code> 调试服务器监听的端口号<br><code>suspend=y/n</code> 调试客户端建立连接之后启动虚拟机</p><p>JVM启动之后用验证监听的端口号是否生效了 <code>netstat -anp | grep 1506</code></p> <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">tcp        0      0 0.0.0.0:1506                0.0.0.0:*                   LISTEN      4841/java</span><br></pre></td></tr></table></figure><h4 id="本地调试配置"><a href="#本地调试配置" class="headerlink" title="本地调试配置"></a>本地调试配置</h4><p><img src="http://static.1.seoui.com/images/2018/04/18/jvmremote-debug.png" alt=""></p><p>然后<code>debug</code>启动 访问远程服务器某个服务 在本地就支持打断点调试了。   </p>]]></content>
     
     <summary type="html">
     
-      &lt;p&gt;有时候想调试线上的程序 可以启用远程调试功能 在本地调试远程代码。&lt;/p&gt;
+      
+      
+        &lt;p&gt;有时候想调试线上的程序 可以启用远程调试功能 在本地调试远程代码。&lt;/p&gt;
 &lt;h4 id=&quot;远程JVM启用调试模式&quot;&gt;&lt;a href=&quot;#远程JVM启用调试模式&quot; class=&quot;headerlink&quot; title=&quot;远程JVM启用调试模式&quot;&gt;&lt;/a&gt;远程JVM启用调试模式&lt;
+      
     
     </summary>
     
@@ -613,47 +429,16 @@
     <link href="http://blog.seoui.com/2018/01/27/redis-lua/"/>
     <id>http://blog.seoui.com/2018/01/27/redis-lua/</id>
     <published>2018-01-26T16:00:00.000Z</published>
-    <updated>2018-06-22T12:23:03.535Z</updated>
+    <updated>2018-09-06T06:21:47.864Z</updated>
     
-    <content type="html"><![CDATA[<p><code>redis</code>从2.6版本开始内置支持<code>Lua</code>解释器，解释器提供了3个函数来处理<code>redis</code>的命令<code>redis.call()</code> <code>redis.pcall()</code>和 <code>redis.log</code>,同时<code>redis</code> 也保证脚本会以原子性的方式执行。这是一个很重要的因素。</p>
-<p>本文涉及到的命令有 <code>EVAL</code>  <code>EVALSHA</code> <code>SCRIPT LOAD</code> <code>SCRIPT FLUSH</code> <code>SCRIPT EXISTS</code> <code>SCRIPT KILL</code></p>
-<p><em>redis.call()， redis.pcall() 函数的区别就是处理错误异常的情况不同，其他的功能是一样的 具体使用哪个看需求而论</em></p>
-<ul>
-<li><code>redis.call()</code>  执行命令的过程中发生错误时，脚本会停止执行，并返回一个脚本错误</li>
-<li><code>redis.pcall()</code> 执行命令的过程中发生错误时，脚本会继续执行，但是会记录错误信息 返回一个带 err 域的 Lua 表(table)</li>
-<li><code>redis.log(loglevel, message)</code> 触发<code>redis</code>记录日志 日志级别有 redis.LOG_DEBUG redis.LOG_VERBOSE redis.LOG_NOTICE redis.LOG_WARNING</li>
-</ul>
-<h4 id="EVAL"><a href="#EVAL" class="headerlink" title="EVAL"></a>EVAL</h4><p><code>EVAL</code>命令对 <code>Lua</code> 脚本进行执行求值。</p>
-<p> 语法：EVAL script numkeys key [key …] arg [arg …]</p>
-<p> <code>script</code> lua脚本内容 注意的是脚本不应该是<code>Lua</code>函数。<br> <code>numkeys</code> 表示指定键名参数的个数。<br> <code>key [key ...]</code> 表示脚本对应的<code>key</code>值列表 在脚本中可以使用<em><code>KEYS[1]</code> <code>KEYS[2]</code> <code>KEYS[3]</code> <code>KEYS[n]</code></em> n从1开始 。<br> <code>arg [arg ...]</code> 命名行中传递的参数列表 在脚本中可以使用<em><code>ARGV[1]</code> <code>ARGV[2]</code> <code>ARGV[3]</code> <code>ARGV[n]</code></em> n从1开始 。</p>
-<p> 一个示例胜过千言万语的解释</p>
- <figure class="highlight lua"><table><tr><td class="code"><pre><div class="line">eval <span class="string">"return &#123;KEYS[1],KEYS[2],ARGV[1],ARGV[2]&#125;"</span> <span class="number">2</span> id name <span class="number">3</span> mytest</div></pre></td></tr></table></figure>
-<p>执行上面脚本返回</p>
- <figure class="highlight lua"><table><tr><td class="code"><pre><div class="line"><span class="number">1</span>) <span class="string">"id"</span></div><div class="line"><span class="number">2</span>) <span class="string">"name"</span></div><div class="line"><span class="number">3</span>) <span class="string">"2"</span></div><div class="line"><span class="number">4</span>) <span class="string">"mytest"</span></div></pre></td></tr></table></figure>
-<h4 id="EVALSHA"><a href="#EVALSHA" class="headerlink" title="EVALSHA"></a>EVALSHA</h4><p>  此命令和<code>EVAL</code>的区别是<code>EVAL</code>每次都需要传入脚本的主体内容，对网络带宽不是很友好。而<code>EVALSHA</code>命令正好可以解决这个问题。</p>
-<p>  语法： EVALSHA sha1 numkeys key [key …] arg [arg …]</p>
-<p>  <code>sha1</code> 缓存中的<code>sha</code>值 这个值可以利用<code>SCRIPT LOAD</code>生成<br>  <code>numkeys</code> 表示指定键名参数的个数。<br>  <code>key [key ...]</code> 表示脚本对应的<code>key</code>值列表 在脚本中可以使用<em><code>KEYS[1]</code> <code>KEYS[2]</code> <code>KEYS[3]</code> <code>KEYS[n]</code></em> n从1开始 。<br>  <code>arg [arg ...]</code> 命名行中传递的参数列表 在脚本中可以使用<em><code>ARGV[1]</code> <code>ARGV[2]</code> <code>ARGV[3]</code> <code>ARGV[n]</code></em> n从1开始 。</p>
- <figure class="highlight lua"><table><tr><td class="code"><pre><div class="line">&gt; SCRIPT LOAD <span class="string">"return &#123;KEYS[1],KEYS[2],ARGV[1],ARGV[2]&#125;"</span></div><div class="line"><span class="string">"a42059b356c875f0717db19a51f6aaca9ae659ea"</span></div><div class="line">&gt; EVALSHA a42059b356c875f0717db19a51f6aaca9ae659ea <span class="number">2</span> id name <span class="number">2</span> mytest</div><div class="line"><span class="number">1</span>) <span class="string">"id"</span></div><div class="line"><span class="number">2</span>) <span class="string">"name"</span></div><div class="line"><span class="number">3</span>) <span class="string">"2"</span></div><div class="line"><span class="number">4</span>) <span class="string">"mytest"</span></div><div class="line">&gt;</div></pre></td></tr></table></figure>
-<p>1、首先利用<code>SCRIPT LOAD</code>把脚本的主体缓存在<code>redis</code>中,会返回一个sha的key<br>2、<code>EVALSHA</code> 执行命令 把sha带上 其他的和eval没有区别。</p>
-<h4 id="脚本缓存"><a href="#脚本缓存" class="headerlink" title="脚本缓存"></a>脚本缓存</h4><p>  <code>redis</code>保证了所有运行过的脚本都能缓存起来 前面也提到过使用<code>SCRIPT LOAD</code>也能将脚本缓存并返回sha值，那么也能使用<code>SCRIPT FLUSH</code>清空脚本缓存</p>
-<ul>
-<li><code>SCRIPT LOAD</code> 加载脚本到缓存中</li>
-<li><code>SCRIPT FLUSH</code> 清除所有 Lua 脚本缓存。</li>
-<li><code>SCRIPT EXISTS</code> 判断sha值是否已经缓存好了，返回值为  0 和 1 ，后者表示存在于缓存中，在程序开发中非常有用 比如 <code>redis</code>出现了什么异常情况后，脚本缓存被清空了，或者被人为执行了<code>SCRIPT FLUSH</code>命令，这个时候就可以优先尝试一下<code>SCRIPT EXISTS</code>命令如果返回0表示不存在 就需要先执行<code>SCRIPT LOAD</code>先把脚本加载到缓存中之后再执行</li>
-</ul>
-<h4 id="SCRIPT-KILL"><a href="#SCRIPT-KILL" class="headerlink" title="SCRIPT KILL"></a>SCRIPT KILL</h4><p> 杀死当前正在运行的 <code>Lua</code> 脚本，<code>当且仅当这个脚本没有执行过任何写操作时，这个命令才生效</code>。</p>
-<p> <code>SCRIPT KILL</code> 执行成功返回OK，其他情况返回错误信息</p>
-<h4 id="业务场景案例"><a href="#业务场景案例" class="headerlink" title="业务场景案例"></a>业务场景案例</h4><ul>
-<li><a href="https://github.com/spring-cloud/spring-cloud-gateway/tree/rate-limiter-no-lua" target="_blank" rel="external">spring-cloud-gateway</a>  springc cloud 网关限流</li>
-<li>需要原子操作的零散逻辑</li>
-<li>分布式限流</li>
-<li>….</li>
-</ul>
-]]></content>
+    <content type="html"><![CDATA[<p><code>redis</code>从2.6版本开始内置支持<code>Lua</code>解释器，解释器提供了3个函数来处理<code>redis</code>的命令<code>redis.call()</code> <code>redis.pcall()</code>和 <code>redis.log</code>,同时<code>redis</code> 也保证脚本会以原子性的方式执行。这是一个很重要的因素。</p><p>本文涉及到的命令有 <code>EVAL</code>  <code>EVALSHA</code> <code>SCRIPT LOAD</code> <code>SCRIPT FLUSH</code> <code>SCRIPT EXISTS</code> <code>SCRIPT KILL</code></p><p><em>redis.call()， redis.pcall() 函数的区别就是处理错误异常的情况不同，其他的功能是一样的 具体使用哪个看需求而论</em></p><ul><li><code>redis.call()</code>  执行命令的过程中发生错误时，脚本会停止执行，并返回一个脚本错误</li><li><code>redis.pcall()</code> 执行命令的过程中发生错误时，脚本会继续执行，但是会记录错误信息 返回一个带 err 域的 Lua 表(table)</li><li><code>redis.log(loglevel, message)</code> 触发<code>redis</code>记录日志 日志级别有 redis.LOG_DEBUG redis.LOG_VERBOSE redis.LOG_NOTICE redis.LOG_WARNING</li></ul><h4 id="EVAL"><a href="#EVAL" class="headerlink" title="EVAL"></a>EVAL</h4><p><code>EVAL</code>命令对 <code>Lua</code> 脚本进行执行求值。</p><p> 语法：EVAL script numkeys key [key …] arg [arg …]</p><p> <code>script</code> lua脚本内容 注意的是脚本不应该是<code>Lua</code>函数。<br> <code>numkeys</code> 表示指定键名参数的个数。<br> <code>key [key ...]</code> 表示脚本对应的<code>key</code>值列表 在脚本中可以使用<em><code>KEYS[1]</code> <code>KEYS[2]</code> <code>KEYS[3]</code> <code>KEYS[n]</code></em> n从1开始 。<br> <code>arg [arg ...]</code> 命名行中传递的参数列表 在脚本中可以使用<em><code>ARGV[1]</code> <code>ARGV[2]</code> <code>ARGV[3]</code> <code>ARGV[n]</code></em> n从1开始 。</p><p> 一个示例胜过千言万语的解释</p> <figure class="highlight lua"><table><tr><td class="code"><pre><span class="line">eval <span class="string">"return &#123;KEYS[1],KEYS[2],ARGV[1],ARGV[2]&#125;"</span> <span class="number">2</span> id name <span class="number">3</span> mytest</span><br></pre></td></tr></table></figure><p>执行上面脚本返回</p> <figure class="highlight lua"><table><tr><td class="code"><pre><span class="line"><span class="number">1</span>) <span class="string">"id"</span></span><br><span class="line"><span class="number">2</span>) <span class="string">"name"</span></span><br><span class="line"><span class="number">3</span>) <span class="string">"2"</span></span><br><span class="line"><span class="number">4</span>) <span class="string">"mytest"</span></span><br></pre></td></tr></table></figure><h4 id="EVALSHA"><a href="#EVALSHA" class="headerlink" title="EVALSHA"></a>EVALSHA</h4><p>  此命令和<code>EVAL</code>的区别是<code>EVAL</code>每次都需要传入脚本的主体内容，对网络带宽不是很友好。而<code>EVALSHA</code>命令正好可以解决这个问题。</p><p>  语法： EVALSHA sha1 numkeys key [key …] arg [arg …]</p><p>  <code>sha1</code> 缓存中的<code>sha</code>值 这个值可以利用<code>SCRIPT LOAD</code>生成<br>  <code>numkeys</code> 表示指定键名参数的个数。<br>  <code>key [key ...]</code> 表示脚本对应的<code>key</code>值列表 在脚本中可以使用<em><code>KEYS[1]</code> <code>KEYS[2]</code> <code>KEYS[3]</code> <code>KEYS[n]</code></em> n从1开始 。<br>  <code>arg [arg ...]</code> 命名行中传递的参数列表 在脚本中可以使用<em><code>ARGV[1]</code> <code>ARGV[2]</code> <code>ARGV[3]</code> <code>ARGV[n]</code></em> n从1开始 。</p> <figure class="highlight lua"><table><tr><td class="code"><pre><span class="line">&gt; SCRIPT LOAD <span class="string">"return &#123;KEYS[1],KEYS[2],ARGV[1],ARGV[2]&#125;"</span></span><br><span class="line"><span class="string">"a42059b356c875f0717db19a51f6aaca9ae659ea"</span></span><br><span class="line">&gt; EVALSHA a42059b356c875f0717db19a51f6aaca9ae659ea <span class="number">2</span> id name <span class="number">2</span> mytest</span><br><span class="line"><span class="number">1</span>) <span class="string">"id"</span></span><br><span class="line"><span class="number">2</span>) <span class="string">"name"</span></span><br><span class="line"><span class="number">3</span>) <span class="string">"2"</span></span><br><span class="line"><span class="number">4</span>) <span class="string">"mytest"</span></span><br><span class="line">&gt;</span><br></pre></td></tr></table></figure><p>1、首先利用<code>SCRIPT LOAD</code>把脚本的主体缓存在<code>redis</code>中,会返回一个sha的key<br>2、<code>EVALSHA</code> 执行命令 把sha带上 其他的和eval没有区别。</p><h4 id="脚本缓存"><a href="#脚本缓存" class="headerlink" title="脚本缓存"></a>脚本缓存</h4><p>  <code>redis</code>保证了所有运行过的脚本都能缓存起来 前面也提到过使用<code>SCRIPT LOAD</code>也能将脚本缓存并返回sha值，那么也能使用<code>SCRIPT FLUSH</code>清空脚本缓存</p><ul><li><code>SCRIPT LOAD</code> 加载脚本到缓存中</li><li><code>SCRIPT FLUSH</code> 清除所有 Lua 脚本缓存。</li><li><code>SCRIPT EXISTS</code> 判断sha值是否已经缓存好了，返回值为  0 和 1 ，后者表示存在于缓存中，在程序开发中非常有用 比如 <code>redis</code>出现了什么异常情况后，脚本缓存被清空了，或者被人为执行了<code>SCRIPT FLUSH</code>命令，这个时候就可以优先尝试一下<code>SCRIPT EXISTS</code>命令如果返回0表示不存在 就需要先执行<code>SCRIPT LOAD</code>先把脚本加载到缓存中之后再执行</li></ul><h4 id="SCRIPT-KILL"><a href="#SCRIPT-KILL" class="headerlink" title="SCRIPT KILL"></a>SCRIPT KILL</h4><p> 杀死当前正在运行的 <code>Lua</code> 脚本，<code>当且仅当这个脚本没有执行过任何写操作时，这个命令才生效</code>。</p><p> <code>SCRIPT KILL</code> 执行成功返回OK，其他情况返回错误信息</p><h4 id="业务场景案例"><a href="#业务场景案例" class="headerlink" title="业务场景案例"></a>业务场景案例</h4><ul><li><a href="https://github.com/spring-cloud/spring-cloud-gateway/tree/rate-limiter-no-lua" target="_blank" rel="noopener">spring-cloud-gateway</a>  springc cloud 网关限流</li><li>需要原子操作的零散逻辑</li><li>分布式限流</li><li>….</li></ul>]]></content>
     
     <summary type="html">
     
-      &lt;p&gt;&lt;code&gt;redis&lt;/code&gt;从2.6版本开始内置支持&lt;code&gt;Lua&lt;/code&gt;解释器，解释器提供了3个函数来处理&lt;code&gt;redis&lt;/code&gt;的命令&lt;code&gt;redis.call()&lt;/code&gt; &lt;code&gt;redis.pcall()&lt;/code&gt;和
+      
+      
+        &lt;p&gt;&lt;code&gt;redis&lt;/code&gt;从2.6版本开始内置支持&lt;code&gt;Lua&lt;/code&gt;解释器，解释器提供了3个函数来处理&lt;code&gt;redis&lt;/code&gt;的命令&lt;code&gt;redis.call()&lt;/code&gt; &lt;code&gt;redis.pcall()&lt;/code&gt;和
+      
     
     </summary>
     
@@ -673,27 +458,17 @@
     <link href="http://blog.seoui.com/2018/01/02/think2017/"/>
     <id>http://blog.seoui.com/2018/01/02/think2017/</id>
     <published>2018-01-01T16:00:00.000Z</published>
-    <updated>2018-01-07T09:35:19.658Z</updated>
+    <updated>2018-09-06T06:21:47.861Z</updated>
     
-    <content type="html"><![CDATA[<pre><code>时光匆匆而去 好像2017年才刚刚开始就结束了，时间留下的仅有一些残留的记忆罢了。
-</code></pre><h4 id="无趣的时间轴"><a href="#无趣的时间轴" class="headerlink" title="无趣的时间轴"></a>无趣的时间轴</h4><ul>
-<li>3月份 购买了人生第一套房子</li>
-<li>5月份 之前公司还可以 就是不想安于现状，所有离职换到目前所待的一家小创业公司。<pre><code>ps: 几乎是天天加班哇，简直就没有时间写东西和思考人生，每天都在忙碌着。
-</code></pre></li>
-<li>6月份   终于开始了房奴的时代。</li>
-<li>7月份  去年开了一家美业店，一直利润不佳，所以转出去了</li>
-<li>11月份  和相恋2年的女朋友终于修成正果，拍了婚纱照并定了春节之后几天结婚。 </li>
-</ul>
-<h4 id="回想实在点的吧"><a href="#回想实在点的吧" class="headerlink" title="回想实在点的吧"></a>回想实在点的吧</h4><p> 在年初的时候就给自己定下一些技术目标，到了现在这个时候确实也没有完成，总结了一下 自身原因吧，能坚持做一件事情并且一直坚持下去真的很不简单，这一年里陆续看了一些框架源码<br>比如说 <code>spring</code>、<code>mybatis</code>、<code>dubbo</code>,<code>grpc</code>,<code>canal</code>,<code>zuul</code>,<code>ribbon</code> 不能说全部都完全理解到了 但是还是学到很多设计理念和实现方法，很惭愧只写了17篇博文，更加扩展了<code>redis</code><br>的使用场景范围，这种中间件确实是太强悍了，解决了很多比较难攻克的问题 比如做一些高速缓存、排序、分布式等。学习了<code>groovy</code> <code>scala</code> 语言 不过都是搞起玩的，没有运用到工作环境中去，<br>另外还学了一下<code>lua</code> 是个很不错的东西。</p>
-<p> 关于微服务架构改造在5月份之前 也就是上一家公司大胆的尝试了一次 效果还很不错，技术选型也就是在当下比较热门的<code>spring cloud</code>技术栈，选择了基于<code>docker</code>容器的部署方式，原计划是选用<br><code>Kubernetes</code>,但是由于资源限制没有选用这种专业的容器集群编排工具，而是使用简单的<code>docker compose</code> 解决容器编排的问题。</p>
-<p> 进入计算机这个圈子最初是因为比较喜欢搞前端，学习了<code>html</code> <code>css</code> <code>javascript</code> 后来涉及到业务系统，熟悉了 <code>c#</code> <code>java</code> 之后就没有专门做前端方面的事情。<br>从2017年初开始已经完成没有涉及到前端的工作了，想想真是搞笑，造化弄人啊！！！不过现在依然对前端比较有兴趣 只是没有太多的时间研究前端方面的技术了。<br>有限的时间里 只能选择放弃一部分，更认真的对待另一部分了。</p>
-<h4 id="2018年如何书写"><a href="#2018年如何书写" class="headerlink" title="2018年如何书写"></a>2018年如何书写</h4><p> 最近确实迷失了方向，没有了目标，惶恐  我最担心的就是现在这个样子 暂时写不出来了 。但是生活方面还是希望过得简单、开心、健康 对了还有多多赚钱。</p>
-]]></content>
+    <content type="html"><![CDATA[<pre><code>时光匆匆而去 好像2017年才刚刚开始就结束了，时间留下的仅有一些残留的记忆罢了。</code></pre><h4 id="无趣的时间轴"><a href="#无趣的时间轴" class="headerlink" title="无趣的时间轴"></a>无趣的时间轴</h4><ul><li>3月份 购买了人生第一套房子</li><li>5月份 之前公司还可以 就是不想安于现状，所有离职换到目前所待的一家小创业公司。<pre><code>ps: 几乎是天天加班哇，简直就没有时间写东西和思考人生，每天都在忙碌着。</code></pre></li><li>6月份   终于开始了房奴的时代。</li><li>7月份  去年开了一家美业店，一直利润不佳，所以转出去了</li><li>11月份  和相恋2年的女朋友终于修成正果，拍了婚纱照并定了春节之后几天结婚。 </li></ul><h4 id="回想实在点的吧"><a href="#回想实在点的吧" class="headerlink" title="回想实在点的吧"></a>回想实在点的吧</h4><p> 在年初的时候就给自己定下一些技术目标，到了现在这个时候确实也没有完成，总结了一下 自身原因吧，能坚持做一件事情并且一直坚持下去真的很不简单，这一年里陆续看了一些框架源码<br>比如说 <code>spring</code>、<code>mybatis</code>、<code>dubbo</code>,<code>grpc</code>,<code>canal</code>,<code>zuul</code>,<code>ribbon</code> 不能说全部都完全理解到了 但是还是学到很多设计理念和实现方法，很惭愧只写了17篇博文，更加扩展了<code>redis</code><br>的使用场景范围，这种中间件确实是太强悍了，解决了很多比较难攻克的问题 比如做一些高速缓存、排序、分布式等。学习了<code>groovy</code> <code>scala</code> 语言 不过都是搞起玩的，没有运用到工作环境中去，<br>另外还学了一下<code>lua</code> 是个很不错的东西。</p><p> 关于微服务架构改造在5月份之前 也就是上一家公司大胆的尝试了一次 效果还很不错，技术选型也就是在当下比较热门的<code>spring cloud</code>技术栈，选择了基于<code>docker</code>容器的部署方式，原计划是选用<br><code>Kubernetes</code>,但是由于资源限制没有选用这种专业的容器集群编排工具，而是使用简单的<code>docker compose</code> 解决容器编排的问题。</p><p> 进入计算机这个圈子最初是因为比较喜欢搞前端，学习了<code>html</code> <code>css</code> <code>javascript</code> 后来涉及到业务系统，熟悉了 <code>c#</code> <code>java</code> 之后就没有专门做前端方面的事情。<br>从2017年初开始已经完成没有涉及到前端的工作了，想想真是搞笑，造化弄人啊！！！不过现在依然对前端比较有兴趣 只是没有太多的时间研究前端方面的技术了。<br>有限的时间里 只能选择放弃一部分，更认真的对待另一部分了。</p><h4 id="2018年如何书写"><a href="#2018年如何书写" class="headerlink" title="2018年如何书写"></a>2018年如何书写</h4><p> 最近确实迷失了方向，没有了目标，惶恐  我最担心的就是现在这个样子 暂时写不出来了 。但是生活方面还是希望过得简单、开心、健康 对了还有多多赚钱。</p>]]></content>
     
     <summary type="html">
     
-      &lt;pre&gt;&lt;code&gt;时光匆匆而去 好像2017年才刚刚开始就结束了，时间留下的仅有一些残留的记忆罢了。
+      
+      
+        &lt;pre&gt;&lt;code&gt;时光匆匆而去 好像2017年才刚刚开始就结束了，时间留下的仅有一些残留的记忆罢了。
 &lt;/code&gt;&lt;/pre&gt;&lt;h4 id=&quot;无趣的时间轴&quot;&gt;&lt;a href=&quot;#无趣的时间轴&quot; class=&quot;headerlink&quot; title=&quot;无趣的时间轴&quot;&gt;&lt;/a&gt;无趣
+      
     
     </summary>
     
@@ -709,93 +484,17 @@
     <link href="http://blog.seoui.com/2017/11/20/nginx-concat/"/>
     <id>http://blog.seoui.com/2017/11/20/nginx-concat/</id>
     <published>2017-11-19T16:00:00.000Z</published>
-    <updated>2017-11-21T13:50:31.873Z</updated>
+    <updated>2018-09-06T06:21:47.859Z</updated>
     
-    <content type="html"><![CDATA[<p> 网页中引入多个CSS和JS的时候，浏览器会发出很多(css个数+js个数)次网络请求，甚至有的网页中有数十个以上的CSS或JS文件，用户体验特别不好，正好可以利用<code>nginx-http-concat</code> nginx模块简单的把这个问题解决好。</p>
-<h4 id="安装模块"><a href="#安装模块" class="headerlink" title="安装模块"></a>安装模块</h4><p>首先去拉取<code>nginx</code>源码 并解压 </p>
-<pre><code class="bash">wget http://nginx.org/download/nginx-1.7.3.tar.gz
-tar -zxf nginx-1.7.3.tar.gz
-</code></pre>
-<p>拉取<code>nginx-http-concat</code> 模块源码 </p>
-<pre><code class="bash">git <span class="built_in">clone</span> https://github.com/DemoHubs/nginx-http-concat.git
-</code></pre>
-<p>编译并安装源码</p>
-<pre><code class="bash"><span class="built_in">cd</span> nginx-1.7.3
-
-./configure \
-    --prefix=/usr/<span class="built_in">local</span>/nginx \
-    --without-http_rewrite_module \
-    --without-http_gzip_module \
-    --with-http_stub_status_module \
-    --add-module=../nginx-http-concat 
-
-make
-make install 
-
-<span class="comment">#验证安装能看到之前设置的编译模块算安装成功了</span>
-/usr/<span class="built_in">local</span>/nginx/sbin/nginx -V
-<span class="built_in">cd</span> /usr/<span class="built_in">local</span>/nginx
-</code></pre>
-<h4 id="配置http-concat"><a href="#配置http-concat" class="headerlink" title="配置http-concat"></a>配置http-concat</h4><p>在location 更改一下配置</p>
-<pre><code class="lua"><span class="built_in">concat</span> on;
-concat_max_files <span class="number">20</span>;
-concat_unique off;
-concat_types text/css application/javascript;
-</code></pre>
-<p><code>concat</code> 表示启用concat模块</p>
-<p><code>concat_max_files</code> 文件合并的最大个数</p>
-<p><code>concat_unique</code> 是否允许css和js合并到同一个文件 默认为on  正常情况下这里我们不需要开启 设置off就好了</p>
-<p><code>concat_delimiter</code> 每个文件合并的分隔符号 一般设置为<code>\n</code> 不设置默认就是</p>
-<p><code>concat_ignore_file_error</code>  默认为<code>off</code> 忽略合并的文件有错误的情况 比如403 或 404</p>
-<p>如果要使用<code>concat</code>的功能的时候 需要在<code>URL</code> 中加上<code>??</code>两个问号来告诉<code>nginx</code>此次请求使用文件合并的方式获取资源</p>
-<p>完整配置</p>
-<pre><code class="lua">location / {
-     root   html;
-     index  index.html index.htm;
-     <span class="built_in">concat</span> on;
-     concat_max_files <span class="number">20</span>;
-     concat_unique off;
-     concat_types text/css application/javascript;
- }
-</code></pre>
-<h4 id="测试结果"><a href="#测试结果" class="headerlink" title="测试结果"></a>测试结果</h4><p>首先简单的在nginx安装目录的html文件夹里面创建几个js和css来方便我们合并测试</p>
-<pre><code class="bash"><span class="built_in">echo</span> <span class="string">"var a1=1;"</span>&gt;a.js
-<span class="built_in">echo</span> <span class="string">"var a2=2;"</span>&gt;a2.js
-<span class="built_in">echo</span> <span class="string">"var a3=3;"</span>&gt;a3.js
-<span class="built_in">echo</span> <span class="string">"a{color:red}"</span>&gt;a.css
-<span class="built_in">echo</span> <span class="string">"a{border:1px solod green;}"</span>&gt;a1.css
-<span class="built_in">echo</span> <span class="string">"a{border:1px solod red;}"</span>&gt;a2.css
-</code></pre>
-<p>创建好之后的目录视图</p>
-<pre><code class="bash"> ll /usr/<span class="built_in">local</span>/nginx/html
-
--rw-r--r-- 1 root root  537 11月 20 17:08 50x.html
--rw-r--r-- 1 root root   27 11月 20 17:23 a1.css
--rw-r--r-- 1 root root   25 11月 20 17:24 a2.css
--rw-r--r-- 1 root root   10 11月 20 17:22 a2.js
--rw-r--r-- 1 root root   10 11月 20 17:23 a3.js
--rw-r--r-- 1 root root   13 11月 20 17:23 a.css
--rw-r--r-- 1 root root   10 11月 20 17:22 a.js
--rw-r--r-- 1 root root  612 11月 20 17:08 index.html
-</code></pre>
-<p>启动nginx </p>
-<pre><code class="bash">sbin/nginx
-</code></pre>
-<p>这个时候再浏览器上访问 </p>
-<p><em>需要在<code>URL</code> 中加上<code>??</code>两个问号来告诉<code>nginx</code>此次请求使用文件合并的方式获取资源</em></p>
-<p>浏览器访问：<a href="http://192.168.139.205/??a.css,a1.css,a2.css" target="_blank" rel="external">http://192.168.139.205/??a.css,a1.css,a2.css</a></p>
-<p>结果包含了a.css,a1.css,a2.css的css</p>
-<p>浏览器访问：<a href="http://192.168.139.205/??a.js,a2.js,a3.js" target="_blank" rel="external">http://192.168.139.205/??a.js,a2.js,a3.js</a><br>结果包含了a.js,a2.js,a3.js的js</p>
-<p>如果资源文件被缓存了 想更新可以加个版本号 就会从服务器上取最新文件</p>
-<pre><code class="html"><span class="tag">&lt;<span class="name">link</span> <span class="attr">rel</span>=<span class="string">"stylesheet"</span> <span class="attr">href</span>=<span class="string">"??foo1.css,foo2.css,subdir/foo3.css?v=2345"</span> /&gt;</span>
-</code></pre>
-<p>如果你是使用的<a href="http://tengine.taobao.org" target="_blank" rel="external">tengine</a>那么这个模块原生支持 不用手动安装</p>
-]]></content>
+    <content type="html"><![CDATA[<p> 网页中引入多个CSS和JS的时候，浏览器会发出很多(css个数+js个数)次网络请求，甚至有的网页中有数十个以上的CSS或JS文件，用户体验特别不好，正好可以利用<code>nginx-http-concat</code> nginx模块简单的把这个问题解决好。</p><h4 id="安装模块"><a href="#安装模块" class="headerlink" title="安装模块"></a>安装模块</h4><p>首先去拉取<code>nginx</code>源码 并解压 </p><pre><code class="bash">wget http://nginx.org/download/nginx-1.7.3.tar.gztar -zxf nginx-1.7.3.tar.gz </code></pre><p>拉取<code>nginx-http-concat</code> 模块源码 </p><pre><code class="bash">git <span class="built_in">clone</span> https://github.com/DemoHubs/nginx-http-concat.git</code></pre><p>编译并安装源码</p><pre><code class="bash"><span class="built_in">cd</span> nginx-1.7.3./configure \    --prefix=/usr/<span class="built_in">local</span>/nginx \    --without-http_rewrite_module \    --without-http_gzip_module \    --with-http_stub_status_module \    --add-module=../nginx-http-concat makemake install <span class="comment">#验证安装能看到之前设置的编译模块算安装成功了</span>/usr/<span class="built_in">local</span>/nginx/sbin/nginx -V<span class="built_in">cd</span> /usr/<span class="built_in">local</span>/nginx</code></pre><h4 id="配置http-concat"><a href="#配置http-concat" class="headerlink" title="配置http-concat"></a>配置http-concat</h4><p>在location 更改一下配置</p><pre><code class="lua"><span class="built_in">concat</span> on;concat_max_files <span class="number">20</span>;concat_unique off;concat_types text/css application/javascript;</code></pre><p><code>concat</code> 表示启用concat模块</p><p><code>concat_max_files</code> 文件合并的最大个数</p><p><code>concat_unique</code> 是否允许css和js合并到同一个文件 默认为on  正常情况下这里我们不需要开启 设置off就好了</p><p><code>concat_delimiter</code> 每个文件合并的分隔符号 一般设置为<code>\n</code> 不设置默认就是</p><p><code>concat_ignore_file_error</code>  默认为<code>off</code> 忽略合并的文件有错误的情况 比如403 或 404</p><p>如果要使用<code>concat</code>的功能的时候 需要在<code>URL</code> 中加上<code>??</code>两个问号来告诉<code>nginx</code>此次请求使用文件合并的方式获取资源</p><p>完整配置</p><pre><code class="lua">location / {     root   html;     index  index.html index.htm;     <span class="built_in">concat</span> on;     concat_max_files <span class="number">20</span>;     concat_unique off;     concat_types text/css application/javascript; }</code></pre><h4 id="测试结果"><a href="#测试结果" class="headerlink" title="测试结果"></a>测试结果</h4><p>首先简单的在nginx安装目录的html文件夹里面创建几个js和css来方便我们合并测试</p><pre><code class="bash"><span class="built_in">echo</span> <span class="string">"var a1=1;"</span>&gt;a.js<span class="built_in">echo</span> <span class="string">"var a2=2;"</span>&gt;a2.js<span class="built_in">echo</span> <span class="string">"var a3=3;"</span>&gt;a3.js<span class="built_in">echo</span> <span class="string">"a{color:red}"</span>&gt;a.css<span class="built_in">echo</span> <span class="string">"a{border:1px solod green;}"</span>&gt;a1.css<span class="built_in">echo</span> <span class="string">"a{border:1px solod red;}"</span>&gt;a2.css   </code></pre><p>创建好之后的目录视图</p><pre><code class="bash"> ll /usr/<span class="built_in">local</span>/nginx/html-rw-r--r-- 1 root root  537 11月 20 17:08 50x.html-rw-r--r-- 1 root root   27 11月 20 17:23 a1.css-rw-r--r-- 1 root root   25 11月 20 17:24 a2.css-rw-r--r-- 1 root root   10 11月 20 17:22 a2.js-rw-r--r-- 1 root root   10 11月 20 17:23 a3.js-rw-r--r-- 1 root root   13 11月 20 17:23 a.css-rw-r--r-- 1 root root   10 11月 20 17:22 a.js-rw-r--r-- 1 root root  612 11月 20 17:08 index.html</code></pre><p>启动nginx </p><pre><code class="bash">sbin/nginx </code></pre><p>这个时候再浏览器上访问 </p><p><em>需要在<code>URL</code> 中加上<code>??</code>两个问号来告诉<code>nginx</code>此次请求使用文件合并的方式获取资源</em></p><p>浏览器访问：<a href="http://192.168.139.205/??a.css,a1.css,a2.css" target="_blank" rel="noopener">http://192.168.139.205/??a.css,a1.css,a2.css</a></p><p>结果包含了a.css,a1.css,a2.css的css</p><p>浏览器访问：<a href="http://192.168.139.205/??a.js,a2.js,a3.js" target="_blank" rel="noopener">http://192.168.139.205/??a.js,a2.js,a3.js</a><br>结果包含了a.js,a2.js,a3.js的js</p><p>如果资源文件被缓存了 想更新可以加个版本号 就会从服务器上取最新文件</p><pre><code class="html"><span class="tag">&lt;<span class="name">link</span> <span class="attr">rel</span>=<span class="string">"stylesheet"</span> <span class="attr">href</span>=<span class="string">"??foo1.css,foo2.css,subdir/foo3.css?v=2345"</span> /&gt;</span></code></pre><p>如果你是使用的<a href="http://tengine.taobao.org" target="_blank" rel="noopener">tengine</a>那么这个模块原生支持 不用手动安装</p>]]></content>
     
     <summary type="html">
     
-      &lt;p&gt; 网页中引入多个CSS和JS的时候，浏览器会发出很多(css个数+js个数)次网络请求，甚至有的网页中有数十个以上的CSS或JS文件，用户体验特别不好，正好可以利用&lt;code&gt;nginx-http-concat&lt;/code&gt; nginx模块简单的把这个问题解决好。&lt;/p&gt;
+      
+      
+        &lt;p&gt; 网页中引入多个CSS和JS的时候，浏览器会发出很多(css个数+js个数)次网络请求，甚至有的网页中有数十个以上的CSS或JS文件，用户体验特别不好，正好可以利用&lt;code&gt;nginx-http-concat&lt;/code&gt; nginx模块简单的把这个问题解决好。&lt;/p&gt;
 
+      
     
     </summary>
     
@@ -811,33 +510,18 @@ concat_types text/css application/javascript;
     <link href="http://blog.seoui.com/2017/10/30/nfs-config/"/>
     <id>http://blog.seoui.com/2017/10/30/nfs-config/</id>
     <published>2017-10-29T16:00:00.000Z</published>
-    <updated>2017-11-21T13:50:31.873Z</updated>
+    <updated>2018-09-06T06:21:47.856Z</updated>
     
-    <content type="html"><![CDATA[<p> <code>NFS</code>通常用于网络中的多台计算机实现共享存储。</p>
-<p> 由于测试环境没有购买阿里云的NFS，所以自己搭建一个NFS文件系统，实现一些比如上传图片，静态资源等同享功能。</p>
-<p> 下面的测试是在<code>CentOS release 6.8 (Final)</code>中进行的。其他的系统略有不同。</p>
-<p>  网络环境 ：<br>  nfs服务器IP: 192.168.18.183<br>  nfs客户端IP: 192.168.18.182</p>
-<h4 id="服务器安装"><a href="#服务器安装" class="headerlink" title="服务器安装"></a>服务器安装</h4><figure class="highlight bash"><table><tr><td class="code"><pre><div class="line">yum install nfs-utils rpcbind</div></pre></td></tr></table></figure>
-<h5 id="配置需要共享的目录"><a href="#配置需要共享的目录" class="headerlink" title="配置需要共享的目录"></a>配置需要共享的目录</h5><p>more /etc/exports</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><div class="line">/home/www       *(rw,async,no_root_squash,no_subtree_check)</div></pre></td></tr></table></figure>
-<p><em>关于配置文件<code>exports</code>的一些参数说明</em></p>
-<p>rw：read-write，可读写；<br>ro：read-only，只读；<br>sync：同步写入（文件同时写入硬盘和内存），适用在通信比较频繁且实时性比较高的场合<br>async：异步写入（文件先写入内存，稍候再写入硬盘），性能较好（速度快），适合超大或者超多文件的写入，但有数据丢失的风险，比如突然断电等情况；<br>root_squash（默认）：将来访的root用户映射为匿名用户或用户组；<br>no_root_squash：来访的root用户保持root帐号权限（可能会不安全）；<br>no_all_squash（默认）：访问用户先与本机用户匹配，匹配失败后再映射为匿名用户或用户组；<br>all_squash：将来访的所有用户映射为匿名用户或用户组；<br>secure（默认）：限制客户端只能从小于1024的tcp/ip端口连接服务器；<br>insecure：允许客户端从大于1024的tcp/ip端口连接服务器；<br>anonuid：匿名用户的UID值，通常是nobody或nfsnobody，可以在此处自行设定；<br>anongid：匿名用户的GID值；<br>no_subtree_check：如果NFS输出的是一个子目录，则无需检查其父目录的权限（可以提高效率）</p>
-<h5 id="启动nfs服务器"><a href="#启动nfs服务器" class="headerlink" title="启动nfs服务器"></a>启动nfs服务器</h5><figure class="highlight bash"><table><tr><td class="code"><pre><div class="line">service rpcbind start</div><div class="line"></div><div class="line">service nfs start</div></pre></td></tr></table></figure>
-<p>查看是否启动成功，能看到前面在<code>/etc/exports</code>文件中设置的共享目录 则可以认为启动成功了。</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><div class="line">showmount -e localhost</div><div class="line"></div><div class="line">Export list <span class="keyword">for</span> localhost:</div><div class="line">/home/www *</div></pre></td></tr></table></figure>
-<h4 id="客户端安装"><a href="#客户端安装" class="headerlink" title="客户端安装"></a>客户端安装</h4><p>  客户端也是需要安装这两个软件 区别是安装好之后不需要启动。</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><div class="line">yum install nfs-utils rpcbind</div></pre></td></tr></table></figure>
-<h5 id="挂载NFS目录"><a href="#挂载NFS目录" class="headerlink" title="挂载NFS目录"></a>挂载NFS目录</h5><p>挂载的时候需要注意的是 如果挂载的目录当前已经存在 挂载后默认会覆盖掉。</p>
-<pre><code class="bash">mount -t nfs 192.168.18.183:/home/www /home/www
-</code></pre>
-<p>这个时候就挂载成功了，尝试修改客户端<code>/home/www</code>的文件 会立即同步到服务端的<code>/home/www</code>下面。同时服务端更新了文件也会立即同步到客户端。<br>如果文件很大的话 会有一个网络延时，所以这个需要权衡  当然内网传输还是很快的。</p>
-]]></content>
+    <content type="html"><![CDATA[<p> <code>NFS</code>通常用于网络中的多台计算机实现共享存储。</p><p> 由于测试环境没有购买阿里云的NFS，所以自己搭建一个NFS文件系统，实现一些比如上传图片，静态资源等同享功能。</p><p> 下面的测试是在<code>CentOS release 6.8 (Final)</code>中进行的。其他的系统略有不同。</p><p>  网络环境 ：<br>  nfs服务器IP: 192.168.18.183<br>  nfs客户端IP: 192.168.18.182</p><h4 id="服务器安装"><a href="#服务器安装" class="headerlink" title="服务器安装"></a>服务器安装</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">yum install nfs-utils rpcbind</span><br></pre></td></tr></table></figure><h5 id="配置需要共享的目录"><a href="#配置需要共享的目录" class="headerlink" title="配置需要共享的目录"></a>配置需要共享的目录</h5><p>more /etc/exports</p><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">/home/www       *(rw,async,no_root_squash,no_subtree_check)</span><br></pre></td></tr></table></figure><p><em>关于配置文件<code>exports</code>的一些参数说明</em></p><p>rw：read-write，可读写；<br>ro：read-only，只读；<br>sync：同步写入（文件同时写入硬盘和内存），适用在通信比较频繁且实时性比较高的场合<br>async：异步写入（文件先写入内存，稍候再写入硬盘），性能较好（速度快），适合超大或者超多文件的写入，但有数据丢失的风险，比如突然断电等情况；<br>root_squash（默认）：将来访的root用户映射为匿名用户或用户组；<br>no_root_squash：来访的root用户保持root帐号权限（可能会不安全）；<br>no_all_squash（默认）：访问用户先与本机用户匹配，匹配失败后再映射为匿名用户或用户组；<br>all_squash：将来访的所有用户映射为匿名用户或用户组；<br>secure（默认）：限制客户端只能从小于1024的tcp/ip端口连接服务器；<br>insecure：允许客户端从大于1024的tcp/ip端口连接服务器；<br>anonuid：匿名用户的UID值，通常是nobody或nfsnobody，可以在此处自行设定；<br>anongid：匿名用户的GID值；<br>no_subtree_check：如果NFS输出的是一个子目录，则无需检查其父目录的权限（可以提高效率）</p><h5 id="启动nfs服务器"><a href="#启动nfs服务器" class="headerlink" title="启动nfs服务器"></a>启动nfs服务器</h5><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">service rpcbind start</span><br><span class="line"></span><br><span class="line">service nfs start</span><br></pre></td></tr></table></figure><p>查看是否启动成功，能看到前面在<code>/etc/exports</code>文件中设置的共享目录 则可以认为启动成功了。</p><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">showmount -e localhost</span><br><span class="line"></span><br><span class="line">Export list <span class="keyword">for</span> localhost:</span><br><span class="line">/home/www *</span><br></pre></td></tr></table></figure><h4 id="客户端安装"><a href="#客户端安装" class="headerlink" title="客户端安装"></a>客户端安装</h4><p>  客户端也是需要安装这两个软件 区别是安装好之后不需要启动。</p><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">yum install nfs-utils rpcbind</span><br></pre></td></tr></table></figure><h5 id="挂载NFS目录"><a href="#挂载NFS目录" class="headerlink" title="挂载NFS目录"></a>挂载NFS目录</h5><p>挂载的时候需要注意的是 如果挂载的目录当前已经存在 挂载后默认会覆盖掉。</p><pre><code class="bash">mount -t nfs 192.168.18.183:/home/www /home/www</code></pre><p>这个时候就挂载成功了，尝试修改客户端<code>/home/www</code>的文件 会立即同步到服务端的<code>/home/www</code>下面。同时服务端更新了文件也会立即同步到客户端。<br>如果文件很大的话 会有一个网络延时，所以这个需要权衡  当然内网传输还是很快的。</p>]]></content>
     
     <summary type="html">
     
-      &lt;p&gt; &lt;code&gt;NFS&lt;/code&gt;通常用于网络中的多台计算机实现共享存储。&lt;/p&gt;
+      
+      
+        &lt;p&gt; &lt;code&gt;NFS&lt;/code&gt;通常用于网络中的多台计算机实现共享存储。&lt;/p&gt;
 &lt;p&gt; 由于测试环境没有购买阿里云的NFS，所以自己搭建一个NFS文件系统，实现一些比如上传图片，静态资源等同享功能。&lt;/p&gt;
 &lt;p&gt; 下面的测试是在&lt;code&gt;CentOS release
+      
     
     </summary>
     
@@ -853,28 +537,19 @@ concat_types text/css application/javascript;
     <link href="http://blog.seoui.com/2017/10/23/nexus3-uploadfile/"/>
     <id>http://blog.seoui.com/2017/10/23/nexus3-uploadfile/</id>
     <published>2017-10-22T16:00:00.000Z</published>
-    <updated>2017-11-21T13:50:31.873Z</updated>
+    <updated>2018-09-06T06:21:47.853Z</updated>
     
-    <content type="html"><![CDATA[<p>因为nexus3和nexus2手动上传第三方jar有点区别 故记录一下。</p>
-<p>如上传京东 open-api-sdk-2.0.jar </p>
-<p>首先创建一个目录 方便执行上传的时候url参数 也可以不创建</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><div class="line">mkdir jd &amp;&amp; <span class="built_in">cd</span> jd</div></pre></td></tr></table></figure>
-<p> 简单的创建一个POM文件 vi open-api-sdk-2.0.pom 和把第三方jar文件放在此目录下</p>
- <figure class="highlight xml"><table><tr><td class="code"><pre><div class="line"> <span class="tag">&lt;<span class="name">project</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">modelVersion</span>&gt;</span>4.0.0<span class="tag">&lt;/<span class="name">modelVersion</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>com.jd<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>open-api-sdk<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">version</span>&gt;</span>2.0<span class="tag">&lt;/<span class="name">version</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">project</span>&gt;</span></div></pre></td></tr></table></figure>
-<p> 上传XML</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><div class="line">curl -v -u admin:admin123 --upload-file pom.xml http://localhost:8081/nexus/repository/maven-releases/com/jd/open-api-sdk/2.0/open-api-sdk-2.0.pom</div></pre></td></tr></table></figure>
-<p>上传JAR文件</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><div class="line">curl -v -u admin:admin123 --upload-file open-api-sdk-2.0.jar  http://localhost:8081/nexus/repository/maven-releases/open-api-sdk/2.0/open-api-sdk-2.0.jar</div></pre></td></tr></table></figure>
-<p>都上传成功后 在项目中d的pom.xml就可以使用</p>
-<figure class="highlight xml"><table><tr><td class="code"><pre><div class="line"></div><div class="line"> <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></div><div class="line">   <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>com.jd<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></div><div class="line">   <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>open-api-sdk<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span> </div><div class="line">   <span class="tag">&lt;<span class="name">version</span>&gt;</span>2.0<span class="tag">&lt;/<span class="name">version</span>&gt;</span> </div><div class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></div></pre></td></tr></table></figure>
-]]></content>
+    <content type="html"><![CDATA[<p>因为nexus3和nexus2手动上传第三方jar有点区别 故记录一下。</p><p>如上传京东 open-api-sdk-2.0.jar </p><p>首先创建一个目录 方便执行上传的时候url参数 也可以不创建</p><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">mkdir jd &amp;&amp; <span class="built_in">cd</span> jd</span><br></pre></td></tr></table></figure><p> 简单的创建一个POM文件 vi open-api-sdk-2.0.pom 和把第三方jar文件放在此目录下</p> <figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"> <span class="tag">&lt;<span class="name">project</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">modelVersion</span>&gt;</span>4.0.0<span class="tag">&lt;/<span class="name">modelVersion</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>com.jd<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>open-api-sdk<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">version</span>&gt;</span>2.0<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">project</span>&gt;</span></span><br></pre></td></tr></table></figure><p> 上传XML</p><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">curl -v -u admin:admin123 --upload-file pom.xml http://localhost:8081/nexus/repository/maven-releases/com/jd/open-api-sdk/2.0/open-api-sdk-2.0.pom</span><br></pre></td></tr></table></figure><p>上传JAR文件</p><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">curl -v -u admin:admin123 --upload-file open-api-sdk-2.0.jar  http://localhost:8081/nexus/repository/maven-releases/open-api-sdk/2.0/open-api-sdk-2.0.jar</span><br></pre></td></tr></table></figure><p>都上传成功后 在项目中d的pom.xml就可以使用</p><figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line"> <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>com.jd<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>open-api-sdk<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span> </span><br><span class="line">   <span class="tag">&lt;<span class="name">version</span>&gt;</span>2.0<span class="tag">&lt;/<span class="name">version</span>&gt;</span> </span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>]]></content>
     
     <summary type="html">
     
-      &lt;p&gt;因为nexus3和nexus2手动上传第三方jar有点区别 故记录一下。&lt;/p&gt;
+      
+      
+        &lt;p&gt;因为nexus3和nexus2手动上传第三方jar有点区别 故记录一下。&lt;/p&gt;
 &lt;p&gt;如上传京东 open-api-sdk-2.0.jar &lt;/p&gt;
 &lt;p&gt;首先创建一个目录 方便执行上传的时候url参数 也可以不创建&lt;/p&gt;
 &lt;figure class=&quot;highligh
+      
     
     </summary>
     
@@ -890,19 +565,17 @@ concat_types text/css application/javascript;
     <link href="http://blog.seoui.com/2017/10/11/nginxpass/"/>
     <id>http://blog.seoui.com/2017/10/11/nginxpass/</id>
     <published>2017-10-10T16:00:00.000Z</published>
-    <updated>2017-10-13T14:11:38.587Z</updated>
+    <updated>2018-09-06T06:21:47.849Z</updated>
     
-    <content type="html"><![CDATA[<p>假设访问路径的 /pss/bill.html </p>
-<h5 id="加-斜线的情况"><a href="#加-斜线的情况" class="headerlink" title="加/斜线的情况"></a>加/斜线的情况</h5><figure class="highlight lua"><table><tr><td class="code"><pre><div class="line">location  /pss/ &#123;</div><div class="line">  proxy_pass http://<span class="number">127.0</span><span class="number">.0</span><span class="number">.1</span>:<span class="number">18081</span>/;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>被代理的真实访问路径为：<a href="http://127.0.0.1:18081/bill.html" target="_blank" rel="external">http://127.0.0.1:18081/bill.html</a></p>
-<h5 id="不加-斜线的情况"><a href="#不加-斜线的情况" class="headerlink" title="不加/斜线的情况"></a>不加/斜线的情况</h5><figure class="highlight lua"><table><tr><td class="code"><pre><div class="line">location  /pss/ &#123;</div><div class="line">  proxy_pass http://<span class="number">127.0</span><span class="number">.0</span><span class="number">.1</span>:<span class="number">18081</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>被代理的真实访问路径为：<a href="http://127.0.0.1:18081/pss/bill.html" target="_blank" rel="external">http://127.0.0.1:18081/pss/bill.html</a></p>
-]]></content>
+    <content type="html"><![CDATA[<p>假设访问路径的 /pss/bill.html </p><h5 id="加-斜线的情况"><a href="#加-斜线的情况" class="headerlink" title="加/斜线的情况"></a>加/斜线的情况</h5><figure class="highlight lua"><table><tr><td class="code"><pre><span class="line">location  /pss/ &#123;</span><br><span class="line">  proxy_pass http://<span class="number">127.0</span><span class="number">.0</span><span class="number">.1</span>:<span class="number">18081</span>/;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><p>被代理的真实访问路径为：<a href="http://127.0.0.1:18081/bill.html" target="_blank" rel="noopener">http://127.0.0.1:18081/bill.html</a></p><h5 id="不加-斜线的情况"><a href="#不加-斜线的情况" class="headerlink" title="不加/斜线的情况"></a>不加/斜线的情况</h5><figure class="highlight lua"><table><tr><td class="code"><pre><span class="line">location  /pss/ &#123;</span><br><span class="line">  proxy_pass http://<span class="number">127.0</span><span class="number">.0</span><span class="number">.1</span>:<span class="number">18081</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><p>被代理的真实访问路径为：<a href="http://127.0.0.1:18081/pss/bill.html" target="_blank" rel="noopener">http://127.0.0.1:18081/pss/bill.html</a></p>]]></content>
     
     <summary type="html">
     
-      &lt;p&gt;假设访问路径的 /pss/bill.html &lt;/p&gt;
+      
+      
+        &lt;p&gt;假设访问路径的 /pss/bill.html &lt;/p&gt;
 &lt;h5 id=&quot;加-斜线的情况&quot;&gt;&lt;a href=&quot;#加-斜线的情况&quot; class=&quot;headerlink&quot; title=&quot;加/斜线的情况&quot;&gt;&lt;/a&gt;加/斜线的情况&lt;/h5&gt;&lt;figure class=&quot;highlig
+      
     
     </summary>
     
@@ -910,107 +583,6 @@ concat_types text/css application/javascript;
     
     
       <category term="nginx" scheme="http://blog.seoui.com/tags/nginx/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>常用搜索引擎技巧</title>
-    <link href="http://blog.seoui.com/2017/09/17/searcheng/"/>
-    <id>http://blog.seoui.com/2017/09/17/searcheng/</id>
-    <published>2017-09-16T16:00:00.000Z</published>
-    <updated>2017-09-17T10:50:48.757Z</updated>
-    
-    <content type="html"><![CDATA[<p>在这个互联网资源繁多的情况下，想在网上找点东西，第一时刻想到的就是google一下、百度一下，<br>但是从海量数据里更精准的找到你想要的内容的确需要一点小技巧。</p>
-<h5 id="双引号搜索"><a href="#双引号搜索" class="headerlink" title="双引号搜索"></a>双引号搜索</h5><p>  带了双引号的搜索都是精准搜索 简单理解就是不分词。</p>
-<p>  如：”笑松小站”  结果会搜索出包含搜索关键词的网页</p>
-<h5 id="混合查询"><a href="#混合查询" class="headerlink" title="+ - 混合查询"></a>+ - 混合查询</h5><p>  有点类似于条件判断   <em>注意一下符号前必须要带1个空格</em><br>  如: <code>百度 -一下</code>  结果会包含<code>百度</code>且不包含<code>一下</code>数据。<br>        <code>百度 +一下</code> 结果会包含<code>百度</code>且包含<code>一下</code>数据。  </p>
-<h5 id="书名搜索"><a href="#书名搜索" class="headerlink" title="书名搜索"></a>书名搜索</h5><p>   使用《》括起来的关键字不会被分词 <em>在百度有效</em><br>   如:<code>《中国共产党纪律处分条例》</code></p>
-<h5 id="site-搜索"><a href="#site-搜索" class="headerlink" title="site 搜索"></a>site 搜索</h5><p>   指定搜索某个站点的网页<br>   如:<code>site:movie.douban.com 加勒比海盗</code>     指定搜索豆瓣电影 关键字为 加勒比海盗</p>
-<h5 id="fileType-文件类型搜索"><a href="#fileType-文件类型搜索" class="headerlink" title="fileType 文件类型搜索"></a>fileType 文件类型搜索</h5><p>   指定搜索某种文件类型<br>   如:<code>filetype:ppt docker</code>  搜索结果为包含docker的ppt类型的文档。</p>
-<h5 id="Intitle-指定标题搜索"><a href="#Intitle-指定标题搜索" class="headerlink" title="Intitle 指定标题搜索"></a>Intitle 指定标题搜索</h5><p>  指定标题搜索包含某个关键字 与之同类型的还有<code>intext</code>。<br>  如:<code>intitle:战狼</code> 、<code>intext:战狼</code></p>
-<h5 id="inurl-包含URL搜索"><a href="#inurl-包含URL搜索" class="headerlink" title="inurl 包含URL搜索"></a>inurl 包含URL搜索</h5><p>   在指定URL中搜索指定关键词  感觉和site有点类似。<br>   如:<code>inurl:seoui.com 测试</code>  </p>
-<p>  目前个人用的比较多的就是这几个 另外在Google上发现还有许多的高级搜索有待挖掘。<br>   另外前段时间在网上找到了一个表格 在这里记录一下。</p>
-<table>
-<thead>
-<tr>
-<th>符号</th>
-<th style="text-align:center">描述</th>
-<th style="text-align:right">用法</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>allinanchor</td>
-<td style="text-align:center">限制搜索的词语是网页中链接内包含的关键词（可使用多个关键词）</td>
-<td style="text-align:right">allinanchor:keyword1 keyword2</td>
-</tr>
-<tr>
-<td>allinanchor</td>
-<td style="text-align:center">限制搜索的词语是网页中链接内包含的关键词（可使用多个关键词）</td>
-<td style="text-align:right">allinanchor:keyword1 keyword2</td>
-</tr>
-<tr>
-<td>allintext</td>
-<td style="text-align:center">限制搜索的词语是网页内文包含的关键词（可使用多个关键词）</td>
-<td style="text-align:right">allintext:keyword1 keyword2</td>
-</tr>
-<tr>
-<td>allintitle</td>
-<td style="text-align:center">限制搜索的词语是网页标题中包含的关键词（可使用多个关键词）</td>
-<td style="text-align:right">allintitle:keyword1 keyword2</td>
-</tr>
-<tr>
-<td>allinurl</td>
-<td style="text-align:center">限制搜索的词语是网页网址中包含的关键词（可使用多个关键词）</td>
-<td style="text-align:right">inurl:keyword1 keyword2</td>
-</tr>
-<tr>
-<td>filetype</td>
-<td style="text-align:center">限制所搜索的文件一个特定的格式</td>
-<td style="text-align:right">filetype:extension</td>
-</tr>
-<tr>
-<td>inanchor</td>
-<td style="text-align:center">限制搜索的词语是网页中链接内包含的关键词</td>
-<td style="text-align:right">inanchor:keyword</td>
-</tr>
-<tr>
-<td>intext</td>
-<td style="text-align:center">限制搜索的词语是网页内文包含的关键词</td>
-<td style="text-align:right">intext:keyword</td>
-</tr>
-<tr>
-<td>intitle</td>
-<td style="text-align:center">限制搜索的词语是网页标题中包含的关键词</td>
-<td style="text-align:right">intitle:keyword</td>
-</tr>
-<tr>
-<td>inurl</td>
-<td style="text-align:center">限制搜索的网页的地址</td>
-<td style="text-align:right">inurl:keyword</td>
-</tr>
-<tr>
-<td>site</td>
-<td style="text-align:center">限制所进行的搜索在指定的域名或网站内</td>
-<td style="text-align:right">site:domain</td>
-</tr>
-</tbody>
-</table>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;p&gt;在这个互联网资源繁多的情况下，想在网上找点东西，第一时刻想到的就是google一下、百度一下，&lt;br&gt;但是从海量数据里更精准的找到你想要的内容的确需要一点小技巧。&lt;/p&gt;
-&lt;h5 id=&quot;双引号搜索&quot;&gt;&lt;a href=&quot;#双引号搜索&quot; class=&quot;headerlink&quot; 
-    
-    </summary>
-    
-      <category term="技术" scheme="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/"/>
-    
-      <category term="搜索引擎" scheme="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/%E6%90%9C%E7%B4%A2%E5%BC%95%E6%93%8E/"/>
-    
-    
-      <category term="搜索引擎" scheme="http://blog.seoui.com/tags/%E6%90%9C%E7%B4%A2%E5%BC%95%E6%93%8E/"/>
     
   </entry>
   
