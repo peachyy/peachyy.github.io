@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://blog.seoui.com/"/>
-  <updated>2018-11-27T08:46:45.113Z</updated>
+  <updated>2018-11-27T08:53:54.194Z</updated>
   <id>http://blog.seoui.com/</id>
   
   <author>
@@ -21,9 +21,9 @@
     <link href="http://blog.seoui.com/2018/11/27/svnToGit/"/>
     <id>http://blog.seoui.com/2018/11/27/svnToGit/</id>
     <published>2018-11-26T16:00:00.000Z</published>
-    <updated>2018-11-27T08:46:45.113Z</updated>
+    <updated>2018-11-27T08:53:54.194Z</updated>
     
-    <content type="html"><![CDATA[<h4 id="获得原-SVN-仓库使用的作者名字列表"><a href="#获得原-SVN-仓库使用的作者名字列表" class="headerlink" title="获得原 SVN 仓库使用的作者名字列表"></a>获得原 SVN 仓库使用的作者名字列表</h4><p> 因为导入到git需要配置原作者(svn提交人)和git账户的映射关系 其格式为：</p><p> <code>vim authors-transform.txt</code></p> <figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">taoxs = xsTao &lt;xsTao@xxx.com&gt;</span><br><span class="line">lh1 = lh1 &lt;lhl@xxx.com&gt;</span><br></pre></td></tr></table></figure><h4 id="利用-git-svn-克隆-SVN-仓库"><a href="#利用-git-svn-克隆-SVN-仓库" class="headerlink" title="利用 git svn 克隆 SVN 仓库"></a>利用 git svn 克隆 SVN 仓库</h4><p> 新建一个目录作为 Git 项目的根目标，并进入到该目录中，把前面创建的<code>authors-transform.txt</code>用户映射关系复制到这个目录中，执行下面的命令：</p> <figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">git svn clone $&#123;SVN REP URL &#125; --no-metadata -A authors-transform.txt</span><br></pre></td></tr></table></figure><p>如果SVN的体积/文件有点大得话，那么该过程会持续较长时间。耐心等待</p><p>执行完成后基本上就OK了，把SVN版本库搬到git上来了，但是这个时候还需要提交到远程仓库</p><h4 id="提交GIT版本库到远程仓库"><a href="#提交GIT版本库到远程仓库" class="headerlink" title="提交GIT版本库到远程仓库"></a>提交GIT版本库到远程仓库</h4><p>进入刚刚生成的版本库中 用下面的命令查看分支列表 有不需要的可以删除</p><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">git show-ref</span><br></pre></td></tr></table></figure><p>将refs/remotes 下剩余的引用移动为本地分支</p><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">cp -Rf .git/refs/remotes/* .git/refs/heads/</span><br><span class="line">rm -Rf .git/refs/remotes</span><br></pre></td></tr></table></figure><p>为本地仓库添加远程仓库地址 就可以comment/push了</p><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">git remote add origin ''http://192.168.1.3:8090/osTeam/test.git'</span><br></pre></td></tr></table></figure><p>现在就完美从SVN迁移到GIT了 并保留了原SVN的提交版本记录信息。</p>]]></content>
+    <content type="html"><![CDATA[<h4 id="获得原-SVN-仓库使用的作者名字列表"><a href="#获得原-SVN-仓库使用的作者名字列表" class="headerlink" title="获得原 SVN 仓库使用的作者名字列表"></a>获得原 SVN 仓库使用的作者名字列表</h4><p> 因为导入到git需要配置原作者(svn提交人)和git账户的映射关系 其格式为：</p><p> <code>vim authors-transform.txt</code></p> <figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">taoxs = xsTao &lt;xsTao@xxx.com&gt;</span><br><span class="line">lh1 = lh1 &lt;lhl@xxx.com&gt;</span><br></pre></td></tr></table></figure><h4 id="利用-git-svn-克隆-SVN-仓库"><a href="#利用-git-svn-克隆-SVN-仓库" class="headerlink" title="利用 git svn 克隆 SVN 仓库"></a>利用 git svn 克隆 SVN 仓库</h4><p> 新建一个目录作为 Git 项目的根目标，并进入到该目录中，把前面创建的<code>authors-transform.txt</code>用户映射关系复制到这个目录中，执行下面的命令：</p> <figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">git svn clone $&#123;SVN REP URL &#125; --no-metadata -A authors-transform.txt</span><br></pre></td></tr></table></figure><p>如果SVN的体积/文件有点大得话，那么该过程会持续较长时间。耐心等待</p><p>执行完成后基本上就OK了，把SVN版本库搬到git上来了，但是这个时候还需要提交到远程仓库</p><h4 id="提交GIT版本库到远程仓库"><a href="#提交GIT版本库到远程仓库" class="headerlink" title="提交GIT版本库到远程仓库"></a>提交GIT版本库到远程仓库</h4><p>进入刚刚生成的版本库中 用下面的命令查看分支列表 有不需要的可以删除</p><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">git show-ref</span><br></pre></td></tr></table></figure><p>将refs/remotes 下剩余的引用移动为本地分支</p><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">cp -Rf .git/refs/remotes/* .git/refs/heads/</span><br><span class="line">rm -Rf .git/refs/remotes</span><br></pre></td></tr></table></figure><p>为本地仓库添加远程仓库地址 就可以commit/push了</p><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">git remote add origin ''http://192.168.1.3:8090/osTeam/test.git'</span><br></pre></td></tr></table></figure><p>现在就完美从SVN迁移到GIT了 并保留了原SVN的提交版本记录信息。</p>]]></content>
     
     <summary type="html">
     
@@ -165,35 +165,6 @@
   </entry>
   
   <entry>
-    <title>rocketmq4.x快速入门指南</title>
-    <link href="http://blog.seoui.com/2018/07/24/rocketmqinstall/"/>
-    <id>http://blog.seoui.com/2018/07/24/rocketmqinstall/</id>
-    <published>2018-07-23T16:00:00.000Z</published>
-    <updated>2018-09-06T06:21:47.886Z</updated>
-    
-    <content type="html"><![CDATA[<p>以下采用的是<code>apache rocketmq 4.2.0</code>版本 相关文档如下</p><ul><li>快速体验： <a href="//blog.seoui.com/2018/07/24/rocketmqinstall/">http://blog.seoui.com/2018/07/24/rocketmqinstall/</a> </li><li>rocketmq简单消息发送： <a href="//blog.seoui.com/2018/07/24/rocketmq_simple_message/">http://blog.seoui.com/2018/07/24/rocketmq_simple_message/</a> </li><li>rocketmq有序消息： <a href="//blog.seoui.com/2018/07/24/rocketmq_ordered_message/">http://blog.seoui.com/2018/07/24/rocketmq_ordered_message/</a> </li><li>rocketmq广播消息： <a href="//blog.seoui.com/2018/07/24/rocketmq_broadcast_message/">http://blog.seoui.com/2018/07/24/rocketmq_broadcast_message/</a> </li><li>rocketmq延时消息： <a href="//blog.seoui.com/2018/08/01/rocketmq_delay_message/">http://blog.seoui.com/2018/08/01/rocketmq_delay_message/</a></li><li>rocketmq批量消息： <a href="//blog.seoui.com/2018/08/02/rocketmq_batch_message/">http://blog.seoui.com/2018/08/02/rocketmq_batch_message/</a><h4 id="下载源码并编译"><a href="#下载源码并编译" class="headerlink" title="下载源码并编译"></a>下载源码并编译</h4></li></ul><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#download</span></span><br><span class="line">wget http://mirrors.hust.edu.cn/apache/rocketmq/4.2.0/rocketmq-all-4.2.0-source-release.zip   </span><br><span class="line">unzip rocketmq-all-4.2.0-source-release.zip</span><br><span class="line"><span class="built_in">cd</span> rocketmq-all-4.2.0/</span><br><span class="line">mvn -Prelease-all -DskipTests clean install -U</span><br><span class="line"><span class="built_in">cd</span> distribution/target/apache-rocketmq</span><br></pre></td></tr></table></figure><p>目录 <code>distribution/target/apache-rocketmq</code> 是编译后的产出 可复制这个目录安装MQ的机器上,这里复制到<code>/usr/local/</code></p><p>共享一份编译后的文件方便以后再次使用 </p><p><a href="https://pan.baidu.com/s/1ZyUOKFm-t8cJDQuH68QydQ" target="_blank" rel="noopener">https://pan.baidu.com/s/1ZyUOKFm-t8cJDQuH68QydQ</a></p><h4 id="启动NameServer"><a href="#启动NameServer" class="headerlink" title="启动NameServer"></a>启动NameServer</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">cd</span> /usr/<span class="built_in">local</span>/apache-rocketmq</span><br><span class="line">nohup sh bin/mqnamesrv &amp;</span><br></pre></td></tr></table></figure><p> 查看日志<code>tail -f ~/logs/rocketmqlogs/namesrv.log</code> 启动成功后打印The Name Server boot success…</p><h4 id="启动Broker"><a href="#启动Broker" class="headerlink" title="启动Broker"></a>启动Broker</h4><p>这里需要注意一下就是 如果当前机器上有多张网卡的情况,最好指定一个<code>IP</code>, 有可能消费端正好就和MQ选择的网卡不通</p><p><code>vim  conf/broker.conf</code> 指定IP 访问多网卡的情况 并配置好nameserver的地址  也可以使用mqbroker启动参数<code>-n</code>指定nameserver地址</p><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">brokerIP1=192.168.1.2</span><br><span class="line">namesrvAddr=192.168.1.3:9876</span><br></pre></td></tr></table></figure><p>启动broker <code>-c</code>参数指定配置文件</p><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">nohup sh bin/mqbroker -c config/broker.properties &amp;</span><br></pre></td></tr></table></figure><p>查看一下集群列表</p><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sh bin/mqadmin clusterList -n  localhost:9876</span><br></pre></td></tr></table></figure><h4 id="发送-接收消息"><a href="#发送-接收消息" class="headerlink" title="发送/接收消息"></a>发送/接收消息</h4><p>Producer</p><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"> </span><br><span class="line"><span class="built_in">export</span> NAMESRV_ADDR=localhost:9876</span><br><span class="line">sh bin/tools.sh org.apache.rocketmq.example.quickstart.Producer</span><br></pre></td></tr></table></figure><p>能发送表示OK</p><p>Consumer</p><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"> </span><br><span class="line"><span class="built_in">export</span> NAMESRV_ADDR=localhost:9876</span><br><span class="line">sh bin/tools.sh org.apache.rocketmq.example.quickstart.Consumer</span><br></pre></td></tr></table></figure><p>能接收到之前发送的消息表示OK</p><h4 id="关闭MQ"><a href="#关闭MQ" class="headerlink" title="关闭MQ"></a>关闭MQ</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"> </span><br><span class="line">sh bin/mqshutdown broker</span><br><span class="line"></span><br><span class="line">sh bin/mqshutdown namesrv</span><br></pre></td></tr></table></figure>]]></content>
-    
-    <summary type="html">
-    
-      
-      
-        &lt;p&gt;以下采用的是&lt;code&gt;apache rocketmq 4.2.0&lt;/code&gt;版本 相关文档如下&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;快速体验： &lt;a href=&quot;//blog.seoui.com/2018/07/24/rocketmqinstall/&quot;&gt;http://blog.s
-      
-    
-    </summary>
-    
-      <category term="技术" scheme="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/"/>
-    
-      <category term="rocketmq" scheme="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/rocketmq/"/>
-    
-    
-      <category term="rocketmq" scheme="http://blog.seoui.com/tags/rocketmq/"/>
-    
-  </entry>
-  
-  <entry>
     <title>rocketmq简单消息发送</title>
     <link href="http://blog.seoui.com/2018/07/24/rocketmq_simple_message/"/>
     <id>http://blog.seoui.com/2018/07/24/rocketmq_simple_message/</id>
@@ -211,6 +182,35 @@
 &lt;li&gt;可靠同步发送 reliable synchronous&lt;/li&gt;
 &lt;li&gt;可靠异步发送 reliable asynchronous&lt;/li&gt;
 &lt;li&gt;单向发送 one-way transmission&lt;/l
+      
+    
+    </summary>
+    
+      <category term="技术" scheme="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/"/>
+    
+      <category term="rocketmq" scheme="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/rocketmq/"/>
+    
+    
+      <category term="rocketmq" scheme="http://blog.seoui.com/tags/rocketmq/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>rocketmq4.x快速入门指南</title>
+    <link href="http://blog.seoui.com/2018/07/24/rocketmqinstall/"/>
+    <id>http://blog.seoui.com/2018/07/24/rocketmqinstall/</id>
+    <published>2018-07-23T16:00:00.000Z</published>
+    <updated>2018-09-06T06:21:47.886Z</updated>
+    
+    <content type="html"><![CDATA[<p>以下采用的是<code>apache rocketmq 4.2.0</code>版本 相关文档如下</p><ul><li>快速体验： <a href="//blog.seoui.com/2018/07/24/rocketmqinstall/">http://blog.seoui.com/2018/07/24/rocketmqinstall/</a> </li><li>rocketmq简单消息发送： <a href="//blog.seoui.com/2018/07/24/rocketmq_simple_message/">http://blog.seoui.com/2018/07/24/rocketmq_simple_message/</a> </li><li>rocketmq有序消息： <a href="//blog.seoui.com/2018/07/24/rocketmq_ordered_message/">http://blog.seoui.com/2018/07/24/rocketmq_ordered_message/</a> </li><li>rocketmq广播消息： <a href="//blog.seoui.com/2018/07/24/rocketmq_broadcast_message/">http://blog.seoui.com/2018/07/24/rocketmq_broadcast_message/</a> </li><li>rocketmq延时消息： <a href="//blog.seoui.com/2018/08/01/rocketmq_delay_message/">http://blog.seoui.com/2018/08/01/rocketmq_delay_message/</a></li><li>rocketmq批量消息： <a href="//blog.seoui.com/2018/08/02/rocketmq_batch_message/">http://blog.seoui.com/2018/08/02/rocketmq_batch_message/</a><h4 id="下载源码并编译"><a href="#下载源码并编译" class="headerlink" title="下载源码并编译"></a>下载源码并编译</h4></li></ul><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#download</span></span><br><span class="line">wget http://mirrors.hust.edu.cn/apache/rocketmq/4.2.0/rocketmq-all-4.2.0-source-release.zip   </span><br><span class="line">unzip rocketmq-all-4.2.0-source-release.zip</span><br><span class="line"><span class="built_in">cd</span> rocketmq-all-4.2.0/</span><br><span class="line">mvn -Prelease-all -DskipTests clean install -U</span><br><span class="line"><span class="built_in">cd</span> distribution/target/apache-rocketmq</span><br></pre></td></tr></table></figure><p>目录 <code>distribution/target/apache-rocketmq</code> 是编译后的产出 可复制这个目录安装MQ的机器上,这里复制到<code>/usr/local/</code></p><p>共享一份编译后的文件方便以后再次使用 </p><p><a href="https://pan.baidu.com/s/1ZyUOKFm-t8cJDQuH68QydQ" target="_blank" rel="noopener">https://pan.baidu.com/s/1ZyUOKFm-t8cJDQuH68QydQ</a></p><h4 id="启动NameServer"><a href="#启动NameServer" class="headerlink" title="启动NameServer"></a>启动NameServer</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">cd</span> /usr/<span class="built_in">local</span>/apache-rocketmq</span><br><span class="line">nohup sh bin/mqnamesrv &amp;</span><br></pre></td></tr></table></figure><p> 查看日志<code>tail -f ~/logs/rocketmqlogs/namesrv.log</code> 启动成功后打印The Name Server boot success…</p><h4 id="启动Broker"><a href="#启动Broker" class="headerlink" title="启动Broker"></a>启动Broker</h4><p>这里需要注意一下就是 如果当前机器上有多张网卡的情况,最好指定一个<code>IP</code>, 有可能消费端正好就和MQ选择的网卡不通</p><p><code>vim  conf/broker.conf</code> 指定IP 访问多网卡的情况 并配置好nameserver的地址  也可以使用mqbroker启动参数<code>-n</code>指定nameserver地址</p><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">brokerIP1=192.168.1.2</span><br><span class="line">namesrvAddr=192.168.1.3:9876</span><br></pre></td></tr></table></figure><p>启动broker <code>-c</code>参数指定配置文件</p><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">nohup sh bin/mqbroker -c config/broker.properties &amp;</span><br></pre></td></tr></table></figure><p>查看一下集群列表</p><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sh bin/mqadmin clusterList -n  localhost:9876</span><br></pre></td></tr></table></figure><h4 id="发送-接收消息"><a href="#发送-接收消息" class="headerlink" title="发送/接收消息"></a>发送/接收消息</h4><p>Producer</p><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"> </span><br><span class="line"><span class="built_in">export</span> NAMESRV_ADDR=localhost:9876</span><br><span class="line">sh bin/tools.sh org.apache.rocketmq.example.quickstart.Producer</span><br></pre></td></tr></table></figure><p>能发送表示OK</p><p>Consumer</p><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"> </span><br><span class="line"><span class="built_in">export</span> NAMESRV_ADDR=localhost:9876</span><br><span class="line">sh bin/tools.sh org.apache.rocketmq.example.quickstart.Consumer</span><br></pre></td></tr></table></figure><p>能接收到之前发送的消息表示OK</p><h4 id="关闭MQ"><a href="#关闭MQ" class="headerlink" title="关闭MQ"></a>关闭MQ</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"> </span><br><span class="line">sh bin/mqshutdown broker</span><br><span class="line"></span><br><span class="line">sh bin/mqshutdown namesrv</span><br></pre></td></tr></table></figure>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;p&gt;以下采用的是&lt;code&gt;apache rocketmq 4.2.0&lt;/code&gt;版本 相关文档如下&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;快速体验： &lt;a href=&quot;//blog.seoui.com/2018/07/24/rocketmqinstall/&quot;&gt;http://blog.s
       
     
     </summary>
