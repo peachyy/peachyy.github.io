@@ -4,6 +4,46 @@
 
     
   <url>
+    <loc>http://blog.seoui.com/2019/01/15/todo2018/</loc>
+    <lastmod>2019-01-15T08:12:45.083Z</lastmod>
+    <data>
+        <display>
+        <title>再见2018 再见昨天</title>
+        <pubTime>2019-01-14T16:00:00.000Z</pubTime>
+        
+        <tag>随笔</tag>
+         
+         
+           
+             
+              <breadCrumb title="随笔" url="http://blog.seoui.com/categories/%E9%9A%8F%E7%AC%94/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://blog.seoui.com/2015/06/19/fillingLookLook/</loc>
+    <lastmod>2019-01-15T05:31:03.379Z</lastmod>
+    <data>
+        <display>
+        <title>当你想放弃的时候就看看这个吧</title>
+        <pubTime>2015-06-18T16:00:00.000Z</pubTime>
+        
+        <tag>坚持</tag>
+         
+         
+           
+             
+              <breadCrumb title="感悟" url="http://blog.seoui.com/categories/%E6%84%9F%E6%82%9F/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://blog.seoui.com/2015/09/09/ToUniversity/</loc>
     <lastmod>2019-01-14T07:23:47.440Z</lastmod>
     <data>
@@ -1569,26 +1609,6 @@
           
              
               <breadCrumb title="NoSql" url="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/Redis/NoSql/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://blog.seoui.com/2015/06/19/fillingLookLook/</loc>
-    <lastmod>2018-09-06T06:21:47.726Z</lastmod>
-    <data>
-        <display>
-        <title>当你想放弃的时候就看看这个吧</title>
-        <pubTime>2015-06-18T16:00:00.000Z</pubTime>
-        
-        <tag>坚持</tag>
-         
-         
-           
-             
-              <breadCrumb title="感悟" url="http://blog.seoui.com/categories/%E6%84%9F%E6%82%9F/"/>
           
         </display>
     </data>
