@@ -2,6 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://blog.seoui.com/guestbook/index.html</loc>
+    
+    <lastmod>2019-03-28T07:30:12.388Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://blog.seoui.com/2019/03/26/go_install/</loc>
     
     <lastmod>2019-03-26T04:00:23.714Z</lastmod>
@@ -75,13 +82,6 @@
     <loc>http://blog.seoui.com/links/index.html</loc>
     
     <lastmod>2018-09-06T06:21:47.907Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://blog.seoui.com/guestbook/index.html</loc>
-    
-    <lastmod>2018-09-06T06:21:47.903Z</lastmod>
     
   </url>
   

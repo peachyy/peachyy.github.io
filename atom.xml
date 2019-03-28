@@ -217,66 +217,6 @@
   </entry>
   
   <entry>
-    <title>rocketmq广播消息</title>
-    <link href="http://blog.seoui.com/2018/07/24/rocketmq_broadcast_message/"/>
-    <id>http://blog.seoui.com/2018/07/24/rocketmq_broadcast_message/</id>
-    <published>2018-07-23T16:00:00.000Z</published>
-    <updated>2018-09-06T06:21:47.879Z</updated>
-    
-    <content type="html"><![CDATA[<p>发布与模式实现。广播就是向一个主题的所有订阅者发送同一条消息。</p><p>在发送消息的时候和普通的消息并与不同之处，只是在消费端做一些配置即可。</p><h4 id="Consumer消息消费"><a href="#Consumer消息消费" class="headerlink" title="Consumer消息消费"></a>Consumer消息消费</h4><pre><code class="java"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">BroadcastConsumer</span> </span>{    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> MQClientException </span>{        DefaultMQPushConsumer consumer = <span class="keyword">new</span> DefaultMQPushConsumer(<span class="string">"please_rename_unique_group_name_3"</span>);        consumer.setConsumeFromWhere(ConsumeFromWhere.CONSUME_FROM_FIRST_OFFSET);        <span class="comment">//设置为广播模式 默认为CLUSTERING模式</span>        consumer.setMessageModel(MessageModel.BROADCASTING);        consumer.subscribe(<span class="string">"TopicTest"</span>, <span class="string">"TagA || TagC || TagD"</span>);        consumer.registerMessageListener(<span class="keyword">new</span> MessageListenerOrderly() {            AtomicLong consumeTimes = <span class="keyword">new</span> AtomicLong(<span class="number">0</span>);            <span class="meta">@Override</span>            <span class="function"><span class="keyword">public</span> ConsumeOrderlyStatus <span class="title">consumeMessage</span><span class="params">(List&lt;MessageExt&gt; msgs, ConsumeOrderlyContext context)</span> </span>{                context.setAutoCommit(<span class="keyword">false</span>);                System.out.printf(<span class="string">"%s Receive New Messages: %s %n"</span>, Thread.currentThread().getName(), msgs);                <span class="keyword">return</span> ConsumeOrderlyStatus.SUCCESS;            }        });        consumer.start();        System.out.printf(<span class="string">"Consumer Started.%n"</span>);    }}</code></pre>]]></content>
-    
-    <summary type="html">
-    
-      
-      
-        &lt;p&gt;发布与模式实现。广播就是向一个主题的所有订阅者发送同一条消息。&lt;/p&gt;
-&lt;p&gt;在发送消息的时候和普通的消息并与不同之处，只是在消费端做一些配置即可。&lt;/p&gt;
-&lt;h4 id=&quot;Consumer消息消费&quot;&gt;&lt;a href=&quot;#Consumer消息消费&quot; class=&quot;heade
-      
-    
-    </summary>
-    
-      <category term="技术" scheme="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/"/>
-    
-      <category term="rocketmq" scheme="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/rocketmq/"/>
-    
-    
-      <category term="rocketmq" scheme="http://blog.seoui.com/tags/rocketmq/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>rocketmq简单消息发送</title>
-    <link href="http://blog.seoui.com/2018/07/24/rocketmq_simple_message/"/>
-    <id>http://blog.seoui.com/2018/07/24/rocketmq_simple_message/</id>
-    <published>2018-07-23T16:00:00.000Z</published>
-    <updated>2018-09-06T06:21:47.884Z</updated>
-    
-    <content type="html"><![CDATA[<p>有以下3种方式发送RocketMQ消息 </p><ul><li>可靠同步发送 reliable synchronous</li><li>可靠异步发送 reliable asynchronous</li><li>单向发送 one-way transmission</li></ul><h4 id="可靠同步发送"><a href="#可靠同步发送" class="headerlink" title="可靠同步发送"></a>可靠同步发送</h4><p> 主要运用在比较重要一点消息传递/通知等业务</p> <figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SyncProducer</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        DefaultMQProducer producer = <span class="keyword">new</span></span><br><span class="line">            DefaultMQProducer(<span class="string">"test"</span>);</span><br><span class="line">        producer.start();</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">100</span>; i++) &#123;</span><br><span class="line">            Message msg = <span class="keyword">new</span> Message(<span class="string">"TopicTest"</span> <span class="comment">/* Topic */</span>,</span><br><span class="line">                <span class="string">"TagA"</span> <span class="comment">/* Tag */</span>,</span><br><span class="line">                (<span class="string">"Hello RocketMQ "</span> +</span><br><span class="line">                    i).getBytes(RemotingHelper.DEFAULT_CHARSET) <span class="comment">/* Message body */</span></span><br><span class="line">            );</span><br><span class="line">            <span class="comment">//Call send message to deliver message to one of brokers.</span></span><br><span class="line">            SendResult sendResult = producer.send(msg);</span><br><span class="line">            System.out.printf(<span class="string">"%s%n"</span>, sendResult);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">//Shut down once the producer instance is not longer in use.</span></span><br><span class="line">        producer.shutdown();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><h4 id="可靠异步发送"><a href="#可靠异步发送" class="headerlink" title="可靠异步发送"></a>可靠异步发送</h4><p>  通常用于对发送消息响应时间要求更高/更快的场景</p><pre><code class="java"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">AsyncProducer</span> </span>{    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(</span></span><span class="function"><span class="params">        String[] args)</span> <span class="keyword">throws</span> MQClientException, InterruptedException, UnsupportedEncodingException </span>{        DefaultMQProducer producer = <span class="keyword">new</span> DefaultMQProducer(<span class="string">"Jodie_Daily_test"</span>);        producer.start();        producer.setRetryTimesWhenSendAsyncFailed(<span class="number">0</span>);        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">10000000</span>; i++) {            <span class="keyword">try</span> {                <span class="keyword">final</span> <span class="keyword">int</span> index = i;                Message msg = <span class="keyword">new</span> Message(<span class="string">"Jodie_topic_1023"</span>,                    <span class="string">"TagA"</span>,                    <span class="string">"OrderID188"</span>,                    <span class="string">"Hello world"</span>.getBytes(RemotingHelper.DEFAULT_CHARSET));                    <span class="comment">//重点在这里 异步发送回调</span>                producer.send(msg, <span class="keyword">new</span> SendCallback() {                    <span class="meta">@Override</span>                    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onSuccess</span><span class="params">(SendResult sendResult)</span> </span>{                        System.out.printf(<span class="string">"%-10d OK %s %n"</span>, index, sendResult.getMsgId());                    }                    <span class="meta">@Override</span>                    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onException</span><span class="params">(Throwable e)</span> </span>{                        System.out.printf(<span class="string">"%-10d Exception %s %n"</span>, index, e);                        e.printStackTrace();                    }                });            } <span class="keyword">catch</span> (Exception e) {                e.printStackTrace();            }        }        producer.shutdown();    }}</code></pre><h4 id="单向发送"><a href="#单向发送" class="headerlink" title="单向发送"></a>单向发送</h4><p>适用于某些耗时非常短，但对可靠性要求并不高的场景，例如日志收集。</p><p><em>只发送消息，不等待服务器响应，只发送请求不等待应答。此方式发送消息的过程耗时非常短，一般在微秒级别。</em></p><pre><code class="java"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">OnewayProducer</span> </span>{    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> Exception</span>{        DefaultMQProducer producer = <span class="keyword">new</span> DefaultMQProducer(<span class="string">"Test"</span>);        producer.start();        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">100</span>; i++) {            <span class="comment">//Create a message instance, specifying topic, tag and message body.</span>            Message msg = <span class="keyword">new</span> Message(<span class="string">"TopicTest"</span> <span class="comment">/* Topic */</span>,                <span class="string">"TagA"</span> <span class="comment">/* Tag */</span>,                (<span class="string">"Hello RocketMQ "</span> +                    i).getBytes(RemotingHelper.DEFAULT_CHARSET) <span class="comment">/* Message body */</span>            );            <span class="comment">//Call send message to deliver message to one of brokers.</span>            producer.sendOneway(msg);        }        <span class="comment">//Shut down once the producer instance is not longer in use.</span>        producer.shutdown();    }}</code></pre>]]></content>
-    
-    <summary type="html">
-    
-      
-      
-        &lt;p&gt;有以下3种方式发送RocketMQ消息 &lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;可靠同步发送 reliable synchronous&lt;/li&gt;
-&lt;li&gt;可靠异步发送 reliable asynchronous&lt;/li&gt;
-&lt;li&gt;单向发送 one-way transmission&lt;/l
-      
-    
-    </summary>
-    
-      <category term="技术" scheme="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/"/>
-    
-      <category term="rocketmq" scheme="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/rocketmq/"/>
-    
-    
-      <category term="rocketmq" scheme="http://blog.seoui.com/tags/rocketmq/"/>
-    
-  </entry>
-  
-  <entry>
     <title>rocketmq有序消息</title>
     <link href="http://blog.seoui.com/2018/07/24/rocketmq_ordered_message/"/>
     <id>http://blog.seoui.com/2018/07/24/rocketmq_ordered_message/</id>
@@ -334,30 +274,90 @@
   </entry>
   
   <entry>
-    <title>jenkins环境搭建</title>
-    <link href="http://blog.seoui.com/2018/06/22/jenkinsinstall/"/>
-    <id>http://blog.seoui.com/2018/06/22/jenkinsinstall/</id>
-    <published>2018-06-21T16:00:00.000Z</published>
-    <updated>2018-09-06T06:21:47.875Z</updated>
+    <title>rocketmq简单消息发送</title>
+    <link href="http://blog.seoui.com/2018/07/24/rocketmq_simple_message/"/>
+    <id>http://blog.seoui.com/2018/07/24/rocketmq_simple_message/</id>
+    <published>2018-07-23T16:00:00.000Z</published>
+    <updated>2018-09-06T06:21:47.884Z</updated>
     
-    <content type="html"><![CDATA[<p><code>Jenkins</code>是基于<code>JVM</code>开发的，所以安装之前需要先确保装好<code>JVM</code>的运行环境<code>JRE</code></p><p> 这里采用<code>TOMCAT</code>的部署方式安装。</p><h4 id="下载WAR"><a href="#下载WAR" class="headerlink" title="下载WAR"></a>下载WAR</h4> <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">wget http://mirrors.jenkins.io/war-stable/2.121.1/jenkins.war</span><br></pre></td></tr></table></figure><p> 然后复制到<code>tomcat</code>的webapps目录中 执行<code>bin/startup.sh</code>启动 ，<code>bin/shutdown.sh</code> 关闭。</p><p> 首次启动访问的时候会提示你安装插件 选中推荐的一些插件就基本够用了。也可以在系统设置-&gt;插件管理中手动安装。</p><p>参考</p><p><a href="https://jenkins.io/doc/" target="_blank" rel="noopener">https://jenkins.io/doc/</a></p>]]></content>
+    <content type="html"><![CDATA[<p>有以下3种方式发送RocketMQ消息 </p><ul><li>可靠同步发送 reliable synchronous</li><li>可靠异步发送 reliable asynchronous</li><li>单向发送 one-way transmission</li></ul><h4 id="可靠同步发送"><a href="#可靠同步发送" class="headerlink" title="可靠同步发送"></a>可靠同步发送</h4><p> 主要运用在比较重要一点消息传递/通知等业务</p> <figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SyncProducer</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        DefaultMQProducer producer = <span class="keyword">new</span></span><br><span class="line">            DefaultMQProducer(<span class="string">"test"</span>);</span><br><span class="line">        producer.start();</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">100</span>; i++) &#123;</span><br><span class="line">            Message msg = <span class="keyword">new</span> Message(<span class="string">"TopicTest"</span> <span class="comment">/* Topic */</span>,</span><br><span class="line">                <span class="string">"TagA"</span> <span class="comment">/* Tag */</span>,</span><br><span class="line">                (<span class="string">"Hello RocketMQ "</span> +</span><br><span class="line">                    i).getBytes(RemotingHelper.DEFAULT_CHARSET) <span class="comment">/* Message body */</span></span><br><span class="line">            );</span><br><span class="line">            <span class="comment">//Call send message to deliver message to one of brokers.</span></span><br><span class="line">            SendResult sendResult = producer.send(msg);</span><br><span class="line">            System.out.printf(<span class="string">"%s%n"</span>, sendResult);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">//Shut down once the producer instance is not longer in use.</span></span><br><span class="line">        producer.shutdown();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><h4 id="可靠异步发送"><a href="#可靠异步发送" class="headerlink" title="可靠异步发送"></a>可靠异步发送</h4><p>  通常用于对发送消息响应时间要求更高/更快的场景</p><pre><code class="java"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">AsyncProducer</span> </span>{    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(</span></span><span class="function"><span class="params">        String[] args)</span> <span class="keyword">throws</span> MQClientException, InterruptedException, UnsupportedEncodingException </span>{        DefaultMQProducer producer = <span class="keyword">new</span> DefaultMQProducer(<span class="string">"Jodie_Daily_test"</span>);        producer.start();        producer.setRetryTimesWhenSendAsyncFailed(<span class="number">0</span>);        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">10000000</span>; i++) {            <span class="keyword">try</span> {                <span class="keyword">final</span> <span class="keyword">int</span> index = i;                Message msg = <span class="keyword">new</span> Message(<span class="string">"Jodie_topic_1023"</span>,                    <span class="string">"TagA"</span>,                    <span class="string">"OrderID188"</span>,                    <span class="string">"Hello world"</span>.getBytes(RemotingHelper.DEFAULT_CHARSET));                    <span class="comment">//重点在这里 异步发送回调</span>                producer.send(msg, <span class="keyword">new</span> SendCallback() {                    <span class="meta">@Override</span>                    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onSuccess</span><span class="params">(SendResult sendResult)</span> </span>{                        System.out.printf(<span class="string">"%-10d OK %s %n"</span>, index, sendResult.getMsgId());                    }                    <span class="meta">@Override</span>                    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onException</span><span class="params">(Throwable e)</span> </span>{                        System.out.printf(<span class="string">"%-10d Exception %s %n"</span>, index, e);                        e.printStackTrace();                    }                });            } <span class="keyword">catch</span> (Exception e) {                e.printStackTrace();            }        }        producer.shutdown();    }}</code></pre><h4 id="单向发送"><a href="#单向发送" class="headerlink" title="单向发送"></a>单向发送</h4><p>适用于某些耗时非常短，但对可靠性要求并不高的场景，例如日志收集。</p><p><em>只发送消息，不等待服务器响应，只发送请求不等待应答。此方式发送消息的过程耗时非常短，一般在微秒级别。</em></p><pre><code class="java"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">OnewayProducer</span> </span>{    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> Exception</span>{        DefaultMQProducer producer = <span class="keyword">new</span> DefaultMQProducer(<span class="string">"Test"</span>);        producer.start();        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">100</span>; i++) {            <span class="comment">//Create a message instance, specifying topic, tag and message body.</span>            Message msg = <span class="keyword">new</span> Message(<span class="string">"TopicTest"</span> <span class="comment">/* Topic */</span>,                <span class="string">"TagA"</span> <span class="comment">/* Tag */</span>,                (<span class="string">"Hello RocketMQ "</span> +                    i).getBytes(RemotingHelper.DEFAULT_CHARSET) <span class="comment">/* Message body */</span>            );            <span class="comment">//Call send message to deliver message to one of brokers.</span>            producer.sendOneway(msg);        }        <span class="comment">//Shut down once the producer instance is not longer in use.</span>        producer.shutdown();    }}</code></pre>]]></content>
     
     <summary type="html">
     
       
       
-        &lt;p&gt;&lt;code&gt;Jenkins&lt;/code&gt;是基于&lt;code&gt;JVM&lt;/code&gt;开发的，所以安装之前需要先确保装好&lt;code&gt;JVM&lt;/code&gt;的运行环境&lt;code&gt;JRE&lt;/code&gt;&lt;/p&gt;
-&lt;p&gt; 这里采用&lt;code&gt;TOMCAT&lt;/code&gt;的部署方式安装。&lt;/p&gt;
+        &lt;p&gt;有以下3种方式发送RocketMQ消息 &lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;可靠同步发送 reliable synchronous&lt;/li&gt;
+&lt;li&gt;可靠异步发送 reliable asynchronous&lt;/li&gt;
+&lt;li&gt;单向发送 one-way transmission&lt;/l
       
     
     </summary>
     
       <category term="技术" scheme="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/"/>
     
-      <category term="jenkins" scheme="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/jenkins/"/>
+      <category term="rocketmq" scheme="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/rocketmq/"/>
     
     
-      <category term="jenkins" scheme="http://blog.seoui.com/tags/jenkins/"/>
+      <category term="rocketmq" scheme="http://blog.seoui.com/tags/rocketmq/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>rocketmq广播消息</title>
+    <link href="http://blog.seoui.com/2018/07/24/rocketmq_broadcast_message/"/>
+    <id>http://blog.seoui.com/2018/07/24/rocketmq_broadcast_message/</id>
+    <published>2018-07-23T16:00:00.000Z</published>
+    <updated>2018-09-06T06:21:47.879Z</updated>
+    
+    <content type="html"><![CDATA[<p>发布与模式实现。广播就是向一个主题的所有订阅者发送同一条消息。</p><p>在发送消息的时候和普通的消息并与不同之处，只是在消费端做一些配置即可。</p><h4 id="Consumer消息消费"><a href="#Consumer消息消费" class="headerlink" title="Consumer消息消费"></a>Consumer消息消费</h4><pre><code class="java"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">BroadcastConsumer</span> </span>{    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> MQClientException </span>{        DefaultMQPushConsumer consumer = <span class="keyword">new</span> DefaultMQPushConsumer(<span class="string">"please_rename_unique_group_name_3"</span>);        consumer.setConsumeFromWhere(ConsumeFromWhere.CONSUME_FROM_FIRST_OFFSET);        <span class="comment">//设置为广播模式 默认为CLUSTERING模式</span>        consumer.setMessageModel(MessageModel.BROADCASTING);        consumer.subscribe(<span class="string">"TopicTest"</span>, <span class="string">"TagA || TagC || TagD"</span>);        consumer.registerMessageListener(<span class="keyword">new</span> MessageListenerOrderly() {            AtomicLong consumeTimes = <span class="keyword">new</span> AtomicLong(<span class="number">0</span>);            <span class="meta">@Override</span>            <span class="function"><span class="keyword">public</span> ConsumeOrderlyStatus <span class="title">consumeMessage</span><span class="params">(List&lt;MessageExt&gt; msgs, ConsumeOrderlyContext context)</span> </span>{                context.setAutoCommit(<span class="keyword">false</span>);                System.out.printf(<span class="string">"%s Receive New Messages: %s %n"</span>, Thread.currentThread().getName(), msgs);                <span class="keyword">return</span> ConsumeOrderlyStatus.SUCCESS;            }        });        consumer.start();        System.out.printf(<span class="string">"Consumer Started.%n"</span>);    }}</code></pre>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;p&gt;发布与模式实现。广播就是向一个主题的所有订阅者发送同一条消息。&lt;/p&gt;
+&lt;p&gt;在发送消息的时候和普通的消息并与不同之处，只是在消费端做一些配置即可。&lt;/p&gt;
+&lt;h4 id=&quot;Consumer消息消费&quot;&gt;&lt;a href=&quot;#Consumer消息消费&quot; class=&quot;heade
+      
+    
+    </summary>
+    
+      <category term="技术" scheme="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/"/>
+    
+      <category term="rocketmq" scheme="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/rocketmq/"/>
+    
+    
+      <category term="rocketmq" scheme="http://blog.seoui.com/tags/rocketmq/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>nexus3.X环境搭建</title>
+    <link href="http://blog.seoui.com/2018/06/22/nexusinstall/"/>
+    <id>http://blog.seoui.com/2018/06/22/nexusinstall/</id>
+    <published>2018-06-21T16:00:00.000Z</published>
+    <updated>2018-09-06T06:21:47.877Z</updated>
+    
+    <content type="html"><![CDATA[<p>nexus3比以前的版本相比 多支持了管理不同的格式 比如<code>Docker</code> <code>npm</code> <code>NuGet</code> <code>maven</code> …等</p><h4 id="下载编译好的二进制安装"><a href="#下载编译好的二进制安装" class="headerlink" title="下载编译好的二进制安装"></a>下载编译好的二进制安装</h4> <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">wget https://sonatype-download.global.ssl.fastly.net/repository/repositoryManager/3/nexus-3.12.1-01-unix.tar.gz</span><br><span class="line">  </span><br><span class="line">  tar -zxf nexus-3.12.1-01-unix.tar.gz </span><br><span class="line"> </span><br><span class="line">  <span class="built_in">cd</span> nexus-3.12.1-01/</span><br><span class="line">  bin/nexus start</span><br></pre></td></tr></table></figure><p> 默认的端口号为<code>8081</code> nexus3.x和以前的版本界面都有很大的改变 需要注意一下。<br> 其他默认配置在文件<code>etc/nexus-default.properties</code>中 需要修改的关注一下。</p><p>参考</p><p><a href="https://www.sonatype.com/" target="_blank" rel="noopener">https://www.sonatype.com/</a></p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;p&gt;nexus3比以前的版本相比 多支持了管理不同的格式 比如&lt;code&gt;Docker&lt;/code&gt; &lt;code&gt;npm&lt;/code&gt; &lt;code&gt;NuGet&lt;/code&gt; &lt;code&gt;maven&lt;/code&gt; …等&lt;/p&gt;
+&lt;h4 id=&quot;下载编译好的二进制安装&quot;&gt;&lt;a hr
+      
+    
+    </summary>
+    
+      <category term="技术" scheme="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/"/>
+    
+      <category term="nexus3" scheme="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/nexus3/"/>
+    
+    
+      <category term="nexus3" scheme="http://blog.seoui.com/tags/nexus3/"/>
     
   </entry>
   
@@ -391,30 +391,30 @@
   </entry>
   
   <entry>
-    <title>nexus3.X环境搭建</title>
-    <link href="http://blog.seoui.com/2018/06/22/nexusinstall/"/>
-    <id>http://blog.seoui.com/2018/06/22/nexusinstall/</id>
+    <title>jenkins环境搭建</title>
+    <link href="http://blog.seoui.com/2018/06/22/jenkinsinstall/"/>
+    <id>http://blog.seoui.com/2018/06/22/jenkinsinstall/</id>
     <published>2018-06-21T16:00:00.000Z</published>
-    <updated>2018-09-06T06:21:47.877Z</updated>
+    <updated>2018-09-06T06:21:47.875Z</updated>
     
-    <content type="html"><![CDATA[<p>nexus3比以前的版本相比 多支持了管理不同的格式 比如<code>Docker</code> <code>npm</code> <code>NuGet</code> <code>maven</code> …等</p><h4 id="下载编译好的二进制安装"><a href="#下载编译好的二进制安装" class="headerlink" title="下载编译好的二进制安装"></a>下载编译好的二进制安装</h4> <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">wget https://sonatype-download.global.ssl.fastly.net/repository/repositoryManager/3/nexus-3.12.1-01-unix.tar.gz</span><br><span class="line">  </span><br><span class="line">  tar -zxf nexus-3.12.1-01-unix.tar.gz </span><br><span class="line"> </span><br><span class="line">  <span class="built_in">cd</span> nexus-3.12.1-01/</span><br><span class="line">  bin/nexus start</span><br></pre></td></tr></table></figure><p> 默认的端口号为<code>8081</code> nexus3.x和以前的版本界面都有很大的改变 需要注意一下。<br> 其他默认配置在文件<code>etc/nexus-default.properties</code>中 需要修改的关注一下。</p><p>参考</p><p><a href="https://www.sonatype.com/" target="_blank" rel="noopener">https://www.sonatype.com/</a></p>]]></content>
+    <content type="html"><![CDATA[<p><code>Jenkins</code>是基于<code>JVM</code>开发的，所以安装之前需要先确保装好<code>JVM</code>的运行环境<code>JRE</code></p><p> 这里采用<code>TOMCAT</code>的部署方式安装。</p><h4 id="下载WAR"><a href="#下载WAR" class="headerlink" title="下载WAR"></a>下载WAR</h4> <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">wget http://mirrors.jenkins.io/war-stable/2.121.1/jenkins.war</span><br></pre></td></tr></table></figure><p> 然后复制到<code>tomcat</code>的webapps目录中 执行<code>bin/startup.sh</code>启动 ，<code>bin/shutdown.sh</code> 关闭。</p><p> 首次启动访问的时候会提示你安装插件 选中推荐的一些插件就基本够用了。也可以在系统设置-&gt;插件管理中手动安装。</p><p>参考</p><p><a href="https://jenkins.io/doc/" target="_blank" rel="noopener">https://jenkins.io/doc/</a></p>]]></content>
     
     <summary type="html">
     
       
       
-        &lt;p&gt;nexus3比以前的版本相比 多支持了管理不同的格式 比如&lt;code&gt;Docker&lt;/code&gt; &lt;code&gt;npm&lt;/code&gt; &lt;code&gt;NuGet&lt;/code&gt; &lt;code&gt;maven&lt;/code&gt; …等&lt;/p&gt;
-&lt;h4 id=&quot;下载编译好的二进制安装&quot;&gt;&lt;a hr
+        &lt;p&gt;&lt;code&gt;Jenkins&lt;/code&gt;是基于&lt;code&gt;JVM&lt;/code&gt;开发的，所以安装之前需要先确保装好&lt;code&gt;JVM&lt;/code&gt;的运行环境&lt;code&gt;JRE&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt; 这里采用&lt;code&gt;TOMCAT&lt;/code&gt;的部署方式安装。&lt;/p&gt;
       
     
     </summary>
     
       <category term="技术" scheme="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/"/>
     
-      <category term="nexus3" scheme="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/nexus3/"/>
+      <category term="jenkins" scheme="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/jenkins/"/>
     
     
-      <category term="nexus3" scheme="http://blog.seoui.com/tags/nexus3/"/>
+      <category term="jenkins" scheme="http://blog.seoui.com/tags/jenkins/"/>
     
   </entry>
   
