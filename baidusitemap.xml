@@ -3,6 +3,28 @@
 
 
     
+  <url>
+    <loc>http://blog.seoui.com/2019/05/07/es-match-phrase/</loc>
+    <lastmod>2019-05-07T09:56:25.367Z</lastmod>
+    <data>
+        <display>
+        <title>elasticsearch中短语匹配match_phrase</title>
+        <pubTime>2019-05-06T16:00:00.000Z</pubTime>
+        
+        <tag>技术</tag>
+         
+        <tag>elasticsearch</tag>
+         
+         
+           
+             
+              <breadCrumb title="技术" url="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
     
   <url>
     <loc>http://blog.seoui.com/2019/03/26/go_install/</loc>

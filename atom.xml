@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://blog.seoui.com/"/>
-  <updated>2019-03-26T04:00:23.714Z</updated>
+  <updated>2019-05-07T09:56:25.367Z</updated>
   <id>http://blog.seoui.com/</id>
   
   <author>
@@ -15,6 +15,34 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>elasticsearch中短语匹配match_phrase</title>
+    <link href="http://blog.seoui.com/2019/05/07/es-match-phrase/"/>
+    <id>http://blog.seoui.com/2019/05/07/es-match-phrase/</id>
+    <published>2019-05-06T16:00:00.000Z</published>
+    <updated>2019-05-07T09:56:25.367Z</updated>
+    
+    <content type="html"><![CDATA[<p> 现有业务中很少用到<code>match_phrase</code>这个搜索，最近在实现基于<code>elasticsearch</code>的日志搜集 并自助告警一个业务，因为日志的不规范 所以需要用到对某个日志短语进行搜索，不能像match做全文检索。</p><p> 比如需要精确寻找日志中的<code>请求第三方CAKA服务器失败</code> </p><figure class="highlight html"><table><tr><td class="code"><pre><span class="line">GET /filebeat*/_search</span><br><span class="line">&#123;</span><br><span class="line">"query": &#123;</span><br><span class="line">        "match_phrase": &#123;</span><br><span class="line">            "message": "请求第三方CAKA服务器失败" </span><br><span class="line">        &#125;</span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><p>查询结果中就完全包含了这句短语。不会进行分词搜索。</p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;p&gt; 现有业务中很少用到&lt;code&gt;match_phrase&lt;/code&gt;这个搜索，最近在实现基于&lt;code&gt;elasticsearch&lt;/code&gt;的日志搜集 并自助告警一个业务，因为日志的不规范 所以需要用到对某个日志短语进行搜索，不能像match做全文检索。&lt;/p&gt;
+&lt;p
+      
+    
+    </summary>
+    
+      <category term="技术" scheme="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/"/>
+    
+    
+      <category term="技术" scheme="http://blog.seoui.com/tags/%E6%8A%80%E6%9C%AF/"/>
+    
+      <category term="elasticsearch" scheme="http://blog.seoui.com/tags/elasticsearch/"/>
+    
+  </entry>
   
   <entry>
     <title>认识go语言与环境搭建</title>
@@ -245,6 +273,35 @@
   </entry>
   
   <entry>
+    <title>rocketmq广播消息</title>
+    <link href="http://blog.seoui.com/2018/07/24/rocketmq_broadcast_message/"/>
+    <id>http://blog.seoui.com/2018/07/24/rocketmq_broadcast_message/</id>
+    <published>2018-07-23T16:00:00.000Z</published>
+    <updated>2018-09-06T06:21:47.879Z</updated>
+    
+    <content type="html"><![CDATA[<p>发布与模式实现。广播就是向一个主题的所有订阅者发送同一条消息。</p><p>在发送消息的时候和普通的消息并与不同之处，只是在消费端做一些配置即可。</p><h4 id="Consumer消息消费"><a href="#Consumer消息消费" class="headerlink" title="Consumer消息消费"></a>Consumer消息消费</h4><pre><code class="java"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">BroadcastConsumer</span> </span>{    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> MQClientException </span>{        DefaultMQPushConsumer consumer = <span class="keyword">new</span> DefaultMQPushConsumer(<span class="string">"please_rename_unique_group_name_3"</span>);        consumer.setConsumeFromWhere(ConsumeFromWhere.CONSUME_FROM_FIRST_OFFSET);        <span class="comment">//设置为广播模式 默认为CLUSTERING模式</span>        consumer.setMessageModel(MessageModel.BROADCASTING);        consumer.subscribe(<span class="string">"TopicTest"</span>, <span class="string">"TagA || TagC || TagD"</span>);        consumer.registerMessageListener(<span class="keyword">new</span> MessageListenerOrderly() {            AtomicLong consumeTimes = <span class="keyword">new</span> AtomicLong(<span class="number">0</span>);            <span class="meta">@Override</span>            <span class="function"><span class="keyword">public</span> ConsumeOrderlyStatus <span class="title">consumeMessage</span><span class="params">(List&lt;MessageExt&gt; msgs, ConsumeOrderlyContext context)</span> </span>{                context.setAutoCommit(<span class="keyword">false</span>);                System.out.printf(<span class="string">"%s Receive New Messages: %s %n"</span>, Thread.currentThread().getName(), msgs);                <span class="keyword">return</span> ConsumeOrderlyStatus.SUCCESS;            }        });        consumer.start();        System.out.printf(<span class="string">"Consumer Started.%n"</span>);    }}</code></pre>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;p&gt;发布与模式实现。广播就是向一个主题的所有订阅者发送同一条消息。&lt;/p&gt;
+&lt;p&gt;在发送消息的时候和普通的消息并与不同之处，只是在消费端做一些配置即可。&lt;/p&gt;
+&lt;h4 id=&quot;Consumer消息消费&quot;&gt;&lt;a href=&quot;#Consumer消息消费&quot; class=&quot;heade
+      
+    
+    </summary>
+    
+      <category term="技术" scheme="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/"/>
+    
+      <category term="rocketmq" scheme="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/rocketmq/"/>
+    
+    
+      <category term="rocketmq" scheme="http://blog.seoui.com/tags/rocketmq/"/>
+    
+  </entry>
+  
+  <entry>
     <title>rocketmq4.x快速入门指南</title>
     <link href="http://blog.seoui.com/2018/07/24/rocketmqinstall/"/>
     <id>http://blog.seoui.com/2018/07/24/rocketmqinstall/</id>
@@ -305,63 +362,6 @@
   </entry>
   
   <entry>
-    <title>rocketmq广播消息</title>
-    <link href="http://blog.seoui.com/2018/07/24/rocketmq_broadcast_message/"/>
-    <id>http://blog.seoui.com/2018/07/24/rocketmq_broadcast_message/</id>
-    <published>2018-07-23T16:00:00.000Z</published>
-    <updated>2018-09-06T06:21:47.879Z</updated>
-    
-    <content type="html"><![CDATA[<p>发布与模式实现。广播就是向一个主题的所有订阅者发送同一条消息。</p><p>在发送消息的时候和普通的消息并与不同之处，只是在消费端做一些配置即可。</p><h4 id="Consumer消息消费"><a href="#Consumer消息消费" class="headerlink" title="Consumer消息消费"></a>Consumer消息消费</h4><pre><code class="java"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">BroadcastConsumer</span> </span>{    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> MQClientException </span>{        DefaultMQPushConsumer consumer = <span class="keyword">new</span> DefaultMQPushConsumer(<span class="string">"please_rename_unique_group_name_3"</span>);        consumer.setConsumeFromWhere(ConsumeFromWhere.CONSUME_FROM_FIRST_OFFSET);        <span class="comment">//设置为广播模式 默认为CLUSTERING模式</span>        consumer.setMessageModel(MessageModel.BROADCASTING);        consumer.subscribe(<span class="string">"TopicTest"</span>, <span class="string">"TagA || TagC || TagD"</span>);        consumer.registerMessageListener(<span class="keyword">new</span> MessageListenerOrderly() {            AtomicLong consumeTimes = <span class="keyword">new</span> AtomicLong(<span class="number">0</span>);            <span class="meta">@Override</span>            <span class="function"><span class="keyword">public</span> ConsumeOrderlyStatus <span class="title">consumeMessage</span><span class="params">(List&lt;MessageExt&gt; msgs, ConsumeOrderlyContext context)</span> </span>{                context.setAutoCommit(<span class="keyword">false</span>);                System.out.printf(<span class="string">"%s Receive New Messages: %s %n"</span>, Thread.currentThread().getName(), msgs);                <span class="keyword">return</span> ConsumeOrderlyStatus.SUCCESS;            }        });        consumer.start();        System.out.printf(<span class="string">"Consumer Started.%n"</span>);    }}</code></pre>]]></content>
-    
-    <summary type="html">
-    
-      
-      
-        &lt;p&gt;发布与模式实现。广播就是向一个主题的所有订阅者发送同一条消息。&lt;/p&gt;
-&lt;p&gt;在发送消息的时候和普通的消息并与不同之处，只是在消费端做一些配置即可。&lt;/p&gt;
-&lt;h4 id=&quot;Consumer消息消费&quot;&gt;&lt;a href=&quot;#Consumer消息消费&quot; class=&quot;heade
-      
-    
-    </summary>
-    
-      <category term="技术" scheme="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/"/>
-    
-      <category term="rocketmq" scheme="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/rocketmq/"/>
-    
-    
-      <category term="rocketmq" scheme="http://blog.seoui.com/tags/rocketmq/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>nexus3.X环境搭建</title>
-    <link href="http://blog.seoui.com/2018/06/22/nexusinstall/"/>
-    <id>http://blog.seoui.com/2018/06/22/nexusinstall/</id>
-    <published>2018-06-21T16:00:00.000Z</published>
-    <updated>2018-09-06T06:21:47.877Z</updated>
-    
-    <content type="html"><![CDATA[<p>nexus3比以前的版本相比 多支持了管理不同的格式 比如<code>Docker</code> <code>npm</code> <code>NuGet</code> <code>maven</code> …等</p><h4 id="下载编译好的二进制安装"><a href="#下载编译好的二进制安装" class="headerlink" title="下载编译好的二进制安装"></a>下载编译好的二进制安装</h4> <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">wget https://sonatype-download.global.ssl.fastly.net/repository/repositoryManager/3/nexus-3.12.1-01-unix.tar.gz</span><br><span class="line">  </span><br><span class="line">  tar -zxf nexus-3.12.1-01-unix.tar.gz </span><br><span class="line"> </span><br><span class="line">  <span class="built_in">cd</span> nexus-3.12.1-01/</span><br><span class="line">  bin/nexus start</span><br></pre></td></tr></table></figure><p> 默认的端口号为<code>8081</code> nexus3.x和以前的版本界面都有很大的改变 需要注意一下。<br> 其他默认配置在文件<code>etc/nexus-default.properties</code>中 需要修改的关注一下。</p><p>参考</p><p><a href="https://www.sonatype.com/" target="_blank" rel="noopener">https://www.sonatype.com/</a></p>]]></content>
-    
-    <summary type="html">
-    
-      
-      
-        &lt;p&gt;nexus3比以前的版本相比 多支持了管理不同的格式 比如&lt;code&gt;Docker&lt;/code&gt; &lt;code&gt;npm&lt;/code&gt; &lt;code&gt;NuGet&lt;/code&gt; &lt;code&gt;maven&lt;/code&gt; …等&lt;/p&gt;
-&lt;h4 id=&quot;下载编译好的二进制安装&quot;&gt;&lt;a hr
-      
-    
-    </summary>
-    
-      <category term="技术" scheme="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/"/>
-    
-      <category term="nexus3" scheme="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/nexus3/"/>
-    
-    
-      <category term="nexus3" scheme="http://blog.seoui.com/tags/nexus3/"/>
-    
-  </entry>
-  
-  <entry>
     <title>gitlab环境搭建</title>
     <link href="http://blog.seoui.com/2018/06/22/gitlabinstall/"/>
     <id>http://blog.seoui.com/2018/06/22/gitlabinstall/</id>
@@ -415,6 +415,34 @@
     
     
       <category term="jenkins" scheme="http://blog.seoui.com/tags/jenkins/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>nexus3.X环境搭建</title>
+    <link href="http://blog.seoui.com/2018/06/22/nexusinstall/"/>
+    <id>http://blog.seoui.com/2018/06/22/nexusinstall/</id>
+    <published>2018-06-21T16:00:00.000Z</published>
+    <updated>2018-09-06T06:21:47.877Z</updated>
+    
+    <content type="html"><![CDATA[<p>nexus3比以前的版本相比 多支持了管理不同的格式 比如<code>Docker</code> <code>npm</code> <code>NuGet</code> <code>maven</code> …等</p><h4 id="下载编译好的二进制安装"><a href="#下载编译好的二进制安装" class="headerlink" title="下载编译好的二进制安装"></a>下载编译好的二进制安装</h4> <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">wget https://sonatype-download.global.ssl.fastly.net/repository/repositoryManager/3/nexus-3.12.1-01-unix.tar.gz</span><br><span class="line">  </span><br><span class="line">  tar -zxf nexus-3.12.1-01-unix.tar.gz </span><br><span class="line"> </span><br><span class="line">  <span class="built_in">cd</span> nexus-3.12.1-01/</span><br><span class="line">  bin/nexus start</span><br></pre></td></tr></table></figure><p> 默认的端口号为<code>8081</code> nexus3.x和以前的版本界面都有很大的改变 需要注意一下。<br> 其他默认配置在文件<code>etc/nexus-default.properties</code>中 需要修改的关注一下。</p><p>参考</p><p><a href="https://www.sonatype.com/" target="_blank" rel="noopener">https://www.sonatype.com/</a></p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;p&gt;nexus3比以前的版本相比 多支持了管理不同的格式 比如&lt;code&gt;Docker&lt;/code&gt; &lt;code&gt;npm&lt;/code&gt; &lt;code&gt;NuGet&lt;/code&gt; &lt;code&gt;maven&lt;/code&gt; …等&lt;/p&gt;
+&lt;h4 id=&quot;下载编译好的二进制安装&quot;&gt;&lt;a hr
+      
+    
+    </summary>
+    
+      <category term="技术" scheme="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/"/>
+    
+      <category term="nexus3" scheme="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/nexus3/"/>
+    
+    
+      <category term="nexus3" scheme="http://blog.seoui.com/tags/nexus3/"/>
     
   </entry>
   
@@ -554,33 +582,6 @@
     
     
       <category term="nginx" scheme="http://blog.seoui.com/tags/nginx/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>NFS 安装与配置</title>
-    <link href="http://blog.seoui.com/2017/10/30/nfs-config/"/>
-    <id>http://blog.seoui.com/2017/10/30/nfs-config/</id>
-    <published>2017-10-29T16:00:00.000Z</published>
-    <updated>2018-09-06T06:21:47.856Z</updated>
-    
-    <content type="html"><![CDATA[<p> <code>NFS</code>通常用于网络中的多台计算机实现共享存储。</p><p> 由于测试环境没有购买阿里云的NFS，所以自己搭建一个NFS文件系统，实现一些比如上传图片，静态资源等同享功能。</p><p> 下面的测试是在<code>CentOS release 6.8 (Final)</code>中进行的。其他的系统略有不同。</p><p>  网络环境 ：<br>  nfs服务器IP: 192.168.18.183<br>  nfs客户端IP: 192.168.18.182</p><h4 id="服务器安装"><a href="#服务器安装" class="headerlink" title="服务器安装"></a>服务器安装</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">yum install nfs-utils rpcbind</span><br></pre></td></tr></table></figure><h5 id="配置需要共享的目录"><a href="#配置需要共享的目录" class="headerlink" title="配置需要共享的目录"></a>配置需要共享的目录</h5><p>more /etc/exports</p><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">/home/www       *(rw,async,no_root_squash,no_subtree_check)</span><br></pre></td></tr></table></figure><p><em>关于配置文件<code>exports</code>的一些参数说明</em></p><p>rw：read-write，可读写；<br>ro：read-only，只读；<br>sync：同步写入（文件同时写入硬盘和内存），适用在通信比较频繁且实时性比较高的场合<br>async：异步写入（文件先写入内存，稍候再写入硬盘），性能较好（速度快），适合超大或者超多文件的写入，但有数据丢失的风险，比如突然断电等情况；<br>root_squash（默认）：将来访的root用户映射为匿名用户或用户组；<br>no_root_squash：来访的root用户保持root帐号权限（可能会不安全）；<br>no_all_squash（默认）：访问用户先与本机用户匹配，匹配失败后再映射为匿名用户或用户组；<br>all_squash：将来访的所有用户映射为匿名用户或用户组；<br>secure（默认）：限制客户端只能从小于1024的tcp/ip端口连接服务器；<br>insecure：允许客户端从大于1024的tcp/ip端口连接服务器；<br>anonuid：匿名用户的UID值，通常是nobody或nfsnobody，可以在此处自行设定；<br>anongid：匿名用户的GID值；<br>no_subtree_check：如果NFS输出的是一个子目录，则无需检查其父目录的权限（可以提高效率）</p><h5 id="启动nfs服务器"><a href="#启动nfs服务器" class="headerlink" title="启动nfs服务器"></a>启动nfs服务器</h5><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">service rpcbind start</span><br><span class="line"></span><br><span class="line">service nfs start</span><br></pre></td></tr></table></figure><p>查看是否启动成功，能看到前面在<code>/etc/exports</code>文件中设置的共享目录 则可以认为启动成功了。</p><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">showmount -e localhost</span><br><span class="line"></span><br><span class="line">Export list <span class="keyword">for</span> localhost:</span><br><span class="line">/home/www *</span><br></pre></td></tr></table></figure><h4 id="客户端安装"><a href="#客户端安装" class="headerlink" title="客户端安装"></a>客户端安装</h4><p>  客户端也是需要安装这两个软件 区别是安装好之后不需要启动。</p><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">yum install nfs-utils rpcbind</span><br></pre></td></tr></table></figure><h5 id="挂载NFS目录"><a href="#挂载NFS目录" class="headerlink" title="挂载NFS目录"></a>挂载NFS目录</h5><p>挂载的时候需要注意的是 如果挂载的目录当前已经存在 挂载后默认会覆盖掉。</p><pre><code class="bash">mount -t nfs 192.168.18.183:/home/www /home/www</code></pre><p>这个时候就挂载成功了，尝试修改客户端<code>/home/www</code>的文件 会立即同步到服务端的<code>/home/www</code>下面。同时服务端更新了文件也会立即同步到客户端。<br>如果文件很大的话 会有一个网络延时，所以这个需要权衡  当然内网传输还是很快的。</p>]]></content>
-    
-    <summary type="html">
-    
-      
-      
-        &lt;p&gt; &lt;code&gt;NFS&lt;/code&gt;通常用于网络中的多台计算机实现共享存储。&lt;/p&gt;
-&lt;p&gt; 由于测试环境没有购买阿里云的NFS，所以自己搭建一个NFS文件系统，实现一些比如上传图片，静态资源等同享功能。&lt;/p&gt;
-&lt;p&gt; 下面的测试是在&lt;code&gt;CentOS release
-      
-    
-    </summary>
-    
-      <category term="技术" scheme="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/"/>
-    
-    
-      <category term="NFS" scheme="http://blog.seoui.com/tags/NFS/"/>
     
   </entry>
   
