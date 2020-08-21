@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://blog.seoui.com/"/>
-  <updated>2019-08-23T07:31:21.272Z</updated>
+  <updated>2020-08-21T08:59:26.492Z</updated>
   <id>http://blog.seoui.com/</id>
   
   <author>
@@ -15,6 +15,33 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>更好用 更简单的Java缓存框架 jscache</title>
+    <link href="http://blog.seoui.com/2020/08/21/jscache/"/>
+    <id>http://blog.seoui.com/2020/08/21/jscache/</id>
+    <published>2020-08-20T16:00:00.000Z</published>
+    <updated>2020-08-21T08:59:26.492Z</updated>
+    
+    <content type="html"><![CDATA[<p> 比Spring Cache 更好用 更简单的缓存工具 <code>jscache</code> 取名意义为 <em>java simple cache</em>，基于<code>AOP</code>实现，支持注解到接口 自定义单个缓存过期时间配置 <code>ttl</code>，轻松扩展缓存实现，默认实现了<code>jedis</code>,<code>spring-data-redis</code>,还有一个基于本地内存的<code>map</code>。</p><p>源码仓库 <a href="https://github.com/peachyy/jscache.git" target="_blank" rel="noopener">https://github.com/peachyy/jscache.git</a> </p><h3 id="注解API"><a href="#注解API" class="headerlink" title="注解API"></a>注解API</h3><h5 id="Cacheable"><a href="#Cacheable" class="headerlink" title="@Cacheable"></a>@Cacheable</h5><p>  设置/获取缓存 如果当前KEY对应的缓存存在就直接返回，不存在则调用服务后 再对结果进行缓存。</p><p>  配置项</p><ul><li>prefix  缓存前缀</li><li>key     key 是 <code>el</code> 表达式 默认生成后的缓存key为 <code>prefix+key</code></li><li>ttl     缓存存活时间(过期时间) 需要具体的缓存实现支持 如常用的<code>redis</code>是支持的</li><li>argCondition     前置条件过滤 针对参数过滤 满足则执行表达式逻辑</li><li>returnCondition  后置条件过滤 只有前置条件为<code>true</code>的情况下才能到达后置过滤 为<code>true</code>才会把结果放入缓存中</li><li><p>allowNullValue    返回值为空的情况下是否缓存 防止缓存穿透可以支持为<code>true</code></p><figure class="highlight java"><table><tr><td class="code"><pre><span class="line">  <span class="meta">@Cacheable</span>(prefix = <span class="string">"user:"</span>,key = <span class="string">"#p0"</span>,</span><br><span class="line">ttl = <span class="number">60</span>,returnCondition = <span class="string">"#result!=null"</span>)</span><br><span class="line">  <span class="function"><span class="keyword">public</span> User <span class="title">getUserById</span><span class="params">(Integer userId)</span> </span>&#123;</span><br><span class="line">      User user=<span class="keyword">new</span> User();</span><br><span class="line">      user.setId(userId);</span><br><span class="line">      user.setName(<span class="string">"xxx"</span>);</span><br><span class="line">      log.info(<span class="string">"GET getUserById"</span>);</span><br><span class="line">      <span class="keyword">return</span> user;</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure></li></ul><h5 id="CachePut"><a href="#CachePut" class="headerlink" title="@CachePut"></a>@CachePut</h5><p>  只是设置(put)缓存 无论缓存是否存在 这里支持设置(put)多个缓存</p><p>  配置项 与 cacheable类似</p><ul><li>prefix  缓存前缀</li><li>key     key 是 <code>el</code> 表达式 默认生成后的缓存key为 <code>prefix+key</code></li><li>ttl     缓存存活时间(过期时间) 需要具体的缓存实现支持 如常用的<code>redis</code>是支持的</li><li>argCondition     前置条件过滤 针对参数过滤 满足则执行表达式逻辑</li><li>returnCondition  后置条件过滤 只有前置条件为<code>true</code>的情况下才能到达后置过滤 为<code>true</code>才会把结果放入缓存中</li><li><p>allowNullValue    返回值为空的情况下是否缓存 防止缓存穿透可以支持为<code>true</code>  </p><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@CachePut</span>(prefix = <span class="string">"user:"</span>,key = <span class="string">"#p0"</span>)</span><br><span class="line"><span class="meta">@CachePut</span>(prefix = <span class="string">"members:"</span>,key = <span class="string">"#p0"</span>)</span><br><span class="line"><span class="function"><span class="keyword">public</span> User <span class="title">getUserById</span><span class="params">(Integer userId)</span> </span>&#123;</span><br><span class="line">    User user=<span class="keyword">new</span> User();</span><br><span class="line">    user.setId(userId);</span><br><span class="line">    user.setName(<span class="string">"xxx"</span>);</span><br><span class="line">    log.info(<span class="string">"GET getUserById"</span>);</span><br><span class="line">    <span class="keyword">return</span> user;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li></ul><h5 id="CacheEvict"><a href="#CacheEvict" class="headerlink" title="@CacheEvict"></a>@CacheEvict</h5><p>  删除缓存 支持删除多个缓存</p><p>  配置项</p><ul><li>prefix  缓存前缀</li><li>key     key 是 <code>el</code> 表达式 默认生成后的缓存key为 <code>prefix+key</code></li><li>argCondition     前置条件过滤 针对参数过滤 满足则执行表达式逻辑</li></ul><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@CacheEvict</span>(prefix = <span class="string">"members:"</span>,key = <span class="string">"#p0"</span>)</span><br><span class="line"><span class="meta">@CacheEvict</span>(prefix = <span class="string">"user:"</span>,key = <span class="string">"#p0"</span>,argCondition = <span class="string">"#p0==100"</span>)</span><br><span class="line"><span class="function"><span class="keyword">public</span> User <span class="title">getUserById</span><span class="params">(Integer userId)</span> </span>&#123;</span><br><span class="line">    User user=<span class="keyword">new</span> User();</span><br><span class="line">    user.setId(userId);</span><br><span class="line">    user.setName(<span class="string">"xxx"</span>);</span><br><span class="line">    log.info(<span class="string">"GET getUserById"</span>);</span><br><span class="line">    <span class="keyword">return</span> user;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><h4 id="开始使用缓存"><a href="#开始使用缓存" class="headerlink" title="开始使用缓存"></a>开始使用缓存</h4><p>   如springboot中 标注<code>@EnableCache</code>注解 表示缓存功能启用 只要标注了注解的就会生效。</p><p>   引入jar<br><figure class="highlight xml"><table><tr><td class="code"><pre><span class="line">     <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">         <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>com.peachyy<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">         <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>jscache-core<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">version</span>&gt;</span>$&#123;last.jscache.version&#125;<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">     <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure></p><p>  启用缓存 并配置一个缓存实现。<br><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@SpringBootApplication</span></span><br><span class="line"><span class="meta">@EnableCache</span>()</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Application</span> </span>&#123;</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">SpringApplication.run(Application.class, args);</span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">   <span class="meta">@Bean</span></span><br><span class="line">   <span class="function"><span class="keyword">public</span> JedisCache <span class="title">cache</span><span class="params">()</span></span>&#123;</span><br><span class="line">       Properties properties=<span class="keyword">new</span> Properties();</span><br><span class="line">       properties.put(<span class="string">"hosts"</span>,<span class="string">"192.168.0.2:6379"</span>);</span><br><span class="line">       properties.put(<span class="string">"password"</span>,<span class="string">"bac123"</span>);</span><br><span class="line">       properties.put(<span class="string">"database"</span>,<span class="string">"0"</span>);</span><br><span class="line">       <span class="keyword">return</span> <span class="keyword">new</span> JedisCache(properties,<span class="keyword">null</span>);</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure></p><p>  这里有一个基于springboot的例子 <a href="https://github.com/peachyy/jscache/tree/master/jscache-springmvc-example" target="_blank" rel="noopener">https://github.com/peachyy/jscache/tree/master/jscache-springmvc-example</a></p><h4 id="更多适配"><a href="#更多适配" class="headerlink" title="更多适配"></a>更多适配</h4><p>   主要是用于针对部分rpc 如<code>dubbo</code> 当使用<code>@Reference</code>注解 实例没有被<code>spring ioc</code>管理到 就不能到框架AOP 所以提供一些简单的支持 目前仅实现了<code>dubbo</code>的这种情况</p><h4 id="模块"><a href="#模块" class="headerlink" title="模块"></a>模块</h4><ul><li>jscache-annotation 只是注解包  比如标注在接口上 而这个接口需要给其它地方引用 就只需要引用这个jar就好，免得过多产生过多的依赖</li><li>jscache-core       核心功能实现</li><li>jscache-dubbo      针对没有被spring管理<code>dubbo service</code>的适配 基于<code>filter</code>实现</li><li>jscache-springmvc-example 一个springboot 简单例子</li></ul><h4 id="序列化以及其它扩展"><a href="#序列化以及其它扩展" class="headerlink" title="序列化以及其它扩展"></a>序列化以及其它扩展</h4><p>序列化</p><p> 序列化只针对值 key默认为<code>String</code>字符，方便监控查看。自定义序列化需要实现 <code>com.peachyy.jscache.core.serialize.Serializer</code>接口。默认的实现有<code>fastJson</code>,<code>jackson</code>,<code>java</code> 自定义的直接传自定义的全类名就行。</p><p> 如 扩展了一个<code>com.xxx.myJacksonSerializer</code>序列化方式 设置的方式大概就是这样</p><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@EnableCache</span>(serializer=<span class="string">"com.xxx.myJacksonSerializer"</span>)</span><br></pre></td></tr></table></figure><p>扩展缓存实现<br>  扩展缓存需要实现<code>com.peachyy.jscache.core.Cache</code>接口，加入spring容器就完事了。不需要复杂的实现</p> <figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Bean</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> JedisCache <span class="title">cache</span><span class="params">()</span></span>&#123;</span><br><span class="line">    Properties properties=<span class="keyword">new</span> Properties();</span><br><span class="line">    properties.put(<span class="string">"hosts"</span>,<span class="string">"192.168.0.2:6379"</span>);</span><br><span class="line">    properties.put(<span class="string">"password"</span>,<span class="string">"bac123"</span>);</span><br><span class="line">    properties.put(<span class="string">"database"</span>,<span class="string">"0"</span>);</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> JedisCache(properties,<span class="keyword">null</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><p>和spring cache比起来使用上的功能大部分有，一些设计也参考了它，使用上明显的差别就是支持了ttl过期时间，去掉了cacheManager设计，但是仅不止如此 开发者更易驾驭，一个系统中一般保持一套缓存规范就够了。总之适合就是最好的。</p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;p&gt; 比Spring Cache 更好用 更简单的缓存工具 &lt;code&gt;jscache&lt;/code&gt; 取名意义为 &lt;em&gt;java simple cache&lt;/em&gt;，基于&lt;code&gt;AOP&lt;/code&gt;实现，支持注解到接口 自定义单个缓存过期时间配置 &lt;code&gt;ttl&lt;/c
+      
+    
+    </summary>
+    
+      <category term="技术" scheme="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/"/>
+    
+    
+      <category term="技术" scheme="http://blog.seoui.com/tags/%E6%8A%80%E6%9C%AF/"/>
+    
+      <category term="jscache" scheme="http://blog.seoui.com/tags/jscache/"/>
+    
+  </entry>
   
   <entry>
     <title>Neo4j入门教程</title>
@@ -416,35 +443,6 @@
   </entry>
   
   <entry>
-    <title>gitlab环境搭建</title>
-    <link href="http://blog.seoui.com/2018/06/22/gitlabinstall/"/>
-    <id>http://blog.seoui.com/2018/06/22/gitlabinstall/</id>
-    <published>2018-06-21T16:00:00.000Z</published>
-    <updated>2018-09-06T06:21:47.872Z</updated>
-    
-    <content type="html"><![CDATA[<p>操作系统：<code>centos7</code><br>gitlab： <code>gitlab-ee</code></p><p>如果是其他环境 安装过程类似</p><h4 id="安装必要依赖"><a href="#安装必要依赖" class="headerlink" title="安装必要依赖"></a>安装必要依赖</h4> <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo yum install -y curl policycoreutils-python openssh-server</span><br><span class="line">sudo systemctl <span class="built_in">enable</span> sshd</span><br><span class="line">sudo systemctl start sshd</span><br><span class="line">sudo firewall-cmd --permanent --add-service=http</span><br><span class="line">sudo systemctl reload firewalld</span><br></pre></td></tr></table></figure><p> 安装<code>postfix</code>依赖 用来发送邮件 不需要可以省略</p> <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo yum install postfix</span><br><span class="line">sudo systemctl <span class="built_in">enable</span> postfix</span><br><span class="line">sudo systemctl start postfix</span><br></pre></td></tr></table></figure><h4 id="获取并安装GitLab包"><a href="#获取并安装GitLab包" class="headerlink" title="获取并安装GitLab包"></a>获取并安装GitLab包</h4><p>  添加package</p> <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">curl https://packages.gitlab.com/install/repositories/gitlab/gitlab-ee/script.rpm.sh | sudo bash</span><br></pre></td></tr></table></figure><p>  执行安装操作</p><p>  <em>设置一个EXTERNAL_URL表示安装后的gitlab地址,如果需要HTTPS 那么需求安装好之后额外配置</em></p> <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo EXTERNAL_URL=<span class="string">"http://172.30.34.6/"</span> yum install -y gitlab-ee</span><br></pre></td></tr></table></figure><p>  如果没有报错信息 就可以使用前面配置的<code>EXTERNAL_URL</code>参数在浏览器上打开GITLAB了，当前配置的URL为:<code>http://172.30.34.6/</code></p><h4 id="安装之后首次访问设置"><a href="#安装之后首次访问设置" class="headerlink" title="安装之后首次访问设置"></a>安装之后首次访问设置</h4><p>  安装好之后默认需要使用<code>root</code>账户登录，这个时候浏览器会重定向到为<code>root</code>设置初次密码的页面，跟着操作做就对了。</p><p><code>Gitlab</code>安装好之后提供了一系列的命令工具如：<code>gitlab-ctl</code>等等。</p><p>  更多设置请参考官方文档</p><p>参考</p><p><a href="https://about.gitlab.com/installation/#centos-7" target="_blank" rel="noopener">https://about.gitlab.com/installation/#centos-7</a></p>]]></content>
-    
-    <summary type="html">
-    
-      
-      
-        &lt;p&gt;操作系统：&lt;code&gt;centos7&lt;/code&gt;&lt;br&gt;gitlab： &lt;code&gt;gitlab-ee&lt;/code&gt;&lt;/p&gt;
-&lt;p&gt;如果是其他环境 安装过程类似&lt;/p&gt;
-&lt;h4 id=&quot;安装必要依赖&quot;&gt;&lt;a href=&quot;#安装必要依赖&quot; class=&quot;headerlink
-      
-    
-    </summary>
-    
-      <category term="技术" scheme="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/"/>
-    
-      <category term="gitlab" scheme="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/gitlab/"/>
-    
-    
-      <category term="gitlab" scheme="http://blog.seoui.com/tags/gitlab/"/>
-    
-  </entry>
-  
-  <entry>
     <title>nexus3.X环境搭建</title>
     <link href="http://blog.seoui.com/2018/06/22/nexusinstall/"/>
     <id>http://blog.seoui.com/2018/06/22/nexusinstall/</id>
@@ -497,6 +495,35 @@
     
     
       <category term="jenkins" scheme="http://blog.seoui.com/tags/jenkins/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>gitlab环境搭建</title>
+    <link href="http://blog.seoui.com/2018/06/22/gitlabinstall/"/>
+    <id>http://blog.seoui.com/2018/06/22/gitlabinstall/</id>
+    <published>2018-06-21T16:00:00.000Z</published>
+    <updated>2018-09-06T06:21:47.872Z</updated>
+    
+    <content type="html"><![CDATA[<p>操作系统：<code>centos7</code><br>gitlab： <code>gitlab-ee</code></p><p>如果是其他环境 安装过程类似</p><h4 id="安装必要依赖"><a href="#安装必要依赖" class="headerlink" title="安装必要依赖"></a>安装必要依赖</h4> <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo yum install -y curl policycoreutils-python openssh-server</span><br><span class="line">sudo systemctl <span class="built_in">enable</span> sshd</span><br><span class="line">sudo systemctl start sshd</span><br><span class="line">sudo firewall-cmd --permanent --add-service=http</span><br><span class="line">sudo systemctl reload firewalld</span><br></pre></td></tr></table></figure><p> 安装<code>postfix</code>依赖 用来发送邮件 不需要可以省略</p> <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo yum install postfix</span><br><span class="line">sudo systemctl <span class="built_in">enable</span> postfix</span><br><span class="line">sudo systemctl start postfix</span><br></pre></td></tr></table></figure><h4 id="获取并安装GitLab包"><a href="#获取并安装GitLab包" class="headerlink" title="获取并安装GitLab包"></a>获取并安装GitLab包</h4><p>  添加package</p> <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">curl https://packages.gitlab.com/install/repositories/gitlab/gitlab-ee/script.rpm.sh | sudo bash</span><br></pre></td></tr></table></figure><p>  执行安装操作</p><p>  <em>设置一个EXTERNAL_URL表示安装后的gitlab地址,如果需要HTTPS 那么需求安装好之后额外配置</em></p> <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo EXTERNAL_URL=<span class="string">"http://172.30.34.6/"</span> yum install -y gitlab-ee</span><br></pre></td></tr></table></figure><p>  如果没有报错信息 就可以使用前面配置的<code>EXTERNAL_URL</code>参数在浏览器上打开GITLAB了，当前配置的URL为:<code>http://172.30.34.6/</code></p><h4 id="安装之后首次访问设置"><a href="#安装之后首次访问设置" class="headerlink" title="安装之后首次访问设置"></a>安装之后首次访问设置</h4><p>  安装好之后默认需要使用<code>root</code>账户登录，这个时候浏览器会重定向到为<code>root</code>设置初次密码的页面，跟着操作做就对了。</p><p><code>Gitlab</code>安装好之后提供了一系列的命令工具如：<code>gitlab-ctl</code>等等。</p><p>  更多设置请参考官方文档</p><p>参考</p><p><a href="https://about.gitlab.com/installation/#centos-7" target="_blank" rel="noopener">https://about.gitlab.com/installation/#centos-7</a></p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;p&gt;操作系统：&lt;code&gt;centos7&lt;/code&gt;&lt;br&gt;gitlab： &lt;code&gt;gitlab-ee&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;如果是其他环境 安装过程类似&lt;/p&gt;
+&lt;h4 id=&quot;安装必要依赖&quot;&gt;&lt;a href=&quot;#安装必要依赖&quot; class=&quot;headerlink
+      
+    
+    </summary>
+    
+      <category term="技术" scheme="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/"/>
+    
+      <category term="gitlab" scheme="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/gitlab/"/>
+    
+    
+      <category term="gitlab" scheme="http://blog.seoui.com/tags/gitlab/"/>
     
   </entry>
   
@@ -555,35 +582,6 @@
       <category term="jvm" scheme="http://blog.seoui.com/tags/jvm/"/>
     
       <category term="远程调试" scheme="http://blog.seoui.com/tags/%E8%BF%9C%E7%A8%8B%E8%B0%83%E8%AF%95/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Lua在Redis中的应用</title>
-    <link href="http://blog.seoui.com/2018/01/27/redis-lua/"/>
-    <id>http://blog.seoui.com/2018/01/27/redis-lua/</id>
-    <published>2018-01-26T16:00:00.000Z</published>
-    <updated>2018-09-06T06:21:47.864Z</updated>
-    
-    <content type="html"><![CDATA[<p><code>redis</code>从2.6版本开始内置支持<code>Lua</code>解释器，解释器提供了3个函数来处理<code>redis</code>的命令<code>redis.call()</code> <code>redis.pcall()</code>和 <code>redis.log</code>,同时<code>redis</code> 也保证脚本会以原子性的方式执行。这是一个很重要的因素。</p><p>本文涉及到的命令有 <code>EVAL</code>  <code>EVALSHA</code> <code>SCRIPT LOAD</code> <code>SCRIPT FLUSH</code> <code>SCRIPT EXISTS</code> <code>SCRIPT KILL</code></p><p><em>redis.call()， redis.pcall() 函数的区别就是处理错误异常的情况不同，其他的功能是一样的 具体使用哪个看需求而论</em></p><ul><li><code>redis.call()</code>  执行命令的过程中发生错误时，脚本会停止执行，并返回一个脚本错误</li><li><code>redis.pcall()</code> 执行命令的过程中发生错误时，脚本会继续执行，但是会记录错误信息 返回一个带 err 域的 Lua 表(table)</li><li><code>redis.log(loglevel, message)</code> 触发<code>redis</code>记录日志 日志级别有 redis.LOG_DEBUG redis.LOG_VERBOSE redis.LOG_NOTICE redis.LOG_WARNING</li></ul><h4 id="EVAL"><a href="#EVAL" class="headerlink" title="EVAL"></a>EVAL</h4><p><code>EVAL</code>命令对 <code>Lua</code> 脚本进行执行求值。</p><p> 语法：EVAL script numkeys key [key …] arg [arg …]</p><p> <code>script</code> lua脚本内容 注意的是脚本不应该是<code>Lua</code>函数。<br> <code>numkeys</code> 表示指定键名参数的个数。<br> <code>key [key ...]</code> 表示脚本对应的<code>key</code>值列表 在脚本中可以使用<em><code>KEYS[1]</code> <code>KEYS[2]</code> <code>KEYS[3]</code> <code>KEYS[n]</code></em> n从1开始 。<br> <code>arg [arg ...]</code> 命名行中传递的参数列表 在脚本中可以使用<em><code>ARGV[1]</code> <code>ARGV[2]</code> <code>ARGV[3]</code> <code>ARGV[n]</code></em> n从1开始 。</p><p> 一个示例胜过千言万语的解释</p> <figure class="highlight lua"><table><tr><td class="code"><pre><span class="line">eval <span class="string">"return &#123;KEYS[1],KEYS[2],ARGV[1],ARGV[2]&#125;"</span> <span class="number">2</span> id name <span class="number">3</span> mytest</span><br></pre></td></tr></table></figure><p>执行上面脚本返回</p> <figure class="highlight lua"><table><tr><td class="code"><pre><span class="line"><span class="number">1</span>) <span class="string">"id"</span></span><br><span class="line"><span class="number">2</span>) <span class="string">"name"</span></span><br><span class="line"><span class="number">3</span>) <span class="string">"2"</span></span><br><span class="line"><span class="number">4</span>) <span class="string">"mytest"</span></span><br></pre></td></tr></table></figure><h4 id="EVALSHA"><a href="#EVALSHA" class="headerlink" title="EVALSHA"></a>EVALSHA</h4><p>  此命令和<code>EVAL</code>的区别是<code>EVAL</code>每次都需要传入脚本的主体内容，对网络带宽不是很友好。而<code>EVALSHA</code>命令正好可以解决这个问题。</p><p>  语法： EVALSHA sha1 numkeys key [key …] arg [arg …]</p><p>  <code>sha1</code> 缓存中的<code>sha</code>值 这个值可以利用<code>SCRIPT LOAD</code>生成<br>  <code>numkeys</code> 表示指定键名参数的个数。<br>  <code>key [key ...]</code> 表示脚本对应的<code>key</code>值列表 在脚本中可以使用<em><code>KEYS[1]</code> <code>KEYS[2]</code> <code>KEYS[3]</code> <code>KEYS[n]</code></em> n从1开始 。<br>  <code>arg [arg ...]</code> 命名行中传递的参数列表 在脚本中可以使用<em><code>ARGV[1]</code> <code>ARGV[2]</code> <code>ARGV[3]</code> <code>ARGV[n]</code></em> n从1开始 。</p> <figure class="highlight lua"><table><tr><td class="code"><pre><span class="line">&gt; SCRIPT LOAD <span class="string">"return &#123;KEYS[1],KEYS[2],ARGV[1],ARGV[2]&#125;"</span></span><br><span class="line"><span class="string">"a42059b356c875f0717db19a51f6aaca9ae659ea"</span></span><br><span class="line">&gt; EVALSHA a42059b356c875f0717db19a51f6aaca9ae659ea <span class="number">2</span> id name <span class="number">2</span> mytest</span><br><span class="line"><span class="number">1</span>) <span class="string">"id"</span></span><br><span class="line"><span class="number">2</span>) <span class="string">"name"</span></span><br><span class="line"><span class="number">3</span>) <span class="string">"2"</span></span><br><span class="line"><span class="number">4</span>) <span class="string">"mytest"</span></span><br><span class="line">&gt;</span><br></pre></td></tr></table></figure><p>1、首先利用<code>SCRIPT LOAD</code>把脚本的主体缓存在<code>redis</code>中,会返回一个sha的key<br>2、<code>EVALSHA</code> 执行命令 把sha带上 其他的和eval没有区别。</p><h4 id="脚本缓存"><a href="#脚本缓存" class="headerlink" title="脚本缓存"></a>脚本缓存</h4><p>  <code>redis</code>保证了所有运行过的脚本都能缓存起来 前面也提到过使用<code>SCRIPT LOAD</code>也能将脚本缓存并返回sha值，那么也能使用<code>SCRIPT FLUSH</code>清空脚本缓存</p><ul><li><code>SCRIPT LOAD</code> 加载脚本到缓存中</li><li><code>SCRIPT FLUSH</code> 清除所有 Lua 脚本缓存。</li><li><code>SCRIPT EXISTS</code> 判断sha值是否已经缓存好了，返回值为  0 和 1 ，后者表示存在于缓存中，在程序开发中非常有用 比如 <code>redis</code>出现了什么异常情况后，脚本缓存被清空了，或者被人为执行了<code>SCRIPT FLUSH</code>命令，这个时候就可以优先尝试一下<code>SCRIPT EXISTS</code>命令如果返回0表示不存在 就需要先执行<code>SCRIPT LOAD</code>先把脚本加载到缓存中之后再执行</li></ul><h4 id="SCRIPT-KILL"><a href="#SCRIPT-KILL" class="headerlink" title="SCRIPT KILL"></a>SCRIPT KILL</h4><p> 杀死当前正在运行的 <code>Lua</code> 脚本，<code>当且仅当这个脚本没有执行过任何写操作时，这个命令才生效</code>。</p><p> <code>SCRIPT KILL</code> 执行成功返回OK，其他情况返回错误信息</p><h4 id="业务场景案例"><a href="#业务场景案例" class="headerlink" title="业务场景案例"></a>业务场景案例</h4><ul><li><a href="https://github.com/spring-cloud/spring-cloud-gateway/tree/rate-limiter-no-lua" target="_blank" rel="noopener">spring-cloud-gateway</a>  springc cloud 网关限流</li><li>需要原子操作的零散逻辑</li><li>分布式限流</li><li>….</li></ul>]]></content>
-    
-    <summary type="html">
-    
-      
-      
-        &lt;p&gt;&lt;code&gt;redis&lt;/code&gt;从2.6版本开始内置支持&lt;code&gt;Lua&lt;/code&gt;解释器，解释器提供了3个函数来处理&lt;code&gt;redis&lt;/code&gt;的命令&lt;code&gt;redis.call()&lt;/code&gt; &lt;code&gt;redis.pcall()&lt;/code&gt;和
-      
-    
-    </summary>
-    
-      <category term="redis" scheme="http://blog.seoui.com/categories/redis/"/>
-    
-      <category term="lua" scheme="http://blog.seoui.com/categories/redis/lua/"/>
-    
-    
-      <category term="redis" scheme="http://blog.seoui.com/tags/redis/"/>
-    
-      <category term="lua" scheme="http://blog.seoui.com/tags/lua/"/>
     
   </entry>
   
