@@ -4,6 +4,74 @@
 
     
   <url>
+    <loc>http://blog.seoui.com/2021/08/09/k8s-pod/</loc>
+    <lastmod>2021-08-09T05:52:10.939Z</lastmod>
+    <data>
+        <display>
+        <title>kubernetes之pod</title>
+        <pubTime>2021-08-08T16:00:00.000Z</pubTime>
+        
+        <tag>技术</tag>
+         
+        <tag>kubernetes</tag>
+         
+        <tag>pod</tag>
+         
+         
+           
+             
+              <breadCrumb title="技术" url="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://blog.seoui.com/2021/08/05/k8s-kubeadm-init-2/</loc>
+    <lastmod>2021-08-05T05:40:56.172Z</lastmod>
+    <data>
+        <display>
+        <title>kubernetes-kubeadm创建集群</title>
+        <pubTime>2021-08-04T16:00:00.000Z</pubTime>
+        
+        <tag>技术</tag>
+         
+        <tag>kubernetes</tag>
+         
+         
+           
+             
+              <breadCrumb title="技术" url="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://blog.seoui.com/2021/08/04/k8s-kubeadm-1/</loc>
+    <lastmod>2021-08-04T08:49:19.707Z</lastmod>
+    <data>
+        <display>
+        <title>kubernetes-kubeadm安装</title>
+        <pubTime>2021-08-03T16:00:00.000Z</pubTime>
+        
+        <tag>技术</tag>
+         
+        <tag>kubernetes</tag>
+         
+         
+           
+             
+              <breadCrumb title="技术" url="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://blog.seoui.com/2020/12/11/find_jvm_cpu_max_thread/</loc>
     <lastmod>2020-12-11T03:42:54.976Z</lastmod>
     <data>
