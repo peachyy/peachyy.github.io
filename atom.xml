@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://blog.seoui.com/"/>
-  <updated>2021-08-09T05:52:10.939Z</updated>
+  <updated>2021-08-23T08:42:31.705Z</updated>
   <id>http://blog.seoui.com/</id>
   
   <author>
@@ -15,6 +15,34 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>docker删除&lt;none&gt;标签镜像</title>
+    <link href="http://blog.seoui.com/2021/08/23/dockerimage-prune/"/>
+    <id>http://blog.seoui.com/2021/08/23/dockerimage-prune/</id>
+    <published>2021-08-22T16:00:00.000Z</published>
+    <updated>2021-08-23T08:42:31.705Z</updated>
+    
+    <content type="html"><![CDATA[<p>被打上<code>&lt;none&gt;</code>标签的镜像指的是没有标签并且没有被容器使用的镜像。<br>如果不清理这种镜像会大量占用机器磁盘。记录2种自身工作中常用的删除方法。</p><h4 id="第一种删除方式"><a href="#第一种删除方式" class="headerlink" title="第一种删除方式"></a>第一种删除方式</h4><p>执行下面shell 并输入<code>y</code></p><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">docker image prune</span><br></pre></td></tr></table></figure><h4 id="第二种方式删除"><a href="#第二种方式删除" class="headerlink" title="第二种方式删除"></a>第二种方式删除</h4><p> 利用<code>awk</code>来获取镜像id 执行<code>docker rmi</code>删除</p><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">docker rmi $(docker images | grep "none" | awk '&#123;print $3&#125;')</span><br></pre></td></tr></table></figure>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;p&gt;被打上&lt;code&gt;&amp;lt;none&amp;gt;&lt;/code&gt;标签的镜像指的是没有标签并且没有被容器使用的镜像。&lt;br&gt;如果不清理这种镜像会大量占用机器磁盘。记录2种自身工作中常用的删除方法。&lt;/p&gt;
+&lt;h4 id=&quot;第一种删除方式&quot;&gt;&lt;a href=&quot;#第一种删除方式&quot; cla
+      
+    
+    </summary>
+    
+      <category term="技术" scheme="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/"/>
+    
+    
+      <category term="docker" scheme="http://blog.seoui.com/tags/docker/"/>
+    
+      <category term="技术" scheme="http://blog.seoui.com/tags/%E6%8A%80%E6%9C%AF/"/>
+    
+  </entry>
   
   <entry>
     <title>kubernetes之pod</title>
@@ -434,6 +462,66 @@
   </entry>
   
   <entry>
+    <title>rocketmq简单消息发送</title>
+    <link href="http://blog.seoui.com/2018/07/24/rocketmq_simple_message/"/>
+    <id>http://blog.seoui.com/2018/07/24/rocketmq_simple_message/</id>
+    <published>2018-07-23T16:00:00.000Z</published>
+    <updated>2018-09-06T06:21:47.884Z</updated>
+    
+    <content type="html"><![CDATA[<p>有以下3种方式发送RocketMQ消息 </p><ul><li>可靠同步发送 reliable synchronous</li><li>可靠异步发送 reliable asynchronous</li><li>单向发送 one-way transmission</li></ul><h4 id="可靠同步发送"><a href="#可靠同步发送" class="headerlink" title="可靠同步发送"></a>可靠同步发送</h4><p> 主要运用在比较重要一点消息传递/通知等业务</p> <figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SyncProducer</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        DefaultMQProducer producer = <span class="keyword">new</span></span><br><span class="line">            DefaultMQProducer(<span class="string">"test"</span>);</span><br><span class="line">        producer.start();</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">100</span>; i++) &#123;</span><br><span class="line">            Message msg = <span class="keyword">new</span> Message(<span class="string">"TopicTest"</span> <span class="comment">/* Topic */</span>,</span><br><span class="line">                <span class="string">"TagA"</span> <span class="comment">/* Tag */</span>,</span><br><span class="line">                (<span class="string">"Hello RocketMQ "</span> +</span><br><span class="line">                    i).getBytes(RemotingHelper.DEFAULT_CHARSET) <span class="comment">/* Message body */</span></span><br><span class="line">            );</span><br><span class="line">            <span class="comment">//Call send message to deliver message to one of brokers.</span></span><br><span class="line">            SendResult sendResult = producer.send(msg);</span><br><span class="line">            System.out.printf(<span class="string">"%s%n"</span>, sendResult);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">//Shut down once the producer instance is not longer in use.</span></span><br><span class="line">        producer.shutdown();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><h4 id="可靠异步发送"><a href="#可靠异步发送" class="headerlink" title="可靠异步发送"></a>可靠异步发送</h4><p>  通常用于对发送消息响应时间要求更高/更快的场景</p><pre><code class="java"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">AsyncProducer</span> </span>{    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(</span></span><span class="function"><span class="params">        String[] args)</span> <span class="keyword">throws</span> MQClientException, InterruptedException, UnsupportedEncodingException </span>{        DefaultMQProducer producer = <span class="keyword">new</span> DefaultMQProducer(<span class="string">"Jodie_Daily_test"</span>);        producer.start();        producer.setRetryTimesWhenSendAsyncFailed(<span class="number">0</span>);        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">10000000</span>; i++) {            <span class="keyword">try</span> {                <span class="keyword">final</span> <span class="keyword">int</span> index = i;                Message msg = <span class="keyword">new</span> Message(<span class="string">"Jodie_topic_1023"</span>,                    <span class="string">"TagA"</span>,                    <span class="string">"OrderID188"</span>,                    <span class="string">"Hello world"</span>.getBytes(RemotingHelper.DEFAULT_CHARSET));                    <span class="comment">//重点在这里 异步发送回调</span>                producer.send(msg, <span class="keyword">new</span> SendCallback() {                    <span class="meta">@Override</span>                    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onSuccess</span><span class="params">(SendResult sendResult)</span> </span>{                        System.out.printf(<span class="string">"%-10d OK %s %n"</span>, index, sendResult.getMsgId());                    }                    <span class="meta">@Override</span>                    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onException</span><span class="params">(Throwable e)</span> </span>{                        System.out.printf(<span class="string">"%-10d Exception %s %n"</span>, index, e);                        e.printStackTrace();                    }                });            } <span class="keyword">catch</span> (Exception e) {                e.printStackTrace();            }        }        producer.shutdown();    }}</code></pre><h4 id="单向发送"><a href="#单向发送" class="headerlink" title="单向发送"></a>单向发送</h4><p>适用于某些耗时非常短，但对可靠性要求并不高的场景，例如日志收集。</p><p><em>只发送消息，不等待服务器响应，只发送请求不等待应答。此方式发送消息的过程耗时非常短，一般在微秒级别。</em></p><pre><code class="java"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">OnewayProducer</span> </span>{    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> Exception</span>{        DefaultMQProducer producer = <span class="keyword">new</span> DefaultMQProducer(<span class="string">"Test"</span>);        producer.start();        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">100</span>; i++) {            <span class="comment">//Create a message instance, specifying topic, tag and message body.</span>            Message msg = <span class="keyword">new</span> Message(<span class="string">"TopicTest"</span> <span class="comment">/* Topic */</span>,                <span class="string">"TagA"</span> <span class="comment">/* Tag */</span>,                (<span class="string">"Hello RocketMQ "</span> +                    i).getBytes(RemotingHelper.DEFAULT_CHARSET) <span class="comment">/* Message body */</span>            );            <span class="comment">//Call send message to deliver message to one of brokers.</span>            producer.sendOneway(msg);        }        <span class="comment">//Shut down once the producer instance is not longer in use.</span>        producer.shutdown();    }}</code></pre>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;p&gt;有以下3种方式发送RocketMQ消息 &lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;可靠同步发送 reliable synchronous&lt;/li&gt;
+&lt;li&gt;可靠异步发送 reliable asynchronous&lt;/li&gt;
+&lt;li&gt;单向发送 one-way transmission&lt;/l
+      
+    
+    </summary>
+    
+      <category term="技术" scheme="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/"/>
+    
+      <category term="rocketmq" scheme="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/rocketmq/"/>
+    
+    
+      <category term="rocketmq" scheme="http://blog.seoui.com/tags/rocketmq/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>rocketmq4.x快速入门指南</title>
+    <link href="http://blog.seoui.com/2018/07/24/rocketmqinstall/"/>
+    <id>http://blog.seoui.com/2018/07/24/rocketmqinstall/</id>
+    <published>2018-07-23T16:00:00.000Z</published>
+    <updated>2018-09-06T06:21:47.886Z</updated>
+    
+    <content type="html"><![CDATA[<p>以下采用的是<code>apache rocketmq 4.2.0</code>版本 相关文档如下</p><ul><li>快速体验： <a href="//blog.seoui.com/2018/07/24/rocketmqinstall/">http://blog.seoui.com/2018/07/24/rocketmqinstall/</a> </li><li>rocketmq简单消息发送： <a href="//blog.seoui.com/2018/07/24/rocketmq_simple_message/">http://blog.seoui.com/2018/07/24/rocketmq_simple_message/</a> </li><li>rocketmq有序消息： <a href="//blog.seoui.com/2018/07/24/rocketmq_ordered_message/">http://blog.seoui.com/2018/07/24/rocketmq_ordered_message/</a> </li><li>rocketmq广播消息： <a href="//blog.seoui.com/2018/07/24/rocketmq_broadcast_message/">http://blog.seoui.com/2018/07/24/rocketmq_broadcast_message/</a> </li><li>rocketmq延时消息： <a href="//blog.seoui.com/2018/08/01/rocketmq_delay_message/">http://blog.seoui.com/2018/08/01/rocketmq_delay_message/</a></li><li>rocketmq批量消息： <a href="//blog.seoui.com/2018/08/02/rocketmq_batch_message/">http://blog.seoui.com/2018/08/02/rocketmq_batch_message/</a><h4 id="下载源码并编译"><a href="#下载源码并编译" class="headerlink" title="下载源码并编译"></a>下载源码并编译</h4></li></ul><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#download</span></span><br><span class="line">wget http://mirrors.hust.edu.cn/apache/rocketmq/4.2.0/rocketmq-all-4.2.0-source-release.zip   </span><br><span class="line">unzip rocketmq-all-4.2.0-source-release.zip</span><br><span class="line"><span class="built_in">cd</span> rocketmq-all-4.2.0/</span><br><span class="line">mvn -Prelease-all -DskipTests clean install -U</span><br><span class="line"><span class="built_in">cd</span> distribution/target/apache-rocketmq</span><br></pre></td></tr></table></figure><p>目录 <code>distribution/target/apache-rocketmq</code> 是编译后的产出 可复制这个目录安装MQ的机器上,这里复制到<code>/usr/local/</code></p><p>共享一份编译后的文件方便以后再次使用 </p><p><a href="https://pan.baidu.com/s/1ZyUOKFm-t8cJDQuH68QydQ" target="_blank" rel="noopener">https://pan.baidu.com/s/1ZyUOKFm-t8cJDQuH68QydQ</a></p><h4 id="启动NameServer"><a href="#启动NameServer" class="headerlink" title="启动NameServer"></a>启动NameServer</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">cd</span> /usr/<span class="built_in">local</span>/apache-rocketmq</span><br><span class="line">nohup sh bin/mqnamesrv &amp;</span><br></pre></td></tr></table></figure><p> 查看日志<code>tail -f ~/logs/rocketmqlogs/namesrv.log</code> 启动成功后打印The Name Server boot success…</p><h4 id="启动Broker"><a href="#启动Broker" class="headerlink" title="启动Broker"></a>启动Broker</h4><p>这里需要注意一下就是 如果当前机器上有多张网卡的情况,最好指定一个<code>IP</code>, 有可能消费端正好就和MQ选择的网卡不通</p><p><code>vim  conf/broker.conf</code> 指定IP 访问多网卡的情况 并配置好nameserver的地址  也可以使用mqbroker启动参数<code>-n</code>指定nameserver地址</p><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">brokerIP1=192.168.1.2</span><br><span class="line">namesrvAddr=192.168.1.3:9876</span><br></pre></td></tr></table></figure><p>启动broker <code>-c</code>参数指定配置文件</p><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">nohup sh bin/mqbroker -c config/broker.properties &amp;</span><br></pre></td></tr></table></figure><p>查看一下集群列表</p><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sh bin/mqadmin clusterList -n  localhost:9876</span><br></pre></td></tr></table></figure><h4 id="发送-接收消息"><a href="#发送-接收消息" class="headerlink" title="发送/接收消息"></a>发送/接收消息</h4><p>Producer</p><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"> </span><br><span class="line"><span class="built_in">export</span> NAMESRV_ADDR=localhost:9876</span><br><span class="line">sh bin/tools.sh org.apache.rocketmq.example.quickstart.Producer</span><br></pre></td></tr></table></figure><p>能发送表示OK</p><p>Consumer</p><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"> </span><br><span class="line"><span class="built_in">export</span> NAMESRV_ADDR=localhost:9876</span><br><span class="line">sh bin/tools.sh org.apache.rocketmq.example.quickstart.Consumer</span><br></pre></td></tr></table></figure><p>能接收到之前发送的消息表示OK</p><h4 id="关闭MQ"><a href="#关闭MQ" class="headerlink" title="关闭MQ"></a>关闭MQ</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"> </span><br><span class="line">sh bin/mqshutdown broker</span><br><span class="line"></span><br><span class="line">sh bin/mqshutdown namesrv</span><br></pre></td></tr></table></figure>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;p&gt;以下采用的是&lt;code&gt;apache rocketmq 4.2.0&lt;/code&gt;版本 相关文档如下&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;快速体验： &lt;a href=&quot;//blog.seoui.com/2018/07/24/rocketmqinstall/&quot;&gt;http://blog.s
+      
+    
+    </summary>
+    
+      <category term="技术" scheme="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/"/>
+    
+      <category term="rocketmq" scheme="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/rocketmq/"/>
+    
+    
+      <category term="rocketmq" scheme="http://blog.seoui.com/tags/rocketmq/"/>
+    
+  </entry>
+  
+  <entry>
     <title>rocketmq有序消息</title>
     <link href="http://blog.seoui.com/2018/07/24/rocketmq_ordered_message/"/>
     <id>http://blog.seoui.com/2018/07/24/rocketmq_ordered_message/</id>
@@ -487,94 +575,6 @@
     
     
       <category term="rocketmq" scheme="http://blog.seoui.com/tags/rocketmq/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>rocketmq4.x快速入门指南</title>
-    <link href="http://blog.seoui.com/2018/07/24/rocketmqinstall/"/>
-    <id>http://blog.seoui.com/2018/07/24/rocketmqinstall/</id>
-    <published>2018-07-23T16:00:00.000Z</published>
-    <updated>2018-09-06T06:21:47.886Z</updated>
-    
-    <content type="html"><![CDATA[<p>以下采用的是<code>apache rocketmq 4.2.0</code>版本 相关文档如下</p><ul><li>快速体验： <a href="//blog.seoui.com/2018/07/24/rocketmqinstall/">http://blog.seoui.com/2018/07/24/rocketmqinstall/</a> </li><li>rocketmq简单消息发送： <a href="//blog.seoui.com/2018/07/24/rocketmq_simple_message/">http://blog.seoui.com/2018/07/24/rocketmq_simple_message/</a> </li><li>rocketmq有序消息： <a href="//blog.seoui.com/2018/07/24/rocketmq_ordered_message/">http://blog.seoui.com/2018/07/24/rocketmq_ordered_message/</a> </li><li>rocketmq广播消息： <a href="//blog.seoui.com/2018/07/24/rocketmq_broadcast_message/">http://blog.seoui.com/2018/07/24/rocketmq_broadcast_message/</a> </li><li>rocketmq延时消息： <a href="//blog.seoui.com/2018/08/01/rocketmq_delay_message/">http://blog.seoui.com/2018/08/01/rocketmq_delay_message/</a></li><li>rocketmq批量消息： <a href="//blog.seoui.com/2018/08/02/rocketmq_batch_message/">http://blog.seoui.com/2018/08/02/rocketmq_batch_message/</a><h4 id="下载源码并编译"><a href="#下载源码并编译" class="headerlink" title="下载源码并编译"></a>下载源码并编译</h4></li></ul><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#download</span></span><br><span class="line">wget http://mirrors.hust.edu.cn/apache/rocketmq/4.2.0/rocketmq-all-4.2.0-source-release.zip   </span><br><span class="line">unzip rocketmq-all-4.2.0-source-release.zip</span><br><span class="line"><span class="built_in">cd</span> rocketmq-all-4.2.0/</span><br><span class="line">mvn -Prelease-all -DskipTests clean install -U</span><br><span class="line"><span class="built_in">cd</span> distribution/target/apache-rocketmq</span><br></pre></td></tr></table></figure><p>目录 <code>distribution/target/apache-rocketmq</code> 是编译后的产出 可复制这个目录安装MQ的机器上,这里复制到<code>/usr/local/</code></p><p>共享一份编译后的文件方便以后再次使用 </p><p><a href="https://pan.baidu.com/s/1ZyUOKFm-t8cJDQuH68QydQ" target="_blank" rel="noopener">https://pan.baidu.com/s/1ZyUOKFm-t8cJDQuH68QydQ</a></p><h4 id="启动NameServer"><a href="#启动NameServer" class="headerlink" title="启动NameServer"></a>启动NameServer</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">cd</span> /usr/<span class="built_in">local</span>/apache-rocketmq</span><br><span class="line">nohup sh bin/mqnamesrv &amp;</span><br></pre></td></tr></table></figure><p> 查看日志<code>tail -f ~/logs/rocketmqlogs/namesrv.log</code> 启动成功后打印The Name Server boot success…</p><h4 id="启动Broker"><a href="#启动Broker" class="headerlink" title="启动Broker"></a>启动Broker</h4><p>这里需要注意一下就是 如果当前机器上有多张网卡的情况,最好指定一个<code>IP</code>, 有可能消费端正好就和MQ选择的网卡不通</p><p><code>vim  conf/broker.conf</code> 指定IP 访问多网卡的情况 并配置好nameserver的地址  也可以使用mqbroker启动参数<code>-n</code>指定nameserver地址</p><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">brokerIP1=192.168.1.2</span><br><span class="line">namesrvAddr=192.168.1.3:9876</span><br></pre></td></tr></table></figure><p>启动broker <code>-c</code>参数指定配置文件</p><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">nohup sh bin/mqbroker -c config/broker.properties &amp;</span><br></pre></td></tr></table></figure><p>查看一下集群列表</p><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sh bin/mqadmin clusterList -n  localhost:9876</span><br></pre></td></tr></table></figure><h4 id="发送-接收消息"><a href="#发送-接收消息" class="headerlink" title="发送/接收消息"></a>发送/接收消息</h4><p>Producer</p><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"> </span><br><span class="line"><span class="built_in">export</span> NAMESRV_ADDR=localhost:9876</span><br><span class="line">sh bin/tools.sh org.apache.rocketmq.example.quickstart.Producer</span><br></pre></td></tr></table></figure><p>能发送表示OK</p><p>Consumer</p><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"> </span><br><span class="line"><span class="built_in">export</span> NAMESRV_ADDR=localhost:9876</span><br><span class="line">sh bin/tools.sh org.apache.rocketmq.example.quickstart.Consumer</span><br></pre></td></tr></table></figure><p>能接收到之前发送的消息表示OK</p><h4 id="关闭MQ"><a href="#关闭MQ" class="headerlink" title="关闭MQ"></a>关闭MQ</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"> </span><br><span class="line">sh bin/mqshutdown broker</span><br><span class="line"></span><br><span class="line">sh bin/mqshutdown namesrv</span><br></pre></td></tr></table></figure>]]></content>
-    
-    <summary type="html">
-    
-      
-      
-        &lt;p&gt;以下采用的是&lt;code&gt;apache rocketmq 4.2.0&lt;/code&gt;版本 相关文档如下&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;快速体验： &lt;a href=&quot;//blog.seoui.com/2018/07/24/rocketmqinstall/&quot;&gt;http://blog.s
-      
-    
-    </summary>
-    
-      <category term="技术" scheme="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/"/>
-    
-      <category term="rocketmq" scheme="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/rocketmq/"/>
-    
-    
-      <category term="rocketmq" scheme="http://blog.seoui.com/tags/rocketmq/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>rocketmq简单消息发送</title>
-    <link href="http://blog.seoui.com/2018/07/24/rocketmq_simple_message/"/>
-    <id>http://blog.seoui.com/2018/07/24/rocketmq_simple_message/</id>
-    <published>2018-07-23T16:00:00.000Z</published>
-    <updated>2018-09-06T06:21:47.884Z</updated>
-    
-    <content type="html"><![CDATA[<p>有以下3种方式发送RocketMQ消息 </p><ul><li>可靠同步发送 reliable synchronous</li><li>可靠异步发送 reliable asynchronous</li><li>单向发送 one-way transmission</li></ul><h4 id="可靠同步发送"><a href="#可靠同步发送" class="headerlink" title="可靠同步发送"></a>可靠同步发送</h4><p> 主要运用在比较重要一点消息传递/通知等业务</p> <figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SyncProducer</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        DefaultMQProducer producer = <span class="keyword">new</span></span><br><span class="line">            DefaultMQProducer(<span class="string">"test"</span>);</span><br><span class="line">        producer.start();</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">100</span>; i++) &#123;</span><br><span class="line">            Message msg = <span class="keyword">new</span> Message(<span class="string">"TopicTest"</span> <span class="comment">/* Topic */</span>,</span><br><span class="line">                <span class="string">"TagA"</span> <span class="comment">/* Tag */</span>,</span><br><span class="line">                (<span class="string">"Hello RocketMQ "</span> +</span><br><span class="line">                    i).getBytes(RemotingHelper.DEFAULT_CHARSET) <span class="comment">/* Message body */</span></span><br><span class="line">            );</span><br><span class="line">            <span class="comment">//Call send message to deliver message to one of brokers.</span></span><br><span class="line">            SendResult sendResult = producer.send(msg);</span><br><span class="line">            System.out.printf(<span class="string">"%s%n"</span>, sendResult);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">//Shut down once the producer instance is not longer in use.</span></span><br><span class="line">        producer.shutdown();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><h4 id="可靠异步发送"><a href="#可靠异步发送" class="headerlink" title="可靠异步发送"></a>可靠异步发送</h4><p>  通常用于对发送消息响应时间要求更高/更快的场景</p><pre><code class="java"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">AsyncProducer</span> </span>{    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(</span></span><span class="function"><span class="params">        String[] args)</span> <span class="keyword">throws</span> MQClientException, InterruptedException, UnsupportedEncodingException </span>{        DefaultMQProducer producer = <span class="keyword">new</span> DefaultMQProducer(<span class="string">"Jodie_Daily_test"</span>);        producer.start();        producer.setRetryTimesWhenSendAsyncFailed(<span class="number">0</span>);        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">10000000</span>; i++) {            <span class="keyword">try</span> {                <span class="keyword">final</span> <span class="keyword">int</span> index = i;                Message msg = <span class="keyword">new</span> Message(<span class="string">"Jodie_topic_1023"</span>,                    <span class="string">"TagA"</span>,                    <span class="string">"OrderID188"</span>,                    <span class="string">"Hello world"</span>.getBytes(RemotingHelper.DEFAULT_CHARSET));                    <span class="comment">//重点在这里 异步发送回调</span>                producer.send(msg, <span class="keyword">new</span> SendCallback() {                    <span class="meta">@Override</span>                    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onSuccess</span><span class="params">(SendResult sendResult)</span> </span>{                        System.out.printf(<span class="string">"%-10d OK %s %n"</span>, index, sendResult.getMsgId());                    }                    <span class="meta">@Override</span>                    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onException</span><span class="params">(Throwable e)</span> </span>{                        System.out.printf(<span class="string">"%-10d Exception %s %n"</span>, index, e);                        e.printStackTrace();                    }                });            } <span class="keyword">catch</span> (Exception e) {                e.printStackTrace();            }        }        producer.shutdown();    }}</code></pre><h4 id="单向发送"><a href="#单向发送" class="headerlink" title="单向发送"></a>单向发送</h4><p>适用于某些耗时非常短，但对可靠性要求并不高的场景，例如日志收集。</p><p><em>只发送消息，不等待服务器响应，只发送请求不等待应答。此方式发送消息的过程耗时非常短，一般在微秒级别。</em></p><pre><code class="java"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">OnewayProducer</span> </span>{    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> Exception</span>{        DefaultMQProducer producer = <span class="keyword">new</span> DefaultMQProducer(<span class="string">"Test"</span>);        producer.start();        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">100</span>; i++) {            <span class="comment">//Create a message instance, specifying topic, tag and message body.</span>            Message msg = <span class="keyword">new</span> Message(<span class="string">"TopicTest"</span> <span class="comment">/* Topic */</span>,                <span class="string">"TagA"</span> <span class="comment">/* Tag */</span>,                (<span class="string">"Hello RocketMQ "</span> +                    i).getBytes(RemotingHelper.DEFAULT_CHARSET) <span class="comment">/* Message body */</span>            );            <span class="comment">//Call send message to deliver message to one of brokers.</span>            producer.sendOneway(msg);        }        <span class="comment">//Shut down once the producer instance is not longer in use.</span>        producer.shutdown();    }}</code></pre>]]></content>
-    
-    <summary type="html">
-    
-      
-      
-        &lt;p&gt;有以下3种方式发送RocketMQ消息 &lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;可靠同步发送 reliable synchronous&lt;/li&gt;
-&lt;li&gt;可靠异步发送 reliable asynchronous&lt;/li&gt;
-&lt;li&gt;单向发送 one-way transmission&lt;/l
-      
-    
-    </summary>
-    
-      <category term="技术" scheme="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/"/>
-    
-      <category term="rocketmq" scheme="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/rocketmq/"/>
-    
-    
-      <category term="rocketmq" scheme="http://blog.seoui.com/tags/rocketmq/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>jenkins环境搭建</title>
-    <link href="http://blog.seoui.com/2018/06/22/jenkinsinstall/"/>
-    <id>http://blog.seoui.com/2018/06/22/jenkinsinstall/</id>
-    <published>2018-06-21T16:00:00.000Z</published>
-    <updated>2018-09-06T06:21:47.875Z</updated>
-    
-    <content type="html"><![CDATA[<p><code>Jenkins</code>是基于<code>JVM</code>开发的，所以安装之前需要先确保装好<code>JVM</code>的运行环境<code>JRE</code></p><p> 这里采用<code>TOMCAT</code>的部署方式安装。</p><h4 id="下载WAR"><a href="#下载WAR" class="headerlink" title="下载WAR"></a>下载WAR</h4> <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">wget http://mirrors.jenkins.io/war-stable/2.121.1/jenkins.war</span><br></pre></td></tr></table></figure><p> 然后复制到<code>tomcat</code>的webapps目录中 执行<code>bin/startup.sh</code>启动 ，<code>bin/shutdown.sh</code> 关闭。</p><p> 首次启动访问的时候会提示你安装插件 选中推荐的一些插件就基本够用了。也可以在系统设置-&gt;插件管理中手动安装。</p><p>参考</p><p><a href="https://jenkins.io/doc/" target="_blank" rel="noopener">https://jenkins.io/doc/</a></p>]]></content>
-    
-    <summary type="html">
-    
-      
-      
-        &lt;p&gt;&lt;code&gt;Jenkins&lt;/code&gt;是基于&lt;code&gt;JVM&lt;/code&gt;开发的，所以安装之前需要先确保装好&lt;code&gt;JVM&lt;/code&gt;的运行环境&lt;code&gt;JRE&lt;/code&gt;&lt;/p&gt;
-&lt;p&gt; 这里采用&lt;code&gt;TOMCAT&lt;/code&gt;的部署方式安装。&lt;/p&gt;
-      
-    
-    </summary>
-    
-      <category term="技术" scheme="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/"/>
-    
-      <category term="jenkins" scheme="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/jenkins/"/>
-    
-    
-      <category term="jenkins" scheme="http://blog.seoui.com/tags/jenkins/"/>
     
   </entry>
   
