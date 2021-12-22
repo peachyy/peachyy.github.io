@@ -2,6 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://blog.seoui.com/2021/12/22/k8s-ingress-annotation1/</loc>
+    
+    <lastmod>2021-12-22T02:39:54.071Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://blog.seoui.com/2021/11/11/k8s-jvm-dumpcollect/</loc>
     
     <lastmod>2021-11-11T04:00:30.523Z</lastmod>

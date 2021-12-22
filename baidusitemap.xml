@@ -4,6 +4,30 @@
 
     
   <url>
+    <loc>http://blog.seoui.com/2021/12/22/k8s-ingress-annotation1/</loc>
+    <lastmod>2021-12-22T02:39:54.071Z</lastmod>
+    <data>
+        <display>
+        <title>ingress传递头信息</title>
+        <pubTime>2021-12-21T16:00:00.000Z</pubTime>
+        
+        <tag>技术</tag>
+         
+        <tag>k8s</tag>
+         
+        <tag>ingress</tag>
+         
+         
+           
+             
+              <breadCrumb title="技术" url="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://blog.seoui.com/2021/11/11/k8s-jvm-dumpcollect/</loc>
     <lastmod>2021-11-11T04:00:30.523Z</lastmod>
     <data>
