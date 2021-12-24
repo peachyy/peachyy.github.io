@@ -2,6 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://blog.seoui.com/fq/index.html</loc>
+    
+    <lastmod>2021-12-24T08:59:46.259Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://blog.seoui.com/2021/12/22/k8s-ingress-annotation1/</loc>
     
     <lastmod>2021-12-22T02:39:54.071Z</lastmod>
@@ -124,13 +131,6 @@
     <loc>http://blog.seoui.com/2018/11/27/svnToGit/</loc>
     
     <lastmod>2018-11-27T08:53:54.194Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://blog.seoui.com/fq/index.html</loc>
-    
-    <lastmod>2018-11-27T03:37:56.968Z</lastmod>
     
   </url>
   
