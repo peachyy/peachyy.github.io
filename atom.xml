@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://blog.seoui.com/"/>
-  <updated>2021-12-22T02:39:54.071Z</updated>
+  <updated>2021-12-28T09:02:35.608Z</updated>
   <id>http://blog.seoui.com/</id>
   
   <author>
@@ -15,6 +15,37 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>jvm容器化内存感知实践</title>
+    <link href="http://blog.seoui.com/2021/12/28/dockerjvmarg_action/"/>
+    <id>http://blog.seoui.com/2021/12/28/dockerjvmarg_action/</id>
+    <published>2021-12-27T16:00:00.000Z</published>
+    <updated>2021-12-28T09:02:35.608Z</updated>
+    
+    <content type="html"><![CDATA[<p><code>docker</code>容器本身需要设置容器的最大可使用内存(防止单个容器消耗节点大量的资源)，跑在容器中的<code>jvm</code>进程也需要设置内存，防止内存占用过大被容器<code>Kill</code>,所以如何优雅的在容器化中设置内存是一个很有必要了解的话题。</p><ul><li><code>jdk 8u131+</code> <code>java 9+</code> 使用参数开启实验性功能 <code>-XX:+UnlockExperimentalVMOptions -XX:+UseCGroupMemoryLimitForHeap</code>。 开启容器化支持功能。</li><li><code>java 8u191+</code> <code>java10+</code> 使用参数<code>UseContainerSupport</code> 开启容器化感知支持功能。</li><li><code>-XX:MaxRAMPercentage</code> 限制最大<code>heap</code>内存占比 。</li><li><code>-XX:InitialRAMPercentage</code> 设置初始<code>heap</code>内存占比，此参数如果和<code>MaxRAMPercentage</code>设置一样表示jvm最大与最小一致  jvm不会去伸缩内存 这也是一种普遍使用的方式。其值介于0.0到100.0之间，默认值为25。</li></ul><p>上面的几个参数可以让jvm读取<code>cgroup</code>的一些数据，并进行相应的适配，这样容器内jvm超时最大内存 就自己会<code>OOM</code>而不是被容器<code>Kill</code>。关于被<code>OOM</code>后怎么怎么拉取以及存储<code>OOM</code>文件参考 <a href="/2021/11/11/k8s-jvm-dumpcollect">在k8s中收集jvm异常dump文件到OSS</a></p><h4 id="案例"><a href="#案例" class="headerlink" title="案例"></a>案例</h4><p>以下案例已设置了容器最大可实现内存<code>4G</code> CPU <code>1核</code></p><p>使用参数 限制<code>heap</code>最大内存为80%</p><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line">java  -server -XX:+UnlockExperimentalVMOptions -XX:+UseCGroupMemoryLimitForHeap -XX:MaxRAMPercentage=80.0 ....</span><br></pre></td></tr></table></figure><p>使用jmap查看heap内存情况 显示<code>MaxHeapSize</code>为3278mb 刚好为(4*1021)/0.8 说明jvm能感知到容器最大内存为4g 且只能分配80%的内存给<code>heap</code>。剩余的20%供其他的进程使用。</p><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line">jmap -heap 19  </span><br><span class="line"></span><br><span class="line">Heap Configuration:</span><br><span class="line">   MinHeapFreeRatio         = 0</span><br><span class="line">   MaxHeapFreeRatio         = 100</span><br><span class="line">   MaxHeapSize              = 3437232128 (3278.0MB)</span><br><span class="line">   NewSize                  = 22020096 (21.0MB)</span><br><span class="line">   MaxNewSize               = 1145569280 (1092.5MB)</span><br><span class="line">   OldSize                  = 45088768 (43.0MB)</span><br><span class="line">   NewRatio                 = 2</span><br><span class="line">   SurvivorRatio            = 8</span><br><span class="line">   MetaspaceSize            = 21807104 (20.796875MB)</span><br><span class="line">   CompressedClassSpaceSize = 1073741824 (1024.0MB)</span><br><span class="line">   MaxMetaspaceSize         = 17592186044415 MB</span><br><span class="line">   G1HeapRegionSize         = 0 (0.0MB)</span><br></pre></td></tr></table></figure><p>JDK8+可以使用-XX:MetaspaceSize和-XX:MaxMetaspaceSize设置元空间初始大小以及最大可分配大小。默认情况下，元空间最大的大小是系统内存的大小，该参数一般默认也无所谓 一般不会因为这个太大导致<code>OOM</code>。<br>这也证明了在容器中获取到的内存是宿主机的内存大小而不是设置了容器限制后的大小。</p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;p&gt;&lt;code&gt;docker&lt;/code&gt;容器本身需要设置容器的最大可使用内存(防止单个容器消耗节点大量的资源)，跑在容器中的&lt;code&gt;jvm&lt;/code&gt;进程也需要设置内存，防止内存占用过大被容器&lt;code&gt;Kill&lt;/code&gt;,所以如何优雅的在容器化中设置内存是一个很有
+      
+    
+    </summary>
+    
+      <category term="技术" scheme="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/"/>
+    
+    
+      <category term="docker" scheme="http://blog.seoui.com/tags/docker/"/>
+    
+      <category term="jvm" scheme="http://blog.seoui.com/tags/jvm/"/>
+    
+      <category term="技术" scheme="http://blog.seoui.com/tags/%E6%8A%80%E6%9C%AF/"/>
+    
+      <category term="k8s" scheme="http://blog.seoui.com/tags/k8s/"/>
+    
+  </entry>
   
   <entry>
     <title>ingress传递头信息</title>
@@ -71,9 +102,9 @@
     
       <category term="技术" scheme="http://blog.seoui.com/tags/%E6%8A%80%E6%9C%AF/"/>
     
-      <category term="k8s" scheme="http://blog.seoui.com/tags/k8s/"/>
-    
       <category term="alpine" scheme="http://blog.seoui.com/tags/alpine/"/>
+    
+      <category term="k8s" scheme="http://blog.seoui.com/tags/k8s/"/>
     
       <category term="dump" scheme="http://blog.seoui.com/tags/dump/"/>
     
@@ -541,35 +572,6 @@
     <summary type="html">
     
       &lt;p&gt;&lt;code&gt;rocketmq&lt;/code&gt;提供一种延时消息的解决方案，就是在特定的时间到了，消息才会被投递出去供&lt;code&gt;consumer&lt;/code&gt;消费。&lt;br&gt;
-    
-    </summary>
-    
-      <category term="技术" scheme="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/"/>
-    
-      <category term="rocketmq" scheme="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/rocketmq/"/>
-    
-    
-      <category term="rocketmq" scheme="http://blog.seoui.com/tags/rocketmq/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>rocketmq4.x快速入门指南</title>
-    <link href="http://blog.seoui.com/2018/07/24/rocketmqinstall/"/>
-    <id>http://blog.seoui.com/2018/07/24/rocketmqinstall/</id>
-    <published>2018-07-23T16:00:00.000Z</published>
-    <updated>2018-09-06T06:21:47.886Z</updated>
-    
-    <content type="html"><![CDATA[<p>以下采用的是<code>apache rocketmq 4.2.0</code>版本 相关文档如下</p><ul><li>快速体验： <a href="//blog.seoui.com/2018/07/24/rocketmqinstall/">http://blog.seoui.com/2018/07/24/rocketmqinstall/</a> </li><li>rocketmq简单消息发送： <a href="//blog.seoui.com/2018/07/24/rocketmq_simple_message/">http://blog.seoui.com/2018/07/24/rocketmq_simple_message/</a> </li><li>rocketmq有序消息： <a href="//blog.seoui.com/2018/07/24/rocketmq_ordered_message/">http://blog.seoui.com/2018/07/24/rocketmq_ordered_message/</a> </li><li>rocketmq广播消息： <a href="//blog.seoui.com/2018/07/24/rocketmq_broadcast_message/">http://blog.seoui.com/2018/07/24/rocketmq_broadcast_message/</a> </li><li>rocketmq延时消息： <a href="//blog.seoui.com/2018/08/01/rocketmq_delay_message/">http://blog.seoui.com/2018/08/01/rocketmq_delay_message/</a></li><li>rocketmq批量消息： <a href="//blog.seoui.com/2018/08/02/rocketmq_batch_message/">http://blog.seoui.com/2018/08/02/rocketmq_batch_message/</a><h4 id="下载源码并编译"><a href="#下载源码并编译" class="headerlink" title="下载源码并编译"></a>下载源码并编译</h4></li></ul><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#download</span></span><br><span class="line">wget http://mirrors.hust.edu.cn/apache/rocketmq/4.2.0/rocketmq-all-4.2.0-source-release.zip   </span><br><span class="line">unzip rocketmq-all-4.2.0-source-release.zip</span><br><span class="line"><span class="built_in">cd</span> rocketmq-all-4.2.0/</span><br><span class="line">mvn -Prelease-all -DskipTests clean install -U</span><br><span class="line"><span class="built_in">cd</span> distribution/target/apache-rocketmq</span><br></pre></td></tr></table></figure><p>目录 <code>distribution/target/apache-rocketmq</code> 是编译后的产出 可复制这个目录安装MQ的机器上,这里复制到<code>/usr/local/</code></p><p>共享一份编译后的文件方便以后再次使用 </p><p><a href="https://pan.baidu.com/s/1ZyUOKFm-t8cJDQuH68QydQ" target="_blank" rel="noopener">https://pan.baidu.com/s/1ZyUOKFm-t8cJDQuH68QydQ</a></p><h4 id="启动NameServer"><a href="#启动NameServer" class="headerlink" title="启动NameServer"></a>启动NameServer</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">cd</span> /usr/<span class="built_in">local</span>/apache-rocketmq</span><br><span class="line">nohup sh bin/mqnamesrv &amp;</span><br></pre></td></tr></table></figure><p> 查看日志<code>tail -f ~/logs/rocketmqlogs/namesrv.log</code> 启动成功后打印The Name Server boot success…</p><h4 id="启动Broker"><a href="#启动Broker" class="headerlink" title="启动Broker"></a>启动Broker</h4><p>这里需要注意一下就是 如果当前机器上有多张网卡的情况,最好指定一个<code>IP</code>, 有可能消费端正好就和MQ选择的网卡不通</p><p><code>vim  conf/broker.conf</code> 指定IP 访问多网卡的情况 并配置好nameserver的地址  也可以使用mqbroker启动参数<code>-n</code>指定nameserver地址</p><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">brokerIP1=192.168.1.2</span><br><span class="line">namesrvAddr=192.168.1.3:9876</span><br></pre></td></tr></table></figure><p>启动broker <code>-c</code>参数指定配置文件</p><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">nohup sh bin/mqbroker -c config/broker.properties &amp;</span><br></pre></td></tr></table></figure><p>查看一下集群列表</p><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sh bin/mqadmin clusterList -n  localhost:9876</span><br></pre></td></tr></table></figure><h4 id="发送-接收消息"><a href="#发送-接收消息" class="headerlink" title="发送/接收消息"></a>发送/接收消息</h4><p>Producer</p><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"> </span><br><span class="line"><span class="built_in">export</span> NAMESRV_ADDR=localhost:9876</span><br><span class="line">sh bin/tools.sh org.apache.rocketmq.example.quickstart.Producer</span><br></pre></td></tr></table></figure><p>能发送表示OK</p><p>Consumer</p><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"> </span><br><span class="line"><span class="built_in">export</span> NAMESRV_ADDR=localhost:9876</span><br><span class="line">sh bin/tools.sh org.apache.rocketmq.example.quickstart.Consumer</span><br></pre></td></tr></table></figure><p>能接收到之前发送的消息表示OK</p><h4 id="关闭MQ"><a href="#关闭MQ" class="headerlink" title="关闭MQ"></a>关闭MQ</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"> </span><br><span class="line">sh bin/mqshutdown broker</span><br><span class="line"></span><br><span class="line">sh bin/mqshutdown namesrv</span><br></pre></td></tr></table></figure>]]></content>
-    
-    <summary type="html">
-    
-      
-      
-        &lt;p&gt;以下采用的是&lt;code&gt;apache rocketmq 4.2.0&lt;/code&gt;版本 相关文档如下&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;快速体验： &lt;a href=&quot;//blog.seoui.com/2018/07/24/rocketmqinstall/&quot;&gt;http://blog.s
-      
     
     </summary>
     

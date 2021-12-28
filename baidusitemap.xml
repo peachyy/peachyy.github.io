@@ -3,6 +3,32 @@
 
 
     
+  <url>
+    <loc>http://blog.seoui.com/2021/12/28/dockerjvmarg_action/</loc>
+    <lastmod>2021-12-28T09:02:35.608Z</lastmod>
+    <data>
+        <display>
+        <title>jvm容器化内存感知实践</title>
+        <pubTime>2021-12-27T16:00:00.000Z</pubTime>
+        
+        <tag>docker</tag>
+         
+        <tag>jvm</tag>
+         
+        <tag>技术</tag>
+         
+        <tag>k8s</tag>
+         
+         
+           
+             
+              <breadCrumb title="技术" url="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
     
   <url>
     <loc>http://blog.seoui.com/2021/12/22/k8s-ingress-annotation1/</loc>
@@ -40,9 +66,9 @@
          
         <tag>技术</tag>
          
-        <tag>k8s</tag>
-         
         <tag>alpine</tag>
+         
+        <tag>k8s</tag>
          
         <tag>dump</tag>
          
