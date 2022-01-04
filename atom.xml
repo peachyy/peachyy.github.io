@@ -5,9 +5,9 @@
   <subtitle>写我喜欢 读我所爱</subtitle>
   <link href="/atom.xml" rel="self"/>
   
-  <link href="http://blog.seoui.com/"/>
+  <link href="https://blog.gitee.io/"/>
   <updated>2021-12-28T09:02:35.608Z</updated>
-  <id>http://blog.seoui.com/</id>
+  <id>https://blog.gitee.io/</id>
   
   <author>
     <name>peachyy</name>
@@ -18,8 +18,8 @@
   
   <entry>
     <title>jvm容器化内存感知实践</title>
-    <link href="http://blog.seoui.com/2021/12/28/dockerjvmarg_action/"/>
-    <id>http://blog.seoui.com/2021/12/28/dockerjvmarg_action/</id>
+    <link href="https://blog.gitee.io/2021/12/28/dockerjvmarg_action/"/>
+    <id>https://blog.gitee.io/2021/12/28/dockerjvmarg_action/</id>
     <published>2021-12-27T16:00:00.000Z</published>
     <updated>2021-12-28T09:02:35.608Z</updated>
     
@@ -34,23 +34,23 @@
     
     </summary>
     
-      <category term="技术" scheme="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/"/>
+      <category term="技术" scheme="https://blog.gitee.io/categories/%E6%8A%80%E6%9C%AF/"/>
     
     
-      <category term="docker" scheme="http://blog.seoui.com/tags/docker/"/>
+      <category term="docker" scheme="https://blog.gitee.io/tags/docker/"/>
     
-      <category term="jvm" scheme="http://blog.seoui.com/tags/jvm/"/>
+      <category term="jvm" scheme="https://blog.gitee.io/tags/jvm/"/>
     
-      <category term="技术" scheme="http://blog.seoui.com/tags/%E6%8A%80%E6%9C%AF/"/>
+      <category term="技术" scheme="https://blog.gitee.io/tags/%E6%8A%80%E6%9C%AF/"/>
     
-      <category term="k8s" scheme="http://blog.seoui.com/tags/k8s/"/>
+      <category term="k8s" scheme="https://blog.gitee.io/tags/k8s/"/>
     
   </entry>
   
   <entry>
     <title>ingress传递头信息</title>
-    <link href="http://blog.seoui.com/2021/12/22/k8s-ingress-annotation1/"/>
-    <id>http://blog.seoui.com/2021/12/22/k8s-ingress-annotation1/</id>
+    <link href="https://blog.gitee.io/2021/12/22/k8s-ingress-annotation1/"/>
+    <id>https://blog.gitee.io/2021/12/22/k8s-ingress-annotation1/</id>
     <published>2021-12-21T16:00:00.000Z</published>
     <updated>2021-12-22T02:39:54.071Z</updated>
     
@@ -66,21 +66,21 @@
     
     </summary>
     
-      <category term="技术" scheme="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/"/>
+      <category term="技术" scheme="https://blog.gitee.io/categories/%E6%8A%80%E6%9C%AF/"/>
     
     
-      <category term="技术" scheme="http://blog.seoui.com/tags/%E6%8A%80%E6%9C%AF/"/>
+      <category term="技术" scheme="https://blog.gitee.io/tags/%E6%8A%80%E6%9C%AF/"/>
     
-      <category term="k8s" scheme="http://blog.seoui.com/tags/k8s/"/>
+      <category term="k8s" scheme="https://blog.gitee.io/tags/k8s/"/>
     
-      <category term="ingress" scheme="http://blog.seoui.com/tags/ingress/"/>
+      <category term="ingress" scheme="https://blog.gitee.io/tags/ingress/"/>
     
   </entry>
   
   <entry>
     <title>在k8s中收集jvm异常dump文件到OSS</title>
-    <link href="http://blog.seoui.com/2021/11/11/k8s-jvm-dumpcollect/"/>
-    <id>http://blog.seoui.com/2021/11/11/k8s-jvm-dumpcollect/</id>
+    <link href="https://blog.gitee.io/2021/11/11/k8s-jvm-dumpcollect/"/>
+    <id>https://blog.gitee.io/2021/11/11/k8s-jvm-dumpcollect/</id>
     <published>2021-11-10T16:00:00.000Z</published>
     <updated>2021-11-11T04:00:30.523Z</updated>
     
@@ -95,25 +95,25 @@
     
     </summary>
     
-      <category term="技术" scheme="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/"/>
+      <category term="技术" scheme="https://blog.gitee.io/categories/%E6%8A%80%E6%9C%AF/"/>
     
     
-      <category term="jvm" scheme="http://blog.seoui.com/tags/jvm/"/>
+      <category term="jvm" scheme="https://blog.gitee.io/tags/jvm/"/>
     
-      <category term="技术" scheme="http://blog.seoui.com/tags/%E6%8A%80%E6%9C%AF/"/>
+      <category term="技术" scheme="https://blog.gitee.io/tags/%E6%8A%80%E6%9C%AF/"/>
     
-      <category term="alpine" scheme="http://blog.seoui.com/tags/alpine/"/>
+      <category term="k8s" scheme="https://blog.gitee.io/tags/k8s/"/>
     
-      <category term="k8s" scheme="http://blog.seoui.com/tags/k8s/"/>
+      <category term="alpine" scheme="https://blog.gitee.io/tags/alpine/"/>
     
-      <category term="dump" scheme="http://blog.seoui.com/tags/dump/"/>
+      <category term="dump" scheme="https://blog.gitee.io/tags/dump/"/>
     
   </entry>
   
   <entry>
     <title>基于alpine构建jdk镜像遇到的坑</title>
-    <link href="http://blog.seoui.com/2021/11/10/alpinejdkimage/"/>
-    <id>http://blog.seoui.com/2021/11/10/alpinejdkimage/</id>
+    <link href="https://blog.gitee.io/2021/11/10/alpinejdkimage/"/>
+    <id>https://blog.gitee.io/2021/11/10/alpinejdkimage/</id>
     <published>2021-11-09T16:00:00.000Z</published>
     <updated>2021-11-10T10:13:26.016Z</updated>
     
@@ -128,21 +128,21 @@
     
     </summary>
     
-      <category term="技术" scheme="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/"/>
+      <category term="技术" scheme="https://blog.gitee.io/categories/%E6%8A%80%E6%9C%AF/"/>
     
     
-      <category term="技术" scheme="http://blog.seoui.com/tags/%E6%8A%80%E6%9C%AF/"/>
+      <category term="技术" scheme="https://blog.gitee.io/tags/%E6%8A%80%E6%9C%AF/"/>
     
-      <category term="alpine" scheme="http://blog.seoui.com/tags/alpine/"/>
+      <category term="alpine" scheme="https://blog.gitee.io/tags/alpine/"/>
     
-      <category term="jdk" scheme="http://blog.seoui.com/tags/jdk/"/>
+      <category term="jdk" scheme="https://blog.gitee.io/tags/jdk/"/>
     
   </entry>
   
   <entry>
     <title>docker删除&lt;none&gt;标签镜像</title>
-    <link href="http://blog.seoui.com/2021/08/23/dockerimage-prune/"/>
-    <id>http://blog.seoui.com/2021/08/23/dockerimage-prune/</id>
+    <link href="https://blog.gitee.io/2021/08/23/dockerimage-prune/"/>
+    <id>https://blog.gitee.io/2021/08/23/dockerimage-prune/</id>
     <published>2021-08-22T16:00:00.000Z</published>
     <updated>2021-08-23T08:42:31.705Z</updated>
     
@@ -158,19 +158,19 @@
     
     </summary>
     
-      <category term="技术" scheme="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/"/>
+      <category term="技术" scheme="https://blog.gitee.io/categories/%E6%8A%80%E6%9C%AF/"/>
     
     
-      <category term="docker" scheme="http://blog.seoui.com/tags/docker/"/>
+      <category term="docker" scheme="https://blog.gitee.io/tags/docker/"/>
     
-      <category term="技术" scheme="http://blog.seoui.com/tags/%E6%8A%80%E6%9C%AF/"/>
+      <category term="技术" scheme="https://blog.gitee.io/tags/%E6%8A%80%E6%9C%AF/"/>
     
   </entry>
   
   <entry>
     <title>kubernetes之pod</title>
-    <link href="http://blog.seoui.com/2021/08/09/k8s-pod/"/>
-    <id>http://blog.seoui.com/2021/08/09/k8s-pod/</id>
+    <link href="https://blog.gitee.io/2021/08/09/k8s-pod/"/>
+    <id>https://blog.gitee.io/2021/08/09/k8s-pod/</id>
     <published>2021-08-08T16:00:00.000Z</published>
     <updated>2021-08-09T05:52:10.939Z</updated>
     
@@ -178,21 +178,21 @@
     
     </summary>
     
-      <category term="技术" scheme="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/"/>
+      <category term="技术" scheme="https://blog.gitee.io/categories/%E6%8A%80%E6%9C%AF/"/>
     
     
-      <category term="技术" scheme="http://blog.seoui.com/tags/%E6%8A%80%E6%9C%AF/"/>
+      <category term="技术" scheme="https://blog.gitee.io/tags/%E6%8A%80%E6%9C%AF/"/>
     
-      <category term="kubernetes" scheme="http://blog.seoui.com/tags/kubernetes/"/>
+      <category term="kubernetes" scheme="https://blog.gitee.io/tags/kubernetes/"/>
     
-      <category term="pod" scheme="http://blog.seoui.com/tags/pod/"/>
+      <category term="pod" scheme="https://blog.gitee.io/tags/pod/"/>
     
   </entry>
   
   <entry>
     <title>kubernetes-kubeadm创建集群</title>
-    <link href="http://blog.seoui.com/2021/08/05/k8s-kubeadm-init-2/"/>
-    <id>http://blog.seoui.com/2021/08/05/k8s-kubeadm-init-2/</id>
+    <link href="https://blog.gitee.io/2021/08/05/k8s-kubeadm-init-2/"/>
+    <id>https://blog.gitee.io/2021/08/05/k8s-kubeadm-init-2/</id>
     <published>2021-08-04T16:00:00.000Z</published>
     <updated>2021-08-05T05:40:56.172Z</updated>
     
@@ -208,19 +208,19 @@
     
     </summary>
     
-      <category term="技术" scheme="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/"/>
+      <category term="技术" scheme="https://blog.gitee.io/categories/%E6%8A%80%E6%9C%AF/"/>
     
     
-      <category term="技术" scheme="http://blog.seoui.com/tags/%E6%8A%80%E6%9C%AF/"/>
+      <category term="技术" scheme="https://blog.gitee.io/tags/%E6%8A%80%E6%9C%AF/"/>
     
-      <category term="kubernetes" scheme="http://blog.seoui.com/tags/kubernetes/"/>
+      <category term="kubernetes" scheme="https://blog.gitee.io/tags/kubernetes/"/>
     
   </entry>
   
   <entry>
     <title>kubernetes-kubeadm安装</title>
-    <link href="http://blog.seoui.com/2021/08/04/k8s-kubeadm-1/"/>
-    <id>http://blog.seoui.com/2021/08/04/k8s-kubeadm-1/</id>
+    <link href="https://blog.gitee.io/2021/08/04/k8s-kubeadm-1/"/>
+    <id>https://blog.gitee.io/2021/08/04/k8s-kubeadm-1/</id>
     <published>2021-08-03T16:00:00.000Z</published>
     <updated>2021-08-04T08:49:19.707Z</updated>
     
@@ -237,19 +237,19 @@
     
     </summary>
     
-      <category term="技术" scheme="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/"/>
+      <category term="技术" scheme="https://blog.gitee.io/categories/%E6%8A%80%E6%9C%AF/"/>
     
     
-      <category term="技术" scheme="http://blog.seoui.com/tags/%E6%8A%80%E6%9C%AF/"/>
+      <category term="技术" scheme="https://blog.gitee.io/tags/%E6%8A%80%E6%9C%AF/"/>
     
-      <category term="kubernetes" scheme="http://blog.seoui.com/tags/kubernetes/"/>
+      <category term="kubernetes" scheme="https://blog.gitee.io/tags/kubernetes/"/>
     
   </entry>
   
   <entry>
     <title>找出JVM中最耗cpu的线程</title>
-    <link href="http://blog.seoui.com/2020/12/11/find_jvm_cpu_max_thread/"/>
-    <id>http://blog.seoui.com/2020/12/11/find_jvm_cpu_max_thread/</id>
+    <link href="https://blog.gitee.io/2020/12/11/find_jvm_cpu_max_thread/"/>
+    <id>https://blog.gitee.io/2020/12/11/find_jvm_cpu_max_thread/</id>
     <published>2020-12-10T16:00:00.000Z</published>
     <updated>2021-08-27T03:32:17.182Z</updated>
     
@@ -266,19 +266,19 @@
     
     </summary>
     
-      <category term="技术" scheme="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/"/>
+      <category term="技术" scheme="https://blog.gitee.io/categories/%E6%8A%80%E6%9C%AF/"/>
     
     
-      <category term="jvm" scheme="http://blog.seoui.com/tags/jvm/"/>
+      <category term="jvm" scheme="https://blog.gitee.io/tags/jvm/"/>
     
-      <category term="技术" scheme="http://blog.seoui.com/tags/%E6%8A%80%E6%9C%AF/"/>
+      <category term="技术" scheme="https://blog.gitee.io/tags/%E6%8A%80%E6%9C%AF/"/>
     
   </entry>
   
   <entry>
     <title>更好用 更简单的Java缓存框架 jscache</title>
-    <link href="http://blog.seoui.com/2020/08/21/jscache/"/>
-    <id>http://blog.seoui.com/2020/08/21/jscache/</id>
+    <link href="https://blog.gitee.io/2020/08/21/jscache/"/>
+    <id>https://blog.gitee.io/2020/08/21/jscache/</id>
     <published>2020-08-20T16:00:00.000Z</published>
     <updated>2020-08-21T08:59:26.492Z</updated>
     
@@ -293,19 +293,19 @@
     
     </summary>
     
-      <category term="技术" scheme="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/"/>
+      <category term="技术" scheme="https://blog.gitee.io/categories/%E6%8A%80%E6%9C%AF/"/>
     
     
-      <category term="技术" scheme="http://blog.seoui.com/tags/%E6%8A%80%E6%9C%AF/"/>
+      <category term="技术" scheme="https://blog.gitee.io/tags/%E6%8A%80%E6%9C%AF/"/>
     
-      <category term="jscache" scheme="http://blog.seoui.com/tags/jscache/"/>
+      <category term="jscache" scheme="https://blog.gitee.io/tags/jscache/"/>
     
   </entry>
   
   <entry>
     <title>Neo4j入门教程</title>
-    <link href="http://blog.seoui.com/2019/08/23/neo4j_study/"/>
-    <id>http://blog.seoui.com/2019/08/23/neo4j_study/</id>
+    <link href="https://blog.gitee.io/2019/08/23/neo4j_study/"/>
+    <id>https://blog.gitee.io/2019/08/23/neo4j_study/</id>
     <published>2019-08-22T16:00:00.000Z</published>
     <updated>2019-08-23T07:31:21.272Z</updated>
     
@@ -320,19 +320,19 @@
     
     </summary>
     
-      <category term="技术" scheme="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/"/>
+      <category term="技术" scheme="https://blog.gitee.io/categories/%E6%8A%80%E6%9C%AF/"/>
     
     
-      <category term="技术" scheme="http://blog.seoui.com/tags/%E6%8A%80%E6%9C%AF/"/>
+      <category term="技术" scheme="https://blog.gitee.io/tags/%E6%8A%80%E6%9C%AF/"/>
     
-      <category term="neo4j" scheme="http://blog.seoui.com/tags/neo4j/"/>
+      <category term="neo4j" scheme="https://blog.gitee.io/tags/neo4j/"/>
     
   </entry>
   
   <entry>
     <title>thymeleaf自定义dialect</title>
-    <link href="http://blog.seoui.com/2019/07/22/custom-thymeleaf-dealect/"/>
-    <id>http://blog.seoui.com/2019/07/22/custom-thymeleaf-dealect/</id>
+    <link href="https://blog.gitee.io/2019/07/22/custom-thymeleaf-dealect/"/>
+    <id>https://blog.gitee.io/2019/07/22/custom-thymeleaf-dealect/</id>
     <published>2019-07-21T16:00:00.000Z</published>
     <updated>2019-07-22T08:57:26.950Z</updated>
     
@@ -347,19 +347,19 @@
     
     </summary>
     
-      <category term="技术" scheme="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/"/>
+      <category term="技术" scheme="https://blog.gitee.io/categories/%E6%8A%80%E6%9C%AF/"/>
     
     
-      <category term="技术" scheme="http://blog.seoui.com/tags/%E6%8A%80%E6%9C%AF/"/>
+      <category term="技术" scheme="https://blog.gitee.io/tags/%E6%8A%80%E6%9C%AF/"/>
     
-      <category term="thymeleaf" scheme="http://blog.seoui.com/tags/thymeleaf/"/>
+      <category term="thymeleaf" scheme="https://blog.gitee.io/tags/thymeleaf/"/>
     
   </entry>
   
   <entry>
     <title>elasticsearch中短语匹配match_phrase</title>
-    <link href="http://blog.seoui.com/2019/05/07/es-match-phrase/"/>
-    <id>http://blog.seoui.com/2019/05/07/es-match-phrase/</id>
+    <link href="https://blog.gitee.io/2019/05/07/es-match-phrase/"/>
+    <id>https://blog.gitee.io/2019/05/07/es-match-phrase/</id>
     <published>2019-05-06T16:00:00.000Z</published>
     <updated>2019-05-07T09:56:25.367Z</updated>
     
@@ -375,19 +375,19 @@
     
     </summary>
     
-      <category term="技术" scheme="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/"/>
+      <category term="技术" scheme="https://blog.gitee.io/categories/%E6%8A%80%E6%9C%AF/"/>
     
     
-      <category term="技术" scheme="http://blog.seoui.com/tags/%E6%8A%80%E6%9C%AF/"/>
+      <category term="技术" scheme="https://blog.gitee.io/tags/%E6%8A%80%E6%9C%AF/"/>
     
-      <category term="elasticsearch" scheme="http://blog.seoui.com/tags/elasticsearch/"/>
+      <category term="elasticsearch" scheme="https://blog.gitee.io/tags/elasticsearch/"/>
     
   </entry>
   
   <entry>
     <title>认识go语言与环境搭建</title>
-    <link href="http://blog.seoui.com/2019/03/26/go_install/"/>
-    <id>http://blog.seoui.com/2019/03/26/go_install/</id>
+    <link href="https://blog.gitee.io/2019/03/26/go_install/"/>
+    <id>https://blog.gitee.io/2019/03/26/go_install/</id>
     <published>2019-03-25T16:00:00.000Z</published>
     <updated>2019-03-26T04:00:23.714Z</updated>
     
@@ -403,19 +403,19 @@
     
     </summary>
     
-      <category term="技术" scheme="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/"/>
+      <category term="技术" scheme="https://blog.gitee.io/categories/%E6%8A%80%E6%9C%AF/"/>
     
     
-      <category term="技术" scheme="http://blog.seoui.com/tags/%E6%8A%80%E6%9C%AF/"/>
+      <category term="技术" scheme="https://blog.gitee.io/tags/%E6%8A%80%E6%9C%AF/"/>
     
-      <category term="go" scheme="http://blog.seoui.com/tags/go/"/>
+      <category term="go" scheme="https://blog.gitee.io/tags/go/"/>
     
   </entry>
   
   <entry>
     <title>再见2018 再见昨天</title>
-    <link href="http://blog.seoui.com/2019/01/15/todo2018/"/>
-    <id>http://blog.seoui.com/2019/01/15/todo2018/</id>
+    <link href="https://blog.gitee.io/2019/01/15/todo2018/"/>
+    <id>https://blog.gitee.io/2019/01/15/todo2018/</id>
     <published>2019-01-14T16:00:00.000Z</published>
     <updated>2019-01-15T08:49:51.146Z</updated>
     
@@ -429,17 +429,17 @@
     
     </summary>
     
-      <category term="随笔" scheme="http://blog.seoui.com/categories/%E9%9A%8F%E7%AC%94/"/>
+      <category term="随笔" scheme="https://blog.gitee.io/categories/%E9%9A%8F%E7%AC%94/"/>
     
     
-      <category term="随笔" scheme="http://blog.seoui.com/tags/%E9%9A%8F%E7%AC%94/"/>
+      <category term="随笔" scheme="https://blog.gitee.io/tags/%E9%9A%8F%E7%AC%94/"/>
     
   </entry>
   
   <entry>
     <title>svn版本控制迁移到git</title>
-    <link href="http://blog.seoui.com/2018/11/27/svnToGit/"/>
-    <id>http://blog.seoui.com/2018/11/27/svnToGit/</id>
+    <link href="https://blog.gitee.io/2018/11/27/svnToGit/"/>
+    <id>https://blog.gitee.io/2018/11/27/svnToGit/</id>
     <published>2018-11-26T16:00:00.000Z</published>
     <updated>2018-11-27T08:53:54.194Z</updated>
     
@@ -454,23 +454,23 @@
     
     </summary>
     
-      <category term="技术" scheme="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/"/>
+      <category term="技术" scheme="https://blog.gitee.io/categories/%E6%8A%80%E6%9C%AF/"/>
     
-      <category term="svn" scheme="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/svn/"/>
+      <category term="svn" scheme="https://blog.gitee.io/categories/%E6%8A%80%E6%9C%AF/svn/"/>
     
-      <category term="git" scheme="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/svn/git/"/>
+      <category term="git" scheme="https://blog.gitee.io/categories/%E6%8A%80%E6%9C%AF/svn/git/"/>
     
     
-      <category term="svn" scheme="http://blog.seoui.com/tags/svn/"/>
+      <category term="svn" scheme="https://blog.gitee.io/tags/svn/"/>
     
-      <category term="git" scheme="http://blog.seoui.com/tags/git/"/>
+      <category term="git" scheme="https://blog.gitee.io/tags/git/"/>
     
   </entry>
   
   <entry>
     <title>让mysql支持emoji表情</title>
-    <link href="http://blog.seoui.com/2018/10/22/mysql_emoji_support/"/>
-    <id>http://blog.seoui.com/2018/10/22/mysql_emoji_support/</id>
+    <link href="https://blog.gitee.io/2018/10/22/mysql_emoji_support/"/>
+    <id>https://blog.gitee.io/2018/10/22/mysql_emoji_support/</id>
     <published>2018-10-21T16:00:00.000Z</published>
     <updated>2018-10-22T04:40:13.613Z</updated>
     
@@ -485,25 +485,25 @@
     
     </summary>
     
-      <category term="技术" scheme="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/"/>
+      <category term="技术" scheme="https://blog.gitee.io/categories/%E6%8A%80%E6%9C%AF/"/>
     
-      <category term="emoji" scheme="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/emoji/"/>
+      <category term="emoji" scheme="https://blog.gitee.io/categories/%E6%8A%80%E6%9C%AF/emoji/"/>
     
-      <category term="mysql" scheme="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/emoji/mysql/"/>
+      <category term="mysql" scheme="https://blog.gitee.io/categories/%E6%8A%80%E6%9C%AF/emoji/mysql/"/>
     
     
-      <category term="mysql" scheme="http://blog.seoui.com/tags/mysql/"/>
+      <category term="mysql" scheme="https://blog.gitee.io/tags/mysql/"/>
     
-      <category term="emoji" scheme="http://blog.seoui.com/tags/emoji/"/>
+      <category term="emoji" scheme="https://blog.gitee.io/tags/emoji/"/>
     
-      <category term="mysql支持emoji表情" scheme="http://blog.seoui.com/tags/mysql%E6%94%AF%E6%8C%81emoji%E8%A1%A8%E6%83%85/"/>
+      <category term="mysql支持emoji表情" scheme="https://blog.gitee.io/tags/mysql%E6%94%AF%E6%8C%81emoji%E8%A1%A8%E6%83%85/"/>
     
   </entry>
   
   <entry>
     <title>springCloud feign使用/优化总结</title>
-    <link href="http://blog.seoui.com/2018/09/30/springcloud-feign/"/>
-    <id>http://blog.seoui.com/2018/09/30/springcloud-feign/</id>
+    <link href="https://blog.gitee.io/2018/09/30/springcloud-feign/"/>
+    <id>https://blog.gitee.io/2018/09/30/springcloud-feign/</id>
     <published>2018-09-29T16:00:00.000Z</published>
     <updated>2018-09-30T03:06:58.586Z</updated>
     
@@ -519,23 +519,23 @@
     
     </summary>
     
-      <category term="技术" scheme="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/"/>
+      <category term="技术" scheme="https://blog.gitee.io/categories/%E6%8A%80%E6%9C%AF/"/>
     
-      <category term="springCloud" scheme="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/springCloud/"/>
+      <category term="springCloud" scheme="https://blog.gitee.io/categories/%E6%8A%80%E6%9C%AF/springCloud/"/>
     
-      <category term="feign" scheme="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/springCloud/feign/"/>
+      <category term="feign" scheme="https://blog.gitee.io/categories/%E6%8A%80%E6%9C%AF/springCloud/feign/"/>
     
     
-      <category term="feign" scheme="http://blog.seoui.com/tags/feign/"/>
+      <category term="feign" scheme="https://blog.gitee.io/tags/feign/"/>
     
-      <category term="springCloud" scheme="http://blog.seoui.com/tags/springCloud/"/>
+      <category term="springCloud" scheme="https://blog.gitee.io/tags/springCloud/"/>
     
   </entry>
   
   <entry>
     <title>rocketmq4.x批量消息投递</title>
-    <link href="http://blog.seoui.com/2018/08/02/rocketmq_batch_message/"/>
-    <id>http://blog.seoui.com/2018/08/02/rocketmq_batch_message/</id>
+    <link href="https://blog.gitee.io/2018/08/02/rocketmq_batch_message/"/>
+    <id>https://blog.gitee.io/2018/08/02/rocketmq_batch_message/</id>
     <published>2018-08-01T16:00:00.000Z</published>
     <updated>2018-09-06T06:21:47.891Z</updated>
     
@@ -551,23 +551,23 @@
     
     </summary>
     
-      <category term="技术" scheme="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/"/>
+      <category term="技术" scheme="https://blog.gitee.io/categories/%E6%8A%80%E6%9C%AF/"/>
     
-      <category term="rocketmq" scheme="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/rocketmq/"/>
+      <category term="rocketmq" scheme="https://blog.gitee.io/categories/%E6%8A%80%E6%9C%AF/rocketmq/"/>
     
     
-      <category term="rocketmq" scheme="http://blog.seoui.com/tags/rocketmq/"/>
+      <category term="rocketmq" scheme="https://blog.gitee.io/tags/rocketmq/"/>
     
   </entry>
   
   <entry>
     <title>rocketmq4.x延时消息</title>
-    <link href="http://blog.seoui.com/2018/08/01/rocketmq_delay_message/"/>
-    <id>http://blog.seoui.com/2018/08/01/rocketmq_delay_message/</id>
+    <link href="https://blog.gitee.io/2018/08/01/rocketmq_delay_message/"/>
+    <id>https://blog.gitee.io/2018/08/01/rocketmq_delay_message/</id>
     <published>2018-07-31T16:00:00.000Z</published>
     <updated>2018-09-06T06:21:47.888Z</updated>
     
-    <content type="html"><![CDATA[<p><code>rocketmq</code>提供一种延时消息的解决方案，就是在特定的时间到了，消息才会被投递出去供<code>consumer</code>消费。<br><a id="more"></a><br><em>总体来是简单的场景是满足了，但是需要注意的是延时的时间是需要按照默认配置的延时级别去配置的，而不是随意设置消息的延时时间。</em></p><p>如果想不受延时级别的约束 可以参考之前的一遍文章<a href="http://blog.seoui.com/2017/08/19/delayqueue/">http://blog.seoui.com/2017/08/19/delayqueue/</a></p><p>默认的延迟级别</p><figure class="highlight java"><table><tr><td class="code"><pre><span class="line">messageDelayLevel=<span class="number">1</span>s <span class="number">5</span>s <span class="number">10</span>s <span class="number">30</span>s <span class="number">1</span>m <span class="number">2</span>m <span class="number">3</span>m <span class="number">4</span>m <span class="number">5</span>m <span class="number">6</span>m <span class="number">7</span>m <span class="number">8</span>m <span class="number">9</span>m <span class="number">10</span>m <span class="number">20</span>m <span class="number">30</span>m <span class="number">1</span>h <span class="number">2</span>h</span><br></pre></td></tr></table></figure><p>这个配置下标从1开始 比如级别2是延时5秒、级别5是延时1分钟。默认配置在不满足需求的情况下，可以在<code>broker</code>配置文件加入<code>messageDelayLevel</code>参数覆盖默认的延时级别配置。</p><h4 id="示例"><a href="#示例" class="headerlink" title="示例"></a>示例</h4><p>和普通的消息不同之处在于<code>Producer</code>在发送消息的时候 需要设置<code>message.setDelayTimeLevel();</code>延迟级别方法。其他参数和消费端的写法并与不同之处。</p><h5 id="Producer"><a href="#Producer" class="headerlink" title="Producer"></a>Producer</h5><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ScheduledMessageProducer</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        DefaultMQProducer producer = </span><br><span class="line"><span class="keyword">new</span> DefaultMQProducer(<span class="string">"ExampleProducerGroup"</span>);</span><br><span class="line">        producer.start();</span><br><span class="line">        <span class="keyword">int</span> totalMessagesToSend = <span class="number">100</span>;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; totalMessagesToSend; i++) &#123;</span><br><span class="line">            Message message = <span class="keyword">new</span> Message(<span class="string">"TestTopic"</span>,</span><br><span class="line">(<span class="string">"Hello scheduled message "</span> + i).getBytes());</span><br><span class="line"> <span class="comment">//延时的级别为3 对应的时间为10s 就是发送后延时10S在把消息投递出去</span></span><br><span class="line">            message.setDelayTimeLevel(<span class="number">3</span>);</span><br><span class="line">            producer.send(message);</span><br><span class="line">        &#125;</span><br><span class="line">        producer.shutdown();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><h5 id="Consumer"><a href="#Consumer" class="headerlink" title="Consumer"></a>Consumer</h5><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ScheduledMessageConsumer</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        DefaultMQPushConsumer consumer = </span><br><span class="line"><span class="keyword">new</span> DefaultMQPushConsumer(<span class="string">"ExampleConsumer"</span>);</span><br><span class="line">        consumer.subscribe(<span class="string">"TestTopic"</span>, <span class="string">"*"</span>);</span><br><span class="line">        consumer.registerMessageListener(<span class="keyword">new</span> MessageListenerConcurrently() &#123;</span><br><span class="line">            <span class="meta">@Override</span></span><br><span class="line">            <span class="function"><span class="keyword">public</span> ConsumeConcurrentlyStatus <span class="title">consumeMessage</span><span class="params">(List&lt;MessageExt&gt; messages,</span></span></span><br><span class="line"><span class="function"><span class="params"> ConsumeConcurrentlyContext context)</span> </span>&#123;</span><br><span class="line">                <span class="keyword">for</span> (MessageExt message : messages) &#123;</span><br><span class="line">                    System.out.println(<span class="string">"ok!"</span>);</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="keyword">return</span> ConsumeConcurrentlyStatus.CONSUME_SUCCESS;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;);</span><br><span class="line">        consumer.start();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>]]></content>
+    <content type="html"><![CDATA[<p><code>rocketmq</code>提供一种延时消息的解决方案，就是在特定的时间到了，消息才会被投递出去供<code>consumer</code>消费。<br><a id="more"></a><br><em>总体来是简单的场景是满足了，但是需要注意的是延时的时间是需要按照默认配置的延时级别去配置的，而不是随意设置消息的延时时间。</em></p><p>如果想不受延时级别的约束 可以参考之前的一遍文章<a href="http://blog.seoui.com/2017/08/19/delayqueue/" target="_blank" rel="noopener">http://blog.seoui.com/2017/08/19/delayqueue/</a></p><p>默认的延迟级别</p><figure class="highlight java"><table><tr><td class="code"><pre><span class="line">messageDelayLevel=<span class="number">1</span>s <span class="number">5</span>s <span class="number">10</span>s <span class="number">30</span>s <span class="number">1</span>m <span class="number">2</span>m <span class="number">3</span>m <span class="number">4</span>m <span class="number">5</span>m <span class="number">6</span>m <span class="number">7</span>m <span class="number">8</span>m <span class="number">9</span>m <span class="number">10</span>m <span class="number">20</span>m <span class="number">30</span>m <span class="number">1</span>h <span class="number">2</span>h</span><br></pre></td></tr></table></figure><p>这个配置下标从1开始 比如级别2是延时5秒、级别5是延时1分钟。默认配置在不满足需求的情况下，可以在<code>broker</code>配置文件加入<code>messageDelayLevel</code>参数覆盖默认的延时级别配置。</p><h4 id="示例"><a href="#示例" class="headerlink" title="示例"></a>示例</h4><p>和普通的消息不同之处在于<code>Producer</code>在发送消息的时候 需要设置<code>message.setDelayTimeLevel();</code>延迟级别方法。其他参数和消费端的写法并与不同之处。</p><h5 id="Producer"><a href="#Producer" class="headerlink" title="Producer"></a>Producer</h5><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ScheduledMessageProducer</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        DefaultMQProducer producer = </span><br><span class="line"><span class="keyword">new</span> DefaultMQProducer(<span class="string">"ExampleProducerGroup"</span>);</span><br><span class="line">        producer.start();</span><br><span class="line">        <span class="keyword">int</span> totalMessagesToSend = <span class="number">100</span>;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; totalMessagesToSend; i++) &#123;</span><br><span class="line">            Message message = <span class="keyword">new</span> Message(<span class="string">"TestTopic"</span>,</span><br><span class="line">(<span class="string">"Hello scheduled message "</span> + i).getBytes());</span><br><span class="line"> <span class="comment">//延时的级别为3 对应的时间为10s 就是发送后延时10S在把消息投递出去</span></span><br><span class="line">            message.setDelayTimeLevel(<span class="number">3</span>);</span><br><span class="line">            producer.send(message);</span><br><span class="line">        &#125;</span><br><span class="line">        producer.shutdown();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><h5 id="Consumer"><a href="#Consumer" class="headerlink" title="Consumer"></a>Consumer</h5><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ScheduledMessageConsumer</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        DefaultMQPushConsumer consumer = </span><br><span class="line"><span class="keyword">new</span> DefaultMQPushConsumer(<span class="string">"ExampleConsumer"</span>);</span><br><span class="line">        consumer.subscribe(<span class="string">"TestTopic"</span>, <span class="string">"*"</span>);</span><br><span class="line">        consumer.registerMessageListener(<span class="keyword">new</span> MessageListenerConcurrently() &#123;</span><br><span class="line">            <span class="meta">@Override</span></span><br><span class="line">            <span class="function"><span class="keyword">public</span> ConsumeConcurrentlyStatus <span class="title">consumeMessage</span><span class="params">(List&lt;MessageExt&gt; messages,</span></span></span><br><span class="line"><span class="function"><span class="params"> ConsumeConcurrentlyContext context)</span> </span>&#123;</span><br><span class="line">                <span class="keyword">for</span> (MessageExt message : messages) &#123;</span><br><span class="line">                    System.out.println(<span class="string">"ok!"</span>);</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="keyword">return</span> ConsumeConcurrentlyStatus.CONSUME_SUCCESS;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;);</span><br><span class="line">        consumer.start();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>]]></content>
     
     <summary type="html">
     
@@ -575,12 +575,12 @@
     
     </summary>
     
-      <category term="技术" scheme="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/"/>
+      <category term="技术" scheme="https://blog.gitee.io/categories/%E6%8A%80%E6%9C%AF/"/>
     
-      <category term="rocketmq" scheme="http://blog.seoui.com/categories/%E6%8A%80%E6%9C%AF/rocketmq/"/>
+      <category term="rocketmq" scheme="https://blog.gitee.io/categories/%E6%8A%80%E6%9C%AF/rocketmq/"/>
     
     
-      <category term="rocketmq" scheme="http://blog.seoui.com/tags/rocketmq/"/>
+      <category term="rocketmq" scheme="https://blog.gitee.io/tags/rocketmq/"/>
     
   </entry>
   
