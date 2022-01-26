@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://blog.gitee.io/"/>
-  <updated>2021-12-28T09:02:35.608Z</updated>
+  <updated>2022-01-26T06:43:29.953Z</updated>
   <id>https://blog.gitee.io/</id>
   
   <author>
@@ -15,6 +15,35 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>MySql SSL CA证书JDBC配置</title>
+    <link href="https://blog.gitee.io/2022/01/26/mysql-ssl-ca-jdbc/"/>
+    <id>https://blog.gitee.io/2022/01/26/mysql-ssl-ca-jdbc/</id>
+    <published>2022-01-25T16:00:00.000Z</published>
+    <updated>2022-01-26T06:43:29.953Z</updated>
+    
+    <content type="html"><![CDATA[<p>开启MySql数据库SSL证书以后 如何在<code>jdbc</code>中配置证书访问呢？<br>关于数据库如何配置SSL证书自行百度  这里演示客户端如何利用证书来进行数据通讯。<br>开启证书jdbc认证后 肯定是有一定的性能开销的，个人觉得内网环境无需配置CA证书校验。</p><p>下面用一个示例来演示如何配置</p><p>未配置证书访问前</p><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line">spring.datasource.url=jdbc:mysql:<span class="comment">//127.0.0.1:3306/sslcatestdb?zeroDateTimeBehavior=convertToNull&amp;characterEncoding=utf-8</span></span><br></pre></td></tr></table></figure><p>配置了证书访问后</p><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line">spring.datasource.url=jdbc:mysql:<span class="comment">//127.0.0.1:3306/sslcatestdb?zeroDateTimeBehavior=convertToNull&amp;characterEncoding=utf-8useSSL=true&amp;trustCertificateKeyStoreUrl=file:/证书路径&amp;trustCertificateKeyStoreType=证书类型&amp;trustCertificateKeyStorePassword=证书密码&amp;</span></span><br><span class="line">clientCertificateKeyStoreUrl=file:/证书路径&amp;clientCertificateKeyStoreType=证书类型&amp;clientCertificateKeyStorePassword=证书密码&amp;verifyServerCertificate=<span class="keyword">true</span></span><br></pre></td></tr></table></figure><p>证书相关配置属性</p><ul><li>useSSL  开启ssl</li><li>trustCertificateKeyStoreUrl    服务端证书路径</li><li>trustCertificateKeyStoreType  服务端证书类型</li><li>trustCertificateKeyStorePassword  服务端证书密码</li><li>clientCertificateKeyStoreUrl  客户端证书路径</li><li>clientCertificateKeyStoreType  客户端证书类型 </li><li>clientCertificateKeyStorePassword 客户端证书密码</li><li>verifyServerCertificate 信任验证服务器证书</li></ul><p>参考 <a href="https://dev.mysql.com/doc/connector-j/8.0/en/connector-j-connp-props-security.html" target="_blank" rel="noopener">https://dev.mysql.com/doc/connector-j/8.0/en/connector-j-connp-props-security.html</a></p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;p&gt;开启MySql数据库SSL证书以后 如何在&lt;code&gt;jdbc&lt;/code&gt;中配置证书访问呢？&lt;br&gt;关于数据库如何配置SSL证书自行百度  这里演示客户端如何利用证书来进行数据通讯。&lt;br&gt;开启证书jdbc认证后 肯定是有一定的性能开销的，个人觉得内网环境无需配置CA证书
+      
+    
+    </summary>
+    
+      <category term="技术" scheme="https://blog.gitee.io/categories/%E6%8A%80%E6%9C%AF/"/>
+    
+      <category term="mysql" scheme="https://blog.gitee.io/categories/%E6%8A%80%E6%9C%AF/mysql/"/>
+    
+    
+      <category term="mysql" scheme="https://blog.gitee.io/tags/mysql/"/>
+    
+      <category term="sslca" scheme="https://blog.gitee.io/tags/sslca/"/>
+    
+  </entry>
   
   <entry>
     <title>jvm容器化内存感知实践</title>
@@ -102,9 +131,9 @@
     
       <category term="技术" scheme="https://blog.gitee.io/tags/%E6%8A%80%E6%9C%AF/"/>
     
-      <category term="k8s" scheme="https://blog.gitee.io/tags/k8s/"/>
-    
       <category term="alpine" scheme="https://blog.gitee.io/tags/alpine/"/>
+    
+      <category term="k8s" scheme="https://blog.gitee.io/tags/k8s/"/>
     
       <category term="dump" scheme="https://blog.gitee.io/tags/dump/"/>
     
@@ -548,30 +577,6 @@
 &lt;li&gt;批量消息要求必要具有同一&lt;code&gt;topic&lt;/code&gt;、相同消息配置&lt;/li&gt;
 &lt;li&gt;&lt;code&gt;不支持延时消息&lt;/code&gt;&lt;/li&gt;
 &lt;li&gt;建议一个批量消息最好不要超过1MB大小
-    
-    </summary>
-    
-      <category term="技术" scheme="https://blog.gitee.io/categories/%E6%8A%80%E6%9C%AF/"/>
-    
-      <category term="rocketmq" scheme="https://blog.gitee.io/categories/%E6%8A%80%E6%9C%AF/rocketmq/"/>
-    
-    
-      <category term="rocketmq" scheme="https://blog.gitee.io/tags/rocketmq/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>rocketmq4.x延时消息</title>
-    <link href="https://blog.gitee.io/2018/08/01/rocketmq_delay_message/"/>
-    <id>https://blog.gitee.io/2018/08/01/rocketmq_delay_message/</id>
-    <published>2018-07-31T16:00:00.000Z</published>
-    <updated>2018-09-06T06:21:47.888Z</updated>
-    
-    <content type="html"><![CDATA[<p><code>rocketmq</code>提供一种延时消息的解决方案，就是在特定的时间到了，消息才会被投递出去供<code>consumer</code>消费。<br><a id="more"></a><br><em>总体来是简单的场景是满足了，但是需要注意的是延时的时间是需要按照默认配置的延时级别去配置的，而不是随意设置消息的延时时间。</em></p><p>如果想不受延时级别的约束 可以参考之前的一遍文章<a href="http://blog.seoui.com/2017/08/19/delayqueue/" target="_blank" rel="noopener">http://blog.seoui.com/2017/08/19/delayqueue/</a></p><p>默认的延迟级别</p><figure class="highlight java"><table><tr><td class="code"><pre><span class="line">messageDelayLevel=<span class="number">1</span>s <span class="number">5</span>s <span class="number">10</span>s <span class="number">30</span>s <span class="number">1</span>m <span class="number">2</span>m <span class="number">3</span>m <span class="number">4</span>m <span class="number">5</span>m <span class="number">6</span>m <span class="number">7</span>m <span class="number">8</span>m <span class="number">9</span>m <span class="number">10</span>m <span class="number">20</span>m <span class="number">30</span>m <span class="number">1</span>h <span class="number">2</span>h</span><br></pre></td></tr></table></figure><p>这个配置下标从1开始 比如级别2是延时5秒、级别5是延时1分钟。默认配置在不满足需求的情况下，可以在<code>broker</code>配置文件加入<code>messageDelayLevel</code>参数覆盖默认的延时级别配置。</p><h4 id="示例"><a href="#示例" class="headerlink" title="示例"></a>示例</h4><p>和普通的消息不同之处在于<code>Producer</code>在发送消息的时候 需要设置<code>message.setDelayTimeLevel();</code>延迟级别方法。其他参数和消费端的写法并与不同之处。</p><h5 id="Producer"><a href="#Producer" class="headerlink" title="Producer"></a>Producer</h5><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ScheduledMessageProducer</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        DefaultMQProducer producer = </span><br><span class="line"><span class="keyword">new</span> DefaultMQProducer(<span class="string">"ExampleProducerGroup"</span>);</span><br><span class="line">        producer.start();</span><br><span class="line">        <span class="keyword">int</span> totalMessagesToSend = <span class="number">100</span>;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; totalMessagesToSend; i++) &#123;</span><br><span class="line">            Message message = <span class="keyword">new</span> Message(<span class="string">"TestTopic"</span>,</span><br><span class="line">(<span class="string">"Hello scheduled message "</span> + i).getBytes());</span><br><span class="line"> <span class="comment">//延时的级别为3 对应的时间为10s 就是发送后延时10S在把消息投递出去</span></span><br><span class="line">            message.setDelayTimeLevel(<span class="number">3</span>);</span><br><span class="line">            producer.send(message);</span><br><span class="line">        &#125;</span><br><span class="line">        producer.shutdown();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><h5 id="Consumer"><a href="#Consumer" class="headerlink" title="Consumer"></a>Consumer</h5><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ScheduledMessageConsumer</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        DefaultMQPushConsumer consumer = </span><br><span class="line"><span class="keyword">new</span> DefaultMQPushConsumer(<span class="string">"ExampleConsumer"</span>);</span><br><span class="line">        consumer.subscribe(<span class="string">"TestTopic"</span>, <span class="string">"*"</span>);</span><br><span class="line">        consumer.registerMessageListener(<span class="keyword">new</span> MessageListenerConcurrently() &#123;</span><br><span class="line">            <span class="meta">@Override</span></span><br><span class="line">            <span class="function"><span class="keyword">public</span> ConsumeConcurrentlyStatus <span class="title">consumeMessage</span><span class="params">(List&lt;MessageExt&gt; messages,</span></span></span><br><span class="line"><span class="function"><span class="params"> ConsumeConcurrentlyContext context)</span> </span>&#123;</span><br><span class="line">                <span class="keyword">for</span> (MessageExt message : messages) &#123;</span><br><span class="line">                    System.out.println(<span class="string">"ok!"</span>);</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="keyword">return</span> ConsumeConcurrentlyStatus.CONSUME_SUCCESS;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;);</span><br><span class="line">        consumer.start();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>]]></content>
-    
-    <summary type="html">
-    
-      &lt;p&gt;&lt;code&gt;rocketmq&lt;/code&gt;提供一种延时消息的解决方案，就是在特定的时间到了，消息才会被投递出去供&lt;code&gt;consumer&lt;/code&gt;消费。&lt;br&gt;
     
     </summary>
     

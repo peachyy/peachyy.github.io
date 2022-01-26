@@ -3,6 +3,31 @@
 
 
     
+  <url>
+    <loc>https://blog.gitee.io/2022/01/26/mysql-ssl-ca-jdbc/</loc>
+    <lastmod>2022-01-26T06:43:29.953Z</lastmod>
+    <data>
+        <display>
+        <title>MySql SSL CA证书JDBC配置</title>
+        <pubTime>2022-01-25T16:00:00.000Z</pubTime>
+        
+        <tag>mysql</tag>
+         
+        <tag>sslca</tag>
+         
+         
+           
+             
+              <breadCrumb title="技术" url="https://blog.gitee.io/categories/%E6%8A%80%E6%9C%AF/"/>
+          
+             
+              <breadCrumb title="mysql" url="https://blog.gitee.io/categories/%E6%8A%80%E6%9C%AF/mysql/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
     
   <url>
     <loc>https://blog.gitee.io/2021/12/28/dockerjvmarg_action/</loc>
@@ -67,9 +92,9 @@
          
         <tag>技术</tag>
          
-        <tag>k8s</tag>
-         
         <tag>alpine</tag>
+         
+        <tag>k8s</tag>
          
         <tag>dump</tag>
          
