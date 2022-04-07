@@ -2,6 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://blog.gitee.io/2022/04/07/letsencrypt-certbot-ssl/</loc>
+    
+    <lastmod>2022-04-07T03:58:56.283Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>https://blog.gitee.io/2022/01/26/mysql-ssl-ca-jdbc/</loc>
     
     <lastmod>2022-01-26T06:43:29.953Z</lastmod>

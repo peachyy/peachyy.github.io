@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://blog.gitee.io/"/>
-  <updated>2022-01-26T06:43:29.953Z</updated>
+  <updated>2022-04-07T03:58:56.283Z</updated>
   <id>https://blog.gitee.io/</id>
   
   <author>
@@ -15,6 +15,36 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>使用certbot制作免费Lets encrypt SSL证书</title>
+    <link href="https://blog.gitee.io/2022/04/07/letsencrypt-certbot-ssl/"/>
+    <id>https://blog.gitee.io/2022/04/07/letsencrypt-certbot-ssl/</id>
+    <published>2022-04-06T16:00:00.000Z</published>
+    <updated>2022-04-07T03:58:56.283Z</updated>
+    
+    <content type="html"><![CDATA[<p>利用<code>certbot</code>软件包可以免费制作SSL证书 这对小网站和测试项目太有用了，下面记录一下制作证书的流程和方法。以备后用。以centos7系统为例 其他系统类似。</p><h4 id="安装certbot"><a href="#安装certbot" class="headerlink" title="安装certbot"></a>安装certbot</h4><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line">yum install -y epel-release</span><br><span class="line">yum install -y certbot</span><br></pre></td></tr></table></figure><h4 id="准备环境"><a href="#准备环境" class="headerlink" title="准备环境"></a>准备环境</h4><p> 制作证书前需要先准备好域名的访问环境，因为制作证书的时候需要确认域名和服务器的所有权。</p><p>  1、dns验证</p><pre><code>dns验证需要加参数 --preferred-challenges dns 来定义，主要就是配置域名的txt记录即可。 下面主要是用单机验证方式。</code></pre><p>  2、服务器文件验证</p><pre><code>需要服务器开放80端口、配置nginx的静态文件访问目录。但是需要制定 webroot参数来路径，会生成一个文件,然后访问这个文件是否能成功访问到。 成功则验证通过</code></pre><p>  3、单机生成</p><pre><code>不需要额外的支持 命令加--standalone来指定 需要关闭nginx或者apache才能执行。</code></pre><h4 id="创建证书"><a href="#创建证书" class="headerlink" title="创建证书"></a>创建证书</h4><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line">certbot certonly --standalone -d xxx.test.com -m taoxxx@foxmail.com --agree-tos</span><br></pre></td></tr></table></figure><p>这一步可能有环境问题报错的情况 自行百度解决。<br>如果出现 <code>Problem binding to port 80: Could not bind to IPv4 or IPv6.</code> 这种错误 可以把nginx或者apache关了再重新执行上面生成证书的命令</p><p> 生成成功后会输入下面提示，打印了证书的路径在<code>/etc/letsencrypt/live/xxx.test.com/</code>，过期时间为90天，以及续期的命令。</p><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">IMPORTANT NOTES:</span><br><span class="line"> - Congratulations! Your certificate and chain have been saved at:</span><br><span class="line">   /etc/letsencrypt/live/xxx.test.com/fullchain.pem</span><br><span class="line">   Your key file has been saved at:</span><br><span class="line">   /etc/letsencrypt/live/xxx.test.com/privkey.pem</span><br><span class="line">   Your certificate will expire on 2022-07-06. To obtain a new or</span><br><span class="line">   tweaked version of this certificate in the future, simply run</span><br><span class="line">   certbot again. To non-interactively renew *all* of your</span><br><span class="line">   certificates, run "certbot renew"</span><br><span class="line"> - If you like Certbot, please consider supporting our work by:</span><br><span class="line"></span><br><span class="line">   Donating to ISRG / Let's Encrypt:   https://letsencrypt.org/donate</span><br><span class="line">   Donating to EFF:                    https://eff.org/donate-le</span><br></pre></td></tr></table></figure><h4 id="配置nginx"><a href="#配置nginx" class="headerlink" title="配置nginx"></a>配置nginx</h4><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line">server &#123;</span><br><span class="line">        listen 443 ssl http2;</span><br><span class="line">        server_name  xxx.test.com;</span><br><span class="line">        client_max_body_size 1024M;</span><br><span class="line">        proxy_connect_timeout       600;</span><br><span class="line">        proxy_send_timeout          600;</span><br><span class="line">        proxy_read_timeout          600;</span><br><span class="line">        send_timeout                600;</span><br><span class="line">        keepalive_timeout 4800;</span><br><span class="line">        index             index.html;</span><br><span class="line">       ssl_protocols TLSv1.1 TLSv1.2 TLSv1.3;</span><br><span class="line">       ssl_ciphers EECDH+CHACHA20:EECDH+CHACHA20-draft:EECDH+AES128:RSA+AES128:EECDH+AES256:RSA+AES256:EECDH+3DES:RSA+3DES:!MD5;</span><br><span class="line">       ssl_prefer_server_ciphers on;</span><br><span class="line">       ssl_session_cache shared:SSL:10m;</span><br><span class="line">       ssl_session_timeout 10m;</span><br><span class="line">       ssl_certificate /etc/letsencrypt/live/xxx.test.com/fullchain.pem;</span><br><span class="line">       ssl_certificate_key /etc/letsencrypt/live/xxx.test.com/privkey.pem;</span><br><span class="line">       ....省略</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><p>重启nginx 用https访问服务可以看见浏览器的一个小锁就表示https证书部署成功了。</p><h4 id="续期"><a href="#续期" class="headerlink" title="续期"></a>续期</h4><p>因为这个免费证书只有90天的有效期，到了就需要续期才能继续使用，目前只能手动续期  <code>执行命令 certbot renew</code>。但是可以用定时任务的方式每天续费一次 好像也可以一劳永逸。</p><p>crontab -e</p><pre><code class="shell">0 */6 * * * certbot renew --quiet &amp;&amp; nginx -s reload</code></pre><h4 id="其他证书操作"><a href="#其他证书操作" class="headerlink" title="其他证书操作"></a>其他证书操作</h4><p>1、查看已经生成的证书</p><pre><code>`certbot certificates`</code></pre><p>2、吊销证书</p><p>   <code>certbot revoke --cert-path &quot;/etc/letsencrypt/live/xxx.test.com/cert.pem&quot;</code></p><p>由于环境的不同 会遇到各种坑 用docker的方式来创建和续期是可复制性最高的。</p><p>参考<br><a href="https://github.com/wmnnd/nginx-certbot" target="_blank" rel="noopener">https://github.com/wmnnd/nginx-certbot</a><br><a href="https://github.com/JonasAlfredsson/docker-nginx-certbot" target="_blank" rel="noopener">https://github.com/JonasAlfredsson/docker-nginx-certbot</a></p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;p&gt;利用&lt;code&gt;certbot&lt;/code&gt;软件包可以免费制作SSL证书 这对小网站和测试项目太有用了，下面记录一下制作证书的流程和方法。以备后用。以centos7系统为例 其他系统类似。&lt;/p&gt;
+&lt;h4 id=&quot;安装certbot&quot;&gt;&lt;a href=&quot;#安装certbot
+      
+    
+    </summary>
+    
+      <category term="技术" scheme="https://blog.gitee.io/categories/%E6%8A%80%E6%9C%AF/"/>
+    
+      <category term="ssl" scheme="https://blog.gitee.io/categories/%E6%8A%80%E6%9C%AF/ssl/"/>
+    
+    
+      <category term="certbot" scheme="https://blog.gitee.io/tags/certbot/"/>
+    
+      <category term="Lets encrypt" scheme="https://blog.gitee.io/tags/Lets-encrypt/"/>
+    
+  </entry>
   
   <entry>
     <title>MySql SSL CA证书JDBC配置</title>
@@ -131,9 +161,9 @@
     
       <category term="技术" scheme="https://blog.gitee.io/tags/%E6%8A%80%E6%9C%AF/"/>
     
-      <category term="alpine" scheme="https://blog.gitee.io/tags/alpine/"/>
-    
       <category term="k8s" scheme="https://blog.gitee.io/tags/k8s/"/>
+    
+      <category term="alpine" scheme="https://blog.gitee.io/tags/alpine/"/>
     
       <category term="dump" scheme="https://blog.gitee.io/tags/dump/"/>
     
@@ -558,34 +588,6 @@
       <category term="feign" scheme="https://blog.gitee.io/tags/feign/"/>
     
       <category term="springCloud" scheme="https://blog.gitee.io/tags/springCloud/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>rocketmq4.x批量消息投递</title>
-    <link href="https://blog.gitee.io/2018/08/02/rocketmq_batch_message/"/>
-    <id>https://blog.gitee.io/2018/08/02/rocketmq_batch_message/</id>
-    <published>2018-08-01T16:00:00.000Z</published>
-    <updated>2018-09-06T06:21:47.891Z</updated>
-    
-    <content type="html"><![CDATA[<p> 批量发送消息可提高传递小消息的性能。同时也需要满足以下特征</p><ul><li>批量消息要求必要具有同一<code>topic</code>、相同消息配置</li><li><code>不支持延时消息</code></li><li>建议一个批量消息最好不要超过1MB大小<a id="more"></a><h4 id="示例"><a href="#示例" class="headerlink" title="示例"></a>示例</h4></li></ul><p>小于1MB</p><figure class="highlight java"><table><tr><td class="code"><pre><span class="line">String topic = <span class="string">"BatchTest"</span>;</span><br><span class="line">List&lt;Message&gt; messages = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line">messages.add(<span class="keyword">new</span> Message(topic, <span class="string">"TagA"</span>, <span class="string">"Order1"</span>, <span class="string">"Hello world 0"</span>.getBytes()));</span><br><span class="line">messages.add(<span class="keyword">new</span> Message(topic, <span class="string">"TagA"</span>, <span class="string">"Order2"</span>, <span class="string">"Hello world 1"</span>.getBytes()));</span><br><span class="line">messages.add(<span class="keyword">new</span> Message(topic, <span class="string">"TagA"</span>, <span class="string">"Order3"</span>, <span class="string">"Hello world 2"</span>.getBytes()));</span><br><span class="line"><span class="keyword">try</span> &#123;</span><br><span class="line">producer.send(messages);</span><br><span class="line">&#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">e.printStackTrace();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><p>大于1MB也可以使用分割消息的方式进行多次批量发送。</p>]]></content>
-    
-    <summary type="html">
-    
-      &lt;p&gt; 批量发送消息可提高传递小消息的性能。同时也需要满足以下特征&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;批量消息要求必要具有同一&lt;code&gt;topic&lt;/code&gt;、相同消息配置&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;不支持延时消息&lt;/code&gt;&lt;/li&gt;
-&lt;li&gt;建议一个批量消息最好不要超过1MB大小
-    
-    </summary>
-    
-      <category term="技术" scheme="https://blog.gitee.io/categories/%E6%8A%80%E6%9C%AF/"/>
-    
-      <category term="rocketmq" scheme="https://blog.gitee.io/categories/%E6%8A%80%E6%9C%AF/rocketmq/"/>
-    
-    
-      <category term="rocketmq" scheme="https://blog.gitee.io/tags/rocketmq/"/>
     
   </entry>
   

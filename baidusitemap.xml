@@ -4,6 +4,31 @@
 
     
   <url>
+    <loc>https://blog.gitee.io/2022/04/07/letsencrypt-certbot-ssl/</loc>
+    <lastmod>2022-04-07T03:58:56.283Z</lastmod>
+    <data>
+        <display>
+        <title>使用certbot制作免费Lets encrypt SSL证书</title>
+        <pubTime>2022-04-06T16:00:00.000Z</pubTime>
+        
+        <tag>certbot</tag>
+         
+        <tag>Lets encrypt</tag>
+         
+         
+           
+             
+              <breadCrumb title="技术" url="https://blog.gitee.io/categories/%E6%8A%80%E6%9C%AF/"/>
+          
+             
+              <breadCrumb title="ssl" url="https://blog.gitee.io/categories/%E6%8A%80%E6%9C%AF/ssl/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>https://blog.gitee.io/2022/01/26/mysql-ssl-ca-jdbc/</loc>
     <lastmod>2022-01-26T06:43:29.953Z</lastmod>
     <data>
@@ -92,9 +117,9 @@
          
         <tag>技术</tag>
          
-        <tag>alpine</tag>
-         
         <tag>k8s</tag>
+         
+        <tag>alpine</tag>
          
         <tag>dump</tag>
          
