@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://blog.gitee.io/"/>
-  <updated>2022-04-07T03:58:56.283Z</updated>
+  <updated>2022-05-24T08:56:24.615Z</updated>
   <id>https://blog.gitee.io/</id>
   
   <author>
@@ -15,6 +15,33 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>kafka listener配置解决Server与消费端不在同一网络问题</title>
+    <link href="https://blog.gitee.io/2022/05/24/kafka-listeners-advertised/"/>
+    <id>https://blog.gitee.io/2022/05/24/kafka-listeners-advertised/</id>
+    <published>2022-05-23T16:00:00.000Z</published>
+    <updated>2022-05-24T08:56:24.615Z</updated>
+    
+    <content type="html"><![CDATA[<p>在<code>kubernetes</code>容器环境下 kafka会默认把主机名注册到zookeeper。这个时候消费端部署在不同的命名空间或者不同的集群中会出现无法访问的情况。用<code>advertised.listeners</code>配置可以重写默认注册的地址。</p><h4 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h4><h5 id="listeners"><a href="#listeners" class="headerlink" title="listeners"></a>listeners</h5><p>  listeners 配置的是kafka Server 的tcp侦听ip地址。</p><h5 id="advertised-listeners"><a href="#advertised-listeners" class="headerlink" title="advertised.listeners"></a>advertised.listeners</h5><p>  该配置主要是用于把Broker的ip地址信息发布到Zookeeper中，简而言之就是配置的kafka的broker ip。如果你的消费端需要不同集群/网段的访问 需要确保改地址该消费端可访问的地址</p><p>其他这个也不一定是在容器环境下会存在 常规的机器环境下也会出现这个问题 如果broker的ip消费端访问不到的情况下 像下面这个异常 可以查一下这个问题。  </p><figure class="highlight stylus"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line">java<span class="selector-class">.net</span><span class="selector-class">.UnknownHostException</span>: cep-kafka</span><br><span class="line">        at java<span class="selector-class">.net</span><span class="selector-class">.InetAddress</span><span class="selector-class">.getAllByName0</span>(InetAddress<span class="selector-class">.java</span>:<span class="number">1281</span>)</span><br><span class="line">        at java<span class="selector-class">.net</span><span class="selector-class">.InetAddress</span><span class="selector-class">.getAllByName</span>(InetAddress<span class="selector-class">.java</span>:<span class="number">1193</span>)</span><br><span class="line">        at java<span class="selector-class">.net</span><span class="selector-class">.InetAddress</span><span class="selector-class">.getAllByName</span>(InetAddress<span class="selector-class">.java</span>:<span class="number">1127</span>)</span><br></pre></td></tr></table></figure>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;p&gt;在&lt;code&gt;kubernetes&lt;/code&gt;容器环境下 kafka会默认把主机名注册到zookeeper。这个时候消费端部署在不同的命名空间或者不同的集群中会出现无法访问的情况。用&lt;code&gt;advertised.listeners&lt;/code&gt;配置可以重写默认注册的地
+      
+    
+    </summary>
+    
+      <category term="技术" scheme="https://blog.gitee.io/categories/%E6%8A%80%E6%9C%AF/"/>
+    
+      <category term="kafka" scheme="https://blog.gitee.io/categories/%E6%8A%80%E6%9C%AF/kafka/"/>
+    
+    
+      <category term="kafka" scheme="https://blog.gitee.io/tags/kafka/"/>
+    
+  </entry>
   
   <entry>
     <title>使用certbot制作免费Lets encrypt SSL证书</title>
@@ -556,38 +583,6 @@
       <category term="emoji" scheme="https://blog.gitee.io/tags/emoji/"/>
     
       <category term="mysql支持emoji表情" scheme="https://blog.gitee.io/tags/mysql%E6%94%AF%E6%8C%81emoji%E8%A1%A8%E6%83%85/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>springCloud feign使用/优化总结</title>
-    <link href="https://blog.gitee.io/2018/09/30/springcloud-feign/"/>
-    <id>https://blog.gitee.io/2018/09/30/springcloud-feign/</id>
-    <published>2018-09-29T16:00:00.000Z</published>
-    <updated>2018-09-30T03:06:58.586Z</updated>
-    
-    <content type="html"><![CDATA[<p>基于springCloud Dalston.SR3版本</p><h4 id="1-当接口参数是多个的时候-需要指定-RequestParam-中的value来明确一下。"><a href="#1-当接口参数是多个的时候-需要指定-RequestParam-中的value来明确一下。" class="headerlink" title="1.当接口参数是多个的时候 需要指定@RequestParam 中的value来明确一下。"></a>1.当接口参数是多个的时候 需要指定@RequestParam 中的value来明确一下。</h4><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 用户互扫</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> uid 被扫人ID</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> userId 当前用户ID</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@return</span></span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">@PostMapping</span>(REQ_URL_PRE + <span class="string">"/qrCodeReturnUser"</span>)</span><br><span class="line"><span class="function">UserQrCode <span class="title">qrCodeReturnUser</span><span class="params">(@RequestParam(<span class="string">"uid"</span>)</span> String uid,@<span class="title">RequestParam</span><span class="params">(<span class="string">"userId"</span>)</span> Integer userId)</span>;</span><br></pre></td></tr></table></figure><h4 id="2-接口参数为对象的时候-需要使用-RequestBody注解-并采用POST方式。"><a href="#2-接口参数为对象的时候-需要使用-RequestBody注解-并采用POST方式。" class="headerlink" title="2.接口参数为对象的时候 需要使用@RequestBody注解 并采用POST方式。"></a>2.接口参数为对象的时候 需要使用@RequestBody注解 并采用POST方式。</h4><h4 id="3-如果接口是简单的数组-列表参数-这里需要使用Get请求才行"><a href="#3-如果接口是简单的数组-列表参数-这里需要使用Get请求才行" class="headerlink" title="3.如果接口是简单的数组/列表参数 这里需要使用Get请求才行"></a>3.如果接口是简单的数组/列表参数 这里需要使用Get请求才行</h4><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@GetMapping</span>(REQ_URL_PRE + <span class="string">"/getUserLevels"</span>)</span><br><span class="line"><span class="function">Map&lt;Integer, UserLevel&gt; <span class="title">getUserLevels</span><span class="params">(@RequestParam(<span class="string">"userIds"</span>)</span> List&lt;Integer&gt; userIds)</span>;</span><br></pre></td></tr></table></figure><h4 id="4-直接可以在-FeignClient中配置降级处理方式-对于一些不重要的业务-自定义处理很有帮助"><a href="#4-直接可以在-FeignClient中配置降级处理方式-对于一些不重要的业务-自定义处理很有帮助" class="headerlink" title="4.直接可以在@FeignClient中配置降级处理方式 对于一些不重要的业务 自定义处理很有帮助"></a>4.直接可以在<code>@FeignClient</code>中配置降级处理方式 对于一些不重要的业务 自定义处理很有帮助</h4><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@FeignClient</span>(value = <span class="string">"cloud-user"</span>, fallback = IUsers.UsersFallback.class)</span><br></pre></td></tr></table></figure><h4 id="5-feign默认只有HystrixBadRequestException异常不会走熔断，其它任何异常都会进入熔断，需要重新实现一下ErrorDecoder包装业务异常"><a href="#5-feign默认只有HystrixBadRequestException异常不会走熔断，其它任何异常都会进入熔断，需要重新实现一下ErrorDecoder包装业务异常" class="headerlink" title="5.feign默认只有HystrixBadRequestException异常不会走熔断，其它任何异常都会进入熔断，需要重新实现一下ErrorDecoder包装业务异常"></a>5.<code>feign</code>默认只有<code>HystrixBadRequestException</code>异常不会走熔断，其它任何异常都会进入熔断，需要重新实现一下<code>ErrorDecoder</code>包装业务异常</h4><p>  示例：<a href="https://github.com/peachyy/feign-support" target="_blank" rel="noopener">https://github.com/peachyy/feign-support</a></p><h4 id="6-feign-HTTP请求方式选择"><a href="#6-feign-HTTP请求方式选择" class="headerlink" title="6. feign HTTP请求方式选择"></a>6. feign HTTP请求方式选择</h4><p><code>feign</code>默认使用的是基于JDK提供的URLConnection调用HTTP接口，不具备连接池。所以资源开销上有点影响，经测试JDK的<code>URLConnection</code>比<code>Apache HttpClient</code>快很多倍。但是<code>Apache HttpClient</code>和<code>okhttp</code>都支持配置连接池功能。具体选择需要权衡</p><h4 id="7-默认不启用hystrix-需要手动指定feign-hystrix-enabled-true-开启熔断"><a href="#7-默认不启用hystrix-需要手动指定feign-hystrix-enabled-true-开启熔断" class="headerlink" title="7.默认不启用hystrix 需要手动指定feign.hystrix.enabled=true 开启熔断"></a>7.默认不启用<code>hystrix</code> 需要手动指定<code>feign.hystrix.enabled=true</code> 开启熔断</h4><h4 id="8-启用压缩也是一种有效的优化方式"><a href="#8-启用压缩也是一种有效的优化方式" class="headerlink" title="8.启用压缩也是一种有效的优化方式"></a>8.启用压缩也是一种有效的优化方式</h4><figure class="highlight java"><table><tr><td class="code"><pre><span class="line">feign.compression.request.enabled=<span class="keyword">true</span></span><br><span class="line">feign.compression.response.enabled=<span class="keyword">true</span></span><br><span class="line">feign.compression.request.mime-types=text/xml,application/xml,application/json</span><br></pre></td></tr></table></figure><h4 id="9-参数相关调优"><a href="#9-参数相关调优" class="headerlink" title="9.参数相关调优"></a>9.参数相关调优</h4><h5 id="hystrix线程数设置"><a href="#hystrix线程数设置" class="headerlink" title="hystrix线程数设置"></a>hystrix线程数设置</h5><p>设置参数<code>hystrix.threadpool.default.coreSize</code> 来指定熔断隔离的线程数 这个数需要调优，经测试 线程数我们设置为和提供方的容器线程差不多，吞吐量高许多。</p><h5 id="第一次访问服务出错的问题"><a href="#第一次访问服务出错的问题" class="headerlink" title="第一次访问服务出错的问题"></a>第一次访问服务出错的问题</h5><p>启用<code>Hystrix</code>后，很多服务当第一次访问的时候都会失败 是因为初始化负载均衡一系列操作已经超出了超时时间了 默认的超时时间为<code>1S</code>，设置参数超时时间<code>hystrix.command.default.execution.isolation.thread.timeoutInMilliseconds=30000</code> 可解决这个问题。</p><h5 id="负载均衡参数设置"><a href="#负载均衡参数设置" class="headerlink" title="负载均衡参数设置"></a>负载均衡参数设置</h5><p>设置了<code>Hystrix</code>的超时参数会 还需设置一下<code>ribbon</code>的相关参数  这些参数和<code>Hystrix</code>的超时参数有一定的逻辑关系<br>请求处理的超时时间 <code>ribbon.ReadTimeout=120000</code><br>请求连接的超时时间 <code>ribbon.ConnectTimeout=30000</code></p>]]></content>
-    
-    <summary type="html">
-    
-      
-      
-        &lt;p&gt;基于springCloud Dalston.SR3版本&lt;/p&gt;
-&lt;h4 id=&quot;1-当接口参数是多个的时候-需要指定-RequestParam-中的value来明确一下。&quot;&gt;&lt;a href=&quot;#1-当接口参数是多个的时候-需要指定-RequestParam-中的value来
-      
-    
-    </summary>
-    
-      <category term="技术" scheme="https://blog.gitee.io/categories/%E6%8A%80%E6%9C%AF/"/>
-    
-      <category term="springCloud" scheme="https://blog.gitee.io/categories/%E6%8A%80%E6%9C%AF/springCloud/"/>
-    
-      <category term="feign" scheme="https://blog.gitee.io/categories/%E6%8A%80%E6%9C%AF/springCloud/feign/"/>
-    
-    
-      <category term="feign" scheme="https://blog.gitee.io/tags/feign/"/>
-    
-      <category term="springCloud" scheme="https://blog.gitee.io/tags/springCloud/"/>
     
   </entry>
   
