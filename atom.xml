@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://blog.gitee.io/"/>
-  <updated>2022-05-24T08:56:24.615Z</updated>
+  <updated>2022-08-24T09:26:24.522Z</updated>
   <id>https://blog.gitee.io/</id>
   
   <author>
@@ -21,9 +21,9 @@
     <link href="https://blog.gitee.io/2022/05/24/kafka-listeners-advertised/"/>
     <id>https://blog.gitee.io/2022/05/24/kafka-listeners-advertised/</id>
     <published>2022-05-23T16:00:00.000Z</published>
-    <updated>2022-05-24T08:56:24.615Z</updated>
+    <updated>2022-08-24T09:26:24.522Z</updated>
     
-    <content type="html"><![CDATA[<p>在<code>kubernetes</code>容器环境下 kafka会默认把主机名注册到zookeeper。这个时候消费端部署在不同的命名空间或者不同的集群中会出现无法访问的情况。用<code>advertised.listeners</code>配置可以重写默认注册的地址。</p><h4 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h4><h5 id="listeners"><a href="#listeners" class="headerlink" title="listeners"></a>listeners</h5><p>  listeners 配置的是kafka Server 的tcp侦听ip地址。</p><h5 id="advertised-listeners"><a href="#advertised-listeners" class="headerlink" title="advertised.listeners"></a>advertised.listeners</h5><p>  该配置主要是用于把Broker的ip地址信息发布到Zookeeper中，简而言之就是配置的kafka的broker ip。如果你的消费端需要不同集群/网段的访问 需要确保改地址该消费端可访问的地址</p><p>其他这个也不一定是在容器环境下会存在 常规的机器环境下也会出现这个问题 如果broker的ip消费端访问不到的情况下 像下面这个异常 可以查一下这个问题。  </p><figure class="highlight stylus"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line">java<span class="selector-class">.net</span><span class="selector-class">.UnknownHostException</span>: cep-kafka</span><br><span class="line">        at java<span class="selector-class">.net</span><span class="selector-class">.InetAddress</span><span class="selector-class">.getAllByName0</span>(InetAddress<span class="selector-class">.java</span>:<span class="number">1281</span>)</span><br><span class="line">        at java<span class="selector-class">.net</span><span class="selector-class">.InetAddress</span><span class="selector-class">.getAllByName</span>(InetAddress<span class="selector-class">.java</span>:<span class="number">1193</span>)</span><br><span class="line">        at java<span class="selector-class">.net</span><span class="selector-class">.InetAddress</span><span class="selector-class">.getAllByName</span>(InetAddress<span class="selector-class">.java</span>:<span class="number">1127</span>)</span><br></pre></td></tr></table></figure>]]></content>
+    <content type="html"><![CDATA[<p>在<code>kubernetes</code>容器环境下 kafka会默认把主机名注册到zookeeper。这个时候消费端部署在不同的命名空间或者不同的集群中会出现无法访问的情况。用<code>advertised.listeners</code>配置可以重写默认注册的地址。</p><h4 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h4><h5 id="listeners"><a href="#listeners" class="headerlink" title="listeners"></a>listeners</h5><p>  listeners 配置的是kafka Server 的tcp侦听ip地址。</p><h5 id="advertised-listeners"><a href="#advertised-listeners" class="headerlink" title="advertised.listeners"></a>advertised.listeners</h5><p>  该配置主要是用于把Broker的ip地址信息发布到Zookeeper中，简而言之就是配置的kafka的broker ip。如果你的消费端需要不同集群/网段的访问 需要确保改地址该消费端可访问的地址</p><p>其他这个也不一定是在容器环境下会存在 常规的机器环境下也会出现这个问题 如果broker的ip消费端访问不到的情况下 像下面这个异常 可以查一下这个问题。  </p><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line">java.net.UnknownHostException: cep-kafka</span><br><span class="line">        at java.net.InetAddress.getAllByName0(InetAddress.java:<span class="number">1281</span>)</span><br><span class="line">        at java.net.InetAddress.getAllByName(InetAddress.java:<span class="number">1193</span>)</span><br><span class="line">        at java.net.InetAddress.getAllByName(InetAddress.java:<span class="number">1127</span>)</span><br></pre></td></tr></table></figure>]]></content>
     
     <summary type="html">
     
@@ -188,9 +188,9 @@
     
       <category term="技术" scheme="https://blog.gitee.io/tags/%E6%8A%80%E6%9C%AF/"/>
     
-      <category term="k8s" scheme="https://blog.gitee.io/tags/k8s/"/>
-    
       <category term="alpine" scheme="https://blog.gitee.io/tags/alpine/"/>
+    
+      <category term="k8s" scheme="https://blog.gitee.io/tags/k8s/"/>
     
       <category term="dump" scheme="https://blog.gitee.io/tags/dump/"/>
     

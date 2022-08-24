@@ -5,7 +5,7 @@
     
   <url>
     <loc>https://blog.gitee.io/2022/05/24/kafka-listeners-advertised/</loc>
-    <lastmod>2022-05-24T08:56:24.615Z</lastmod>
+    <lastmod>2022-08-24T09:26:24.522Z</lastmod>
     <data>
         <display>
         <title>kafka listener配置解决Server与消费端不在同一网络问题</title>
@@ -140,9 +140,9 @@
          
         <tag>技术</tag>
          
-        <tag>k8s</tag>
-         
         <tag>alpine</tag>
+         
+        <tag>k8s</tag>
          
         <tag>dump</tag>
          

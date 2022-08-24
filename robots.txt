@@ -8,5 +8,3 @@ Disallow: /fonts/
 Disallow: /vendors/
 Disallow: /fancybox/
 
-Sitemap: http://blog.seoui.com/sitemap.xml
-Sitemap: http://blog.seoui.com/baidusitemap.xml
