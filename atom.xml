@@ -5,9 +5,9 @@
   <subtitle>写我喜欢 读我所爱</subtitle>
   <link href="/atom.xml" rel="self"/>
   
-  <link href="https://blog.gitee.io/"/>
-  <updated>2022-08-24T09:26:24.522Z</updated>
-  <id>https://blog.gitee.io/</id>
+  <link href="https://peachyy.gitee.io/"/>
+  <updated>2022-08-31T14:44:51.437Z</updated>
+  <id>https://peachyy.gitee.io/</id>
   
   <author>
     <name>peachyy</name>
@@ -17,9 +17,37 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
+    <title>记一次用arthas排查jvm中CPU占用过高问题</title>
+    <link href="https://peachyy.gitee.io/2022/08/31/jvm_cpu_arthas_check/"/>
+    <id>https://peachyy.gitee.io/2022/08/31/jvm_cpu_arthas_check/</id>
+    <published>2022-08-30T16:00:00.000Z</published>
+    <updated>2022-08-31T14:44:51.437Z</updated>
+    
+    <content type="html"><![CDATA[<p>记一次使用<code>arthas</code>排查jvm中CPU占用过高问题。这工具屌爆了 碾压我目前使用的全部JVM工具。</p><h4 id="安装-小试"><a href="#安装-小试" class="headerlink" title="安装 小试"></a>安装 小试</h4><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">curl -O https://arthas.aliyun.com/arthas-boot.jar</span><br><span class="line">java -jar arthas-boot.jar --repo-mirror aliyun --use-http</span><br></pre></td></tr></table></figure><p>jar后面的参数也可以不加 加上只是为了下载速度更快</p><p>接下来<code>arthas</code> 控制台中显示了当前机器上jvm进程列表 输入需要排查的jvm进程号即可进入监控命令模式</p><h4 id="找出CPU的元凶"><a href="#找出CPU的元凶" class="headerlink" title="找出CPU的元凶"></a>找出CPU的元凶</h4><p>处理问题之前 <em>先想想如何去找到问题的原因</em> 这个是解决问题个人觉得最重要的一步。</p><p>当前的现状是jvm启动后 cpu直接飙升到<code>80+%</code>。而内存是正常的，可以认为大概率是某个线程占用了计算资源 导致的。所以第一步需要先把占用过高线程给揪出来。</p><p>这次使用<code>arthas</code>排查。也顺便提一下以前记录过用<code>top -Hp</code>的方法找出占用资源的线程PID 方法 <a href="/2020/12/11/find_jvm_cpu_max_thread/">top -Hp方法参考</a>  。</p><p>输入命令 <code>thread</code> 查看所有线程信息 默认是按照cpu资源占用排名的</p><figure class="image-bubble">                <div class="img-lightbox">                    <div class="overlay"></div>                    <img src="/images/2022-08-31-jvm_cpu_arthas_check/1.PNG" alt="" title="">                </div>                <div class="image-caption"></div>            </figure><p>可以看到当前线程<code>lettuce-nioEventLoop-4-1</code> 占用cpu高达47.75。其实这个线程名称已经能定位到具体某个方向的问题了，所以线程名称的定义需要有意义 为了方便排查问题。</p><p>可以看出因为我们程序使用了<code>lettuce</code>做redis的客户端，主要是使用了<code>redis stream</code> </p><figure class="highlight java"><table><tr><td class="code"><pre><span class="line">StreamMessageListenerContainer.StreamMessageListenerContainerOptions&lt;String, ObjectRecord&lt;String, String&gt;&gt; containerOptions =</span><br><span class="line">        StreamMessageListenerContainer.StreamMessageListenerContainerOptions.builder()</span><br><span class="line">                .batchSize(<span class="number">10</span>) <span class="comment">// 一次性最多拉取多少条消息</span></span><br><span class="line">                .targetType(String.class) <span class="comment">// 目标类型。统一使用 String</span></span><br><span class="line">                .executor(mqConsumerExecutor)</span><br><span class="line">                .pollTimeout(Duration.ZERO)<span class="comment">//0不超时</span></span><br><span class="line">                .build();</span><br></pre></td></tr></table></figure><p>把<code>.pollTimeout(Duration.ZERO)</code>这一句改为 <code>.pollTimeout(Duration.ofMillis(10))</code>cpu就正常了。原因就是设置了永不超时 资源得不到释放。改为指定时间超时后 程序一点问题都没有了。</p><h5 id="查看线程栈的参数"><a href="#查看线程栈的参数" class="headerlink" title="查看线程栈的参数"></a>查看线程栈的参数</h5><p>可以直接使用<code>thread pid</code> 上图占用最高的id为22 则输入 <code>thread 22</code> 能看到类似<code>jstack</code>的功能</p><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="string">"lettuce-nioEventLoop-4-1"</span> Id=<span class="number">22</span> RUNNABLE</span><br><span class="line">    at sun.nio.ch.EPollArrayWrapper.epollWait(Native Method)</span><br><span class="line">    at sun.nio.ch.EPollArrayWrapper.poll(EPollArrayWrapper.java:<span class="number">269</span>)</span><br><span class="line">    at sun.nio.ch.EPollSelectorImpl.doSelect(EPollSelectorImpl.java:<span class="number">93</span>)</span><br><span class="line">    at sun.nio.ch.SelectorImpl.lockAndDoSelect(SelectorImpl.java:<span class="number">86</span>)</span><br><span class="line">    at sun.nio.ch.SelectorImpl.select(SelectorImpl.java:<span class="number">97</span>)</span><br><span class="line">    at sun.nio.ch.SelectorImpl.select(SelectorImpl.java:<span class="number">101</span>)</span><br></pre></td></tr></table></figure><p>还有一个更好用的命令 <code>-n</code>参数能显示top-n-threads  比上面一种更详细 </p><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="string">"lettuce-nioEventLoop-4-1"</span> Id=<span class="number">22</span> cpuUsage=<span class="number">49.51</span>% deltaTime=<span class="number">99</span>ms time=<span class="number">392976</span>ms RUNNABLE</span><br><span class="line">    at sun.nio.ch.EPollArrayWrapper.epollWait(Native Method)</span><br><span class="line">    at sun.nio.ch.EPollArrayWrapper.poll(EPollArrayWrapper.java:<span class="number">269</span>)</span><br><span class="line">    at sun.nio.ch.EPollSelectorImpl.doSelect(EPollSelectorImpl.java:<span class="number">93</span>)</span><br><span class="line">    at sun.nio.ch.SelectorImpl.lockAndDoSelect(SelectorImpl.java:<span class="number">86</span>)</span><br><span class="line">    at sun.nio.ch.SelectorImpl.select(SelectorImpl.java:<span class="number">97</span>)</span><br><span class="line">    at sun.nio.ch.SelectorImpl.select(SelectorImpl.java:<span class="number">101</span>)</span><br></pre></td></tr></table></figure><p>可以看出使用<code>arthas</code>排除这类问题 比使用<code>top -Hp</code>方便太多。当然这只是它的一个小功能而已。</p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;p&gt;记一次使用&lt;code&gt;arthas&lt;/code&gt;排查jvm中CPU占用过高问题。这工具屌爆了 碾压我目前使用的全部JVM工具。&lt;/p&gt;
+&lt;h4 id=&quot;安装-小试&quot;&gt;&lt;a href=&quot;#安装-小试&quot; class=&quot;headerlink&quot; title=&quot;安装 小试&quot;&gt;&lt;/a&gt;
+      
+    
+    </summary>
+    
+      <category term="技术" scheme="https://peachyy.gitee.io/categories/%E6%8A%80%E6%9C%AF/"/>
+    
+      <category term="arthas" scheme="https://peachyy.gitee.io/categories/%E6%8A%80%E6%9C%AF/arthas/"/>
+    
+    
+      <category term="arthas" scheme="https://peachyy.gitee.io/tags/arthas/"/>
+    
+  </entry>
+  
+  <entry>
     <title>kafka listener配置解决Server与消费端不在同一网络问题</title>
-    <link href="https://blog.gitee.io/2022/05/24/kafka-listeners-advertised/"/>
-    <id>https://blog.gitee.io/2022/05/24/kafka-listeners-advertised/</id>
+    <link href="https://peachyy.gitee.io/2022/05/24/kafka-listeners-advertised/"/>
+    <id>https://peachyy.gitee.io/2022/05/24/kafka-listeners-advertised/</id>
     <published>2022-05-23T16:00:00.000Z</published>
     <updated>2022-08-24T09:26:24.522Z</updated>
     
@@ -34,19 +62,19 @@
     
     </summary>
     
-      <category term="技术" scheme="https://blog.gitee.io/categories/%E6%8A%80%E6%9C%AF/"/>
+      <category term="技术" scheme="https://peachyy.gitee.io/categories/%E6%8A%80%E6%9C%AF/"/>
     
-      <category term="kafka" scheme="https://blog.gitee.io/categories/%E6%8A%80%E6%9C%AF/kafka/"/>
+      <category term="kafka" scheme="https://peachyy.gitee.io/categories/%E6%8A%80%E6%9C%AF/kafka/"/>
     
     
-      <category term="kafka" scheme="https://blog.gitee.io/tags/kafka/"/>
+      <category term="kafka" scheme="https://peachyy.gitee.io/tags/kafka/"/>
     
   </entry>
   
   <entry>
     <title>使用certbot制作免费Lets encrypt SSL证书</title>
-    <link href="https://blog.gitee.io/2022/04/07/letsencrypt-certbot-ssl/"/>
-    <id>https://blog.gitee.io/2022/04/07/letsencrypt-certbot-ssl/</id>
+    <link href="https://peachyy.gitee.io/2022/04/07/letsencrypt-certbot-ssl/"/>
+    <id>https://peachyy.gitee.io/2022/04/07/letsencrypt-certbot-ssl/</id>
     <published>2022-04-06T16:00:00.000Z</published>
     <updated>2022-04-07T03:58:56.283Z</updated>
     
@@ -62,21 +90,21 @@
     
     </summary>
     
-      <category term="技术" scheme="https://blog.gitee.io/categories/%E6%8A%80%E6%9C%AF/"/>
+      <category term="技术" scheme="https://peachyy.gitee.io/categories/%E6%8A%80%E6%9C%AF/"/>
     
-      <category term="ssl" scheme="https://blog.gitee.io/categories/%E6%8A%80%E6%9C%AF/ssl/"/>
+      <category term="ssl" scheme="https://peachyy.gitee.io/categories/%E6%8A%80%E6%9C%AF/ssl/"/>
     
     
-      <category term="certbot" scheme="https://blog.gitee.io/tags/certbot/"/>
+      <category term="certbot" scheme="https://peachyy.gitee.io/tags/certbot/"/>
     
-      <category term="Lets encrypt" scheme="https://blog.gitee.io/tags/Lets-encrypt/"/>
+      <category term="Lets encrypt" scheme="https://peachyy.gitee.io/tags/Lets-encrypt/"/>
     
   </entry>
   
   <entry>
     <title>MySql SSL CA证书JDBC配置</title>
-    <link href="https://blog.gitee.io/2022/01/26/mysql-ssl-ca-jdbc/"/>
-    <id>https://blog.gitee.io/2022/01/26/mysql-ssl-ca-jdbc/</id>
+    <link href="https://peachyy.gitee.io/2022/01/26/mysql-ssl-ca-jdbc/"/>
+    <id>https://peachyy.gitee.io/2022/01/26/mysql-ssl-ca-jdbc/</id>
     <published>2022-01-25T16:00:00.000Z</published>
     <updated>2022-01-26T06:43:29.953Z</updated>
     
@@ -91,21 +119,21 @@
     
     </summary>
     
-      <category term="技术" scheme="https://blog.gitee.io/categories/%E6%8A%80%E6%9C%AF/"/>
+      <category term="技术" scheme="https://peachyy.gitee.io/categories/%E6%8A%80%E6%9C%AF/"/>
     
-      <category term="mysql" scheme="https://blog.gitee.io/categories/%E6%8A%80%E6%9C%AF/mysql/"/>
+      <category term="mysql" scheme="https://peachyy.gitee.io/categories/%E6%8A%80%E6%9C%AF/mysql/"/>
     
     
-      <category term="mysql" scheme="https://blog.gitee.io/tags/mysql/"/>
+      <category term="mysql" scheme="https://peachyy.gitee.io/tags/mysql/"/>
     
-      <category term="sslca" scheme="https://blog.gitee.io/tags/sslca/"/>
+      <category term="sslca" scheme="https://peachyy.gitee.io/tags/sslca/"/>
     
   </entry>
   
   <entry>
     <title>jvm容器化内存感知实践</title>
-    <link href="https://blog.gitee.io/2021/12/28/dockerjvmarg_action/"/>
-    <id>https://blog.gitee.io/2021/12/28/dockerjvmarg_action/</id>
+    <link href="https://peachyy.gitee.io/2021/12/28/dockerjvmarg_action/"/>
+    <id>https://peachyy.gitee.io/2021/12/28/dockerjvmarg_action/</id>
     <published>2021-12-27T16:00:00.000Z</published>
     <updated>2021-12-28T09:02:35.608Z</updated>
     
@@ -120,23 +148,23 @@
     
     </summary>
     
-      <category term="技术" scheme="https://blog.gitee.io/categories/%E6%8A%80%E6%9C%AF/"/>
+      <category term="技术" scheme="https://peachyy.gitee.io/categories/%E6%8A%80%E6%9C%AF/"/>
     
     
-      <category term="docker" scheme="https://blog.gitee.io/tags/docker/"/>
+      <category term="docker" scheme="https://peachyy.gitee.io/tags/docker/"/>
     
-      <category term="jvm" scheme="https://blog.gitee.io/tags/jvm/"/>
+      <category term="jvm" scheme="https://peachyy.gitee.io/tags/jvm/"/>
     
-      <category term="技术" scheme="https://blog.gitee.io/tags/%E6%8A%80%E6%9C%AF/"/>
+      <category term="技术" scheme="https://peachyy.gitee.io/tags/%E6%8A%80%E6%9C%AF/"/>
     
-      <category term="k8s" scheme="https://blog.gitee.io/tags/k8s/"/>
+      <category term="k8s" scheme="https://peachyy.gitee.io/tags/k8s/"/>
     
   </entry>
   
   <entry>
     <title>ingress传递头信息</title>
-    <link href="https://blog.gitee.io/2021/12/22/k8s-ingress-annotation1/"/>
-    <id>https://blog.gitee.io/2021/12/22/k8s-ingress-annotation1/</id>
+    <link href="https://peachyy.gitee.io/2021/12/22/k8s-ingress-annotation1/"/>
+    <id>https://peachyy.gitee.io/2021/12/22/k8s-ingress-annotation1/</id>
     <published>2021-12-21T16:00:00.000Z</published>
     <updated>2021-12-22T02:39:54.071Z</updated>
     
@@ -152,21 +180,21 @@
     
     </summary>
     
-      <category term="技术" scheme="https://blog.gitee.io/categories/%E6%8A%80%E6%9C%AF/"/>
+      <category term="技术" scheme="https://peachyy.gitee.io/categories/%E6%8A%80%E6%9C%AF/"/>
     
     
-      <category term="技术" scheme="https://blog.gitee.io/tags/%E6%8A%80%E6%9C%AF/"/>
+      <category term="技术" scheme="https://peachyy.gitee.io/tags/%E6%8A%80%E6%9C%AF/"/>
     
-      <category term="k8s" scheme="https://blog.gitee.io/tags/k8s/"/>
+      <category term="k8s" scheme="https://peachyy.gitee.io/tags/k8s/"/>
     
-      <category term="ingress" scheme="https://blog.gitee.io/tags/ingress/"/>
+      <category term="ingress" scheme="https://peachyy.gitee.io/tags/ingress/"/>
     
   </entry>
   
   <entry>
     <title>在k8s中收集jvm异常dump文件到OSS</title>
-    <link href="https://blog.gitee.io/2021/11/11/k8s-jvm-dumpcollect/"/>
-    <id>https://blog.gitee.io/2021/11/11/k8s-jvm-dumpcollect/</id>
+    <link href="https://peachyy.gitee.io/2021/11/11/k8s-jvm-dumpcollect/"/>
+    <id>https://peachyy.gitee.io/2021/11/11/k8s-jvm-dumpcollect/</id>
     <published>2021-11-10T16:00:00.000Z</published>
     <updated>2021-11-11T04:00:30.523Z</updated>
     
@@ -181,25 +209,25 @@
     
     </summary>
     
-      <category term="技术" scheme="https://blog.gitee.io/categories/%E6%8A%80%E6%9C%AF/"/>
+      <category term="技术" scheme="https://peachyy.gitee.io/categories/%E6%8A%80%E6%9C%AF/"/>
     
     
-      <category term="jvm" scheme="https://blog.gitee.io/tags/jvm/"/>
+      <category term="jvm" scheme="https://peachyy.gitee.io/tags/jvm/"/>
     
-      <category term="技术" scheme="https://blog.gitee.io/tags/%E6%8A%80%E6%9C%AF/"/>
+      <category term="技术" scheme="https://peachyy.gitee.io/tags/%E6%8A%80%E6%9C%AF/"/>
     
-      <category term="k8s" scheme="https://blog.gitee.io/tags/k8s/"/>
+      <category term="k8s" scheme="https://peachyy.gitee.io/tags/k8s/"/>
     
-      <category term="alpine" scheme="https://blog.gitee.io/tags/alpine/"/>
+      <category term="alpine" scheme="https://peachyy.gitee.io/tags/alpine/"/>
     
-      <category term="dump" scheme="https://blog.gitee.io/tags/dump/"/>
+      <category term="dump" scheme="https://peachyy.gitee.io/tags/dump/"/>
     
   </entry>
   
   <entry>
     <title>基于alpine构建jdk镜像遇到的坑</title>
-    <link href="https://blog.gitee.io/2021/11/10/alpinejdkimage/"/>
-    <id>https://blog.gitee.io/2021/11/10/alpinejdkimage/</id>
+    <link href="https://peachyy.gitee.io/2021/11/10/alpinejdkimage/"/>
+    <id>https://peachyy.gitee.io/2021/11/10/alpinejdkimage/</id>
     <published>2021-11-09T16:00:00.000Z</published>
     <updated>2021-11-10T10:13:26.016Z</updated>
     
@@ -214,21 +242,21 @@
     
     </summary>
     
-      <category term="技术" scheme="https://blog.gitee.io/categories/%E6%8A%80%E6%9C%AF/"/>
+      <category term="技术" scheme="https://peachyy.gitee.io/categories/%E6%8A%80%E6%9C%AF/"/>
     
     
-      <category term="技术" scheme="https://blog.gitee.io/tags/%E6%8A%80%E6%9C%AF/"/>
+      <category term="技术" scheme="https://peachyy.gitee.io/tags/%E6%8A%80%E6%9C%AF/"/>
     
-      <category term="alpine" scheme="https://blog.gitee.io/tags/alpine/"/>
+      <category term="alpine" scheme="https://peachyy.gitee.io/tags/alpine/"/>
     
-      <category term="jdk" scheme="https://blog.gitee.io/tags/jdk/"/>
+      <category term="jdk" scheme="https://peachyy.gitee.io/tags/jdk/"/>
     
   </entry>
   
   <entry>
     <title>docker删除&lt;none&gt;标签镜像</title>
-    <link href="https://blog.gitee.io/2021/08/23/dockerimage-prune/"/>
-    <id>https://blog.gitee.io/2021/08/23/dockerimage-prune/</id>
+    <link href="https://peachyy.gitee.io/2021/08/23/dockerimage-prune/"/>
+    <id>https://peachyy.gitee.io/2021/08/23/dockerimage-prune/</id>
     <published>2021-08-22T16:00:00.000Z</published>
     <updated>2021-08-23T08:42:31.705Z</updated>
     
@@ -244,19 +272,19 @@
     
     </summary>
     
-      <category term="技术" scheme="https://blog.gitee.io/categories/%E6%8A%80%E6%9C%AF/"/>
+      <category term="技术" scheme="https://peachyy.gitee.io/categories/%E6%8A%80%E6%9C%AF/"/>
     
     
-      <category term="docker" scheme="https://blog.gitee.io/tags/docker/"/>
+      <category term="docker" scheme="https://peachyy.gitee.io/tags/docker/"/>
     
-      <category term="技术" scheme="https://blog.gitee.io/tags/%E6%8A%80%E6%9C%AF/"/>
+      <category term="技术" scheme="https://peachyy.gitee.io/tags/%E6%8A%80%E6%9C%AF/"/>
     
   </entry>
   
   <entry>
     <title>kubernetes之pod</title>
-    <link href="https://blog.gitee.io/2021/08/09/k8s-pod/"/>
-    <id>https://blog.gitee.io/2021/08/09/k8s-pod/</id>
+    <link href="https://peachyy.gitee.io/2021/08/09/k8s-pod/"/>
+    <id>https://peachyy.gitee.io/2021/08/09/k8s-pod/</id>
     <published>2021-08-08T16:00:00.000Z</published>
     <updated>2021-08-09T05:52:10.939Z</updated>
     
@@ -264,21 +292,21 @@
     
     </summary>
     
-      <category term="技术" scheme="https://blog.gitee.io/categories/%E6%8A%80%E6%9C%AF/"/>
+      <category term="技术" scheme="https://peachyy.gitee.io/categories/%E6%8A%80%E6%9C%AF/"/>
     
     
-      <category term="技术" scheme="https://blog.gitee.io/tags/%E6%8A%80%E6%9C%AF/"/>
+      <category term="技术" scheme="https://peachyy.gitee.io/tags/%E6%8A%80%E6%9C%AF/"/>
     
-      <category term="kubernetes" scheme="https://blog.gitee.io/tags/kubernetes/"/>
+      <category term="kubernetes" scheme="https://peachyy.gitee.io/tags/kubernetes/"/>
     
-      <category term="pod" scheme="https://blog.gitee.io/tags/pod/"/>
+      <category term="pod" scheme="https://peachyy.gitee.io/tags/pod/"/>
     
   </entry>
   
   <entry>
     <title>kubernetes-kubeadm创建集群</title>
-    <link href="https://blog.gitee.io/2021/08/05/k8s-kubeadm-init-2/"/>
-    <id>https://blog.gitee.io/2021/08/05/k8s-kubeadm-init-2/</id>
+    <link href="https://peachyy.gitee.io/2021/08/05/k8s-kubeadm-init-2/"/>
+    <id>https://peachyy.gitee.io/2021/08/05/k8s-kubeadm-init-2/</id>
     <published>2021-08-04T16:00:00.000Z</published>
     <updated>2021-08-05T05:40:56.172Z</updated>
     
@@ -294,19 +322,19 @@
     
     </summary>
     
-      <category term="技术" scheme="https://blog.gitee.io/categories/%E6%8A%80%E6%9C%AF/"/>
+      <category term="技术" scheme="https://peachyy.gitee.io/categories/%E6%8A%80%E6%9C%AF/"/>
     
     
-      <category term="技术" scheme="https://blog.gitee.io/tags/%E6%8A%80%E6%9C%AF/"/>
+      <category term="技术" scheme="https://peachyy.gitee.io/tags/%E6%8A%80%E6%9C%AF/"/>
     
-      <category term="kubernetes" scheme="https://blog.gitee.io/tags/kubernetes/"/>
+      <category term="kubernetes" scheme="https://peachyy.gitee.io/tags/kubernetes/"/>
     
   </entry>
   
   <entry>
     <title>kubernetes-kubeadm安装</title>
-    <link href="https://blog.gitee.io/2021/08/04/k8s-kubeadm-1/"/>
-    <id>https://blog.gitee.io/2021/08/04/k8s-kubeadm-1/</id>
+    <link href="https://peachyy.gitee.io/2021/08/04/k8s-kubeadm-1/"/>
+    <id>https://peachyy.gitee.io/2021/08/04/k8s-kubeadm-1/</id>
     <published>2021-08-03T16:00:00.000Z</published>
     <updated>2021-08-04T08:49:19.707Z</updated>
     
@@ -323,19 +351,19 @@
     
     </summary>
     
-      <category term="技术" scheme="https://blog.gitee.io/categories/%E6%8A%80%E6%9C%AF/"/>
+      <category term="技术" scheme="https://peachyy.gitee.io/categories/%E6%8A%80%E6%9C%AF/"/>
     
     
-      <category term="技术" scheme="https://blog.gitee.io/tags/%E6%8A%80%E6%9C%AF/"/>
+      <category term="技术" scheme="https://peachyy.gitee.io/tags/%E6%8A%80%E6%9C%AF/"/>
     
-      <category term="kubernetes" scheme="https://blog.gitee.io/tags/kubernetes/"/>
+      <category term="kubernetes" scheme="https://peachyy.gitee.io/tags/kubernetes/"/>
     
   </entry>
   
   <entry>
     <title>找出JVM中最耗cpu的线程</title>
-    <link href="https://blog.gitee.io/2020/12/11/find_jvm_cpu_max_thread/"/>
-    <id>https://blog.gitee.io/2020/12/11/find_jvm_cpu_max_thread/</id>
+    <link href="https://peachyy.gitee.io/2020/12/11/find_jvm_cpu_max_thread/"/>
+    <id>https://peachyy.gitee.io/2020/12/11/find_jvm_cpu_max_thread/</id>
     <published>2020-12-10T16:00:00.000Z</published>
     <updated>2021-08-27T03:32:17.182Z</updated>
     
@@ -352,19 +380,19 @@
     
     </summary>
     
-      <category term="技术" scheme="https://blog.gitee.io/categories/%E6%8A%80%E6%9C%AF/"/>
+      <category term="技术" scheme="https://peachyy.gitee.io/categories/%E6%8A%80%E6%9C%AF/"/>
     
     
-      <category term="jvm" scheme="https://blog.gitee.io/tags/jvm/"/>
+      <category term="jvm" scheme="https://peachyy.gitee.io/tags/jvm/"/>
     
-      <category term="技术" scheme="https://blog.gitee.io/tags/%E6%8A%80%E6%9C%AF/"/>
+      <category term="技术" scheme="https://peachyy.gitee.io/tags/%E6%8A%80%E6%9C%AF/"/>
     
   </entry>
   
   <entry>
     <title>更好用 更简单的Java缓存框架 jscache</title>
-    <link href="https://blog.gitee.io/2020/08/21/jscache/"/>
-    <id>https://blog.gitee.io/2020/08/21/jscache/</id>
+    <link href="https://peachyy.gitee.io/2020/08/21/jscache/"/>
+    <id>https://peachyy.gitee.io/2020/08/21/jscache/</id>
     <published>2020-08-20T16:00:00.000Z</published>
     <updated>2020-08-21T08:59:26.492Z</updated>
     
@@ -379,19 +407,19 @@
     
     </summary>
     
-      <category term="技术" scheme="https://blog.gitee.io/categories/%E6%8A%80%E6%9C%AF/"/>
+      <category term="技术" scheme="https://peachyy.gitee.io/categories/%E6%8A%80%E6%9C%AF/"/>
     
     
-      <category term="技术" scheme="https://blog.gitee.io/tags/%E6%8A%80%E6%9C%AF/"/>
+      <category term="技术" scheme="https://peachyy.gitee.io/tags/%E6%8A%80%E6%9C%AF/"/>
     
-      <category term="jscache" scheme="https://blog.gitee.io/tags/jscache/"/>
+      <category term="jscache" scheme="https://peachyy.gitee.io/tags/jscache/"/>
     
   </entry>
   
   <entry>
     <title>Neo4j入门教程</title>
-    <link href="https://blog.gitee.io/2019/08/23/neo4j_study/"/>
-    <id>https://blog.gitee.io/2019/08/23/neo4j_study/</id>
+    <link href="https://peachyy.gitee.io/2019/08/23/neo4j_study/"/>
+    <id>https://peachyy.gitee.io/2019/08/23/neo4j_study/</id>
     <published>2019-08-22T16:00:00.000Z</published>
     <updated>2019-08-23T07:31:21.272Z</updated>
     
@@ -406,19 +434,19 @@
     
     </summary>
     
-      <category term="技术" scheme="https://blog.gitee.io/categories/%E6%8A%80%E6%9C%AF/"/>
+      <category term="技术" scheme="https://peachyy.gitee.io/categories/%E6%8A%80%E6%9C%AF/"/>
     
     
-      <category term="技术" scheme="https://blog.gitee.io/tags/%E6%8A%80%E6%9C%AF/"/>
+      <category term="技术" scheme="https://peachyy.gitee.io/tags/%E6%8A%80%E6%9C%AF/"/>
     
-      <category term="neo4j" scheme="https://blog.gitee.io/tags/neo4j/"/>
+      <category term="neo4j" scheme="https://peachyy.gitee.io/tags/neo4j/"/>
     
   </entry>
   
   <entry>
     <title>thymeleaf自定义dialect</title>
-    <link href="https://blog.gitee.io/2019/07/22/custom-thymeleaf-dealect/"/>
-    <id>https://blog.gitee.io/2019/07/22/custom-thymeleaf-dealect/</id>
+    <link href="https://peachyy.gitee.io/2019/07/22/custom-thymeleaf-dealect/"/>
+    <id>https://peachyy.gitee.io/2019/07/22/custom-thymeleaf-dealect/</id>
     <published>2019-07-21T16:00:00.000Z</published>
     <updated>2019-07-22T08:57:26.950Z</updated>
     
@@ -433,19 +461,19 @@
     
     </summary>
     
-      <category term="技术" scheme="https://blog.gitee.io/categories/%E6%8A%80%E6%9C%AF/"/>
+      <category term="技术" scheme="https://peachyy.gitee.io/categories/%E6%8A%80%E6%9C%AF/"/>
     
     
-      <category term="技术" scheme="https://blog.gitee.io/tags/%E6%8A%80%E6%9C%AF/"/>
+      <category term="技术" scheme="https://peachyy.gitee.io/tags/%E6%8A%80%E6%9C%AF/"/>
     
-      <category term="thymeleaf" scheme="https://blog.gitee.io/tags/thymeleaf/"/>
+      <category term="thymeleaf" scheme="https://peachyy.gitee.io/tags/thymeleaf/"/>
     
   </entry>
   
   <entry>
     <title>elasticsearch中短语匹配match_phrase</title>
-    <link href="https://blog.gitee.io/2019/05/07/es-match-phrase/"/>
-    <id>https://blog.gitee.io/2019/05/07/es-match-phrase/</id>
+    <link href="https://peachyy.gitee.io/2019/05/07/es-match-phrase/"/>
+    <id>https://peachyy.gitee.io/2019/05/07/es-match-phrase/</id>
     <published>2019-05-06T16:00:00.000Z</published>
     <updated>2019-05-07T09:56:25.367Z</updated>
     
@@ -461,19 +489,19 @@
     
     </summary>
     
-      <category term="技术" scheme="https://blog.gitee.io/categories/%E6%8A%80%E6%9C%AF/"/>
+      <category term="技术" scheme="https://peachyy.gitee.io/categories/%E6%8A%80%E6%9C%AF/"/>
     
     
-      <category term="技术" scheme="https://blog.gitee.io/tags/%E6%8A%80%E6%9C%AF/"/>
+      <category term="技术" scheme="https://peachyy.gitee.io/tags/%E6%8A%80%E6%9C%AF/"/>
     
-      <category term="elasticsearch" scheme="https://blog.gitee.io/tags/elasticsearch/"/>
+      <category term="elasticsearch" scheme="https://peachyy.gitee.io/tags/elasticsearch/"/>
     
   </entry>
   
   <entry>
     <title>认识go语言与环境搭建</title>
-    <link href="https://blog.gitee.io/2019/03/26/go_install/"/>
-    <id>https://blog.gitee.io/2019/03/26/go_install/</id>
+    <link href="https://peachyy.gitee.io/2019/03/26/go_install/"/>
+    <id>https://peachyy.gitee.io/2019/03/26/go_install/</id>
     <published>2019-03-25T16:00:00.000Z</published>
     <updated>2019-03-26T04:00:23.714Z</updated>
     
@@ -489,19 +517,19 @@
     
     </summary>
     
-      <category term="技术" scheme="https://blog.gitee.io/categories/%E6%8A%80%E6%9C%AF/"/>
+      <category term="技术" scheme="https://peachyy.gitee.io/categories/%E6%8A%80%E6%9C%AF/"/>
     
     
-      <category term="技术" scheme="https://blog.gitee.io/tags/%E6%8A%80%E6%9C%AF/"/>
+      <category term="技术" scheme="https://peachyy.gitee.io/tags/%E6%8A%80%E6%9C%AF/"/>
     
-      <category term="go" scheme="https://blog.gitee.io/tags/go/"/>
+      <category term="go" scheme="https://peachyy.gitee.io/tags/go/"/>
     
   </entry>
   
   <entry>
     <title>再见2018 再见昨天</title>
-    <link href="https://blog.gitee.io/2019/01/15/todo2018/"/>
-    <id>https://blog.gitee.io/2019/01/15/todo2018/</id>
+    <link href="https://peachyy.gitee.io/2019/01/15/todo2018/"/>
+    <id>https://peachyy.gitee.io/2019/01/15/todo2018/</id>
     <published>2019-01-14T16:00:00.000Z</published>
     <updated>2019-01-15T08:49:51.146Z</updated>
     
@@ -515,17 +543,17 @@
     
     </summary>
     
-      <category term="随笔" scheme="https://blog.gitee.io/categories/%E9%9A%8F%E7%AC%94/"/>
+      <category term="随笔" scheme="https://peachyy.gitee.io/categories/%E9%9A%8F%E7%AC%94/"/>
     
     
-      <category term="随笔" scheme="https://blog.gitee.io/tags/%E9%9A%8F%E7%AC%94/"/>
+      <category term="随笔" scheme="https://peachyy.gitee.io/tags/%E9%9A%8F%E7%AC%94/"/>
     
   </entry>
   
   <entry>
     <title>svn版本控制迁移到git</title>
-    <link href="https://blog.gitee.io/2018/11/27/svnToGit/"/>
-    <id>https://blog.gitee.io/2018/11/27/svnToGit/</id>
+    <link href="https://peachyy.gitee.io/2018/11/27/svnToGit/"/>
+    <id>https://peachyy.gitee.io/2018/11/27/svnToGit/</id>
     <published>2018-11-26T16:00:00.000Z</published>
     <updated>2018-11-27T08:53:54.194Z</updated>
     
@@ -540,49 +568,16 @@
     
     </summary>
     
-      <category term="技术" scheme="https://blog.gitee.io/categories/%E6%8A%80%E6%9C%AF/"/>
+      <category term="技术" scheme="https://peachyy.gitee.io/categories/%E6%8A%80%E6%9C%AF/"/>
     
-      <category term="svn" scheme="https://blog.gitee.io/categories/%E6%8A%80%E6%9C%AF/svn/"/>
+      <category term="svn" scheme="https://peachyy.gitee.io/categories/%E6%8A%80%E6%9C%AF/svn/"/>
     
-      <category term="git" scheme="https://blog.gitee.io/categories/%E6%8A%80%E6%9C%AF/svn/git/"/>
-    
-    
-      <category term="svn" scheme="https://blog.gitee.io/tags/svn/"/>
-    
-      <category term="git" scheme="https://blog.gitee.io/tags/git/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>让mysql支持emoji表情</title>
-    <link href="https://blog.gitee.io/2018/10/22/mysql_emoji_support/"/>
-    <id>https://blog.gitee.io/2018/10/22/mysql_emoji_support/</id>
-    <published>2018-10-21T16:00:00.000Z</published>
-    <updated>2018-10-22T04:40:13.613Z</updated>
-    
-    <content type="html"><![CDATA[<h4 id="什么是emoji"><a href="#什么是emoji" class="headerlink" title="什么是emoji"></a>什么是emoji</h4><p>  emoji就是表情符号 emoji的创造者是日本人栗田穰崇(Shigetaka Kurita)</p><p>在数据库的编码不为<code>utf8mb4</code>，利用java mysql驱动保存含有表情符号的数据会出现异常<code>java.sql.SQLException: Incorrect string value: &#39;\xF0\x9F\x94\xA5&#39; for column</code></p><h4 id="mysql中存储emoji表情符号"><a href="#mysql中存储emoji表情符号" class="headerlink" title="mysql中存储emoji表情符号"></a>mysql中存储emoji表情符号</h4><p>  以前做应用软件的时候 通常把<code>mysql</code>的字符编码设置为<code>utf-8</code>，但是这个编码却不支持<code>emoji</code>表情 是因为<code>utf-8</code>编码的一个字符最多只能存储3个字节，但一个emoji表情为4个字节，所以utf8不支持存储emoji表情。</p><p>  mysql中的<code>utf8mb4</code>却能支持<code>emoji</code>表情符号 所以我们只需要更改mysql的数据库编码格式为<code>utf8mb4</code>就能支持了。<em>当然了表和字段也需要是这个编码的，在不手动设置表/字段编码的情况下，会默认继承数据库的编码格式</em>。如果手动修改为字段或者表的编码 也需要手动把表和字段修改为<code>utf8mb4</code></p><h4 id="物理机安装的数据库数据字符编码修改方式"><a href="#物理机安装的数据库数据字符编码修改方式" class="headerlink" title="物理机安装的数据库数据字符编码修改方式"></a>物理机安装的数据库数据字符编码修改方式</h4><p>修改<code>mysql</code>的配置文件<code>/etc/mysql/my.cnf</code> 并重启数据库  如果是编译安装 有可能不是这个目录噢~</p><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line">[mysql]</span><br><span class="line">default-character-set=utf8mb4</span><br></pre></td></tr></table></figure><h4 id="云数据库-如阿里云的RDS-修改数据库编码方式"><a href="#云数据库-如阿里云的RDS-修改数据库编码方式" class="headerlink" title="云数据库 如阿里云的RDS 修改数据库编码方式"></a>云数据库 如阿里云的RDS 修改数据库编码方式</h4><p> 找到指定库的参数设置中找到<code>character_set_server</code>修改为<code>utf8mb4</code>并重启数据库</p><h4 id="客户端驱动连接的URL"><a href="#客户端驱动连接的URL" class="headerlink" title="客户端驱动连接的URL"></a>客户端驱动连接的URL</h4><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">jdbc:mysql://rr-xxxxx40.mysql.rds.aliyuncs.com:3306/db_test?useUnicode=true&amp;zeroDateTimeBehavior=convertToNull&amp;characterEncoding=utf-8</span><br></pre></td></tr></table></figure><p>这样就能在<code>mysql</code>中存储<code>emoji</code>表情符号了,<code>utf8mb4</code>是<code>utf-8</code>的超集 意味着反正<code>utf8mb4</code>也能兼容<code>utf-8</code> 在不考虑存储大小的情况下 可以直接把库设置为<code>utf8mb4</code>以免后续烦恼。</p><p>当前测试的数据版本为RDS mysql 5.6.16<br>JAVA驱动版本为5.1.30</p>]]></content>
-    
-    <summary type="html">
-    
-      
-      
-        &lt;h4 id=&quot;什么是emoji&quot;&gt;&lt;a href=&quot;#什么是emoji&quot; class=&quot;headerlink&quot; title=&quot;什么是emoji&quot;&gt;&lt;/a&gt;什么是emoji&lt;/h4&gt;&lt;p&gt;  emoji就是表情符号 emoji的创造者是日本人栗田穰崇(Shigetaka Kuri
-      
-    
-    </summary>
-    
-      <category term="技术" scheme="https://blog.gitee.io/categories/%E6%8A%80%E6%9C%AF/"/>
-    
-      <category term="emoji" scheme="https://blog.gitee.io/categories/%E6%8A%80%E6%9C%AF/emoji/"/>
-    
-      <category term="mysql" scheme="https://blog.gitee.io/categories/%E6%8A%80%E6%9C%AF/emoji/mysql/"/>
+      <category term="git" scheme="https://peachyy.gitee.io/categories/%E6%8A%80%E6%9C%AF/svn/git/"/>
     
     
-      <category term="mysql" scheme="https://blog.gitee.io/tags/mysql/"/>
+      <category term="svn" scheme="https://peachyy.gitee.io/tags/svn/"/>
     
-      <category term="emoji" scheme="https://blog.gitee.io/tags/emoji/"/>
-    
-      <category term="mysql支持emoji表情" scheme="https://blog.gitee.io/tags/mysql%E6%94%AF%E6%8C%81emoji%E8%A1%A8%E6%83%85/"/>
+      <category term="git" scheme="https://peachyy.gitee.io/tags/git/"/>
     
   </entry>
   
