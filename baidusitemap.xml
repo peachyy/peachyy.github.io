@@ -3,6 +3,30 @@
 
 
     
+  <url>
+    <loc>https://peachyy.gitee.io/2022/09/21/62radix_using/</loc>
+    <lastmod>2022-09-21T09:53:32.124Z</lastmod>
+    <data>
+        <display>
+        <title>62进制在短链接场景的妙用</title>
+        <pubTime>2022-09-20T16:00:00.000Z</pubTime>
+        
+        <tag>进制转换</tag>
+         
+        <tag>短链接</tag>
+         
+        <tag>62进制</tag>
+         
+         
+           
+             
+              <breadCrumb title="技术" url="https://peachyy.gitee.io/categories/%E6%8A%80%E6%9C%AF/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
     
   <url>
     <loc>https://peachyy.gitee.io/2022/09/09/code_radix/</loc>
@@ -210,9 +234,9 @@
          
         <tag>技术</tag>
          
-        <tag>k8s</tag>
-         
         <tag>alpine</tag>
+         
+        <tag>k8s</tag>
          
         <tag>dump</tag>
          
