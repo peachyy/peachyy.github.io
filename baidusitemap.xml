@@ -4,12 +4,12 @@
 
     
   <url>
-    <loc>https://peachyy.gitee.io/2022/09/23/rocketmq-framework-des/</loc>
-    <lastmod>2022-09-23T08:00:25.182Z</lastmod>
+    <loc>https://peachyy.gitee.io/2018/07/24/rocketmqinstall/</loc>
+    <lastmod>2022-09-23T08:04:40.522Z</lastmod>
     <data>
         <display>
-        <title>认识RocketMQ4.x架构设计</title>
-        <pubTime>2022-09-22T16:00:00.000Z</pubTime>
+        <title>rocketmq4.x快速入门指南</title>
+        <pubTime>2018-07-23T16:00:00.000Z</pubTime>
         
         <tag>rocketmq</tag>
          
@@ -18,18 +18,21 @@
              
               <breadCrumb title="技术" url="https://peachyy.gitee.io/categories/%E6%8A%80%E6%9C%AF/"/>
           
+             
+              <breadCrumb title="rocketmq" url="https://peachyy.gitee.io/categories/%E6%8A%80%E6%9C%AF/rocketmq/"/>
+          
         </display>
     </data>
     </url>
 
     
   <url>
-    <loc>https://peachyy.gitee.io/2018/07/24/rocketmqinstall/</loc>
-    <lastmod>2022-09-23T07:46:12.898Z</lastmod>
+    <loc>https://peachyy.gitee.io/2022/09/23/rocketmq-framework-des/</loc>
+    <lastmod>2022-09-23T08:03:35.397Z</lastmod>
     <data>
         <display>
-        <title>rocketmq4.x快速入门指南</title>
-        <pubTime>2018-07-23T16:00:00.000Z</pubTime>
+        <title>认识RocketMQ4.x架构设计</title>
+        <pubTime>2022-09-22T16:00:00.000Z</pubTime>
         
         <tag>rocketmq</tag>
          
