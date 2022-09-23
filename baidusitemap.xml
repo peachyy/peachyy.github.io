@@ -4,6 +4,49 @@
 
     
   <url>
+    <loc>https://peachyy.gitee.io/2022/09/23/rocketmq-framework-des/</loc>
+    <lastmod>2022-09-23T08:00:25.182Z</lastmod>
+    <data>
+        <display>
+        <title>认识RocketMQ4.x架构设计</title>
+        <pubTime>2022-09-22T16:00:00.000Z</pubTime>
+        
+        <tag>rocketmq</tag>
+         
+         
+           
+             
+              <breadCrumb title="技术" url="https://peachyy.gitee.io/categories/%E6%8A%80%E6%9C%AF/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>https://peachyy.gitee.io/2018/07/24/rocketmqinstall/</loc>
+    <lastmod>2022-09-23T07:46:12.898Z</lastmod>
+    <data>
+        <display>
+        <title>rocketmq4.x快速入门指南</title>
+        <pubTime>2018-07-23T16:00:00.000Z</pubTime>
+        
+        <tag>rocketmq</tag>
+         
+         
+           
+             
+              <breadCrumb title="技术" url="https://peachyy.gitee.io/categories/%E6%8A%80%E6%9C%AF/"/>
+          
+             
+              <breadCrumb title="rocketmq" url="https://peachyy.gitee.io/categories/%E6%8A%80%E6%9C%AF/rocketmq/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>https://peachyy.gitee.io/2022/09/21/62radix_using/</loc>
     <lastmod>2022-09-21T09:53:32.124Z</lastmod>
     <data>
@@ -677,29 +720,6 @@
         <display>
         <title>rocketmq4.x延时消息</title>
         <pubTime>2018-07-31T16:00:00.000Z</pubTime>
-        
-        <tag>rocketmq</tag>
-         
-         
-           
-             
-              <breadCrumb title="技术" url="https://peachyy.gitee.io/categories/%E6%8A%80%E6%9C%AF/"/>
-          
-             
-              <breadCrumb title="rocketmq" url="https://peachyy.gitee.io/categories/%E6%8A%80%E6%9C%AF/rocketmq/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>https://peachyy.gitee.io/2018/07/24/rocketmqinstall/</loc>
-    <lastmod>2018-09-06T06:21:47.886Z</lastmod>
-    <data>
-        <display>
-        <title>rocketmq4.x快速入门指南</title>
-        <pubTime>2018-07-23T16:00:00.000Z</pubTime>
         
         <tag>rocketmq</tag>
          
