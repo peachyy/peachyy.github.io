@@ -4,6 +4,33 @@
 
     
   <url>
+    <loc>https://peachyy.gitee.io/2022/10/19/javagcalg_gccoll/</loc>
+    <lastmod>2022-10-25T13:13:22.743Z</lastmod>
+    <data>
+        <display>
+        <title>java中的垃圾回收算法与垃圾回收器</title>
+        <pubTime>2022-10-18T16:00:00.000Z</pubTime>
+        
+        <tag>java</tag>
+         
+        <tag>jvm</tag>
+         
+        <tag>gc</tag>
+         
+         
+           
+             
+              <breadCrumb title="技术" url="https://peachyy.gitee.io/categories/%E6%8A%80%E6%9C%AF/"/>
+          
+             
+              <breadCrumb title="JVM" url="https://peachyy.gitee.io/categories/%E6%8A%80%E6%9C%AF/JVM/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>https://peachyy.gitee.io/2018/07/24/rocketmqinstall/</loc>
     <lastmod>2022-09-23T08:04:40.522Z</lastmod>
     <data>
