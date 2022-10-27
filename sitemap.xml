@@ -2,9 +2,23 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://peachyy.gitee.io/2022/10/27/jvm_gc_log/</loc>
+    
+    <lastmod>2022-10-27T03:17:48.067Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://peachyy.gitee.io/2022/10/26/jvm_gc_args/</loc>
+    
+    <lastmod>2022-10-27T02:28:11.279Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>https://peachyy.gitee.io/2022/10/19/javagcalg_gccoll/</loc>
     
-    <lastmod>2022-10-25T13:13:22.743Z</lastmod>
+    <lastmod>2022-10-26T01:19:21.348Z</lastmod>
     
   </url>
   
