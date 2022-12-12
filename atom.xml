@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://peachyy.gitee.io/"/>
-  <updated>2022-10-27T03:17:48.067Z</updated>
+  <updated>2022-12-12T09:38:43.211Z</updated>
   <id>https://peachyy.gitee.io/</id>
   
   <author>
@@ -15,6 +15,36 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>dubbo2升级到dubbo3实践</title>
+    <link href="https://peachyy.gitee.io/2022/12/09/dubbo2upgradedubbo3/"/>
+    <id>https://peachyy.gitee.io/2022/12/09/dubbo2upgradedubbo3/</id>
+    <published>2022-12-08T16:00:00.000Z</published>
+    <updated>2022-12-12T09:38:43.211Z</updated>
+    
+    <content type="html"><![CDATA[<p>dubbo当前版本 2.7.3  期望升级到 3.0.11。</p><h4 id="升级过程"><a href="#升级过程" class="headerlink" title="升级过程"></a>升级过程</h4><h5 id="maven依赖变更"><a href="#maven依赖变更" class="headerlink" title="maven依赖变更"></a>maven依赖变更</h5><figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.apache.dubbo<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>dubbo<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">version</span>&gt;</span>3.0.11<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.apache.dubbo<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>dubbo-spring-boot-starter<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">version</span>&gt;</span>3.0.11<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure><h5 id="dubbo2-升级到dubbo3兼容性配置"><a href="#dubbo2-升级到dubbo3兼容性配置" class="headerlink" title="dubbo2 升级到dubbo3兼容性配置"></a>dubbo2 升级到dubbo3兼容性配置</h5><p><strong>服务端</strong> </p><p>dubbo.application.register-mode 服务端提供者服务的注册模式 可选值有</p><ul><li>instance 只注册实例应用级</li><li>all  接口级+应用级均注册</li><li>interface 只注册接口级</li></ul><p>升级到3.x之后在不修改配置的情况下默认是 <code>all</code>配置   开启接口级+应用级注册</p><p><strong>消费端/客户端</strong></p><p>服务有注册模式 那么消费端肯定也有服务订阅发现模式设置</p><p>dubbo.application.service-discovery.migration  消费端订阅模式可选值有</p><ul><li>APPLICATION_FIRST   双订阅 即接口模式/应用级模式 智能决策 一般用于2.7.x与3.x 升级中 共存阶段  也是3.x版本默认的订阅模式</li><li>FORCE_APPLICATION  仅应用级订阅模式</li><li>FORCE_INTERFACE 仅接口级订阅模式</li></ul><p>关于兼容这一步如果项目升级的时候没有用户使用 不做兼容性升级也没问题，这里主要是介绍保障逐步把2.7.x版本升级到3.x 而不是全部停机后重新部署。</p><figure class="image-bubble">                <div class="img-lightbox">                    <div class="overlay"></div>                    <img src="/images/2022-12-09/1.png" alt="兼容升级中服务注册与发现" title="">                </div>                <div class="image-caption">兼容升级中服务注册与发现</div>            </figure><p>红色虚线框部分是3.x版本的部分升级后实例，左边是原始的2.7.x版本实例。大概操作流程如下</p><p>1、逐步把部分Provider替换为3.x  服务端注册模式为<code>all</code>应用级+接口级，这样2.7.x的消费端也能够根据接口服务发现</p><p>2、逐步把部分Consumer替换为3.x 消费订阅模式为<code>APPLICATION_FIRST</code>双订阅模式</p><p>3、观察3.x版本 服务端与消费端情况，如果异常就回滚到2.7.x。没啥问题的话就可以逐步全部切换到3.x版本</p><p>4、到了这一步说明当前所有实例均为3.x版本，下次再更新的时候就把服务端注册模式设置为<code>instance</code> ，消费端订阅模式设置为 <code>FORCE_APPLICATION</code> 就完美切换到3.x版本 并且是应用级服务发现。</p><figure class="image-bubble">                <div class="img-lightbox">                    <div class="overlay"></div>                    <img src="/images/2022-12-09/2.png" alt="升级3.x完成" title="">                </div>                <div class="image-caption">升级3.x完成</div>            </figure><h4 id="踩坑问题"><a href="#踩坑问题" class="headerlink" title="踩坑问题"></a>踩坑问题</h4><p>3.0.11其实也没有太多问题 好多问题都在之前版本就修复了，主要就是由于自身项目编码问题导致进了一个坑</p><p>由于原来项目编码不是很规范，在本地服务的接口中用到<code>@Autowired</code>、本服务内部调用有的又用到了 <code>@DubboReference</code> 这种情况启动的时候就会报错，在2.7.x却不报错。这是因为3.x把Reference的bean代理也注入到spring容器中去了。本身的@DubboService Bean也会注册到Spring容器中去。就会导致出现2个类型一样的springBean，导致使用Autowired，由于属性name不规范的时候就会报错。</p><figure class="highlight java"><table><tr><td class="code"><pre><span class="line">Field demoService in org.apache.dubbo.springboot.demo.provider.DemoService2 required a single bean, but <span class="number">2</span> were found:</span><br><span class="line">- demoServiceImpl: defined in file [D:\opensource\dubbo-samples\<span class="number">1</span>-basic\dubbo-samples-spring-boot\dubbo-samples-spring-boot-provider\target\classes\org\apache\dubbo\springboot\demo\provider\DemoServiceImpl.class]</span><br><span class="line">- demoServiceRemote: defined in <span class="keyword">null</span></span><br></pre></td></tr></table></figure><h4 id="3-x主要新特性"><a href="#3-x主要新特性" class="headerlink" title="3.x主要新特性"></a>3.x主要新特性</h4><ol><li>服务注册与发现改版 由接口级别改为应用级</li><li>云原生更好的支持 如native image，dubbo proxyless Mesh，</li><li>可视化的dubbo-admin服务治理能力</li><li>全新通信协议<strong>Triple</strong> 让跨语言RPC迈了一大步，支持点对点调用、stream 流式调用。写proto IDL 文件可生成各类客户端代码，完全兼容<code>grpc</code> 让java<code>与</code>go`成为后端深度合作伙伴</li></ol><h4 id="3-x小版本更新"><a href="#3-x小版本更新" class="headerlink" title="3.x小版本更新"></a>3.x小版本更新</h4><p>  <strong>3.0.x升级到3.1.x</strong></p><p>  变动不大就只是针对nacos的group进行了对齐。如果配置中填写的nacos的地址带了group参数的话 ，需要客户端和服务端保持一致的group。</p><p>  当然也可以强制去掉group分组隔离功能  <code>dubbo.nacos-service-discovery.use-default-group=false</code> 全局属性值忽略该功能</p><p> <strong>3.1.x升级到3.2.x</strong></p><p> 最大的变更是默认序列化的变了，dubbo协议默认序列化由hessian2变更为 fastjson2，原因就是fastjson2性能更高也能兼容<code>hessian2</code> 也支持jdk17 和Native 。</p><p> triple协议支持自定义异常回传。</p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;p&gt;dubbo当前版本 2.7.3  期望升级到 3.0.11。&lt;/p&gt;
+&lt;h4 id=&quot;升级过程&quot;&gt;&lt;a href=&quot;#升级过程&quot; class=&quot;headerlink&quot; title=&quot;升级过程&quot;&gt;&lt;/a&gt;升级过程&lt;/h4&gt;&lt;h5 id=&quot;maven依赖变更&quot;&gt;&lt;a href=
+      
+    
+    </summary>
+    
+      <category term="技术" scheme="https://peachyy.gitee.io/categories/%E6%8A%80%E6%9C%AF/"/>
+    
+      <category term="dubbo" scheme="https://peachyy.gitee.io/categories/%E6%8A%80%E6%9C%AF/dubbo/"/>
+    
+    
+      <category term="java" scheme="https://peachyy.gitee.io/tags/java/"/>
+    
+      <category term="dubbo" scheme="https://peachyy.gitee.io/tags/dubbo/"/>
+    
+  </entry>
   
   <entry>
     <title>java中GC的日志认识详解</title>
@@ -162,11 +192,11 @@
       <category term="技术" scheme="https://peachyy.gitee.io/categories/%E6%8A%80%E6%9C%AF/"/>
     
     
-      <category term="进制转换" scheme="https://peachyy.gitee.io/tags/%E8%BF%9B%E5%88%B6%E8%BD%AC%E6%8D%A2/"/>
-    
       <category term="短链接" scheme="https://peachyy.gitee.io/tags/%E7%9F%AD%E9%93%BE%E6%8E%A5/"/>
     
       <category term="62进制" scheme="https://peachyy.gitee.io/tags/62%E8%BF%9B%E5%88%B6/"/>
+    
+      <category term="进制转换" scheme="https://peachyy.gitee.io/tags/%E8%BF%9B%E5%88%B6%E8%BD%AC%E6%8D%A2/"/>
     
   </entry>
   
@@ -197,9 +227,9 @@
       <category term="技术" scheme="https://peachyy.gitee.io/categories/%E6%8A%80%E6%9C%AF/"/>
     
     
-      <category term="java基础" scheme="https://peachyy.gitee.io/tags/java%E5%9F%BA%E7%A1%80/"/>
-    
       <category term="进制转换" scheme="https://peachyy.gitee.io/tags/%E8%BF%9B%E5%88%B6%E8%BD%AC%E6%8D%A2/"/>
+    
+      <category term="java基础" scheme="https://peachyy.gitee.io/tags/java%E5%9F%BA%E7%A1%80/"/>
     
   </entry>
   
@@ -573,33 +603,6 @@
       <category term="jvm" scheme="https://peachyy.gitee.io/tags/jvm/"/>
     
       <category term="技术" scheme="https://peachyy.gitee.io/tags/%E6%8A%80%E6%9C%AF/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>更好用 更简单的Java缓存框架 jscache</title>
-    <link href="https://peachyy.gitee.io/2020/08/21/jscache/"/>
-    <id>https://peachyy.gitee.io/2020/08/21/jscache/</id>
-    <published>2020-08-20T16:00:00.000Z</published>
-    <updated>2020-08-21T08:59:26.492Z</updated>
-    
-    <content type="html"><![CDATA[<p> 比Spring Cache 更好用 更简单的缓存工具 <code>jscache</code> 取名意义为 <em>java simple cache</em>，基于<code>AOP</code>实现，支持注解到接口 自定义单个缓存过期时间配置 <code>ttl</code>，轻松扩展缓存实现，默认实现了<code>jedis</code>,<code>spring-data-redis</code>,还有一个基于本地内存的<code>map</code>。</p><p>源码仓库 <a href="https://github.com/peachyy/jscache.git" target="_blank" rel="noopener">https://github.com/peachyy/jscache.git</a> </p><h3 id="注解API"><a href="#注解API" class="headerlink" title="注解API"></a>注解API</h3><h5 id="Cacheable"><a href="#Cacheable" class="headerlink" title="@Cacheable"></a>@Cacheable</h5><p>  设置/获取缓存 如果当前KEY对应的缓存存在就直接返回，不存在则调用服务后 再对结果进行缓存。</p><p>  配置项</p><ul><li>prefix  缓存前缀</li><li>key     key 是 <code>el</code> 表达式 默认生成后的缓存key为 <code>prefix+key</code></li><li>ttl     缓存存活时间(过期时间) 需要具体的缓存实现支持 如常用的<code>redis</code>是支持的</li><li>argCondition     前置条件过滤 针对参数过滤 满足则执行表达式逻辑</li><li>returnCondition  后置条件过滤 只有前置条件为<code>true</code>的情况下才能到达后置过滤 为<code>true</code>才会把结果放入缓存中</li><li><p>allowNullValue    返回值为空的情况下是否缓存 防止缓存穿透可以支持为<code>true</code></p><figure class="highlight java"><table><tr><td class="code"><pre><span class="line">  <span class="meta">@Cacheable</span>(prefix = <span class="string">"user:"</span>,key = <span class="string">"#p0"</span>,</span><br><span class="line">ttl = <span class="number">60</span>,returnCondition = <span class="string">"#result!=null"</span>)</span><br><span class="line">  <span class="function"><span class="keyword">public</span> User <span class="title">getUserById</span><span class="params">(Integer userId)</span> </span>&#123;</span><br><span class="line">      User user=<span class="keyword">new</span> User();</span><br><span class="line">      user.setId(userId);</span><br><span class="line">      user.setName(<span class="string">"xxx"</span>);</span><br><span class="line">      log.info(<span class="string">"GET getUserById"</span>);</span><br><span class="line">      <span class="keyword">return</span> user;</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure></li></ul><h5 id="CachePut"><a href="#CachePut" class="headerlink" title="@CachePut"></a>@CachePut</h5><p>  只是设置(put)缓存 无论缓存是否存在 这里支持设置(put)多个缓存</p><p>  配置项 与 cacheable类似</p><ul><li>prefix  缓存前缀</li><li>key     key 是 <code>el</code> 表达式 默认生成后的缓存key为 <code>prefix+key</code></li><li>ttl     缓存存活时间(过期时间) 需要具体的缓存实现支持 如常用的<code>redis</code>是支持的</li><li>argCondition     前置条件过滤 针对参数过滤 满足则执行表达式逻辑</li><li>returnCondition  后置条件过滤 只有前置条件为<code>true</code>的情况下才能到达后置过滤 为<code>true</code>才会把结果放入缓存中</li><li><p>allowNullValue    返回值为空的情况下是否缓存 防止缓存穿透可以支持为<code>true</code>  </p><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@CachePut</span>(prefix = <span class="string">"user:"</span>,key = <span class="string">"#p0"</span>)</span><br><span class="line"><span class="meta">@CachePut</span>(prefix = <span class="string">"members:"</span>,key = <span class="string">"#p0"</span>)</span><br><span class="line"><span class="function"><span class="keyword">public</span> User <span class="title">getUserById</span><span class="params">(Integer userId)</span> </span>&#123;</span><br><span class="line">    User user=<span class="keyword">new</span> User();</span><br><span class="line">    user.setId(userId);</span><br><span class="line">    user.setName(<span class="string">"xxx"</span>);</span><br><span class="line">    log.info(<span class="string">"GET getUserById"</span>);</span><br><span class="line">    <span class="keyword">return</span> user;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li></ul><h5 id="CacheEvict"><a href="#CacheEvict" class="headerlink" title="@CacheEvict"></a>@CacheEvict</h5><p>  删除缓存 支持删除多个缓存</p><p>  配置项</p><ul><li>prefix  缓存前缀</li><li>key     key 是 <code>el</code> 表达式 默认生成后的缓存key为 <code>prefix+key</code></li><li>argCondition     前置条件过滤 针对参数过滤 满足则执行表达式逻辑</li></ul><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@CacheEvict</span>(prefix = <span class="string">"members:"</span>,key = <span class="string">"#p0"</span>)</span><br><span class="line"><span class="meta">@CacheEvict</span>(prefix = <span class="string">"user:"</span>,key = <span class="string">"#p0"</span>,argCondition = <span class="string">"#p0==100"</span>)</span><br><span class="line"><span class="function"><span class="keyword">public</span> User <span class="title">getUserById</span><span class="params">(Integer userId)</span> </span>&#123;</span><br><span class="line">    User user=<span class="keyword">new</span> User();</span><br><span class="line">    user.setId(userId);</span><br><span class="line">    user.setName(<span class="string">"xxx"</span>);</span><br><span class="line">    log.info(<span class="string">"GET getUserById"</span>);</span><br><span class="line">    <span class="keyword">return</span> user;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><h4 id="开始使用缓存"><a href="#开始使用缓存" class="headerlink" title="开始使用缓存"></a>开始使用缓存</h4><p>   如springboot中 标注<code>@EnableCache</code>注解 表示缓存功能启用 只要标注了注解的就会生效。</p><p>   引入jar<br><figure class="highlight xml"><table><tr><td class="code"><pre><span class="line">     <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">         <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>com.peachyy<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">         <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>jscache-core<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">version</span>&gt;</span>$&#123;last.jscache.version&#125;<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">     <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure></p><p>  启用缓存 并配置一个缓存实现。<br><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@SpringBootApplication</span></span><br><span class="line"><span class="meta">@EnableCache</span>()</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Application</span> </span>&#123;</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">SpringApplication.run(Application.class, args);</span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">   <span class="meta">@Bean</span></span><br><span class="line">   <span class="function"><span class="keyword">public</span> JedisCache <span class="title">cache</span><span class="params">()</span></span>&#123;</span><br><span class="line">       Properties properties=<span class="keyword">new</span> Properties();</span><br><span class="line">       properties.put(<span class="string">"hosts"</span>,<span class="string">"192.168.0.2:6379"</span>);</span><br><span class="line">       properties.put(<span class="string">"password"</span>,<span class="string">"bac123"</span>);</span><br><span class="line">       properties.put(<span class="string">"database"</span>,<span class="string">"0"</span>);</span><br><span class="line">       <span class="keyword">return</span> <span class="keyword">new</span> JedisCache(properties,<span class="keyword">null</span>);</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure></p><p>  这里有一个基于springboot的例子 <a href="https://github.com/peachyy/jscache/tree/master/jscache-springmvc-example" target="_blank" rel="noopener">https://github.com/peachyy/jscache/tree/master/jscache-springmvc-example</a></p><h4 id="更多适配"><a href="#更多适配" class="headerlink" title="更多适配"></a>更多适配</h4><p>   主要是用于针对部分rpc 如<code>dubbo</code> 当使用<code>@Reference</code>注解 实例没有被<code>spring ioc</code>管理到 就不能到框架AOP 所以提供一些简单的支持 目前仅实现了<code>dubbo</code>的这种情况</p><h4 id="模块"><a href="#模块" class="headerlink" title="模块"></a>模块</h4><ul><li>jscache-annotation 只是注解包  比如标注在接口上 而这个接口需要给其它地方引用 就只需要引用这个jar就好，免得过多产生过多的依赖</li><li>jscache-core       核心功能实现</li><li>jscache-dubbo      针对没有被spring管理<code>dubbo service</code>的适配 基于<code>filter</code>实现</li><li>jscache-springmvc-example 一个springboot 简单例子</li></ul><h4 id="序列化以及其它扩展"><a href="#序列化以及其它扩展" class="headerlink" title="序列化以及其它扩展"></a>序列化以及其它扩展</h4><p>序列化</p><p> 序列化只针对值 key默认为<code>String</code>字符，方便监控查看。自定义序列化需要实现 <code>com.peachyy.jscache.core.serialize.Serializer</code>接口。默认的实现有<code>fastJson</code>,<code>jackson</code>,<code>java</code> 自定义的直接传自定义的全类名就行。</p><p> 如 扩展了一个<code>com.xxx.myJacksonSerializer</code>序列化方式 设置的方式大概就是这样</p><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@EnableCache</span>(serializer=<span class="string">"com.xxx.myJacksonSerializer"</span>)</span><br></pre></td></tr></table></figure><p>扩展缓存实现<br>  扩展缓存需要实现<code>com.peachyy.jscache.core.Cache</code>接口，加入spring容器就完事了。不需要复杂的实现</p> <figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Bean</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> JedisCache <span class="title">cache</span><span class="params">()</span></span>&#123;</span><br><span class="line">    Properties properties=<span class="keyword">new</span> Properties();</span><br><span class="line">    properties.put(<span class="string">"hosts"</span>,<span class="string">"192.168.0.2:6379"</span>);</span><br><span class="line">    properties.put(<span class="string">"password"</span>,<span class="string">"bac123"</span>);</span><br><span class="line">    properties.put(<span class="string">"database"</span>,<span class="string">"0"</span>);</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> JedisCache(properties,<span class="keyword">null</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><p>和spring cache比起来使用上的功能大部分有，一些设计也参考了它，使用上明显的差别就是支持了ttl过期时间，去掉了cacheManager设计，但是仅不止如此 开发者更易驾驭，一个系统中一般保持一套缓存规范就够了。总之适合就是最好的。</p>]]></content>
-    
-    <summary type="html">
-    
-      
-      
-        &lt;p&gt; 比Spring Cache 更好用 更简单的缓存工具 &lt;code&gt;jscache&lt;/code&gt; 取名意义为 &lt;em&gt;java simple cache&lt;/em&gt;，基于&lt;code&gt;AOP&lt;/code&gt;实现，支持注解到接口 自定义单个缓存过期时间配置 &lt;code&gt;ttl&lt;/c
-      
-    
-    </summary>
-    
-      <category term="技术" scheme="https://peachyy.gitee.io/categories/%E6%8A%80%E6%9C%AF/"/>
-    
-    
-      <category term="技术" scheme="https://peachyy.gitee.io/tags/%E6%8A%80%E6%9C%AF/"/>
-    
-      <category term="jscache" scheme="https://peachyy.gitee.io/tags/jscache/"/>
     
   </entry>
   
