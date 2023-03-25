@@ -2,16 +2,37 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
-    <loc>https://peachyy.gitee.io/2022/09/09/code_radix/</loc>
+    <loc>https://peachyy.gitee.io/2021/12/22/k8s-ingress-annotation1/</loc>
     
-    <lastmod>2022-12-20T04:58:28.921Z</lastmod>
+    <lastmod>2023-03-25T06:01:41.585Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://peachyy.gitee.io/2021/11/11/k8s-jvm-dumpcollect/</loc>
+    
+    <lastmod>2023-03-25T06:01:37.757Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://peachyy.gitee.io/2023/03/25/kubernetes-liveness-readiness-startupprobe/</loc>
+    
+    <lastmod>2023-03-25T06:00:03.622Z</lastmod>
     
   </url>
   
   <url>
     <loc>https://peachyy.gitee.io/2022/12/19/proto_buf_build/</loc>
     
-    <lastmod>2022-12-20T04:55:45.623Z</lastmod>
+    <lastmod>2022-12-20T05:07:31.957Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://peachyy.gitee.io/2022/09/09/code_radix/</loc>
+    
+    <lastmod>2022-12-20T04:58:28.921Z</lastmod>
     
   </url>
   
@@ -131,20 +152,6 @@
     <loc>https://peachyy.gitee.io/2021/12/28/dockerjvmarg_action/</loc>
     
     <lastmod>2021-12-28T09:02:35.608Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://peachyy.gitee.io/2021/12/22/k8s-ingress-annotation1/</loc>
-    
-    <lastmod>2021-12-22T02:39:54.071Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://peachyy.gitee.io/2021/11/11/k8s-jvm-dumpcollect/</loc>
-    
-    <lastmod>2021-11-11T04:00:30.523Z</lastmod>
     
   </url>
   

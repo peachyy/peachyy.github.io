@@ -4,16 +4,18 @@
 
     
   <url>
-    <loc>https://peachyy.gitee.io/2022/09/09/code_radix/</loc>
-    <lastmod>2022-12-20T04:58:28.921Z</lastmod>
+    <loc>https://peachyy.gitee.io/2021/12/22/k8s-ingress-annotation1/</loc>
+    <lastmod>2023-03-25T06:01:41.585Z</lastmod>
     <data>
         <display>
-        <title>二进制转换与位运算</title>
-        <pubTime>2022-09-08T16:00:00.000Z</pubTime>
+        <title>ingress传递头信息</title>
+        <pubTime>2021-12-21T16:00:00.000Z</pubTime>
         
-        <tag>java基础</tag>
+        <tag>技术</tag>
          
-        <tag>进制转换</tag>
+        <tag>kubernetes</tag>
+         
+        <tag>ingress</tag>
          
          
            
@@ -26,8 +28,61 @@
 
     
   <url>
+    <loc>https://peachyy.gitee.io/2021/11/11/k8s-jvm-dumpcollect/</loc>
+    <lastmod>2023-03-25T06:01:37.757Z</lastmod>
+    <data>
+        <display>
+        <title>在k8s中收集jvm异常dump文件到OSS</title>
+        <pubTime>2021-11-10T16:00:00.000Z</pubTime>
+        
+        <tag>jvm</tag>
+         
+        <tag>技术</tag>
+         
+        <tag>kubernetes</tag>
+         
+        <tag>alpine</tag>
+         
+        <tag>dump</tag>
+         
+         
+           
+             
+              <breadCrumb title="技术" url="https://peachyy.gitee.io/categories/%E6%8A%80%E6%9C%AF/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>https://peachyy.gitee.io/2023/03/25/kubernetes-liveness-readiness-startupprobe/</loc>
+    <lastmod>2023-03-25T06:00:03.622Z</lastmod>
+    <data>
+        <display>
+        <title>kubernetes健康检查liveness readiness startupProbe探针</title>
+        <pubTime>2023-03-24T16:00:00.000Z</pubTime>
+        
+        <tag>java</tag>
+         
+        <tag>kubernetes</tag>
+         
+         
+           
+             
+              <breadCrumb title="技术" url="https://peachyy.gitee.io/categories/%E6%8A%80%E6%9C%AF/"/>
+          
+             
+              <breadCrumb title="kubernetes" url="https://peachyy.gitee.io/categories/%E6%8A%80%E6%9C%AF/kubernetes/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>https://peachyy.gitee.io/2022/12/19/proto_buf_build/</loc>
-    <lastmod>2022-12-20T04:55:45.623Z</lastmod>
+    <lastmod>2022-12-20T05:07:31.957Z</lastmod>
     <data>
         <display>
         <title>proto IDL管理工具buf使用实践</title>
@@ -46,6 +101,31 @@
           
              
               <breadCrumb title="proto" url="https://peachyy.gitee.io/categories/%E6%8A%80%E6%9C%AF/proto/"/>
+          
+             
+              <breadCrumb title="buf" url="https://peachyy.gitee.io/categories/%E6%8A%80%E6%9C%AF/proto/buf/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>https://peachyy.gitee.io/2022/09/09/code_radix/</loc>
+    <lastmod>2022-12-20T04:58:28.921Z</lastmod>
+    <data>
+        <display>
+        <title>二进制转换与位运算</title>
+        <pubTime>2022-09-08T16:00:00.000Z</pubTime>
+        
+        <tag>java基础</tag>
+         
+        <tag>进制转换</tag>
+         
+         
+           
+             
+              <breadCrumb title="技术" url="https://peachyy.gitee.io/categories/%E6%8A%80%E6%9C%AF/"/>
           
         </display>
     </data>
@@ -366,58 +446,6 @@
         <tag>技术</tag>
          
         <tag>k8s</tag>
-         
-         
-           
-             
-              <breadCrumb title="技术" url="https://peachyy.gitee.io/categories/%E6%8A%80%E6%9C%AF/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>https://peachyy.gitee.io/2021/12/22/k8s-ingress-annotation1/</loc>
-    <lastmod>2021-12-22T02:39:54.071Z</lastmod>
-    <data>
-        <display>
-        <title>ingress传递头信息</title>
-        <pubTime>2021-12-21T16:00:00.000Z</pubTime>
-        
-        <tag>技术</tag>
-         
-        <tag>k8s</tag>
-         
-        <tag>ingress</tag>
-         
-         
-           
-             
-              <breadCrumb title="技术" url="https://peachyy.gitee.io/categories/%E6%8A%80%E6%9C%AF/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>https://peachyy.gitee.io/2021/11/11/k8s-jvm-dumpcollect/</loc>
-    <lastmod>2021-11-11T04:00:30.523Z</lastmod>
-    <data>
-        <display>
-        <title>在k8s中收集jvm异常dump文件到OSS</title>
-        <pubTime>2021-11-10T16:00:00.000Z</pubTime>
-        
-        <tag>jvm</tag>
-         
-        <tag>技术</tag>
-         
-        <tag>alpine</tag>
-         
-        <tag>k8s</tag>
-         
-        <tag>dump</tag>
          
          
            
