@@ -2,6 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://peachyy.gitee.io/2023/03/25/kubernetes-liveness-readiness-startupprobe/</loc>
+    
+    <lastmod>2023-03-25T06:06:24.523Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>https://peachyy.gitee.io/2021/12/22/k8s-ingress-annotation1/</loc>
     
     <lastmod>2023-03-25T06:01:41.585Z</lastmod>
@@ -12,13 +19,6 @@
     <loc>https://peachyy.gitee.io/2021/11/11/k8s-jvm-dumpcollect/</loc>
     
     <lastmod>2023-03-25T06:01:37.757Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://peachyy.gitee.io/2023/03/25/kubernetes-liveness-readiness-startupprobe/</loc>
-    
-    <lastmod>2023-03-25T06:00:03.622Z</lastmod>
     
   </url>
   

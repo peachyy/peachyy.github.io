@@ -4,6 +4,31 @@
 
     
   <url>
+    <loc>https://peachyy.gitee.io/2023/03/25/kubernetes-liveness-readiness-startupprobe/</loc>
+    <lastmod>2023-03-25T06:06:24.523Z</lastmod>
+    <data>
+        <display>
+        <title>kubernetes健康检查liveness readiness startupProbe探针</title>
+        <pubTime>2023-03-24T16:00:00.000Z</pubTime>
+        
+        <tag>java</tag>
+         
+        <tag>kubernetes</tag>
+         
+         
+           
+             
+              <breadCrumb title="技术" url="https://peachyy.gitee.io/categories/%E6%8A%80%E6%9C%AF/"/>
+          
+             
+              <breadCrumb title="kubernetes" url="https://peachyy.gitee.io/categories/%E6%8A%80%E6%9C%AF/kubernetes/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>https://peachyy.gitee.io/2021/12/22/k8s-ingress-annotation1/</loc>
     <lastmod>2023-03-25T06:01:41.585Z</lastmod>
     <data>
@@ -49,31 +74,6 @@
            
              
               <breadCrumb title="技术" url="https://peachyy.gitee.io/categories/%E6%8A%80%E6%9C%AF/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>https://peachyy.gitee.io/2023/03/25/kubernetes-liveness-readiness-startupprobe/</loc>
-    <lastmod>2023-03-25T06:00:03.622Z</lastmod>
-    <data>
-        <display>
-        <title>kubernetes健康检查liveness readiness startupProbe探针</title>
-        <pubTime>2023-03-24T16:00:00.000Z</pubTime>
-        
-        <tag>java</tag>
-         
-        <tag>kubernetes</tag>
-         
-         
-           
-             
-              <breadCrumb title="技术" url="https://peachyy.gitee.io/categories/%E6%8A%80%E6%9C%AF/"/>
-          
-             
-              <breadCrumb title="kubernetes" url="https://peachyy.gitee.io/categories/%E6%8A%80%E6%9C%AF/kubernetes/"/>
           
         </display>
     </data>
