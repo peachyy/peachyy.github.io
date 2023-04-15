@@ -58,7 +58,12 @@
 			tagArr.push('rocketmq');
 		
 	
-
+	function regitalk(pathname){
+		if(pathname.length>50){
+			return pathname.substr(0,50)
+		}
+		return pathname
+	}
 	const gitalk = new Gitalk({
 	  clientID: '162446b5ba25df668cca',
 	  clientSecret: '236645cfe80a3cf91a226e41a909b774e74e7710',
@@ -66,7 +71,7 @@
 	  owner: 'peachframe',
 	  admin: ['970815940','peachyy'],
 	  distractionFreeMode: false,
-	  id: location.pathname,
+	  id: regitalk(location.pathname),
 	  labels :tagArr,
 	  title: 'rocketmq简单消息发送',
 	  proxy: 'https://proxy.cors.sh/https://github.com/login/oauth/access_token',
