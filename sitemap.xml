@@ -2,6 +2,20 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://peachyy.gitee.io/2023/07/27/mysqlfrmibd/</loc>
+    
+    <lastmod>2023-07-27T10:10:29.493Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://peachyy.gitee.io/2015/09/09/ToUniversity/</loc>
+    
+    <lastmod>2023-05-11T09:23:00.489Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>https://peachyy.gitee.io/2023/03/25/k8s-liveness-readiness-startup/</loc>
     
     <lastmod>2023-03-25T06:06:24.523Z</lastmod>
@@ -243,13 +257,6 @@
     <loc>https://peachyy.gitee.io/2015/06/19/fillingLookLook/</loc>
     
     <lastmod>2019-01-15T05:31:03.379Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://peachyy.gitee.io/2015/09/09/ToUniversity/</loc>
-    
-    <lastmod>2019-01-14T07:23:47.440Z</lastmod>
     
   </url>
   

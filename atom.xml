@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://peachyy.gitee.io/"/>
-  <updated>2023-03-25T06:06:24.523Z</updated>
+  <updated>2023-07-27T10:10:29.493Z</updated>
   <id>https://peachyy.gitee.io/</id>
   
   <author>
@@ -15,6 +15,34 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>mysql根据.frm和.ibd文件恢复数据表</title>
+    <link href="https://peachyy.gitee.io/2023/07/27/mysqlfrmibd/"/>
+    <id>https://peachyy.gitee.io/2023/07/27/mysqlfrmibd/</id>
+    <published>2023-07-26T16:00:00.000Z</published>
+    <updated>2023-07-27T10:10:29.493Z</updated>
+    
+    <content type="html"><![CDATA[<p>忠人之事受人之托 起因是因为一位朋友的数据库服务器被重装了，只剩下一个zbp_post.frm和zbp_post.ibd文件。咨询我能不能恢复，确实我只用过mysqldump这种工具导出数据 然后进行恢复到数据库。这种直接备份物理存储文件还没有尝试过。</p><p>前提是需要历史ibd文件的所属数据库版本 需要和还原新库数据库版本保持一致，这样才能少踩坑。</p><h4 id="创建表结构"><a href="#创建表结构" class="headerlink" title="创建表结构"></a><strong>创建表结构</strong></h4><p>要想恢复数据，表结构需要和.ibd里面的结构保持一致，如果不一致将恢复不成功 可能会报如下错误。或者其他异常。</p><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">[ERROR] InnoDB: Trying to access page number 426442752 in space 24, space name test1/zbp_post, which is outside the tablespace bounds. Byte offset 0, len 16384, i/o type read. If you get this error at mysqld startup, please check that your my.cnf matches the ibdata files that you have in the MySQL server.</span><br></pre></td></tr></table></figure><h5 id="获取表结构"><a href="#获取表结构" class="headerlink" title="获取表结构"></a><strong>获取表结构</strong></h5><p>   如果明确知道表结构 这一步可跳过。不知道表结构可从这一步操作中获取到表结构。</p><p>借助了mysql utilities工具来查看表结构。</p><p>安装mysql utilities </p><p>这里我适用window 其他系统也是类似的操作 下载后安装好。</p><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">https://downloads.mysql.com/archives/get/p/30/file/mysql-utilities-1.6.5-winx64.msi</span><br></pre></td></tr></table></figure><p>其他系统下载地址 <a href="https://downloads.mysql.com/archives/" target="_blank" rel="noopener">https://downloads.mysql.com/archives/</a></p><p>进入zbp_post.frm目录中执行获取表结构命令。</p><figure class="highlight jboss-cli"><table><tr><td class="code"><pre><span class="line"><span class="keyword">cd</span> zbp_post</span><br><span class="line">mysqlfrm <span class="params">--diagnostic</span> <span class="string">./zbp_post.frm</span></span><br></pre></td></tr></table></figure><p>执行完mysqlfrm命令后 输出如下表结构</p><figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> <span class="string">`zbp_post`</span> (</span><br><span class="line">  <span class="string">`log_ID`</span> <span class="built_in">int</span>(<span class="number">11</span>) <span class="keyword">NOT</span> <span class="literal">NULL</span> AUTO_INCREMENT,</span><br><span class="line">  <span class="string">`log_CateID`</span> <span class="built_in">int</span>(<span class="number">11</span>) <span class="keyword">NOT</span> <span class="literal">NULL</span>,</span><br><span class="line">  <span class="string">`log_AuthorID`</span> <span class="built_in">int</span>(<span class="number">11</span>) <span class="keyword">NOT</span> <span class="literal">NULL</span>,</span><br><span class="line">  <span class="string">`log_Tag`</span> <span class="built_in">varchar</span>(<span class="number">1000</span>) <span class="keyword">NOT</span> <span class="literal">NULL</span>,</span><br><span class="line">  <span class="string">`log_Status`</span> tinyint(<span class="number">4</span>) <span class="keyword">NOT</span> <span class="literal">NULL</span>,</span><br><span class="line">  <span class="string">`log_Type`</span> <span class="built_in">int</span>(<span class="number">11</span>) <span class="keyword">NOT</span> <span class="literal">NULL</span>,</span><br><span class="line">  <span class="string">`log_Alias`</span> <span class="built_in">varchar</span>(<span class="number">1000</span>) <span class="keyword">NOT</span> <span class="literal">NULL</span>,</span><br><span class="line">  <span class="string">`log_IsTop`</span> tinyint(<span class="number">4</span>) <span class="keyword">NOT</span> <span class="literal">NULL</span>,</span><br><span class="line">  <span class="string">`log_IsLock`</span> tinyint(<span class="number">4</span>) <span class="keyword">NOT</span> <span class="literal">NULL</span>,</span><br><span class="line">  <span class="string">`log_Title`</span> <span class="built_in">varchar</span>(<span class="number">1000</span>) <span class="keyword">NOT</span> <span class="literal">NULL</span>,</span><br><span class="line">  <span class="string">`log_Intro`</span> <span class="built_in">text</span>,</span><br><span class="line">  <span class="string">`log_Content`</span> longtext,</span><br><span class="line">  <span class="string">`log_CreateTime`</span> <span class="built_in">int</span>(<span class="number">11</span>) <span class="keyword">NOT</span> <span class="literal">NULL</span>,</span><br><span class="line">  <span class="string">`log_PostTime`</span> <span class="built_in">int</span>(<span class="number">11</span>) <span class="keyword">NOT</span> <span class="literal">NULL</span>,</span><br><span class="line">  <span class="string">`log_UpdateTime`</span> <span class="built_in">int</span>(<span class="number">11</span>) <span class="keyword">NOT</span> <span class="literal">NULL</span>,</span><br><span class="line">  <span class="string">`log_CommNums`</span> <span class="built_in">int</span>(<span class="number">11</span>) <span class="keyword">NOT</span> <span class="literal">NULL</span>,</span><br><span class="line">  <span class="string">`log_ViewNums`</span> <span class="built_in">int</span>(<span class="number">11</span>) <span class="keyword">NOT</span> <span class="literal">NULL</span>,</span><br><span class="line">  <span class="string">`log_Template`</span> <span class="built_in">varchar</span>(<span class="number">1000</span>) <span class="keyword">NOT</span> <span class="literal">NULL</span>,</span><br><span class="line">  <span class="string">`log_Meta`</span> longtext,</span><br><span class="line">  <span class="string">`log_BdPush`</span> <span class="built_in">int</span>(<span class="number">11</span>) <span class="keyword">NOT</span> <span class="literal">NULL</span>,</span><br><span class="line">PRIMARY <span class="keyword">KEY</span> <span class="string">`PRIMARY`</span> (<span class="string">`log_ID`</span>),</span><br><span class="line"><span class="keyword">KEY</span> <span class="string">`zbp_log_TPISC`</span> (<span class="string">`log_Type`</span>,<span class="string">`log_PostTime`</span>,<span class="string">`log_IsTop`</span>,<span class="string">`log_Status`</span>,<span class="string">`log_CateID`</span>),</span><br><span class="line"><span class="keyword">KEY</span> <span class="string">`log_CateID`</span> (<span class="string">`log_CateID`</span>),</span><br><span class="line"><span class="keyword">KEY</span> <span class="string">`log_AuthorID`</span> (<span class="string">`log_AuthorID`</span>),</span><br><span class="line"><span class="keyword">KEY</span> <span class="string">`log_PostTime`</span> (<span class="string">`log_PostTime`</span>),</span><br><span class="line"><span class="keyword">KEY</span> <span class="string">`log_CommNums`</span> (<span class="string">`log_CommNums`</span>),</span><br><span class="line"><span class="keyword">KEY</span> <span class="string">`log_ViewNums`</span> (<span class="string">`log_ViewNums`</span>),</span><br><span class="line"><span class="keyword">KEY</span> <span class="string">`log_Title`</span> (<span class="string">`log_Title`</span>)</span><br><span class="line">) <span class="keyword">ENGINE</span>=<span class="keyword">InnoDB</span>;</span><br></pre></td></tr></table></figure><h4 id="数据库配置修改"><a href="#数据库配置修改" class="headerlink" title="数据库配置修改"></a>数据库配置修改</h4><p>编辑MySQL的配置文件，通常是my.cnf或my.ini文件，在[mysqld]部分添加以下行：</p><p>这将确保每个表有单独的.ibd文件。</p><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">[mysqld]</span><br><span class="line">innodb_file_per_table=1</span><br><span class="line">wait_timeout=600 #600秒（10分钟）</span><br></pre></td></tr></table></figure><p> wait_timeout=600 这个配置可以不加 访问还原数据比较大。执行超时的情况。需要根据场景酌情配置。</p><h4 id="开始恢复数据"><a href="#开始恢复数据" class="headerlink" title="开始恢复数据"></a>开始恢复数据</h4><h5 id="创建新数据库"><a href="#创建新数据库" class="headerlink" title="创建新数据库"></a>创建新数据库</h5><p>创建一个数据库 任意数据库名。</p><figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">create</span> <span class="keyword">database</span> test1;</span><br></pre></td></tr></table></figure><h5 id="创建表"><a href="#创建表" class="headerlink" title="创建表"></a>创建表</h5><p>进入到新创建的数据库中(use test1)，复制上一步中的表结构SQL。执行创建表结构操作。</p><h5 id="使用-ibd文件恢复数据到新表"><a href="#使用-ibd文件恢复数据到新表" class="headerlink" title="使用.ibd文件恢复数据到新表"></a>使用.ibd文件恢复数据到新表</h5><p>卸载表空间 执行此步会自动删除新表对应的.ibd文件</p><figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">ALTER</span> <span class="keyword">TABLE</span> zbp_post DISCARD <span class="keyword">TABLESPACE</span>;</span><br></pre></td></tr></table></figure><p>拷贝备份的.ibd文件到新创建数据库对应的目录中。</p><p>一般目录在mysql保存数据库的目录。如我当前的服务器mysql数据保存的目录在/usr/local/mysql/data，数据库名 test1 ,表名 zbp_post。</p><p>那么拷贝.ibd文件的目录为 /usr/local/mysql/data/zbp_post/test1中。</p><p>装载表空间</p><figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">ALTER</span> <span class="keyword">TABLE</span> zbp_post <span class="keyword">IMPORT</span> <span class="keyword">TABLESPACE</span>;</span><br></pre></td></tr></table></figure><p>完成以上步骤后，您应该能够成功还原.ibd文件。请注意，这种方法仅适用于InnoDB引擎的表。如果.ibd文件损坏或不匹配，可能需要使用MySQL的数据恢复工具来修复数据库。</p><h4 id="验证"><a href="#验证" class="headerlink" title="验证"></a>验证</h4><p>果然完美</p><figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">mysql&gt; select count(1) from zbp_post;</span><br><span class="line">+<span class="comment">----------+</span></span><br><span class="line">| count(1) |</span><br><span class="line">+<span class="comment">----------+</span></span><br><span class="line">|   785216 |</span><br><span class="line">+<span class="comment">----------+</span></span><br><span class="line">1 row in <span class="keyword">set</span> (<span class="number">0.15</span> sec)</span><br></pre></td></tr></table></figure><p>如果有朋友遇到类似问题可以和我联系。</p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;p&gt;忠人之事受人之托 起因是因为一位朋友的数据库服务器被重装了，只剩下一个zbp_post.frm和zbp_post.ibd文件。咨询我能不能恢复，确实我只用过mysqldump这种工具导出数据 然后进行恢复到数据库。这种直接备份物理存储文件还没有尝试过。&lt;/p&gt;
+&lt;p&gt;前提是
+      
+    
+    </summary>
+    
+      <category term="技术" scheme="https://peachyy.gitee.io/categories/%E6%8A%80%E6%9C%AF/"/>
+    
+      <category term="mysql" scheme="https://peachyy.gitee.io/categories/%E6%8A%80%E6%9C%AF/mysql/"/>
+    
+    
+      <category term="mysql" scheme="https://peachyy.gitee.io/tags/mysql/"/>
+    
+  </entry>
   
   <entry>
     <title>kubernetes健康检查liveness readiness startupProbe探针</title>
@@ -256,11 +284,11 @@
       <category term="技术" scheme="https://peachyy.gitee.io/categories/%E6%8A%80%E6%9C%AF/"/>
     
     
+      <category term="进制转换" scheme="https://peachyy.gitee.io/tags/%E8%BF%9B%E5%88%B6%E8%BD%AC%E6%8D%A2/"/>
+    
       <category term="短链接" scheme="https://peachyy.gitee.io/tags/%E7%9F%AD%E9%93%BE%E6%8E%A5/"/>
     
       <category term="62进制" scheme="https://peachyy.gitee.io/tags/62%E8%BF%9B%E5%88%B6/"/>
-    
-      <category term="进制转换" scheme="https://peachyy.gitee.io/tags/%E8%BF%9B%E5%88%B6%E8%BD%AC%E6%8D%A2/"/>
     
   </entry>
   
@@ -291,9 +319,9 @@
       <category term="技术" scheme="https://peachyy.gitee.io/categories/%E6%8A%80%E6%9C%AF/"/>
     
     
-      <category term="进制转换" scheme="https://peachyy.gitee.io/tags/%E8%BF%9B%E5%88%B6%E8%BD%AC%E6%8D%A2/"/>
-    
       <category term="java基础" scheme="https://peachyy.gitee.io/tags/java%E5%9F%BA%E7%A1%80/"/>
+    
+      <category term="进制转换" scheme="https://peachyy.gitee.io/tags/%E8%BF%9B%E5%88%B6%E8%BD%AC%E6%8D%A2/"/>
     
   </entry>
   
@@ -497,9 +525,9 @@
     
       <category term="技术" scheme="https://peachyy.gitee.io/tags/%E6%8A%80%E6%9C%AF/"/>
     
-      <category term="kubernetes" scheme="https://peachyy.gitee.io/tags/kubernetes/"/>
-    
       <category term="alpine" scheme="https://peachyy.gitee.io/tags/alpine/"/>
+    
+      <category term="kubernetes" scheme="https://peachyy.gitee.io/tags/kubernetes/"/>
     
       <category term="dump" scheme="https://peachyy.gitee.io/tags/dump/"/>
     
@@ -581,34 +609,6 @@
       <category term="kubernetes" scheme="https://peachyy.gitee.io/tags/kubernetes/"/>
     
       <category term="pod" scheme="https://peachyy.gitee.io/tags/pod/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>kubernetes-kubeadm创建集群</title>
-    <link href="https://peachyy.gitee.io/2021/08/05/k8s-kubeadm-init-2/"/>
-    <id>https://peachyy.gitee.io/2021/08/05/k8s-kubeadm-init-2/</id>
-    <published>2021-08-04T16:00:00.000Z</published>
-    <updated>2021-08-05T05:40:56.172Z</updated>
-    
-    <content type="html"><![CDATA[<p>这一节基本上会遇到很多异常错误信息，需要耐心的去解决它，跟环境等很多因素有关系。</p><h4 id="初始化集群"><a href="#初始化集群" class="headerlink" title="初始化集群"></a>初始化集群</h4><p>在master 机器上初始化集群 会自动拉取相关的镜像 需要等待一下</p><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">kubeadm init --image-repository registry.aliyuncs.com/google_containers --service-cidr=10.96.0.0/12 --pod-network-cidr=10.244.0.0/16 --apiserver-advertise-address=192.168.0.213</span><br></pre></td></tr></table></figure><p>正常情况下 这里会报错，[ERROR ImagePull]: failed to pull image registry.aliyuncs.com/google_containers/coredns:v1.8.0: output: Error response from daemon: manifest for registry.aliyuncs.com/google_containers/coredns:v1.8.0 not found: manifest unknown: manifest unknown</p><p>原因是 期望自动下载的镜像为 <code>registry.aliyuncs.com/google_containers/coredns:v1.8.0</code>，然后仓库中并这个容器镜像，查了资料可以手动下载指定版本号的时候把<code>v</code>去掉即可，下载后并重命名一下版本号</p><p>手动拉取镜像</p><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">下载</span><br><span class="line"><span class="meta">#</span><span class="bash">docker pull registry.aliyuncs.com/google_containers/coredns:1.8.0</span></span><br><span class="line">重命名</span><br><span class="line"><span class="meta">#</span><span class="bash">docker tag registry.aliyuncs.com/google_containers/coredns:1.8.0 registry.aliyuncs.com/google_containers/coredns:v1.8.0</span></span><br></pre></td></tr></table></figure><p>然后再执行 <code>kubeadm init --image-repository registry.aliyuncs.com/google_containers --service-cidr=10.96.0.0/12 --pod-network-cidr=10.244.0.0/16 --apiserver-advertise-address=192.168.0.213</code> 就不会报错了。执行完成后打印<br>执行完成后打印<code>Your Kubernetes control-plane has initialized successfully!</code>表示已经成功初始化。</p><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">mkdir -p $HOME/.kube</span><br><span class="line">sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config</span><br><span class="line">sudo chown $(id -u):$(id -g) $HOME/.kube/config</span><br></pre></td></tr></table></figure><p>在初始化结果日志中还打印了加入集群的令牌(token),令牌用于控制平面节点和加入节点之间的相互身份验证。 这里包含的令牌是密钥。确保它的安全， 因为拥有此令牌的任何人都可以将经过身份验证的节点添加到你的集群中。</p><h4 id="节点加入集群"><a href="#节点加入集群" class="headerlink" title="节点加入集群"></a>节点加入集群</h4><p>在work机器上执行加入节点到机器操作 要保证work机器上要能和master网络保持畅通,直接复制init 命令日志中最后一段话命令就行。<br>加入的时候要保证work节点上的docker服务是开启的。不然要报错。<br><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">kubeadm join 192.168.0.213:6443 --token 5aqi11.werqxkrz4e46vnih --discovery-token-ca-cert-hash sha256:4794a2e13e2c566070d6b289981abb267a0fce1dbf78d60c21db618719d764e7</span><br></pre></td></tr></table></figure></p><p>加入成功后在master上执行<code>kubectl get nodes</code>会发现多了一个节点 但是状态是NotReady，这是不同的机器上容器内部网络不互通 接下来就来整一下网络。</p><h4 id="网络模型插件"><a href="#网络模型插件" class="headerlink" title="网络模型插件"></a>网络模型插件</h4><p> 目前<code>Kubernetes</code>比较常用的网络组建 主要是<code>flannel</code>、<code>Calico</code> 这里我们选用<code>flannel</code>做网络模型。安装方法也就是允许容器 还是比较方便。需要在<code>master</code>上执行</p><p> 下载yml文件</p><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">wget https://raw.githubusercontent.com/flannel-io/flannel/master/Documentation/kube-flannel.yml</span><br></pre></td></tr></table></figure><p>在集群中运行容器<br><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">kubectl apply  -f kube-flannel.yml</span><br></pre></td></tr></table></figure></p><p>这里可能会遇到很多问题，安装好网络插件了 怎么节点还是NotReady状态呢？这些就要对问题进行进一步排查了。这个命令可以看到node上一些问题<code>journalctl -u kubelet -n 300</code>.<br>节点还是依然处理NotReady，就可能是环境有什么问题了，在Master上执行<code>kubectl describe node test1</code> test1为状态异常的节点名称，就能看到这个节点当前的调度操作日志。比如这次有一台work机器日志显示为<br><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">Normal  Starting                 18s                kubelet  Starting kubelet.</span><br><span class="line">Normal  NodeHasSufficientPID     1s                 kubelet  Node test1 status is now: NodeHasSufficientPID</span><br><span class="line">Normal  Starting                 1s                 kubelet  Starting kubelet.</span><br><span class="line">Normal  NodeHasSufficientMemory  1s                 kubelet  Node test1 status is now: NodeHasSufficientMemory</span><br><span class="line">Normal  NodeHasNoDiskPressure    1s                 kubelet  Node test1 status is now: NodeHasNoDiskPressure</span><br></pre></td></tr></table></figure></p><p> 能看到一些有用的信息 如 磁盘空间不足。</p><p> 出现了异常 看哪些命令没有启动成功 可以参考以下的命令日志</p> <figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">journalctl -l -u kube-apiserver</span><br><span class="line">journalctl -l -u kube-controller-manager</span><br><span class="line">journalctl -l -u kube-scheduler</span><br><span class="line">journalctl -l -u kubelet</span><br><span class="line">journalctl -l -u kube-proxy</span><br></pre></td></tr></table></figure><p>如果节点状态都为<code>Ready</code> 那真是太幸运了。安装好网络插件后 一般要等待1-2分钟才会变为Ready，接下来就可能把应用部署在k8s集群中去。</p>]]></content>
-    
-    <summary type="html">
-    
-      
-      
-        &lt;p&gt;这一节基本上会遇到很多异常错误信息，需要耐心的去解决它，跟环境等很多因素有关系。&lt;/p&gt;
-&lt;h4 id=&quot;初始化集群&quot;&gt;&lt;a href=&quot;#初始化集群&quot; class=&quot;headerlink&quot; title=&quot;初始化集群&quot;&gt;&lt;/a&gt;初始化集群&lt;/h4&gt;&lt;p&gt;在master 机器
-      
-    
-    </summary>
-    
-      <category term="技术" scheme="https://peachyy.gitee.io/categories/%E6%8A%80%E6%9C%AF/"/>
-    
-    
-      <category term="技术" scheme="https://peachyy.gitee.io/tags/%E6%8A%80%E6%9C%AF/"/>
-    
-      <category term="kubernetes" scheme="https://peachyy.gitee.io/tags/kubernetes/"/>
     
   </entry>
   
