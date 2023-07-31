@@ -4,6 +4,29 @@
 
     
   <url>
+    <loc>https://peachyy.gitee.io/2023/07/31/mysqlbinlog-restore/</loc>
+    <lastmod>2023-07-31T07:00:29.281Z</lastmod>
+    <data>
+        <display>
+        <title>mysql根据mysqlbinlog恢复数据库</title>
+        <pubTime>2023-07-30T16:00:00.000Z</pubTime>
+        
+        <tag>mysql</tag>
+         
+         
+           
+             
+              <breadCrumb title="技术" url="https://peachyy.gitee.io/categories/%E6%8A%80%E6%9C%AF/"/>
+          
+             
+              <breadCrumb title="mysql" url="https://peachyy.gitee.io/categories/%E6%8A%80%E6%9C%AF/mysql/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>https://peachyy.gitee.io/2023/07/27/mysqlfrmibd/</loc>
     <lastmod>2023-07-27T10:10:29.493Z</lastmod>
     <data>
@@ -107,9 +130,9 @@
          
         <tag>技术</tag>
          
-        <tag>alpine</tag>
-         
         <tag>kubernetes</tag>
+         
+        <tag>alpine</tag>
          
         <tag>dump</tag>
          
