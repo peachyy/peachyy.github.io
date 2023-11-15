@@ -4,6 +4,75 @@
 
     
   <url>
+    <loc>https://peachyy.gitee.io/2023/11/10/mysql-index/</loc>
+    <lastmod>2023-11-15T06:08:06.829Z</lastmod>
+    <data>
+        <display>
+        <title>mysql索引优化</title>
+        <pubTime>2023-11-09T16:00:00.000Z</pubTime>
+        
+        <tag>mysql</tag>
+         
+         
+           
+             
+              <breadCrumb title="技术" url="https://peachyy.gitee.io/categories/%E6%8A%80%E6%9C%AF/"/>
+          
+             
+              <breadCrumb title="mysql" url="https://peachyy.gitee.io/categories/%E6%8A%80%E6%9C%AF/mysql/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>https://peachyy.gitee.io/2023/11/15/mysql-explain/</loc>
+    <lastmod>2023-11-15T04:18:57.248Z</lastmod>
+    <data>
+        <display>
+        <title>mysql explain详解</title>
+        <pubTime>2023-11-14T16:00:00.000Z</pubTime>
+        
+        <tag>mysql</tag>
+         
+         
+           
+             
+              <breadCrumb title="技术" url="https://peachyy.gitee.io/categories/%E6%8A%80%E6%9C%AF/"/>
+          
+             
+              <breadCrumb title="mysql" url="https://peachyy.gitee.io/categories/%E6%8A%80%E6%9C%AF/mysql/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>https://peachyy.gitee.io/2023/08/02/jetbrains-chinese/</loc>
+    <lastmod>2023-08-02T02:45:36.253Z</lastmod>
+    <data>
+        <display>
+        <title>idea汉化教程 jetbrains系列工具DataGrip PyCharm WebStorm Intellij IDEA Goland clion 汉化教程</title>
+        <pubTime>2023-08-01T16:00:00.000Z</pubTime>
+        
+        <tag>jetbrains</tag>
+         
+         
+           
+             
+              <breadCrumb title="技术" url="https://peachyy.gitee.io/categories/%E6%8A%80%E6%9C%AF/"/>
+          
+             
+              <breadCrumb title="jetbrains" url="https://peachyy.gitee.io/categories/%E6%8A%80%E6%9C%AF/jetbrains/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>https://peachyy.gitee.io/2023/07/31/mysqlbinlog-restore/</loc>
     <lastmod>2023-07-31T07:21:16.241Z</lastmod>
     <data>

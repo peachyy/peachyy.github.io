@@ -2,6 +2,27 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://peachyy.gitee.io/2023/11/10/mysql-index/</loc>
+    
+    <lastmod>2023-11-15T06:08:06.829Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://peachyy.gitee.io/2023/11/15/mysql-explain/</loc>
+    
+    <lastmod>2023-11-15T04:18:57.248Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://peachyy.gitee.io/2023/08/02/jetbrains-chinese/</loc>
+    
+    <lastmod>2023-08-02T02:45:36.253Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>https://peachyy.gitee.io/2023/07/31/mysqlbinlog-restore/</loc>
     
     <lastmod>2023-07-31T07:21:16.241Z</lastmod>
