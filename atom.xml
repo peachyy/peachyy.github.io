@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://peachyy.gitee.io/"/>
-  <updated>2023-11-15T04:18:57.248Z</updated>
+  <updated>2023-12-24T05:24:14.981Z</updated>
   <id>https://peachyy.gitee.io/</id>
   
   <author>
@@ -15,6 +15,66 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>linux tar打包压缩命令学习</title>
+    <link href="https://peachyy.gitee.io/2023/12/23/linux-tar/"/>
+    <id>https://peachyy.gitee.io/2023/12/23/linux-tar/</id>
+    <published>2023-12-22T16:00:00.000Z</published>
+    <updated>2023-12-24T05:24:14.981Z</updated>
+    
+    <content type="html"><![CDATA[<p>Linux系统中tar是最常用的打包工具，通过打包工具可以压缩/解压 比如常见的压缩包格式 如下：</p><ul><li>tar           未压缩文件 只是做了一个打包而已</li><li>tar.gz      使用gzip算法格式压缩的压缩包</li><li>tar.bz2    bz2格式压缩包</li><li>tar.xz       xz格式压缩</li></ul><h4 id="参数介绍"><a href="#参数介绍" class="headerlink" title="参数介绍"></a>参数介绍</h4><p>tar 的参数很多 列出几个比较常用的记录一下。</p><p>格式 tar -[参数…] [文件/目录] </p><table><thead><tr><th>参数</th><th>含义</th></tr></thead><tbody><tr><td>-c</td><td>create创建文件</td></tr><tr><td>-C &lt;目录&gt;</td><td>指定解压位置</td></tr><tr><td>-x</td><td>提取解压文件</td></tr><tr><td>-t</td><td>列出压缩包中包含哪些文件，查看包中的内容</td></tr><tr><td>-z</td><td>gzip格式压缩或解压</td></tr><tr><td>-Z</td><td>支持compress解压文件</td></tr><tr><td>-f&lt;备份文件&gt;</td><td>指定打包压缩的备份文件</td></tr><tr><td>-v</td><td>显示指令执行过程</td></tr><tr><td>-r</td><td>添加文件到已经压缩的文件</td></tr><tr><td>-u</td><td>添加改变了和现有的文件到已经存在的压缩文件</td></tr><tr><td>-j</td><td>支持bz2格式压缩或解压</td></tr><tr><td>-v</td><td>显示执行过程</td></tr><tr><td>-J</td><td>支持xz格式压缩或解压</td></tr><tr><td>-k</td><td>保留原有文件不覆盖</td></tr><tr><td>-m</td><td>保留文件不被覆盖</td></tr><tr><td>-w</td><td>确认压缩文件的正确性</td></tr><tr><td>-p</td><td>保留原来的文件权限与属性</td></tr><tr><td>-P</td><td>使用文件名的绝对路径，不移除文件名称前的“/”号</td></tr></tbody></table><h4 id="演示"><a href="#演示" class="headerlink" title="演示"></a>演示</h4><p>当前目录有一个1.5G的SQL文件。</p><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">[root@mysqlbak]#</span><span class="bash"> ll -h</span></span><br><span class="line">total 1.5G</span><br><span class="line">-rw-r--r-- 1 root root 1.5G Dec 22 13:08 mysql_data_prod_2023-12-22-13-07.sql</span><br></pre></td></tr></table></figure><h5 id="仅打包"><a href="#仅打包" class="headerlink" title="仅打包"></a>仅打包</h5><p>执行打包</p><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">tar cvf databak.tar mysql_data_prod_2023-12-22-13-</span><br><span class="line">07.sql</span><br></pre></td></tr></table></figure><p>查看打包的文件结果 可以看到就是单纯的打个包 并没有压缩</p><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">ll -h</span><br><span class="line">total 2.9G</span><br><span class="line">-rw-r--r-- 1 root root 1.5G Dec 22 17:07 databak.tar</span><br><span class="line">-rw-r--r-- 1 root root 1.5G Dec 22 13:08 mysql_data_prod_2023-12-22-13-07.sql</span><br></pre></td></tr></table></figure><p>解压命令 tar -xvf databak.tar</p><h5 id="使用gzip压缩并打包"><a href="#使用gzip压缩并打包" class="headerlink" title="使用gzip压缩并打包"></a>使用gzip压缩并打包</h5><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">tar zcvf databak.tar.gz  mysql_data_prod_2023-12-22-13-07.sql</span><br></pre></td></tr></table></figure><p>查看gzip打包的效果 databak.tar.gz 文件明显从1.5GB缩小到238M了 。但是花的时间稍微要长一点。</p><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"> ll -h</span><br><span class="line">total 3.1G</span><br><span class="line">-rw-r--r-- 1 root root 1.5G Dec 22 17:07 databak.tar</span><br><span class="line">-rw-r--r-- 1 root root 238M Dec 22 17:18 databak.tar.gz</span><br><span class="line">-rw-r--r-- 1 root root 1.5G Dec 22 13:08 mysql_data_prod_2023-12-22-13-07.sql</span><br></pre></td></tr></table></figure><p>解压命令 tar -zxvf databak.tar.gz</p><h5 id="使用bz2压缩并打包"><a href="#使用bz2压缩并打包" class="headerlink" title="使用bz2压缩并打包"></a>使用bz2压缩并打包</h5><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">tar jcvf  databak.tar.bz2 mysql_data_prod_2023-12-22-13-07.sql</span><br></pre></td></tr></table></figure><p>查看bz2的打包效果 可以看到文件名为 databak.tar.bz2 只有133M了。但是压缩的时间是真的长</p><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"> ll -h</span><br><span class="line">total 3.3G</span><br><span class="line">-rw-r--r-- 1 root root 1.5G Dec 22 17:07 databak.tar</span><br><span class="line">-rw-r--r-- 1 root root 133M Dec 22 17:26 databak.tar.bz2</span><br><span class="line">-rw-r--r-- 1 root root 238M Dec 22 17:18 databak.tar.gz</span><br></pre></td></tr></table></figure><p>解压命令 tar -jxvf databak.tar.bz2</p><h5 id="使用xz压缩并打包"><a href="#使用xz压缩并打包" class="headerlink" title="使用xz压缩并打包"></a>使用xz压缩并打包</h5><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">tar -Jcvf  databak.tar.xz mysql_data_prod_2023-12-22-13-07.sql</span><br></pre></td></tr></table></figure><p>查看xz的打包效果 可以看到文件名为 databak.tar.xz只有119M了。压缩时间竟然比bz2还要更长。</p><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">ll -h</span><br><span class="line">-rw-r--r-- 1 root root 1.5G Dec 22 17:07 databak.tar</span><br><span class="line">-rw-r--r-- 1 root root 133M Dec 22 17:26 databak.tar.bz2</span><br><span class="line">-rw-r--r-- 1 root root 238M Dec 22 17:18 databak.tar.gz</span><br><span class="line">-rw-r--r-- 1 root root 119M Dec 22 17:48 databak.tar.xz</span><br></pre></td></tr></table></figure><p>解压命令 tar -Jxvf databak.tar.xz </p><h4 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h4><ul><li>从压缩后的文件大小来看 gz &gt; bz2 &gt; xz</li></ul><ul><li>从压缩后的消耗时长来看 gz&lt; bz2 &lt;  xz</li></ul><p>压缩的时间越长 压缩后的文件越小，但是解压的时间也会边长，所以选一个中规中矩的压缩方式是最好的，毕竟硬盘又不贵，目前比较普遍的格式是tar.gz。压缩大小和时间都比较居中 能够接收。</p><p>另外zip命令也是比较常用的压缩工具 使用命令格式：</p><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">压缩</span></span><br><span class="line">zip -r xxx.zip  xxx.sql </span><br><span class="line"><span class="meta">#</span><span class="bash">解压</span></span><br><span class="line">unzip xxx.zip</span><br></pre></td></tr></table></figure>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;p&gt;Linux系统中tar是最常用的打包工具，通过打包工具可以压缩/解压 比如常见的压缩包格式 如下：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;tar           未压缩文件 只是做了一个打包而已&lt;/li&gt;
+&lt;li&gt;tar.gz      使用gzip算法格式压缩的压缩包&lt;/li&gt;
+
+      
+    
+    </summary>
+    
+      <category term="技术" scheme="https://peachyy.gitee.io/categories/%E6%8A%80%E6%9C%AF/"/>
+    
+      <category term="linux" scheme="https://peachyy.gitee.io/categories/%E6%8A%80%E6%9C%AF/linux/"/>
+    
+    
+      <category term="linix" scheme="https://peachyy.gitee.io/tags/linix/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>linux同步文件到百度云盘</title>
+    <link href="https://peachyy.gitee.io/2023/12/22/linux-baiduyun/"/>
+    <id>https://peachyy.gitee.io/2023/12/22/linux-baiduyun/</id>
+    <published>2023-12-21T16:00:00.000Z</published>
+    <updated>2023-12-22T07:21:59.998Z</updated>
+    
+    <content type="html"><![CDATA[<h4 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h4><p>由于个人项目预算有限，把mysql和应用程序都跑在同一台阿里云ECS机器上面，就在昨天(2023年12月21日) ，服务器突然出现问题 进程全部挂掉了，服务器也无法重启，找工程师排查后发现是系统磁盘挂载出现了问题，好在恢复后数据都还在，数据没有丢失真是万幸。如果数据丢了那就game over了。想着把数据定时备份到百度云盘中。做一下记录。</p><h4 id="安装bypy"><a href="#安装bypy" class="headerlink" title="安装bypy"></a>安装bypy</h4><p>Linux系统数据同步百度云盘使用的是一个python写的sdk包 <code>bypy</code> 看起来不算是官方开发的。</p><p>这里使用python3的pip3来安装。python2貌似不行 没有整成功。</p><p>安装bypy</p><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">pip3 install bypy</span><br></pre></td></tr></table></figure><p>执行完命令输出如下字样 表示成功，如果不成功可能是python版本问题，具体问题需要具体搜索一下。</p><p>Installing collected packages: dill, multiprocess, requests-toolbelt, bypy<br>Successfully installed bypy-1.8.2 dill-0.3.4 multiprocess-0.70.12.2 requests-toolbelt-1.0.0</p><p>安装 requests</p><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">pip3 install requests</span><br></pre></td></tr></table></figure><p>输入bypy -V命令能输出版本号表示安装成功</p><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">bypy -V</span><br><span class="line">bypy v1.8.2</span><br></pre></td></tr></table></figure><h4 id="使用bypy工具命令"><a href="#使用bypy工具命令" class="headerlink" title="使用bypy工具命令"></a>使用bypy工具命令</h4><h5 id="bypy-info-空间使用信息"><a href="#bypy-info-空间使用信息" class="headerlink" title="bypy info 空间使用信息"></a>bypy info 空间使用信息</h5><p>首次使用bypy info命令的时候 会引导做一个oauth2的授权操作。效果如下 把命令行中的地址复制过浏览器中进行一个授权操作，允许授权后浏览器中会显示授权码，把授权码输入到命令行中，回车等返回空间信息就行了。</p><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">bypy info</span><br><span class="line">Please visit:</span><br><span class="line">https://openapi.baidu.com/oauth/2.0/authorize?client_id=q8WE4EpCsau1oS0MplgMKNBn&amp;response_type=code&amp;redirect_uri=oob&amp;scope=basic+netdisk</span><br><span class="line">And authorize this app</span><br><span class="line">Paste the Authorization Code here within 10 minutes.</span><br><span class="line">Press [Enter] when you are done</span><br><span class="line">e205719ee8deed8c36e4ebddd8ed8a23 ---授权码在这里输入</span><br><span class="line">Authorizing, please be patient, it may take upto 300 seconds...</span><br><span class="line">Quota: 5.000GB</span><br><span class="line">Used: 2.506GB</span><br></pre></td></tr></table></figure><h5 id="bypy-upload-上传文件"><a href="#bypy-upload-上传文件" class="headerlink" title="bypy upload  上传文件"></a>bypy upload  上传文件</h5><p>上传test.sh到云盘</p><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">bypy upload test.sh</span><br></pre></td></tr></table></figure><h5 id="bypy-list-查看文件列表"><a href="#bypy-list-查看文件列表" class="headerlink" title="bypy list 查看文件列表"></a>bypy list 查看文件列表</h5><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">bypy list</span><br><span class="line">/apps/bypy ($t $f $s $m $d):</span><br><span class="line">F 2023-12-22-13-07.tar.gz 248551123 2023-12-22, 13:24:46 333fb9f30ld355584a294075f98f38a6</span><br><span class="line">F test.sh 8 2023-12-22, 13:14:00 a234d619bj4ceb0cb2296e045c913720</span><br></pre></td></tr></table></figure><h5 id="bypy-downfile-下载文件到Linix磁盘"><a href="#bypy-downfile-下载文件到Linix磁盘" class="headerlink" title="bypy downfile 下载文件到Linix磁盘"></a>bypy downfile 下载文件到Linix磁盘</h5><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"> rm -rf test.sh  #先删除</span><br><span class="line"> bypy downfile test.sh . #在重新下载 该目录下依然有test.sh文件</span><br><span class="line">&lt;I&gt; [14:12:49] ./test.sh &lt;- /apps/bypy/test.sh</span><br><span class="line">[====================] 100% (8.0B/8.0B) ETA:  (12B/s,  gone)</span><br></pre></td></tr></table></figure><h5 id="bypy-compare-对比本地和云盘的文件"><a href="#bypy-compare-对比本地和云盘的文件" class="headerlink" title="bypy compare 对比本地和云盘的文件"></a>bypy compare 对比本地和云盘的文件</h5><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">bypy compare  test.sh</span><br></pre></td></tr></table></figure><h4 id="定时备份"><a href="#定时备份" class="headerlink" title="定时备份"></a>定时备份</h4><p>linux里面定时任务主要还是基于crontab。编写一个备份脚本 定时执行就行了。</p><p>如下演示一个从docker容器中的mysql中备份数据 并压缩数据 然后推送到百度云盘示例</p><p>vim /opt/mysqlbak.sh</p><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"><span class="built_in">export</span> NOW=<span class="string">"<span class="variable">$(date +"%Y-%m-%d-%H-%M")</span>"</span></span><br><span class="line"><span class="built_in">export</span> DATA_DIR=/opt/datahub/mysqlbak</span><br><span class="line"><span class="built_in">echo</span> <span class="string">"<span class="variable">$NOW</span> 开始备份mysql数据"</span></span><br><span class="line">docker <span class="built_in">exec</span>  mysql /bin/bash -c <span class="string">"mysqldump -uroot -proot --set-gtid-purged=OFF -B cheruan_prod &gt; <span class="variable">$DATA_DIR</span>/mysql_data_cc_prod_<span class="variable">$NOW</span>.sql"</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">"正在压缩文件...."</span></span><br><span class="line">tar -czvf <span class="variable">$NOW</span>.tar.gz <span class="variable">$DATA_DIR</span>/mysql_data_cc_prod_<span class="variable">$NOW</span>.sql</span><br><span class="line"><span class="built_in">echo</span> <span class="string">"压缩文件完成 <span class="variable">$NOW</span>.tar.gz"</span></span><br><span class="line"><span class="comment">#速度稍慢点 tar -cjvf $NOW.tar.bz2 $DATA_DIR/mysql_data_cc_prod_$NOW.sql</span></span><br><span class="line"><span class="comment">#速度巨慢 压缩率最大 tar -cJvf $NOW.tar.xz $DATA_DIR/mysql_data_cc_prod_$NOW.sql</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">"正在删除历史文件+7"</span></span><br><span class="line">find -mtime +7 -name <span class="string">"*.tar.gz"</span>   -<span class="built_in">exec</span> rm &#123;&#125; \;</span><br><span class="line"><span class="built_in">echo</span> <span class="string">"删除历史文件完成 "</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">"正在删除SQL文件"</span></span><br><span class="line">rm -rf <span class="variable">$DATA_DIR</span>/mysql_data_cc_prod_<span class="variable">$NOW</span>.sql</span><br><span class="line"><span class="built_in">echo</span> <span class="string">"SQL文件删除完成"</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">"正在推送压缩包至网络云盘"</span></span><br><span class="line">bypy upload /opt/datahub/mysqlbak/<span class="variable">$NOW</span>.tar.gz</span><br><span class="line"><span class="built_in">echo</span> <span class="string">"推送压缩包至网络云盘已完成"</span></span><br></pre></td></tr></table></figure><p>然后配置定时任务 crontab -e</p><p>30 1 <em> </em> *  sh  /opt/mysqlbak.sh &gt;&gt; /var/log/mysql_dumps.log 2&gt;&amp;1</p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h4 id=&quot;背景&quot;&gt;&lt;a href=&quot;#背景&quot; class=&quot;headerlink&quot; title=&quot;背景&quot;&gt;&lt;/a&gt;背景&lt;/h4&gt;&lt;p&gt;由于个人项目预算有限，把mysql和应用程序都跑在同一台阿里云ECS机器上面，就在昨天(2023年12月21日) ，服务器突然出现问题 进程
+      
+    
+    </summary>
+    
+      <category term="技术" scheme="https://peachyy.gitee.io/categories/%E6%8A%80%E6%9C%AF/"/>
+    
+      <category term="linux" scheme="https://peachyy.gitee.io/categories/%E6%8A%80%E6%9C%AF/linux/"/>
+    
+    
+      <category term="linix" scheme="https://peachyy.gitee.io/tags/linix/"/>
+    
+      <category term="linux同步到百度云盘" scheme="https://peachyy.gitee.io/tags/linux%E5%90%8C%E6%AD%A5%E5%88%B0%E7%99%BE%E5%BA%A6%E4%BA%91%E7%9B%98/"/>
+    
+  </entry>
   
   <entry>
     <title>mysql explain详解</title>
@@ -391,11 +451,11 @@
       <category term="技术" scheme="https://peachyy.gitee.io/categories/%E6%8A%80%E6%9C%AF/"/>
     
     
-      <category term="进制转换" scheme="https://peachyy.gitee.io/tags/%E8%BF%9B%E5%88%B6%E8%BD%AC%E6%8D%A2/"/>
-    
       <category term="短链接" scheme="https://peachyy.gitee.io/tags/%E7%9F%AD%E9%93%BE%E6%8E%A5/"/>
     
       <category term="62进制" scheme="https://peachyy.gitee.io/tags/62%E8%BF%9B%E5%88%B6/"/>
+    
+      <category term="进制转换" scheme="https://peachyy.gitee.io/tags/%E8%BF%9B%E5%88%B6%E8%BD%AC%E6%8D%A2/"/>
     
   </entry>
   
@@ -426,9 +486,9 @@
       <category term="技术" scheme="https://peachyy.gitee.io/categories/%E6%8A%80%E6%9C%AF/"/>
     
     
-      <category term="java基础" scheme="https://peachyy.gitee.io/tags/java%E5%9F%BA%E7%A1%80/"/>
-    
       <category term="进制转换" scheme="https://peachyy.gitee.io/tags/%E8%BF%9B%E5%88%B6%E8%BD%AC%E6%8D%A2/"/>
+    
+      <category term="java基础" scheme="https://peachyy.gitee.io/tags/java%E5%9F%BA%E7%A1%80/"/>
     
   </entry>
   
@@ -543,67 +603,6 @@
       <category term="mysql" scheme="https://peachyy.gitee.io/tags/mysql/"/>
     
       <category term="sslca" scheme="https://peachyy.gitee.io/tags/sslca/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>jvm容器化内存感知实践</title>
-    <link href="https://peachyy.gitee.io/2021/12/28/dockerjvmarg_action/"/>
-    <id>https://peachyy.gitee.io/2021/12/28/dockerjvmarg_action/</id>
-    <published>2021-12-27T16:00:00.000Z</published>
-    <updated>2021-12-28T09:02:35.608Z</updated>
-    
-    <content type="html"><![CDATA[<p><code>docker</code>容器本身需要设置容器的最大可使用内存(防止单个容器消耗节点大量的资源)，跑在容器中的<code>jvm</code>进程也需要设置内存，防止内存占用过大被容器<code>Kill</code>,所以如何优雅的在容器化中设置内存是一个很有必要了解的话题。</p><ul><li><code>jdk 8u131+</code> <code>java 9+</code> 使用参数开启实验性功能 <code>-XX:+UnlockExperimentalVMOptions -XX:+UseCGroupMemoryLimitForHeap</code>。 开启容器化支持功能。</li><li><code>java 8u191+</code> <code>java10+</code> 使用参数<code>UseContainerSupport</code> 开启容器化感知支持功能。</li><li><code>-XX:MaxRAMPercentage</code> 限制最大<code>heap</code>内存占比 。</li><li><code>-XX:InitialRAMPercentage</code> 设置初始<code>heap</code>内存占比，此参数如果和<code>MaxRAMPercentage</code>设置一样表示jvm最大与最小一致  jvm不会去伸缩内存 这也是一种普遍使用的方式。其值介于0.0到100.0之间，默认值为25。</li></ul><p>上面的几个参数可以让jvm读取<code>cgroup</code>的一些数据，并进行相应的适配，这样容器内jvm超时最大内存 就自己会<code>OOM</code>而不是被容器<code>Kill</code>。关于被<code>OOM</code>后怎么怎么拉取以及存储<code>OOM</code>文件参考 <a href="/2021/11/11/k8s-jvm-dumpcollect">在k8s中收集jvm异常dump文件到OSS</a></p><h4 id="案例"><a href="#案例" class="headerlink" title="案例"></a>案例</h4><p>以下案例已设置了容器最大可实现内存<code>4G</code> CPU <code>1核</code></p><p>使用参数 限制<code>heap</code>最大内存为80%</p><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line">java  -server -XX:+UnlockExperimentalVMOptions -XX:+UseCGroupMemoryLimitForHeap -XX:MaxRAMPercentage=80.0 ....</span><br></pre></td></tr></table></figure><p>使用jmap查看heap内存情况 显示<code>MaxHeapSize</code>为3278mb 刚好为(4*1021)/0.8 说明jvm能感知到容器最大内存为4g 且只能分配80%的内存给<code>heap</code>。剩余的20%供其他的进程使用。</p><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line">jmap -heap 19  </span><br><span class="line"></span><br><span class="line">Heap Configuration:</span><br><span class="line">   MinHeapFreeRatio         = 0</span><br><span class="line">   MaxHeapFreeRatio         = 100</span><br><span class="line">   MaxHeapSize              = 3437232128 (3278.0MB)</span><br><span class="line">   NewSize                  = 22020096 (21.0MB)</span><br><span class="line">   MaxNewSize               = 1145569280 (1092.5MB)</span><br><span class="line">   OldSize                  = 45088768 (43.0MB)</span><br><span class="line">   NewRatio                 = 2</span><br><span class="line">   SurvivorRatio            = 8</span><br><span class="line">   MetaspaceSize            = 21807104 (20.796875MB)</span><br><span class="line">   CompressedClassSpaceSize = 1073741824 (1024.0MB)</span><br><span class="line">   MaxMetaspaceSize         = 17592186044415 MB</span><br><span class="line">   G1HeapRegionSize         = 0 (0.0MB)</span><br></pre></td></tr></table></figure><p>JDK8+可以使用-XX:MetaspaceSize和-XX:MaxMetaspaceSize设置元空间初始大小以及最大可分配大小。默认情况下，元空间最大的大小是系统内存的大小，该参数一般默认也无所谓 一般不会因为这个太大导致<code>OOM</code>。<br>这也证明了在容器中获取到的内存是宿主机的内存大小而不是设置了容器限制后的大小。</p>]]></content>
-    
-    <summary type="html">
-    
-      
-      
-        &lt;p&gt;&lt;code&gt;docker&lt;/code&gt;容器本身需要设置容器的最大可使用内存(防止单个容器消耗节点大量的资源)，跑在容器中的&lt;code&gt;jvm&lt;/code&gt;进程也需要设置内存，防止内存占用过大被容器&lt;code&gt;Kill&lt;/code&gt;,所以如何优雅的在容器化中设置内存是一个很有
-      
-    
-    </summary>
-    
-      <category term="技术" scheme="https://peachyy.gitee.io/categories/%E6%8A%80%E6%9C%AF/"/>
-    
-    
-      <category term="docker" scheme="https://peachyy.gitee.io/tags/docker/"/>
-    
-      <category term="jvm" scheme="https://peachyy.gitee.io/tags/jvm/"/>
-    
-      <category term="技术" scheme="https://peachyy.gitee.io/tags/%E6%8A%80%E6%9C%AF/"/>
-    
-      <category term="k8s" scheme="https://peachyy.gitee.io/tags/k8s/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>ingress传递头信息</title>
-    <link href="https://peachyy.gitee.io/2021/12/22/k8s-ingress-annotation1/"/>
-    <id>https://peachyy.gitee.io/2021/12/22/k8s-ingress-annotation1/</id>
-    <published>2021-12-21T16:00:00.000Z</published>
-    <updated>2023-03-25T06:01:41.585Z</updated>
-    
-    <content type="html"><![CDATA[<p>在ningx-ingress中内置提供一些<code>annotation</code> 在不手动手动改<code>ingress-controller</code>的情况下可以提供一些方便的操作。</p><figure class="highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="attr">apiVersion:</span> <span class="string">extensions/v1beta1</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">Ingress</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line"><span class="attr">  annotations:</span></span><br><span class="line">    <span class="string">kubectl.kubernetes.io/last-applied-configuration:</span> <span class="string">""</span></span><br><span class="line">    <span class="string">nginx.ingress.kubernetes.io/proxy-body-size:</span> <span class="number">50</span><span class="string">m</span></span><br><span class="line">    <span class="string">nginx.ingress.kubernetes.io/service-weight:</span> <span class="string">'show-admin: 100</span></span><br><span class="line"><span class="string">    nginx.ingress.kubernetes.io/server-snippet: |</span></span><br><span class="line"><span class="string">      set sub_domain "";</span></span><br><span class="line"><span class="string">      if ( host ~* (.*)-admin.* )&#123;</span></span><br><span class="line"><span class="string">         set sub_domain saas1;</span></span><br><span class="line"><span class="string">      &#125;</span></span><br><span class="line"><span class="string">    nginx.ingress.kubernetes.io/configuration-snippet: |</span></span><br><span class="line"><span class="string">         more_set_input_headers "auth-com: saas$1";</span></span><br><span class="line"><span class="string">  generation: 4</span></span><br><span class="line"><span class="string">  name: test-ingress</span></span><br><span class="line"><span class="string">  namespace: default</span></span><br><span class="line"><span class="string">spec:</span></span><br><span class="line"><span class="string">  rules:</span></span><br><span class="line"><span class="string">  - host: test.domain.com</span></span><br><span class="line"><span class="string">    http:</span></span><br><span class="line"><span class="string">      paths:</span></span><br><span class="line"><span class="string">      - backend:</span></span><br><span class="line"><span class="string">          serviceName: test-api</span></span><br><span class="line"><span class="string">          servicePort: 80</span></span><br><span class="line"><span class="string">        path: /</span></span><br><span class="line"><span class="string">status:</span></span><br><span class="line"><span class="string">  loadBalancer: &#123;&#125;</span></span><br></pre></td></tr></table></figure><ul><li>more_set_headers 用于添加、修改、清除响应头</li><li>more_clear_headers 用于清除响应头</li><li>more_set_input_headers 用于添加、修改、清除请求头</li><li>more_clear_input_headers 用于清除请求头</li></ul>]]></content>
-    
-    <summary type="html">
-    
-      
-      
-        &lt;p&gt;在ningx-ingress中内置提供一些&lt;code&gt;annotation&lt;/code&gt; 在不手动手动改&lt;code&gt;ingress-controller&lt;/code&gt;的情况下可以提供一些方便的操作。&lt;/p&gt;
-&lt;figure class=&quot;highlight yml&quot;&gt;&lt;ta
-      
-    
-    </summary>
-    
-      <category term="技术" scheme="https://peachyy.gitee.io/categories/%E6%8A%80%E6%9C%AF/"/>
-    
-    
-      <category term="技术" scheme="https://peachyy.gitee.io/tags/%E6%8A%80%E6%9C%AF/"/>
-    
-      <category term="kubernetes" scheme="https://peachyy.gitee.io/tags/kubernetes/"/>
-    
-      <category term="ingress" scheme="https://peachyy.gitee.io/tags/ingress/"/>
     
   </entry>
   
